@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="DBMT.GamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DBMT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <!-- 设置背景图片 -->
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/HSR.png" Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <!-- 按钮永远置于右下角，距离下面和右边固定为30px -->
+        <Button Style="{StaticResource AccentButtonStyle}" 
+                Content="启动3Dmigoto Loader.exe" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom" 
+                Margin="0,0,20,30" />
+
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,30">
+            <!-- 定义行 -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- 定义列 -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 第一行：选择游戏 -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="选择游戏:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox x:Name="GameSelectionComboBox" Width="200" >
+                    <ComboBoxItem Content="游戏1"/>
+                    <ComboBoxItem Content="游戏2"/>
+                    <ComboBoxItem Content="游戏3"/>
+                </ComboBox>
+            </StackPanel>
+
+            <!-- 第二行：进程路径 -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="进程路径:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox x:Name="ProcessPathTextBox" Width="400"/>
+                <Button Content="选择文件" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}"/>
+            </StackPanel>
+
+            <!-- 第三行：启动器路径 -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBlock Text="启动器路径:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox x:Name="ProcessPathTextBox2" Width="400" />
+                <Button Content="选择文件" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+        
+</Page>

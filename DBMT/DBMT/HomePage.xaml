@@ -13,12 +13,12 @@
     <Grid>
         <!-- 设置背景图片 -->
         <Grid.Background>
-            <ImageBrush ImageSource="Assets/HSRSpace.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="Assets/HomePageBackGround.png" Stretch="UniformToFill"/>
         </Grid.Background>
         
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20">
             <TextBlock Text="DirectX Buffer Mod Tool" FontSize="24" FontWeight="Bold" />
-            <TextBlock Text="愿此行，终抵群星。" FontSize="12" Margin="0,5,0,15" />
+            <TextBlock Text="--- 愿此行，终抵群星。" FontSize="12" Margin="0,5,0,15" />
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <Button Click="OpenLinkButtonClick"  Tag="https://www.yuque.com/airde/lx53p6">
                     <StackPanel Orientation="Horizontal">

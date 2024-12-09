@@ -11,14 +11,15 @@
     <!--云母效果窗口-->
     <Window.SystemBackdrop>
         <MicaBackdrop Kind="BaseAlt"/>
-    </Window.SystemBackdrop>
+     
 
+    </Window.SystemBackdrop>
 
     <NavigationView x:Name="nvSample" ItemInvoked="nvSample_ItemInvoked" IsBackEnabled="False" IsBackButtonVisible="Collapsed">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="Home" Content="主页" Tag="HomePage" />
-            <NavigationViewItem Icon="Play" Content="快速启动" Tag="SamplePage2" />
-            <NavigationViewItem Icon="Edit" Content="工作台" Tag="SamplePage3" />
+            <NavigationViewItem Icon="Play" Content="快速启动" Tag="GamePage" />
+            <NavigationViewItem Icon="Edit" Content="工作台" Tag="WorkPage" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame"/>
     </NavigationView>

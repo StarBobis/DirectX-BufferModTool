@@ -34,7 +34,7 @@ namespace DBMT
         private void InitializeGUI()
         {
             //设置标题和宽高
-            this.Title = "DirectX Buffer Mod Tool V1.0.2.1 测试版";
+            this.Title = "DirectX Buffer Mod Tool V1.0.9.4 测试版";
             this.AppWindow.Resize(new SizeInt32(1000, 600));
 
             //移动窗口到屏幕中心
@@ -86,11 +86,11 @@ namespace DBMT
                     case "HomePage":
                         pageType = typeof(HomePage);
                         break;
-                    case "SamplePage2":
-                        //pageType = typeof(SamplePage2);
+                    case "GamePage":
+                        pageType = typeof(GamePage);
                         break;
-                    case "SamplePage3":
-                        //pageType = typeof(SamplePage3);
+                    case "WorkPage":
+                        pageType = typeof(WorkPage);
                         break;
                     case "SamplePage4":
                         //pageType = typeof(SamplePage4);
