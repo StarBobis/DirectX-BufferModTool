@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,5 +46,115 @@ namespace DBMT
         public static int AutoTextureFormat = 0;
         public static bool ConvertDedupedTextures = false;
 
+
+        public static void InitializeConfigFolders()
+        {
+
+
+
+        }
+
+
+        public static void SetCurrentGame(string gameName)
+        {
+            MainConfig.CurrentGameName = gameName;
+
+            string basePath = Directory.GetCurrentDirectory();
+
+            //设置当前游戏名称
+            MainConfig.Path_Game_ConfigJson = Path.Combine(basePath, "Games", MainConfig.CurrentGameName, "Config.json");
+            MainConfig.Path_Game_VSCheck_Json = Path.Combine(basePath, "Games", MainConfig.CurrentGameName, "VSCheck.json");
+            MainConfig.Path_LoaderFolder = Path.Combine(basePath,"Games", MainConfig.CurrentGameName, "3Dmigoto\\");
+            MainConfig.Path_D3DXINI = Path.Combine(MainConfig.Path_LoaderFolder,"d3dx.ini");
+            MainConfig.Path_OutputFolder = Path.Combine(MainConfig.Path_LoaderFolder, "Mods","output\\");
+        }
+
     }
+
+
+    public static class ConfigHelper
+    {
+
+        public static string GetD3DXIniPath()
+        {
+            string D3DXIniPath = "";
+            D3DXIniPath = Path.Combine(MainConfig.Path_LoaderFolder, "d3dx.ini");
+            return D3DXIniPath;
+        }
+
+
+        public static string ReadAttributeFromD3DXIni(string AttributeName)
+        {
+            string d3dxini_path = ConfigHelper.GetD3DXIniPath();
+            if (File.Exists(d3dxini_path))
+            {
+                string[] lines = File.ReadAllLines(d3dxini_path);
+                foreach (string line in lines)
+                {
+                    string trim_lower_line = line.Trim().ToLower();
+                    if (trim_lower_line.StartsWith(AttributeName) && trim_lower_line.Contains("="))
+                    {
+                        string[] splits = line.Split('=');
+                        string target_path = splits[1];
+                        return target_path;
+                    }
+                    
+                }
+            }
+            return "";
+        }
+
+        public static void SaveAttributeToD3DXIni(string SectionName,string AttributeName,string AttributeValue)
+        {
+            string d3dxini_path = ConfigHelper.GetD3DXIniPath();
+            if (File.Exists(d3dxini_path))
+            {
+                string OriginalAttributeValue = ReadAttributeFromD3DXIni(AttributeName);
+                //只有存在此属性时，写入才有意义，否则等于白写一遍原内容
+                if(OriginalAttributeValue.Trim() != "")
+                {
+                    List<string> newLines = new List<string>();
+                    string[] lines = File.ReadAllLines(d3dxini_path);
+                    foreach (string line in lines)
+                    {
+                        string trim_lower_line = line.Trim().ToLower();
+                        if (trim_lower_line.StartsWith(AttributeName) && trim_lower_line.Contains("="))
+                        {
+                            string TargetPath = AttributeName + " = " + AttributeValue;
+                            newLines.Add(TargetPath);
+                        }
+                        else
+                        {
+                            newLines.Add(line);
+                        }
+                    }
+                    File.WriteAllLines(d3dxini_path, newLines);
+                }
+                else
+                {
+                    //如果不存在此属性，则写到对应SectionName下面
+                    List<string> newLines = new List<string>();
+                    string[] lines = File.ReadAllLines(d3dxini_path);
+                    foreach (string line in lines)
+                    {
+                        string trim_lower_line = line.Trim().ToLower();
+                        if (trim_lower_line.StartsWith(SectionName)){
+                            newLines.Add(line);
+                            string TargetPath = AttributeName + " = " + AttributeValue;
+                            newLines.Add(TargetPath);
+                        }
+                        else
+                        {
+                            newLines.Add(line);
+                        }
+                    }
+                    File.WriteAllLines(d3dxini_path, newLines);
+                }
+            }
+        }
+
+
+    }
+
+
 }

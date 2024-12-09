@@ -33,6 +33,12 @@ namespace DBMT
 
         private void InitializeGUI()
         {
+
+            // C# code to set AppTitleBar uielement as titlebar
+            //Window window = App.m_window;
+            //window.ExtendsContentIntoTitleBar = true;  // enable custom titlebar
+            //window.SetTitleBar(AppTitleBar);      // set user ui element as titlebar
+
             //设置标题和宽高
             this.Title = "DirectX Buffer Mod Tool V1.0.9.4 测试版";
             this.AppWindow.Resize(new SizeInt32(1000, 600));

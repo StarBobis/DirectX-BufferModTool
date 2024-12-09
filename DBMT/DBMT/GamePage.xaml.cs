@@ -21,6 +21,9 @@ using WinRT.Interop;
 using Windows.UI.Core;
 using Windows.Storage.Pickers.Provider;
 using DBMT_Core;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using Windows.UI.Popups;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,6 +39,7 @@ namespace DBMT
         {
             this.InitializeComponent();
             LoadDirectoryNames();
+            
         }
         // 辅助方法：获取当前窗口的句柄
 
@@ -86,10 +90,12 @@ namespace DBMT
                 string basePath = Directory.GetCurrentDirectory();
                 string selectedGame = comboBox.SelectedItem.ToString();
 
-                MainConfig.CurrentGameName = selectedGame;
+                MainConfig.SetCurrentGame(selectedGame);
+                //读取d3dx.ini中的设置
+                ReadPathSettingFromD3dxIni();
 
+                //设置背景图片
                 string imagePath = Path.Combine(basePath, "Assets", selectedGame + ".png");
-
                 if (!File.Exists(imagePath))
                 {
                     imagePath = Path.Combine(basePath, "Assets", "DefaultGame.png");
@@ -110,44 +116,55 @@ namespace DBMT
         private void LoadDirectoryNames()
         {
             string directoryPath = @"C:\Users\Administrator\Desktop\DBMT\Games"; // 指定你要读取的目录路径
-            try
-            {
-                // 获取所有子目录名称
-                var directories = Directory.EnumerateDirectories(directoryPath)
-                                          .Select(Path.GetFileName)
-                                          .Where(name => !string.IsNullOrEmpty(name));
+            // 获取所有子目录名称
+            var directories = Directory.EnumerateDirectories(directoryPath)
+                                        .Select(Path.GetFileName)
+                                        .Where(name => !string.IsNullOrEmpty(name));
 
-                // 清空 ComboBox 当前项
-                GameSelectionComboBox.Items.Clear();
+            // 清空 ComboBox 当前项
+            GameSelectionComboBox.Items.Clear();
 
-                // 将每个目录名称添加到 ComboBox 中
-                foreach (var dirName in directories)
-                {
-                    GameSelectionComboBox.Items.Add(dirName);
-                }
-                if (MainConfig.CurrentGameName == "")
-                {
-                    GameSelectionComboBox.SelectedIndex = 0;
-                }
-                else
-                {
-                    GameSelectionComboBox.SelectedItem = MainConfig.CurrentGameName;
-                }
-            }
-            catch (Exception ex)
+            // 将每个目录名称添加到 ComboBox 中
+            foreach (var dirName in directories)
             {
-                // 处理可能发生的异常，例如路径无效或访问被拒绝
-                // 可以在这里显示错误信息给用户
-                Console.WriteLine($"Error loading directories: {ex.Message}");
+                GameSelectionComboBox.Items.Add(dirName);
             }
+            if (MainConfig.CurrentGameName == "")
+            {
+                GameSelectionComboBox.SelectedIndex = 0;
+            }
+            else
+            {
+                GameSelectionComboBox.SelectedItem = MainConfig.CurrentGameName;
+            }
+            
         }
 
 
         private void ReadPathSettingFromD3dxIni()
         {
-
+            ProcessPathTextBox.Text = ConfigHelper.ReadAttributeFromD3DXIni("target");
+            StarterPathTextBox.Text = ConfigHelper.ReadAttributeFromD3DXIni("launch");
         }
 
+        private void SavePathSettingsToD3dxIni(object sender, RoutedEventArgs e)
+        {
+            ConfigHelper.SaveAttributeToD3DXIni("[loader]","target",ProcessPathTextBox.Text);
+            ConfigHelper.SaveAttributeToD3DXIni("[loader]","launch", StarterPathTextBox.Text);
+        }
+
+        private void OpenD3dxIniFile(object sender, RoutedEventArgs e)
+        {
+            string d3dxini_path = ConfigHelper.GetD3DXIniPath();
+            CommandHelper.ShellOpenFile(d3dxini_path);
+        }
+
+        private void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
+        {
+            string MigotoLoaderExePath = Path.Combine(MainConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
+            CommandHelper.ShellOpenFile(MigotoLoaderExePath);
+
+        }
 
     }
 }

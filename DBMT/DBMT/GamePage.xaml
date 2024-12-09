@@ -16,7 +16,7 @@
         </Grid.Background>
 
         <!-- 按钮永远置于右下角，距离下面和右边固定为30px -->
-        <Button Content="启动3Dmigoto Loader.exe" 
+        <Button Content="启动3Dmigoto Loader.exe" Click="Open3DmigotoLoaderExe"
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom" 
                 Margin="0,0,20,30" />
@@ -86,7 +86,8 @@
                 <!-- 第4行：按钮 -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,10,10,0">
                     <Button Content="初始化配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="InitializePathConfigButtonClieck"/>
-                    <Button Content="保存配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10"/>
+                    <Button Content="保存配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="SavePathSettingsToD3dxIni"/>
+                    <Button Content="打开d3dx.ini" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="OpenD3dxIniFile"/>
                 </StackPanel>
             </Grid>
         </Border>
