@@ -39,5 +39,33 @@ namespace DBMT
             }
 
         }
+
+
+        public static void ShellOpenFolder(string FolderPath)
+        {
+            if (Directory.Exists(FolderPath))
+            {
+                try
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = FolderPath,
+                        UseShellExecute = true, // 允许操作系统决定如何打开文件夹
+                        WorkingDirectory = FolderPath // 设置工作路径为要打开的文件夹路径
+                    };
+
+                    Process.Start(startInfo);
+                }
+                catch (Exception ex)
+                {
+                    MessageHelper.Show("打开文件夹出错: \n" + FolderPath + "\n" + ex.Message);
+                }
+            }
+            else
+            {
+                MessageHelper.Show("要打开的文件夹路径不存在: \n" + FolderPath);
+            }
+        }
+
     }
 }

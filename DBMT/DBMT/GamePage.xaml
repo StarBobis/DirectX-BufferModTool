@@ -88,6 +88,8 @@
                     <Button Content="初始化配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="InitializePathConfigButtonClieck"/>
                     <Button Content="保存配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="SavePathSettingsToD3dxIni"/>
                     <Button Content="打开d3dx.ini" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="OpenD3dxIniFile"/>
+                    <Button Content="打开3Dmigoto文件夹" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="Open3DmigotoFolder"/>
+
                 </StackPanel>
             </Grid>
         </Border>
