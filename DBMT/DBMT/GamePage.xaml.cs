@@ -13,6 +13,14 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
+using WinRT.Interop;
+using Windows.UI.Core;
+using Windows.Storage.Pickers.Provider;
+using DBMT_Core;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -29,6 +37,42 @@ namespace DBMT
             this.InitializeComponent();
             LoadDirectoryNames();
         }
+        // 辅助方法：获取当前窗口的句柄
+
+        private FileOpenPicker GetFilePicker(string Suffix)
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            // 获取当前窗口的HWND
+            nint windowHandle = WindowNative.GetWindowHandle(App.m_window);
+            InitializeWithWindow.Initialize(picker, windowHandle);
+
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
+            picker.FileTypeFilter.Add(Suffix);
+            return picker;
+        }
+
+
+        private async void ChooseProcessPathButtonClick(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker picker = GetFilePicker(".exe");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                ProcessPathTextBox.Text = file.Path;
+            }
+        }
+
+        private async void ChooseStarterPathButtonClick(object sender, RoutedEventArgs e)
+        {
+
+            FileOpenPicker picker = GetFilePicker(".exe");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                StarterPathTextBox.Text = file.Path;
+            }
+        }
 
         private void GameSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -41,6 +85,9 @@ namespace DBMT
                 // 执行你想要的操作，例如获取选中的项并进行处理
                 string basePath = Directory.GetCurrentDirectory();
                 string selectedGame = comboBox.SelectedItem.ToString();
+
+                MainConfig.CurrentGameName = selectedGame;
+
                 string imagePath = Path.Combine(basePath, "Assets", selectedGame + ".png");
 
                 if (!File.Exists(imagePath))
@@ -52,6 +99,12 @@ namespace DBMT
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
                 GameBGImageBrush.ImageSource = bitmap;
             }
+        }
+
+        private void InitializePathConfigButtonClieck(object sender, RoutedEventArgs e)
+        {
+            ProcessPathTextBox.Text = "";
+            StarterPathTextBox.Text = "";
         }
 
         private void LoadDirectoryNames()
@@ -72,8 +125,14 @@ namespace DBMT
                 {
                     GameSelectionComboBox.Items.Add(dirName);
                 }
-
-                GameSelectionComboBox.SelectedIndex = 0;
+                if (MainConfig.CurrentGameName == "")
+                {
+                    GameSelectionComboBox.SelectedIndex = 0;
+                }
+                else
+                {
+                    GameSelectionComboBox.SelectedItem = MainConfig.CurrentGameName;
+                }
             }
             catch (Exception ex)
             {
@@ -82,5 +141,13 @@ namespace DBMT
                 Console.WriteLine($"Error loading directories: {ex.Message}");
             }
         }
+
+
+        private void ReadPathSettingFromD3dxIni()
+        {
+
+        }
+
+
     }
 }

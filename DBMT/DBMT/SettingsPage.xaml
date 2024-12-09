@@ -8,12 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <!-- 支持滑条，不然显示不完全 -->
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        
-        
-        
-    <StackPanel Orientation="Vertical" Margin="20">
-        <!-- 开关配置项 -->
+
+
+        <StackPanel Orientation="Vertical" Margin="20">
+
+        <!-- 用Border圈起来 -->
         <Border Margin="0,3" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Height="Auto">
             <Grid>
                 <!-- 定义行 -->

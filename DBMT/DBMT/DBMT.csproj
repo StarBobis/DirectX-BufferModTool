@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
@@ -11,17 +11,16 @@
 	<WindowsPackageType>None</WindowsPackageType>
 	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="GamePage.xaml" />
-    <None Remove="HomePage.xaml" />
-    <None Remove="SettingsPage.xaml" />
-    <None Remove="WorkPage.xaml" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DBMT-Core\DBMT-Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,8 +11,6 @@
     <!--云母效果窗口-->
     <Window.SystemBackdrop>
         <MicaBackdrop Kind="BaseAlt"/>
-     
-
     </Window.SystemBackdrop>
 
     <NavigationView x:Name="nvSample" ItemInvoked="nvSample_ItemInvoked" IsBackEnabled="False" IsBackButtonVisible="Collapsed">

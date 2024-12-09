@@ -27,5 +27,10 @@ namespace DBMT
         {
             this.InitializeComponent();
         }
+
+        public void ReadSettingsFromConfig()
+        {
+
+        }
     }
 }

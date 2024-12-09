@@ -21,10 +21,19 @@
                 VerticalAlignment="Bottom" 
                 Margin="0,0,20,30" />
 
-        <Border  Width="600" Height="200"
+        <Border  Width="650" Height="200"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,30"
                 BorderBrush="White" BorderThickness="1" CornerRadius="5" >
-
+            
+            <!--加了很糊，不加透明的看不清楚，呵呵-->
+            <!--<Border.Background>
+            
+                <AcrylicBrush 
+                      TintColor="White"
+                      TintOpacity="0.0001"
+                      FallbackColor="White"/>
+            </Border.Background>-->
+            
             <Grid  >
                 <!-- 定义行 -->
                 <Grid.RowDefinitions>
@@ -54,9 +63,9 @@
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,10">
                     <TextBlock Text="进程路径:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBox x:Name="ProcessPathTextBox" Width="400"/>
-                    <Button VerticalAlignment="Center" HorizontalAlignment="Right" >
+                    <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="ChooseProcessPathButtonClick" >
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="OpenFile" Margin="0,0,5,0"/>
+                            <SymbolIcon Symbol="OpenFile" Margin="10,0,5,0"/>
                             <TextBlock Text="选择文件" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -65,10 +74,10 @@
                 <!-- 第三行：启动器路径 -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <TextBlock Text="启动器路径:" VerticalAlignment="Center" Margin="10,10,10,10"/>
-                    <TextBox x:Name="ProcessPathTextBox2" Width="400" />
-                    <Button VerticalAlignment="Center" HorizontalAlignment="Right" >
+                    <TextBox x:Name="StarterPathTextBox" Width="400" />
+                    <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="ChooseStarterPathButtonClick" >
                         <StackPanel Orientation="Horizontal">
-                            <SymbolIcon Symbol="OpenFile" Margin="0,0,5,0"/>
+                            <SymbolIcon Symbol="OpenFile" Margin="10,0,5,0"/>
                             <TextBlock Text="选择文件" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
@@ -76,7 +85,7 @@
 
                 <!-- 第4行：按钮 -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,10,10,0">
-                    <Button Content="初始化配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10"/>
+                    <Button Content="初始化配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="InitializePathConfigButtonClieck"/>
                     <Button Content="保存配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10"/>
                 </StackPanel>
             </Grid>

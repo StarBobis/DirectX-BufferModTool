@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.System;
 using Microsoft.UI.Composition.SystemBackdrops;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -40,6 +41,9 @@ namespace DBMT
         public HomePage()
         {
             this.InitializeComponent();
+
+          
+            
         }
 
         private void OpenLinkButtonClick(object sender, RoutedEventArgs e)

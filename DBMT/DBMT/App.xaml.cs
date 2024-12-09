@@ -44,7 +44,7 @@ namespace DBMT
             m_window = new MainWindow();
             m_window.Activate();
         }
-
-        private Window m_window;
+        
+        public static Window m_window { get; set; }
     }
 }
