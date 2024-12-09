@@ -115,9 +115,11 @@ namespace DBMT
 
         private void LoadDirectoryNames()
         {
-            string directoryPath = @"C:\Users\Administrator\Desktop\DBMT\Games"; // 指定你要读取的目录路径
+            string CurrentDirectory = Directory.GetCurrentDirectory();
+
+            string GamesPath = Path.Combine(CurrentDirectory, "Games\\");
             // 获取所有子目录名称
-            var directories = Directory.EnumerateDirectories(directoryPath)
+            var directories = Directory.EnumerateDirectories(GamesPath)
                                         .Select(Path.GetFileName)
                                         .Where(name => !string.IsNullOrEmpty(name));
 
