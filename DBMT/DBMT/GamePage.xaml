@@ -12,55 +12,75 @@
     <Grid>
         <!-- 设置背景图片 -->
         <Grid.Background>
-            <ImageBrush ImageSource="Assets/HSR.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="Assets/HSR.png" Stretch="UniformToFill" x:Name="GameBGImageBrush"/>
         </Grid.Background>
 
         <!-- 按钮永远置于右下角，距离下面和右边固定为30px -->
-        <Button Style="{StaticResource AccentButtonStyle}" 
-                Content="启动3Dmigoto Loader.exe" 
+        <Button Content="启动3Dmigoto Loader.exe" 
                 HorizontalAlignment="Right" 
                 VerticalAlignment="Bottom" 
                 Margin="0,0,20,30" />
 
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,30">
-            <!-- 定义行 -->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <Border  Width="600" Height="200"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,30"
+                BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
-            <!-- 定义列 -->
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+            <Grid  >
+                <!-- 定义行 -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <!-- 第一行：选择游戏 -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="选择游戏:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <ComboBox x:Name="GameSelectionComboBox" Width="200" >
-                    <ComboBoxItem Content="游戏1"/>
-                    <ComboBoxItem Content="游戏2"/>
-                    <ComboBoxItem Content="游戏3"/>
-                </ComboBox>
-            </StackPanel>
+                <!-- 定义列 -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- 第二行：进程路径 -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-                <TextBlock Text="进程路径:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox x:Name="ProcessPathTextBox" Width="400"/>
-                <Button Content="选择文件" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}"/>
-            </StackPanel>
+                <!-- 第一行：选择游戏 -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10">
+                    <TextBlock Text="选择游戏:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="GameSelectionComboBox" Width="200" SelectionChanged="GameSelectionComboBox_SelectionChanged">
+                       
+                    </ComboBox>
+                </StackPanel>
 
-            <!-- 第三行：启动器路径 -->
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <TextBlock Text="启动器路径:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox x:Name="ProcessPathTextBox2" Width="400" />
-                <Button Content="选择文件" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource AccentButtonStyle}"/>
-            </StackPanel>
-        </Grid>
+
+                <!-- 第二行：进程路径 -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,10">
+                    <TextBlock Text="进程路径:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBox x:Name="ProcessPathTextBox" Width="400"/>
+                    <Button VerticalAlignment="Center" HorizontalAlignment="Right" >
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="OpenFile" Margin="0,0,5,0"/>
+                            <TextBlock Text="选择文件" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- 第三行：启动器路径 -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock Text="启动器路径:" VerticalAlignment="Center" Margin="10,10,10,10"/>
+                    <TextBox x:Name="ProcessPathTextBox2" Width="400" />
+                    <Button VerticalAlignment="Center" HorizontalAlignment="Right" >
+                        <StackPanel Orientation="Horizontal">
+                            <SymbolIcon Symbol="OpenFile" Margin="0,0,5,0"/>
+                            <TextBlock Text="选择文件" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- 第4行：按钮 -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,10,10,0">
+                    <Button Content="初始化配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10"/>
+                    <Button Content="保存配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
         
 </Page>
