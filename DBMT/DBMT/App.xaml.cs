@@ -45,6 +45,7 @@ namespace DBMT
             m_window.Activate();
         }
         
+        //必须设为public static 这样非打包的WinUI3程序的Page里才能获取主窗口句柄来实现调用显示其它窗口
         public static Window m_window { get; set; }
     }
 }

@@ -163,7 +163,6 @@ namespace DBMT
         {
             string MigotoLoaderExePath = Path.Combine(MainConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
             CommandHelper.ShellOpenFile(MigotoLoaderExePath);
-
         }
 
     }

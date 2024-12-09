@@ -41,9 +41,6 @@ namespace DBMT
         public HomePage()
         {
             this.InitializeComponent();
-
-          
-            
         }
 
         private void OpenLinkButtonClick(object sender, RoutedEventArgs e)
