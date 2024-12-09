@@ -14,7 +14,7 @@ namespace DBMT
 
         public static async void Show(string ContentChinese,string ContentEnglish="")
         {
-            var messageDialog = new MessageDialog(ContentChinese, "提示");
+            var messageDialog = new MessageDialog(ContentChinese, "Tips");
             nint windowHandle = WindowNative.GetWindowHandle(App.m_window);
             InitializeWithWindow.Initialize(messageDialog, windowHandle);
             await messageDialog.ShowAsync();
