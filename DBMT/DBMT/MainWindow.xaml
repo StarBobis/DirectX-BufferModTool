@@ -8,14 +8,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Title="DirectX Buffer Mod Tool V1.2.0.1"
+    
+    
     >
     
-    <NavigationView x:Name="nvSample">
+    <NavigationView x:Name="nvSample" ItemInvoked="nvSample_ItemInvoked">
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="Home" Content="主页" Tag="SamplePage1" />
-            <NavigationViewItem Icon="Save" Content="Menu Item2" Tag="SamplePage2" />
-            <NavigationViewItem Icon="Refresh" Content="Menu Item3" Tag="SamplePage3" />
-            <NavigationViewItem Icon="Download" Content="Menu Item4" Tag="SamplePage4" />
+            <NavigationViewItem Icon="Home" Content="主页" Tag="HomePage" />
+            <NavigationViewItem Icon="Play" Content="快速启动" Tag="SamplePage2" />
+            <NavigationViewItem Icon="WebCam" Content="工作台" Tag="SamplePage3" />
         </NavigationView.MenuItems>
         <Frame x:Name="contentFrame"/>
     </NavigationView>

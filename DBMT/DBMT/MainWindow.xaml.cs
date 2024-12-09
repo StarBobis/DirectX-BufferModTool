@@ -26,8 +26,44 @@ namespace DBMT
         public MainWindow()
         {
             this.InitializeComponent();
+            this.AppWindow.Resize(new Windows.Graphics.SizeInt32(1000,600));
+           
         }
 
-       
+        private void nvSample_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+
+            // 如果点击的是设置按钮，则导航到设置页面
+            if (args.IsSettingsInvoked)
+            {
+                contentFrame.Navigate(typeof(SettingsPage));
+            }
+            else if (args.InvokedItemContainer is NavigationViewItem item)
+            {
+                var pageTag = item.Tag.ToString();
+                Type pageType = null;
+
+                switch (pageTag)
+                {
+                    case "HomePage":
+                        pageType = typeof(HomePage);
+                        break;
+                    case "SamplePage2":
+                        //pageType = typeof(SamplePage2);
+                        break;
+                    case "SamplePage3":
+                        //pageType = typeof(SamplePage3);
+                        break;
+                    case "SamplePage4":
+                        //pageType = typeof(SamplePage4);
+                        break;
+                }
+
+                if (pageType != null && contentFrame.Content?.GetType() != pageType)
+                {
+                    contentFrame.Navigate(pageType);
+                }
+            }
+        }
     }
 }
