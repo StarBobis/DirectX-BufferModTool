@@ -1,3 +1,4 @@
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -12,6 +13,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,8 +28,43 @@ namespace DBMT
         public MainWindow()
         {
             this.InitializeComponent();
-            this.AppWindow.Resize(new Windows.Graphics.SizeInt32(1000,600));
-           
+            InitializeGUI();
+        }
+
+        private void InitializeGUI()
+        {
+            //设置标题和宽高
+            this.Title = "DirectX Buffer Mod Tool V1.0.2.1 测试版";
+            this.AppWindow.Resize(new SizeInt32(1000, 600));
+
+            //移动窗口到屏幕中心
+            MoveWindowToCenterScreen();
+
+            //默认选中主页界面
+            if (nvSample.MenuItems.Count > 0)
+            {
+                nvSample.SelectedItem = nvSample.MenuItems[0];
+                contentFrame.Navigate(typeof(HomePage));
+            }
+        }
+
+        private void MoveWindowToCenterScreen()
+        {
+            if (this.AppWindow != null)
+            {
+                // 获取主显示器的工作区大小
+                var displayArea = DisplayArea.GetFromWindowId(this.AppWindow.Id, DisplayAreaFallback.Nearest);
+
+                // 获取窗口当前的尺寸
+                var windowSize = this.AppWindow.Size;
+
+                // 计算窗口居中所需的左上角坐标
+                int x = (int)((displayArea.WorkArea.Width - windowSize.Width) / 2);
+                int y = (int)((displayArea.WorkArea.Height - windowSize.Height) / 2);
+
+                // 设置窗口位置
+                this.AppWindow.Move(new PointInt32 { X = x, Y = y });
+            }
         }
 
         private void nvSample_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)

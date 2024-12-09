@@ -10,7 +10,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Text="这是设置页面" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <!-- 添加其他设置控件和逻辑 -->
+        
     </Grid>
 </Page>
