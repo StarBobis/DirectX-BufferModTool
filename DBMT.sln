@@ -7,7 +7,12 @@ Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "DBMT (Package)", "DBMT\DBMT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBMT", "DBMT\DBMT\DBMT.csproj", "{DD08A5DD-D167-4E43-A20E-EB30F717B0F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBMT-Core", "DBMT-Core\DBMT-Core.csproj", "{948BD578-675F-4401-814A-E4E660A99714}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBMT-Core", "DBMT-Core\DBMT-Core.csproj", "{948BD578-675F-4401-814A-E4E660A99714}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{18248E14-C8B4-4318-925E-EF912D853E99}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
