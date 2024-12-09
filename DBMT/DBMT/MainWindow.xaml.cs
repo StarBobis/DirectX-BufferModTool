@@ -46,6 +46,7 @@ namespace DBMT
                 nvSample.SelectedItem = nvSample.MenuItems[0];
                 contentFrame.Navigate(typeof(HomePage));
             }
+            this.AppWindow.SetIcon("Assets/XiaoMai.ico");
         }
 
         private void MoveWindowToCenterScreen()
