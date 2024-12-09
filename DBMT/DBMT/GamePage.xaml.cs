@@ -116,8 +116,14 @@ namespace DBMT
         private void LoadDirectoryNames()
         {
             string CurrentDirectory = Directory.GetCurrentDirectory();
-
             string GamesPath = Path.Combine(CurrentDirectory, "Games\\");
+
+            if (!Directory.Exists(GamesPath))
+            {
+                MessageHelper.Show("Can't find Games folder in your run folder, Initialize Failed. : \n" + GamesPath);
+                return;
+            }
+
             // 获取所有子目录名称
             var directories = Directory.EnumerateDirectories(GamesPath)
                                         .Select(Path.GetFileName)
