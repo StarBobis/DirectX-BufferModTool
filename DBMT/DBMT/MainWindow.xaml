@@ -14,7 +14,7 @@
     </Window.SystemBackdrop>
 
 
-    <NavigationView x:Name="nvSample" ItemInvoked="nvSample_ItemInvoked">
+    <NavigationView x:Name="nvSample" ItemInvoked="nvSample_ItemInvoked" IsBackEnabled="False" IsBackButtonVisible="Collapsed">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="Home" Content="主页" Tag="HomePage" />
             <NavigationViewItem Icon="Play" Content="快速启动" Tag="SamplePage2" />
