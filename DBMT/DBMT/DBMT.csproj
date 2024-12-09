@@ -10,6 +10,7 @@
     <UseWinUI>true</UseWinUI>
 	<WindowsPackageType>None</WindowsPackageType>
 	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+	<ApplicationIcon>Assets\XiaoMai.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
