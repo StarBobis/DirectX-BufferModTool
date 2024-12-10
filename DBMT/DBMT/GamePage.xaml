@@ -12,7 +12,7 @@
     <Grid>
         <!-- 设置背景图片 -->
         <Grid.Background>
-            <ImageBrush ImageSource="Assets/HSR.png" Stretch="UniformToFill" x:Name="GameBGImageBrush"/>
+            <ImageBrush ImageSource="Assets/HSR.png" Stretch="UniformToFill" x:Name="GameBGImageBrush" Opacity="0.8"/>
         </Grid.Background>
 
         <!-- 按钮永远置于右下角，距离下面和右边固定为30px -->

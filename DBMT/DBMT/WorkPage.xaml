@@ -9,7 +9,17 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <!-- 支持滑条，不然显示不完全 -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <!-- 设置背景图片 -->
+        <ScrollViewer.Background>
+            <ImageBrush x:Name="HomeBGImageBrush" Stretch="UniformToFill" ImageSource="Assets/DefaultGame.png" Opacity="0.1"/>
+        </ScrollViewer.Background>
+        
+        
+        
+    </ScrollViewer>
 
-    </Grid>
+
+
 </Page>
