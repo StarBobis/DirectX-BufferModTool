@@ -27,7 +27,7 @@ namespace DBMT
         public static string CurrentGameName = ""; //当前选择的游戏名称
         public static string CurrentWorkSpace = ""; //当前的工作空间名称
         public static string CurrentMode = "Dev"; //当前工作模式，分为Dev和Play，默认为Dev
-
+        public static string RunResult = "";
 
         //运行后程序动态生成
         public static string Path_Game_ConfigJson = "";

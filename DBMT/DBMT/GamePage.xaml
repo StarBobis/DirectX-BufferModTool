@@ -67,7 +67,7 @@
 
                 <!-- 第三行：启动器路径 -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <TextBlock Text="启动器路径:" VerticalAlignment="Center" Margin="10,10,10,10"/>
+                    <TextBlock Text="启动器路径:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                     <TextBox x:Name="StarterPathTextBox" Width="400" />
                     <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="ChooseStarterPathButtonClick" Margin="10,0,0,0">
                         <StackPanel Orientation="Horizontal">

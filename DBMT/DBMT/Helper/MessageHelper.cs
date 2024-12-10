@@ -12,7 +12,7 @@ namespace DBMT
     {
 
 
-        public static async void Show(string ContentChinese,string ContentEnglish="")
+        public static async Task Show(string ContentChinese,string ContentEnglish="")
         {
             var messageDialog = new MessageDialog(ContentChinese, "Tips");
             nint windowHandle = WindowNative.GetWindowHandle(App.m_window);

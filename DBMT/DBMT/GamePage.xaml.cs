@@ -113,14 +113,14 @@ namespace DBMT
             StarterPathTextBox.Text = "";
         }
 
-        private void LoadDirectoryNames()
+        private async void LoadDirectoryNames()
         {
             string CurrentDirectory = Directory.GetCurrentDirectory();
             string GamesPath = Path.Combine(CurrentDirectory, "Games\\");
 
             if (!Directory.Exists(GamesPath))
             {
-                MessageHelper.Show("Can't find Games folder in your run folder, Initialize Failed. : \n" + GamesPath);
+                await MessageHelper.Show("Can't find Games folder in your run folder, Initialize Failed. : \n" + GamesPath);
                 return;
             }
 
@@ -156,11 +156,11 @@ namespace DBMT
             StarterPathTextBox.Text = ConfigHelper.ReadAttributeFromD3DXIni("launch");
         }
 
-        private void SavePathSettingsToD3dxIni(object sender, RoutedEventArgs e)
+        private async void SavePathSettingsToD3dxIni(object sender, RoutedEventArgs e)
         {
             ConfigHelper.SaveAttributeToD3DXIni("[loader]","target",ProcessPathTextBox.Text);
             ConfigHelper.SaveAttributeToD3DXIni("[loader]","launch", StarterPathTextBox.Text);
-            MessageHelper.Show("保存成功");
+            await MessageHelper.Show("保存成功");
         }
 
         private void OpenD3dxIniFile(object sender, RoutedEventArgs e)

@@ -33,7 +33,7 @@ namespace DBMT
             InitializeGUI();
         }
 
-        private void InitializeGUI()
+        private async void InitializeGUI()
         {
             // C# code to set AppTitleBar uielement as titlebar
             //Window window = App.m_window;
@@ -60,14 +60,14 @@ namespace DBMT
             //检查当前程序是否为位于中文路径下
             if (DBMTStringUtils.ContainsChinese(MainConfig.ApplicationRunPath))
             {
-                MessageHelper.Show("DBMT所在路径不能含有中文，请重新将DBMT放置到纯英文路径.", "DBMT can't be put in a path that contains Chinese, please put DBMT in pure english path!");
+                await MessageHelper.Show("DBMT所在路径不能含有中文，请重新将DBMT放置到纯英文路径.", "DBMT can't be put in a path that contains Chinese, please put DBMT in pure english path!");
                 App.Current.Exit();
             }
 
             //检查DBMT核心是否存在
             if (!File.Exists(MainConfig.ApplicationRunPath + "Plugins\\" + MainConfig.MMT_EXE_FileName))
             {
-                MessageHelper.Show("未找到" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",请将其放在本程序Plugins目录下，即将退出程序。","Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
+                await MessageHelper.Show("未找到" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",请将其放在本程序Plugins目录下，即将退出程序。","Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
                 App.Current.Exit();
             }
 
