@@ -1,15 +1,23 @@
 # DBMT
 
-DBMTÈ«ĞÂGUI½çÃæ£¬»ùÓÚC# & WinUI3¡£
+DBMTå…¨æ–°GUIç•Œé¢ï¼ŒåŸºäºC# & WinUI3ã€‚
 
 # DirectX Buffer Mod Tool
 
-Ö÷Ò³
+ä¸»é¡µ
 ![image](https://github.com/user-attachments/assets/1b9ab048-867e-46e8-9bee-4126ceb11a0a)
 
-Æô¶¯Ò³
-![image](https://github.com/user-attachments/assets/efe67a83-f021-42f0-9a67-a6414240329b)
+å¿«é€Ÿå¯åŠ¨
+![image](https://github.com/user-attachments/assets/a69e0de2-3f06-4ca6-860a-71cbafd6bcba)
 
-# ¿ª·¢²âÊÔÓë·´À¡
-QQ½»Á÷Èº: 894808210
+
+å·¥ä½œå°
+![image](https://github.com/user-attachments/assets/21e8e4c6-6389-450e-9afc-d771c65dfbb6)
+
+è®¾ç½®
+![image](https://github.com/user-attachments/assets/deb35407-874e-4251-896d-cb4efb3fc0ea)
+
+
+# å¼€å‘æµ‹è¯•ä¸åé¦ˆ
+QQäº¤æµç¾¤: 894808210 æˆ–è€…ç›´æ¥æissue
 
