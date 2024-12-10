@@ -431,17 +431,61 @@ namespace DBMT
         }
 
 
-        public async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
+        public async void OpenExtractTypesFolder(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(MainConfig.Path_LoaderFolder))
+            string ExtractTypeFolderPath = "Configs\\ExtractTypes\\";
+            string GameTypeFolderPath = ExtractTypeFolderPath + MainConfig.CurrentGameName + "\\";
+            if (Directory.Exists(GameTypeFolderPath))
             {
-                CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder.Replace("/", "\\"));
+                await CommandHelper.ShellOpenFolder(GameTypeFolderPath);
             }
             else
             {
-                await MessageHelper.Show("此目录不存在，请检查3Dmigoto文件夹是否配置正确", "This directory doesn't exists.");
+                await CommandHelper.ShellOpenFolder(ExtractTypeFolderPath);
             }
         }
+
+        public async void OpenDBMTLocationFolder(object sender, RoutedEventArgs e)
+        {
+            await CommandHelper.ShellOpenFolder(Directory.GetCurrentDirectory());
+        }
+
+        public async void OpenLogsFolder(object sender, RoutedEventArgs e)
+        {
+            string LogsFolderPath = Path.Combine(Directory.GetCurrentDirectory() ,"Logs\\");
+            await CommandHelper.ShellOpenFolder(LogsFolderPath);
+        }
+
+
+        public async void OpenLatestLogFile(object sender, RoutedEventArgs e)
+        {
+            //然后打开最新的Log文件
+            string logsPath = MainConfig.ApplicationRunPath + "Logs";
+            if (!Directory.Exists(logsPath))
+            {
+                return;
+            }
+            string[] logFiles = Directory.GetFiles(logsPath); ;
+            List<string> logFileList = new List<string>();
+            foreach (string logFile in logFiles)
+            {
+                string logfileName = Path.GetFileName(logFile);
+                if (logfileName.EndsWith(".log") && logfileName.Length > 15)
+                {
+                    logFileList.Add(logfileName);
+                }
+            }
+
+            logFileList.Sort();
+            await CommandHelper.ShellOpenFile(logsPath + "\\" + logFileList[logFileList.Count - 1]);
+        }
+
+        public async void OpenConfigsFolder(object sender, RoutedEventArgs e)
+        {
+            string ConfigsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Configs\\");
+            await CommandHelper.ShellOpenFolder(ConfigsFolderPath);
+        }
+
 
 
     }

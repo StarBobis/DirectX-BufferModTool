@@ -163,21 +163,27 @@ namespace DBMT
             await MessageHelper.Show("±£´æ³É¹¦");
         }
 
-        private void OpenD3dxIniFile(object sender, RoutedEventArgs e)
+        private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
         {
             string d3dxini_path = ConfigHelper.GetD3DXIniPath();
-            CommandHelper.ShellOpenFile(d3dxini_path);
+            await CommandHelper.ShellOpenFile(d3dxini_path);
         }
 
-        private void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
+        private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {
             string MigotoLoaderExePath = Path.Combine(MainConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
-            CommandHelper.ShellOpenFile(MigotoLoaderExePath);
+            await CommandHelper.ShellOpenFile(MigotoLoaderExePath);
         }
-        private void Open3DmigotoFolder(object sender, RoutedEventArgs e)
+        private async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
         {
             
-            CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder);
+            await CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder);
+        }
+
+        private async void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
+        {
+
+            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.Path_LoaderFolder,"ShaderFixes") );
         }
     }
 }

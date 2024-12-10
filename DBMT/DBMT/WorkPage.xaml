@@ -42,15 +42,11 @@
                     <MenuFlyoutItem Text="打开最新的FrameAnalysis log.txt" Click="OpenLatestFrameAnalysisLogTxtFile"/>
                     <MenuFlyoutItem Text="打开最新的FrameAnalysis文件夹中的deduped文件夹" Click="OpenLatestFrameAnalysisDedupedFolder"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="打开3Dmigoto文件夹" Click="Open3DmigotoFolder"/>
-                    <MenuFlyoutItem Text="打开d3dx.ini"/>
-                    <MenuFlyoutItem Text="打开ShaderFixes文件夹"/>
-                    <MenuFlyoutItem Text="打开ExtractTypes文件夹"/>
-                    <MenuFlyoutItem Text="打开DBMT所在文件夹"/>
-                    <MenuFlyoutItem Text="打开Logs文件夹"/>
-                    <MenuFlyoutItem Text="打开最新的日志文件"/>
-                    <MenuFlyoutItem Text="打开Configs文件夹"/>
-
+                    <MenuFlyoutItem Text="打开ExtractTypes文件夹" Click="OpenExtractTypesFolder"/>
+                    <MenuFlyoutItem Text="打开DBMT所在文件夹" Click="OpenDBMTLocationFolder"/>
+                    <MenuFlyoutItem Text="打开Logs文件夹" Click="OpenLogsFolder"/>
+                    <MenuFlyoutItem Text="打开最新的日志文件" Click="OpenLatestLogFile"/>
+                    <MenuFlyoutItem Text="打开Configs文件夹" Click="OpenConfigsFolder"/>
                 </MenuBarItem>
 
                 <MenuBarItem Title="Mod逆向">
