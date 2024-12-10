@@ -13,7 +13,7 @@
     <Grid>
         <!-- 设置背景图片 -->
         <Grid.Background>
-            <ImageBrush x:Name="HomeBGImageBrush" Stretch="UniformToFill" ImageSource="Assets/HomePageBackGround.png" Opacity="0.8"/>
+            <ImageBrush x:Name="HomeBGImageBrush" Stretch="UniformToFill" ImageSource="Assets/HomePageBackGround.png" />
         </Grid.Background>
         
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20">
