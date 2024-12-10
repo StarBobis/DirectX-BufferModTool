@@ -10,7 +10,7 @@ namespace DBMT
 {
     public static class MainConfig
     {
-        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.0.9.4 "; //程序窗口名称
+        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.0.9.5 "; //程序窗口名称
         public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
 
         public const string Path_MainConfig = "Configs\\Main.json";
@@ -25,6 +25,7 @@ namespace DBMT
         //当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
         public static string ApplicationRunPath = AppDomain.CurrentDomain.BaseDirectory.ToString();
         public static string CurrentGameName = ""; //当前选择的游戏名称
+        public static string CurrentWorkSpace = ""; //当前的工作空间名称
         public static string CurrentMode = "Dev"; //当前工作模式，分为Dev和Play，默认为Dev
 
 
@@ -47,13 +48,6 @@ namespace DBMT
         public static bool ConvertDedupedTextures = false;
 
 
-        public static void InitializeConfigFolders()
-        {
-
-
-
-        }
-
 
         public static void SetCurrentGame(string gameName)
         {
@@ -67,6 +61,76 @@ namespace DBMT
             MainConfig.Path_LoaderFolder = Path.Combine(basePath,"Games", MainConfig.CurrentGameName, "3Dmigoto\\");
             MainConfig.Path_D3DXINI = Path.Combine(MainConfig.Path_LoaderFolder,"d3dx.ini");
             MainConfig.Path_OutputFolder = Path.Combine(MainConfig.Path_LoaderFolder, "Mods","output\\");
+
+            //最后把当前游戏名称和类型保存到配置文件，做到和Blender联动。
+            SaveCurrentGameNameToMainJson();
+        }
+
+        public static void SaveCurrentGameNameToMainJson()
+        {
+            if (File.Exists(MainConfig.Path_MainConfig))
+            {
+                string json = File.ReadAllText(MainConfig.Path_MainConfig); // 读取文件内容
+                JObject jsonObject = JObject.Parse(json);
+                jsonObject["GameName"] = MainConfig.CurrentGameName;
+                File.WriteAllText(MainConfig.Path_MainConfig, jsonObject.ToString());
+            }
+            else
+            {
+                JObject jsonObject = new JObject();
+                jsonObject["GameName"] = MainConfig.CurrentGameName;
+                File.WriteAllText(MainConfig.Path_MainConfig, jsonObject.ToString());
+            }
+        }
+
+        public static void ReadCurrentGameFromMainJson()
+        {
+            if (File.Exists(MainConfig.Path_MainConfig))
+            {
+                string json = File.ReadAllText(MainConfig.Path_MainConfig); // 读取文件内容
+                JObject jsonObject = JObject.Parse(json);
+                if (jsonObject.ContainsKey("GameName"))
+                {
+                    MainConfig.CurrentGameName = (string)jsonObject["GameName"];
+                }
+               
+            }
+        }
+
+        public static string ReadCurrentWorkSpaceFromMainJson()
+        {
+            if (File.Exists(MainConfig.Path_MainConfig))
+            {
+                string json = File.ReadAllText(MainConfig.Path_MainConfig); // 读取文件内容
+                JObject jsonObject = JObject.Parse(json);
+                if (jsonObject.ContainsKey("WorkSpaceName"))
+                {
+                    string WorkSpaceName = (string)jsonObject["WorkSpaceName"];
+                    MainConfig.CurrentWorkSpace = WorkSpaceName;
+                    return WorkSpaceName;
+                }
+
+            }
+            return "";
+        }
+
+        public static void SaveCurrentWorkSpaceToMainJson()
+        {
+            if (File.Exists(MainConfig.Path_MainConfig))
+            {
+                string json = File.ReadAllText(MainConfig.Path_MainConfig); // 读取文件内容
+                JObject jsonObject = JObject.Parse(json);
+                jsonObject["GameName"] = MainConfig.CurrentGameName;
+                jsonObject["WorkSpaceName"] = MainConfig.CurrentWorkSpace;
+                File.WriteAllText(MainConfig.Path_MainConfig, jsonObject.ToString());
+            }
+            else
+            {
+                JObject jsonObject = new JObject();
+                jsonObject["GameName"] = MainConfig.CurrentGameName;
+                jsonObject["WorkSpaceName"] = MainConfig.CurrentWorkSpace;
+                File.WriteAllText(MainConfig.Path_MainConfig, jsonObject.ToString());
+            }
         }
 
     }
@@ -74,6 +138,23 @@ namespace DBMT
 
     public static class ConfigHelper
     {
+        public static List<string> GetDrawIBListFromConfig(string WorkSpaceName)
+        {
+            List<string> drawIBListValues = new List<string>();
+
+            string Configpath = MainConfig.Path_OutputFolder + WorkSpaceName + "\\Config.json";
+            if (File.Exists(Configpath))
+            {
+                //切换到对应配置
+                string jsonData = File.ReadAllText(Configpath);
+                JObject jobj = JObject.Parse(jsonData);
+                // Access the DrawIBList property and convert it to a List<string>
+                JArray drawIBList = (JArray)jobj["DrawIBList"];
+                drawIBListValues = drawIBList.ToObject<List<string>>();
+            }
+
+            return drawIBListValues;
+        }
 
         public static string GetD3DXIniPath()
         {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DBMT
 {
-    public static class CommandHelper
+    public class CommandHelper
     {
         public static void ShellOpenFile(string FilePath)
         {
@@ -65,6 +65,32 @@ namespace DBMT
             {
                 MessageHelper.Show("要打开的文件夹路径不存在: \n" + FolderPath);
             }
+        }
+
+
+        public static void ConvertTexture(string SourceTextureFilePath, string TextureFormatString, string TargetOutputDirectory)
+        {
+            SourceTextureFilePath = SourceTextureFilePath.Replace("\\", "/");
+            TargetOutputDirectory = TargetOutputDirectory.Replace("\\", "/");
+
+            string arugmentsstr = " \"" + SourceTextureFilePath + "\" -ft \"" + TextureFormatString + "\" -o \"" + TargetOutputDirectory + "\"";
+            string texconv_filepath = MainConfig.ApplicationRunPath + "Plugins\\texconv.exe";
+            if (!File.Exists(texconv_filepath))
+            {
+                MessageHelper.Show("当前要执行的路径不存在: " + texconv_filepath, "Current run path didn't exsits: " + texconv_filepath);
+                return;
+            }
+
+            //https://github.com/microsoft/DirectXTex/wiki/Texconv
+            Process process = new Process();
+            process.StartInfo.FileName = texconv_filepath;
+            process.StartInfo.Arguments = arugmentsstr;
+            process.StartInfo.UseShellExecute = false;  // 不使用操作系统的shell启动程序
+            process.StartInfo.RedirectStandardOutput = true;  // 重定向标准输出
+            process.StartInfo.RedirectStandardError = true;   // 重定向标准错误输出
+            process.StartInfo.CreateNoWindow = true;  // 不创建新窗口
+            process.Start();
+            process.WaitForExit();
         }
 
     }

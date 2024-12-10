@@ -127,7 +127,8 @@ namespace DBMT
             // 获取所有子目录名称
             var directories = Directory.EnumerateDirectories(GamesPath)
                                         .Select(Path.GetFileName)
-                                        .Where(name => !string.IsNullOrEmpty(name));
+                                        .Where(name => !string.IsNullOrEmpty(name))
+                                        .OrderByDescending(name => name);
 
             // 清空 ComboBox 当前项
             GameSelectionComboBox.Items.Clear();
@@ -159,6 +160,7 @@ namespace DBMT
         {
             ConfigHelper.SaveAttributeToD3DXIni("[loader]","target",ProcessPathTextBox.Text);
             ConfigHelper.SaveAttributeToD3DXIni("[loader]","launch", StarterPathTextBox.Text);
+            MessageHelper.Show("保存成功");
         }
 
         private void OpenD3dxIniFile(object sender, RoutedEventArgs e)

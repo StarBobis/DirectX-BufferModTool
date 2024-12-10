@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -9,9 +10,15 @@ using System.Threading.Tasks;
 
 namespace DBMT_Core
 {
-    public class XX
+    public class DBMTStringUtils
     {
 
+        public static bool ContainsChinese(string input)
+        {
+            // 使用正则表达式匹配中文字符
+            Regex regex = new Regex(@"[\u4e00-\u9fa5]");
+            return regex.IsMatch(input);
+        }
 
     }
 }

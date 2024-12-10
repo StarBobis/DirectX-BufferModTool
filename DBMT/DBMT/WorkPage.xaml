@@ -35,7 +35,7 @@
             <!-- 顶部菜单 -->
             <MenuBar Grid.Row="0" Grid.Column="0">
                 <MenuBarItem Title="文件">
-                    <MenuFlyoutItem Text="打开当前工作空间文件夹"/>
+                    <MenuFlyoutItem Text="打开当前工作空间文件夹" Click="OpenCurrentWorkSpaceFolder"/>
                     <MenuFlyoutItem Text="打开当前工作空间生成Mod的文件夹"/>
                     <MenuFlyoutItem Text="打开Mods文件夹"/>
                     <MenuFlyoutSeparator />
@@ -90,13 +90,12 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
                     <!-- 第一行：选择工作空间 -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10">
-                        <TextBlock Text="选择工作空间:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <ComboBox x:Name="ComboBoxWorkSpaceSelection" Width="200" IsEditable="True">
-
+                        <TextBlock Text="选择工作空间:" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                        <ComboBox x:Name="ComboBoxWorkSpaceSelection" Width="200" IsEditable="True" SelectionChanged="ComboBoxWorkSpaceSelection_SelectionChanged">
                         </ComboBox>
 
-                        <Button Content="创建工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,10" />
-                        <Button Content="清空当前工作空间内容" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="10,0,10,10" />
+                        <Button Content="创建工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,0" Click="CreateWorkSpaceFolder"/>
+                        <Button Content="清空当前工作空间内容" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="10,0,10,0" Click="CleanCurrentWorkSpaceFile" />
                     </StackPanel>
 
                     <!-- 第二行：DrawIB列表 -->
