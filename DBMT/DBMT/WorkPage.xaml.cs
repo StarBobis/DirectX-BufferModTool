@@ -145,7 +145,7 @@ namespace DBMT
             {
                 if (Directory.Exists(WorkSpaceOutputFolder))
                 {
-                    CommandHelper.ShellOpenFolder(WorkSpaceOutputFolder);
+                    await CommandHelper.ShellOpenFolder(WorkSpaceOutputFolder);
                 }
                 else
                 {
@@ -299,7 +299,7 @@ namespace DBMT
             }
             else
             {
-                //TODO 打开最新报错日志文件
+                OpenLatestLogFile(sender,e);
             }
             
         }
@@ -318,6 +318,10 @@ namespace DBMT
             {
                 OpenModsFolder(sender, e);
             }
+            else
+            {
+                OpenLatestLogFile(sender,e);
+            }
         }
 
 
@@ -327,7 +331,7 @@ namespace DBMT
            
             if (Directory.Exists(GeneratedModFolderPath))
             {
-                CommandHelper.ShellOpenFolder(GeneratedModFolderPath);
+                await CommandHelper.ShellOpenFolder(GeneratedModFolderPath);
             }
             else
             {
@@ -340,7 +344,7 @@ namespace DBMT
             string modsFolder = MainConfig.Path_LoaderFolder + "Mods/";
             if (Directory.Exists(modsFolder))
             {
-                CommandHelper.ShellOpenFolder(modsFolder);
+                await CommandHelper.ShellOpenFolder(modsFolder);
             }
             else
             {
@@ -379,7 +383,7 @@ namespace DBMT
             string latestFrameAnalysisFolder = GetLatestFrameAnalysisFolder();
             if (!string.IsNullOrEmpty(latestFrameAnalysisFolder))
             {
-                CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder);
+                await CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder);
             }
             else
             {
@@ -409,7 +413,7 @@ namespace DBMT
 
                 string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
 
-                CommandHelper.ShellOpenFile(latestFrameAnalysisFolder + "\\log.txt");
+                await CommandHelper.ShellOpenFile(latestFrameAnalysisFolder + "\\log.txt");
             }
             else
             {
@@ -422,7 +426,7 @@ namespace DBMT
             string latestFrameAnalysisFolder = GetLatestFrameAnalysisFolder();
             if (!string.IsNullOrEmpty(latestFrameAnalysisFolder))
             {
-                CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder + "\\deduped\\");
+                await CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder + "\\deduped\\");
             }
             else
             {
@@ -485,6 +489,201 @@ namespace DBMT
             string ConfigsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Configs\\");
             await CommandHelper.ShellOpenFolder(ConfigsFolderPath);
         }
+
+
+        public void CleanSkipIBListTextBox(object sender, RoutedEventArgs e)
+        {
+            TextBoxSkipIBList.Text = "";
+        }
+
+
+        private async Task<Dictionary<string, List<string>>> GetBuffHash_VSShaderHashValues_Dict()
+        {
+            string frameAnalyseFolder = "";
+            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder.Replace("/", "\\")); ;
+            List<string> frameAnalysisFileList = new List<string>();
+            foreach (string directory in directories)
+            {
+                string directoryName = Path.GetFileName(directory);
+
+                if (directoryName.StartsWith("FrameAnalysis-"))
+                {
+                    frameAnalysisFileList.Add(directoryName);
+                }
+            }
+
+            //Get FA numbers to reserve
+            frameAnalysisFileList.Sort();
+            if (frameAnalysisFileList.Count > 0)
+            {
+                //排序后是从小到大的，时间上也是如此，我们这里是找最新的一个，所以选-1个
+                frameAnalyseFolder = frameAnalysisFileList[frameAnalysisFileList.Count - 1];
+            }
+            else
+            {
+                await MessageHelper.Show("未找到FrameAnalysisFolder", "Can't find any FrameAnalysisFolder");
+            }
+
+            if (frameAnalyseFolder == "")
+            {
+                await MessageHelper.Show("当前指定的FrameAnalysisFolder不存在，请重新设置", "Current specified FrameAnalysisFolder didn't exists, please check your setting");
+            }
+
+            string frameAnalysisFolderPath = MainConfig.Path_LoaderFolder + frameAnalyseFolder;
+
+            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = new Dictionary<string, List<string>>();
+
+            // 获取当前目录下的所有文件
+            string[] files = Directory.GetFiles(frameAnalysisFolderPath);
+            foreach (string fileName in files)
+            {
+                if (!fileName.EndsWith(".txt"))
+                {
+                    continue;
+                }
+
+                int vsIndex = fileName.IndexOf("-vs=");
+                if (vsIndex != -1)
+                {
+                    string bufferHash = fileName.Substring(vsIndex - 8, 8);
+                    string vsShaderHash = fileName.Substring(vsIndex + 4, 16);
+
+                    List<string> tmpList = new List<string>();
+                    if (buffHash_vsShaderHashValues_Dict.ContainsKey(bufferHash))
+                    {
+                        tmpList = buffHash_vsShaderHashValues_Dict[bufferHash];
+                    }
+                    tmpList.Add(vsShaderHash);
+                    buffHash_vsShaderHashValues_Dict[bufferHash] = tmpList;
+                }
+                else
+                {
+                    continue;
+                }
+
+            }
+
+            return buffHash_vsShaderHashValues_Dict;
+        }
+
+
+        public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
+        {
+            //这里不需要区分match_first_index,这是因为我们实际测试中不再需要用到match_first_index的过滤了。
+            //直接分割然后输出即可
+            List<string> DrawIBList = new List<string>();
+            if (TextBoxSkipIBList.Text.Contains(","))
+            {
+                DrawIBList = TextBoxSkipIBList.Text.Split(',').ToList();
+            }
+            else
+            {
+                DrawIBList.Add(TextBoxSkipIBList.Text);
+            }
+
+            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await GetBuffHash_VSShaderHashValues_Dict();
+
+            string outputContent = "";
+
+            List<string> WritedHashList = new List<string>();
+
+            foreach (string DrawIB in DrawIBList)
+            {
+                outputContent = outputContent + "[TextureOverride_IB_" + DrawIB + "]\r\n";
+                outputContent = outputContent + "hash = " + DrawIB + "\r\n";
+                outputContent = outputContent + "handling = skip\r\n";
+                outputContent = outputContent + "\r\n";
+
+                if (MainConfig.CurrentGameName == "Game001" || MainConfig.CurrentGameName == "LiarsBar")
+                {
+                    if (buffHash_vsShaderHashValues_Dict.ContainsKey(DrawIB))
+                    {
+                        List<string> VSHashList = buffHash_vsShaderHashValues_Dict[DrawIB];
+                        foreach (string hash in VSHashList)
+                        {
+                            if (WritedHashList.Contains(hash))
+                            {
+                                continue;
+                            }
+                            WritedHashList.Add(hash);
+                            outputContent = outputContent + "[ShaderOverride_" + hash + "]\r\n";
+                            outputContent = outputContent + "hash = " + hash + "\r\n";
+                            outputContent = outputContent + "if $costume_mods\r\n";
+                            outputContent = outputContent + "  checktextureoverride = ib\r\n";
+                            outputContent = outputContent + "endif\r\n\r\n";
+                        }
+                    }
+                }
+
+            }
+
+            if (!File.Exists(MainConfig.Path_OutputFolder))
+            {
+                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+            }
+
+            string outputPath = MainConfig.Path_OutputFolder + "IBSkip.ini";
+            File.WriteAllText(outputPath, outputContent);
+
+            await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
+        }
+
+
+        public async void ExecuteGenerateVSCheck(object sender, RoutedEventArgs e)
+        {
+            //这里不需要区分match_first_index,这是因为我们实际测试中不再需要用到match_first_index的过滤了。
+            //直接分割然后输出即可
+            List<string> DrawIBList = new List<string>();
+            if (TextBoxSkipIBList.Text.Contains(","))
+            {
+                DrawIBList = TextBoxSkipIBList.Text.Split(',').ToList();
+            }
+            else
+            {
+                DrawIBList.Add(TextBoxSkipIBList.Text);
+            }
+
+            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await GetBuffHash_VSShaderHashValues_Dict();
+
+            string outputContent = "";
+
+            List<string> WritedHashList = new List<string>();
+
+            foreach (string DrawIB in DrawIBList)
+            {
+
+                if (buffHash_vsShaderHashValues_Dict.ContainsKey(DrawIB))
+                {
+                    List<string> VSHashList = buffHash_vsShaderHashValues_Dict[DrawIB];
+                    foreach (string hash in VSHashList)
+                    {
+                        if (WritedHashList.Contains(hash))
+                        {
+                            continue;
+                        }
+                        WritedHashList.Add(hash);
+                        outputContent = outputContent + "[ShaderOverride_" + hash + "]\r\n";
+                        outputContent = outputContent + "hash = " + hash + "\r\n";
+                        outputContent = outputContent + "if $costume_mods\r\n";
+                        outputContent = outputContent + "  checktextureoverride = ib\r\n";
+                        outputContent = outputContent + "endif\r\n\r\n";
+                    }
+                }
+
+            }
+
+            if (!File.Exists(MainConfig.Path_OutputFolder))
+            {
+                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+            }
+
+            string outputPath = MainConfig.Path_OutputFolder + "VertexShaderCheck.ini";
+            File.WriteAllText(outputPath, outputContent);
+
+            await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
+
+        }
+
 
 
 
