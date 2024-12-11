@@ -14,7 +14,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <!-- 设置背景图片 -->
         <ScrollViewer.Background>
-            <ImageBrush x:Name="HomeBGImageBrush" Stretch="UniformToFill" ImageSource="Assets/DefaultGame.png" Opacity="0.1"/>
+            <ImageBrush x:Name="SettingsBGImageBrush" Stretch="UniformToFill" ImageSource="Assets/DefaultGame.png" Opacity="0.1"/>
         </ScrollViewer.Background>
         
         <StackPanel Orientation="Vertical" Margin="20">

@@ -311,7 +311,7 @@ namespace DBMT
             }
         }
 
-        public static string ReadCurrentWorkSpaceFromMainJson()
+        public static void ReadCurrentWorkSpaceFromMainJson()
         {
             if (File.Exists(MainConfig.Path_MainConfig))
             {
@@ -321,11 +321,9 @@ namespace DBMT
                 {
                     string WorkSpaceName = (string)jsonObject["WorkSpaceName"];
                     MainConfig.CurrentWorkSpace = WorkSpaceName;
-                    return WorkSpaceName;
                 }
 
             }
-            return "";
         }
 
         public static void SaveCurrentWorkSpaceToMainJson()

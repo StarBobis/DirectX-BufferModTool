@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using DBMT.Helper;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,10 +30,24 @@ namespace DBMT
             this.InitializeComponent();
 
             ReadSettingsFromConfig();
+            SetDefaultBackGroundImage();
         }
 
-        //这里报黄线实在没法解决，也许有更好的方法？但是忽略即可。
-        protected override async void OnNavigatedFrom(NavigationEventArgs e)
+        private void SetDefaultBackGroundImage()
+        {
+            string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
+            string imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround_DIY.png");
+            if (!File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround.png");
+            }
+
+            // 创建 BitmapImage 并设置 ImageSource
+            BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
+            SettingsBGImageBrush.ImageSource = bitmap;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             // 执行你想要在这个页面被关闭或导航离开时运行的代码
             SaveSettingsToConfig();
