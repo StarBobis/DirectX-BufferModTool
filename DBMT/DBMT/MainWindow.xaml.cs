@@ -63,6 +63,7 @@ namespace DBMT
             if (DBMTStringUtils.ContainsChinese(MainConfig.ApplicationRunPath))
             {
                 await MessageHelper.Show("DBMT所在路径不能含有中文，请重新将DBMT放置到纯英文路径.", "DBMT can't be put in a path that contains Chinese, please put DBMT in pure english path!");
+                //注意，这里可能会导致空引用异常，App.Current.Exist()不一定会正确的结束程序
                 App.Current.Exit();
             }
 
@@ -70,6 +71,7 @@ namespace DBMT
             if (!File.Exists(MainConfig.ApplicationRunPath + "Plugins\\" + MainConfig.MMT_EXE_FileName))
             {
                 await MessageHelper.Show("未找到" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",请将其放在本程序Plugins目录下，即将退出程序。","Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
+                //注意，这里可能会导致空引用异常，App.Current.Exist()不一定会正确的结束程序
                 App.Current.Exit();
             }
 
