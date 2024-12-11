@@ -48,7 +48,7 @@ namespace DBMT
 
         private async void ChooseProcessPathButtonClick(object sender, RoutedEventArgs e)
         {
-            FileOpenPicker picker =await CommandHelper.GetFilePicker(".exe");
+            FileOpenPicker picker =await CommandHelper.Get_FileOpenPicker(".exe");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
@@ -59,7 +59,7 @@ namespace DBMT
         private async void ChooseStarterPathButtonClick(object sender, RoutedEventArgs e)
         {
 
-            FileOpenPicker picker = await CommandHelper.GetFilePicker(".exe");
+            FileOpenPicker picker = await CommandHelper.Get_FileOpenPicker(".exe");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {

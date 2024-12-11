@@ -28,9 +28,17 @@ namespace DBMT
             this.InitializeComponent();
         }
 
-        public void ReadSettingsFromConfig()
+        public async void ReadSettingsFromConfig()
         {
 
+
         }
+
+        public async void SaveSettingsToConfig()
+        {
+
+
+        }
+
     }
 }

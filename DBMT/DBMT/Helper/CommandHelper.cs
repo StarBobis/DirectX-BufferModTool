@@ -193,8 +193,7 @@ namespace DBMT
         }
 
 
-
-        public static async Task<FileOpenPicker> GetFilePicker(string Suffix)
+        public static async Task<FileOpenPicker> Get_FileOpenPicker(string Suffix)
         {
             FileOpenPicker picker = new FileOpenPicker();
             // 获取当前窗口的HWND
@@ -204,6 +203,18 @@ namespace DBMT
             picker.ViewMode = PickerViewMode.Thumbnail;
             picker.SuggestedStartLocation = PickerLocationId.Desktop;
             picker.FileTypeFilter.Add(Suffix);
+            return picker;
+        }
+
+        public static async Task<FolderPicker> Get_FolderPicker()
+        {
+            FolderPicker picker = new FolderPicker();
+            // 获取当前窗口的HWND
+            nint windowHandle = WindowNative.GetWindowHandle(App.m_window);
+            InitializeWithWindow.Initialize(picker, windowHandle);
+
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
             return picker;
         }
 

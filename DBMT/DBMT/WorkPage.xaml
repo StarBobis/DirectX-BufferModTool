@@ -58,13 +58,13 @@
                 </MenuBarItem>
 
                 <MenuBarItem Title="Mod加密">
-                    <MenuFlyoutItem Text="一键混淆名称并加密Buffer和ini文件"/>
-                    <MenuFlyoutItem Text="一键加密Buffer和ini文件"/>
+                    <MenuFlyoutItem Text="一键混淆名称并加密Buffer和ini文件" Click="Encryption_EncryptAll"/>
+                    <MenuFlyoutItem Text="一键加密Buffer和ini文件" Click="Encryption_EncryptBufferAndIni"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="一键混淆Mod中的资源名称"/>
+                    <MenuFlyoutItem Text="一键混淆Mod中的资源名称" Click="Encryption_Obfuscate"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="一键加密Buffer文件"/>
-                    <MenuFlyoutItem Text="一键加密ini文件"/>
+                    <MenuFlyoutItem Text="一键加密Buffer文件" Click="Encryption_EncryptBuffer"/>
+                    <MenuFlyoutItem Text="一键加密ini文件" Click="Encryption_EncryptIni"/>
                 </MenuBarItem>
             </MenuBar>
 

@@ -723,7 +723,7 @@ namespace DBMT
                 return "";
             }
 
-            FileOpenPicker picker = await CommandHelper.GetFilePicker(".ini");
+            FileOpenPicker picker = await CommandHelper.Get_FileOpenPicker(".ini");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
@@ -837,6 +837,239 @@ namespace DBMT
         {
             string ModIniFilePath = await RunReverseIniCommand("ReverseOutfitCompilerLv4");
             ConvertTexturesInMod(ModIniFilePath);
+        }
+
+        private async Task<bool> DBMT_Encryption_RunCommand(string CommandString, string IniPath)
+        {
+            if (DBMTStringUtils.ContainsChinese(IniPath))
+            {
+                await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
+                return false;
+            }
+            //MessageBox.Show(reverse_setting_path);
+            JObject jsonObject = new JObject();
+            jsonObject["EncryptFilePath"] = IniPath;
+            File.WriteAllText("Configs\\ArmorSetting.json", jsonObject.ToString());
+
+            await CommandHelper.runCommand(CommandString, "DBMT-Encryptor.vmp.exe");
+            return true;
+        }
+
+
+        public async Task<string> obfuscate(string obfusVersion = "Dev")
+        {
+            FileOpenPicker picker =await CommandHelper.Get_FileOpenPicker(".ini");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string readIniPath = file.Path;
+                if (DBMTStringUtils.ContainsChinese(readIniPath))
+                {
+                    await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
+                    return "";
+                }
+
+                if (string.IsNullOrEmpty(readIniPath))
+                {
+                    await MessageHelper.Show("Please select a correct ini file.");
+                    return "";
+                }
+                string readDirectoryPath = Path.GetDirectoryName(readIniPath);
+
+                //Read every line and obfuscate every Resource section.
+                //need a dict to store the old filename and the new filename.
+                string[] readIniLines = File.ReadAllLines(readIniPath);
+                List<string> newIniLines = new List<string>();
+                Dictionary<string, string> fileNameUuidDict = new Dictionary<string, string>();
+                foreach (string iniLine in readIniLines)
+                {
+                    string lowerIniLine = iniLine.ToLower();
+                    if (lowerIniLine.StartsWith("filename"))
+                    {
+                        int firstEqualSignIndex = iniLine.IndexOf("=");
+                        string valSection = iniLine.Substring(firstEqualSignIndex);
+                        string resourceFileName = valSection.Substring(1).Trim();
+                        //generate a uuid to replace this filename
+                        string randomUUID = Guid.NewGuid().ToString();
+
+                        //因为不能有重复键
+                        if (!fileNameUuidDict.ContainsKey(resourceFileName))
+                        {
+                            fileNameUuidDict.Add(resourceFileName, randomUUID);
+                        }
+                        else
+                        {
+                            randomUUID = fileNameUuidDict[resourceFileName];
+                        }
+
+                        string newIniLine = "";
+                        if (resourceFileName.EndsWith(".dds"))
+                        {
+                            if (obfusVersion == "Dev")
+                            {
+                                newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".dds");
+                            }
+                            else
+                            {
+                                newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".bundle");
+                            }
+                        }
+                        else if (resourceFileName.EndsWith(".png"))
+                        {
+                            newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".png");
+                        }
+                        else
+                        {
+                            newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".assets");
+                        }
+                        newIniLines.Add(newIniLine);
+                    }
+                    else
+                    {
+                        newIniLines.Add(iniLine);
+
+                    }
+                }
+
+
+                string parentDirectory = Directory.GetParent(readDirectoryPath).FullName;
+                string ModFolderName = Path.GetFileName(readDirectoryPath);
+
+                string newOutputDirectory = parentDirectory + "\\" + ModFolderName + "-Release\\";
+
+                Directory.CreateDirectory(newOutputDirectory);
+
+                //Create a new ini file.
+                string newIniFilePath = newOutputDirectory + Guid.NewGuid().ToString() + ".ini";
+                File.WriteAllLines(newIniFilePath, newIniLines);
+
+                foreach (KeyValuePair<string, string> pair in fileNameUuidDict)
+                {
+                    string key = pair.Key;
+                    string value = pair.Value;
+
+                    string oldResourceFilePath = readDirectoryPath + "\\" + key;
+
+
+                    string newResourceFilePath = "";
+                    if (key.EndsWith(".dds"))
+                    {
+                        if (obfusVersion == "Dev")
+                        {
+                            newResourceFilePath = newOutputDirectory + value + ".dds";
+                        }
+                        else
+                        {
+                            newResourceFilePath = newOutputDirectory + value + ".bundle";
+                        }
+                    }
+                    else if (key.EndsWith(".png"))
+                    {
+                        newResourceFilePath = newOutputDirectory + value + ".png";
+                    }
+                    else
+                    {
+                        newResourceFilePath = newOutputDirectory + value + ".assets";
+                    }
+
+                    if (File.Exists(oldResourceFilePath))
+                    {
+                        File.Copy(oldResourceFilePath, newResourceFilePath, true);
+                    }
+
+                }
+
+                await MessageHelper.Show("混淆成功", "Obfuscated success.");
+
+                return newIniFilePath;
+
+            }
+
+
+            return "";
+        }
+
+        public async void Encryption_EncryptAll(object sender, RoutedEventArgs e)
+        {
+
+            //混淆并返回新的ini文件的路径
+            string NewModInIPath =await obfuscate("Play");
+            if (NewModInIPath == "")
+            {
+                return;
+            }
+
+            //调用加密Buffer并加密ini文件
+            await DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", NewModInIPath);
+        }
+
+        public async Task<bool> DBMT_Encryption_RunCommand_OpenIni(string command)
+        {
+            FileOpenPicker picker = await CommandHelper.Get_FileOpenPicker(".ini");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string readIniPath = file.Path;
+                await DBMT_Encryption_RunCommand(command, readIniPath);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async void Encryption_EncryptBufferAndIni(object sender, RoutedEventArgs e)
+        {
+
+            await DBMT_Encryption_RunCommand_OpenIni("encrypt_buffer_ini_v5");
+        }
+
+        public async void Encryption_Obfuscate(object sender, RoutedEventArgs e)
+        {
+            await obfuscate("Play");
+        }
+
+        public async void Encryption_EncryptBuffer(object sender, RoutedEventArgs e)
+        {
+            string EncryptionCommand = "encrypt_buffer_acptpro_V4";
+
+            FolderPicker folderPicker = await CommandHelper.Get_FolderPicker();
+            folderPicker.FileTypeFilter.Add("*");
+            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+
+
+            if (folder != null)
+            {
+                string selectedPath = folder.Path;
+                if (DBMTStringUtils.ContainsChinese(selectedPath))
+                {
+                    await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
+                    return;
+                }
+
+                //判断目标路径下是否有ini文件
+                // 使用Directory.GetFiles方法，并指定搜索模式为*.ini
+                string[] iniFiles = Directory.GetFiles(selectedPath, "*.ini");
+                if (iniFiles.Length == 0)
+                {
+                    await MessageHelper.Show("目标路径中无法找到mod的ini文件", "Target Path Can't find ini file.");
+                    return;
+                }
+
+
+                JObject jsonObject = new JObject();
+                jsonObject["targetACLFile"] = "Configs\\ACLSetting.json";
+
+                string json_string = jsonObject.ToString(Formatting.Indented);
+                File.WriteAllText(selectedPath, json_string);
+                await CommandHelper.runCommand(EncryptionCommand, "DBMT-Encryptor.vmp.exe");
+            }
+        }
+
+        public async void Encryption_EncryptIni(object sender, RoutedEventArgs e)
+        {
+            await DBMT_Encryption_RunCommand_OpenIni("encrypt_buffer_ini_v5");
         }
 
     }
