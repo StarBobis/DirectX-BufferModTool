@@ -57,64 +57,61 @@ namespace DBMT
 
         public void SaveSettingsToConfig()
         {
-            SettingsHelper.AutoCleanLogFile = ToggleSwitch_AutoCleanLogFile.IsOn;
-            SettingsHelper.LogFileReserveNumber = (int)NumberBox_LogFileReserveNumber.Value;
-            SettingsHelper.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
-            SettingsHelper.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
-            SettingsHelper.ModelFileNameStyle = ComboBox_ModelFileNameStyle.SelectedIndex;
+            const MainConfig.ConfigFiles g = MainConfig.ConfigFiles.Game_Setting;
+            const MainConfig.ConfigFiles t = MainConfig.ConfigFiles.Texture_Setting;
 
-            SettingsHelper.MoveIBRelatedFiles = ToggleSwitch_MoveIBRelatedFiles.IsOn;
-            SettingsHelper.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
+            MainConfig.SetConfig("AutoCleanLogFile", ToggleSwitch_AutoCleanLogFile.IsOn);
+            MainConfig.SetConfig("LogFileReserveNumber", (int)NumberBox_LogFileReserveNumber.Value);
+            MainConfig.SetConfig("AutoCleanFrameAnalysisFolder", ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn);
+            MainConfig.SetConfig("FrameAnalysisFolderReserveNumber", (int)NumberBox_FrameAnalysisFolderReserveNumber.Value);
+            MainConfig.SetConfig("ModelFileNameStyle", ComboBox_ModelFileNameStyle.SelectedIndex);
 
-            SettingsHelper.GenerateSeperatedMod = ToggleSwitch_GenerateSeperatedMod.IsOn;
-            SettingsHelper.Author = TextBox_Author.Text;
-            SettingsHelper.AuthorLink = TextBox_AuthorLink.Text;
-            SettingsHelper.ModSwitchKey = TextBox_ModSwitchKey.Text;
+            MainConfig.SetConfig("MoveIBRelatedFiles", ToggleSwitch_MoveIBRelatedFiles.IsOn);
+            MainConfig.SetConfig("DontSplitModelByMatchFirstIndex", ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn);
 
-            SettingsHelper.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex ;
-            SettingsHelper.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn ;
-            SettingsHelper.ConvertDedupedTextures = ToggleSwitch_ConvertDedupedTextures.IsOn ;
-            SettingsHelper.ForbidMoveTrianglelistTextures = ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn ;
-            SettingsHelper.ForbidMoveDedupedTextures = ToggleSwitch_ForbidMoveDedupedTextures.IsOn;
-            SettingsHelper.ForbidMoveRenderTextures = ToggleSwitch_ForbidMoveRenderTextures.IsOn;
-            SettingsHelper.ForbidAutoTexture = ToggleSwitch_ForbidAutoTexture.IsOn;
-            SettingsHelper.UseHashTexture = ToggleSwitch_UseHashTexture.IsOn;
+            MainConfig.SetConfig("GenerateSeperatedMod", ToggleSwitch_GenerateSeperatedMod.IsOn);
+            MainConfig.SetConfig("Author", TextBox_Author.Text);
+            MainConfig.SetConfig("AuthorLink", TextBox_AuthorLink.Text);
+            MainConfig.SetConfig("ModSwitchKey", TextBox_ModSwitchKey.Text);
 
-            SettingsHelper.SaveTextureSettingsToConfig();
-            SettingsHelper.SaveGameSettingsToConfig();
+            MainConfig.SetConfig("AutoTextureFormat", ComboBox_AutoTextureFormat.SelectedIndex);
+            MainConfig.SetConfig("AutoTextureOnlyConvertDiffuseMap", ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn);
+            MainConfig.SetConfig("ConvertDedupedTextures", ToggleSwitch_ConvertDedupedTextures.IsOn);
+            MainConfig.SetConfig("ForbidMoveTrianglelistTextures", ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn);
+            MainConfig.SetConfig("ForbidMoveDedupedTextures", ToggleSwitch_ForbidMoveDedupedTextures.IsOn);
+            MainConfig.SetConfig("ForbidMoveRenderTextures", ToggleSwitch_ForbidMoveRenderTextures.IsOn);
+            MainConfig.SetConfig("ForbidAutoTexture", ToggleSwitch_ForbidAutoTexture.IsOn);
+            MainConfig.SetConfig("UseHashTexture", ToggleSwitch_UseHashTexture.IsOn);
+
+            MainConfig.SaveAllConfig();
         }
 
         public void ReadSettingsFromConfig()
         {
             //防止程序启动时没正确读取，这里冗余读取一次，后面看情况可以去掉。
-            SettingsHelper.ReadGameSettingsFromConfig();
-            SettingsHelper.ReadTextureSettingsFromConfig();
+            MainConfig.LoadConfigFromFiles();
 
-            ToggleSwitch_AutoCleanLogFile.IsOn = SettingsHelper.AutoCleanLogFile;
-            NumberBox_LogFileReserveNumber.Value = SettingsHelper.LogFileReserveNumber;
+            ToggleSwitch_AutoCleanLogFile.IsOn = MainConfig.GetConfig<bool>("AutoCleanLogFile");
+            NumberBox_LogFileReserveNumber.Value = MainConfig.GetConfig<int>("LogFileReserveNumber");
+            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = MainConfig.GetConfig<bool>("AutoCleanFrameAnalysisFolder");
+            NumberBox_FrameAnalysisFolderReserveNumber.Value = MainConfig.GetConfig<int>("FrameAnalysisFolderReserveNumber");
+            ComboBox_ModelFileNameStyle.SelectedIndex = MainConfig.GetConfig<int>("ModelFileNameStyle");
+            ToggleSwitch_MoveIBRelatedFiles.IsOn = MainConfig.GetConfig<bool>("MoveIBRelatedFiles");
+            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = MainConfig.GetConfig<bool>("DontSplitModelByMatchFirstIndex");
 
-            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = SettingsHelper.AutoCleanFrameAnalysisFolder;
-            NumberBox_FrameAnalysisFolderReserveNumber.Value = SettingsHelper.FrameAnalysisFolderReserveNumber;
-           
-            ComboBox_ModelFileNameStyle.SelectedIndex = SettingsHelper.ModelFileNameStyle;
+            ToggleSwitch_GenerateSeperatedMod.IsOn = MainConfig.GetConfig<bool>("GenerateSeperatedMod");
+            TextBox_Author.Text = MainConfig.GetConfig<string>("Author");
+            TextBox_AuthorLink.Text = MainConfig.GetConfig<string>("AuthorLink");
+            TextBox_ModSwitchKey.Text = MainConfig.GetConfig<string>("ModSwitchKey");
 
-            ToggleSwitch_MoveIBRelatedFiles.IsOn = SettingsHelper.MoveIBRelatedFiles;
-            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = SettingsHelper.DontSplitModelByMatchFirstIndex;
-
-            ToggleSwitch_GenerateSeperatedMod.IsOn = SettingsHelper.GenerateSeperatedMod;
-            TextBox_Author.Text = SettingsHelper.Author;
-            TextBox_AuthorLink.Text = SettingsHelper.AuthorLink;
-            TextBox_ModSwitchKey.Text = SettingsHelper.ModSwitchKey;
-
-            ComboBox_AutoTextureFormat.SelectedIndex = SettingsHelper.AutoTextureFormat;
-            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = SettingsHelper.AutoTextureOnlyConvertDiffuseMap;
-            ToggleSwitch_ConvertDedupedTextures.IsOn = SettingsHelper.ConvertDedupedTextures;
-            ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = SettingsHelper.ForbidMoveTrianglelistTextures;
-            ToggleSwitch_ForbidMoveDedupedTextures.IsOn = SettingsHelper.ForbidMoveDedupedTextures;
-            ToggleSwitch_ForbidMoveRenderTextures.IsOn = SettingsHelper.ForbidMoveRenderTextures;
-            ToggleSwitch_ForbidAutoTexture.IsOn = SettingsHelper.ForbidAutoTexture;
-            ToggleSwitch_UseHashTexture.IsOn = SettingsHelper.UseHashTexture;
-
+            ComboBox_AutoTextureFormat.SelectedIndex = MainConfig.GetConfig<int>("AutoTextureFormat");
+            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = MainConfig.GetConfig<bool>("AutoTextureOnlyConvertDiffuseMap");
+            ToggleSwitch_ConvertDedupedTextures.IsOn = MainConfig.GetConfig<bool>("ConvertDedupedTextures");
+            ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = MainConfig.GetConfig<bool>("ForbidMoveTrianglelistTextures");
+            ToggleSwitch_ForbidMoveDedupedTextures.IsOn = MainConfig.GetConfig<bool>("ForbidMoveDedupedTextures");
+            ToggleSwitch_ForbidMoveRenderTextures.IsOn = MainConfig.GetConfig<bool>("ForbidMoveRenderTextures");
+            ToggleSwitch_ForbidAutoTexture.IsOn = MainConfig.GetConfig<bool>("ForbidAutoTexture");
+            ToggleSwitch_UseHashTexture.IsOn = MainConfig.GetConfig<bool>("UseHashTexture");
         }
 
     }
