@@ -30,8 +30,7 @@ namespace DBMT
             ReadSettingsFromConfig();
         }
 
-        //这里报黄线实在没法解决，也许有更好的方法？但是忽略即可。
-        protected override async void OnNavigatedFrom(NavigationEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             // 执行你想要在这个页面被关闭或导航离开时运行的代码
             SaveSettingsToConfig();
