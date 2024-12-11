@@ -331,7 +331,7 @@ namespace DBMT
             bool RunResult = await CommandHelper.runCommand("split");
             if (RunResult)
             {
-                OpenModsFolder(sender, e);
+                OpenWorkSpaceGenerateModFolder(sender, e);
             }
             else
             {
