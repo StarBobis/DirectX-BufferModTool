@@ -10,8 +10,6 @@ namespace DBMT
 {
     public static class MessageHelper
     {
-
-
         public static async Task Show(string ContentChinese,string ContentEnglish="")
         {
             var messageDialog = new MessageDialog(ContentChinese, "Tips");
@@ -19,6 +17,8 @@ namespace DBMT
             InitializeWithWindow.Initialize(messageDialog, windowHandle);
             await messageDialog.ShowAsync();
         }
+
+
 
     }
 }

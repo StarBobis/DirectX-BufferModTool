@@ -416,30 +416,18 @@ namespace DBMT
 
         public async void OpenLatestFrameAnalysisLogTxtFile(object sender, RoutedEventArgs e)
         {
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder);
-            List<string> frameAnalysisFileList = new List<string>();
-            foreach (string directory in directories)
-            {
-                string directoryName = Path.GetFileName(directory);
+            string LatestFrameAnalysisFolderLogTxtFilePath = PathHelper.GetLatestFrameAnalysisFolderLogFilePath();
 
-                if (directoryName.StartsWith("FrameAnalysis-"))
+            if (LatestFrameAnalysisFolderLogTxtFilePath != "")
+            {
+                if (File.Exists(LatestFrameAnalysisFolderLogTxtFilePath))
                 {
-                    frameAnalysisFileList.Add(directoryName);
+                    await CommandHelper.ShellOpenFile(LatestFrameAnalysisFolderLogTxtFilePath);
                 }
-            }
-
-            //
-            if (frameAnalysisFileList.Count > 0)
-            {
-                frameAnalysisFileList.Sort();
-
-                string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
-
-                await CommandHelper.ShellOpenFile(latestFrameAnalysisFolder + "\\log.txt");
             }
             else
             {
-                await MessageHelper.Show("目标目录没有任何FrameAnalysis文件夹", "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("没有找到任何FrameAnalysis文件夹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -485,25 +473,11 @@ namespace DBMT
 
         public async void OpenLatestLogFile(object sender, RoutedEventArgs e)
         {
-            //然后打开最新的Log文件
-            string logsPath = MainConfig.ApplicationRunPath + "Logs";
-            if (!Directory.Exists(logsPath))
+            string LogFilePath = PathHelper.GetLatestLogFilePath();
+            if(File.Exists(LogFilePath))
             {
-                return;
+                await CommandHelper.ShellOpenFile(LogFilePath);
             }
-            string[] logFiles = Directory.GetFiles(logsPath); ;
-            List<string> logFileList = new List<string>();
-            foreach (string logFile in logFiles)
-            {
-                string logfileName = Path.GetFileName(logFile);
-                if (logfileName.EndsWith(".log") && logfileName.Length > 15)
-                {
-                    logFileList.Add(logfileName);
-                }
-            }
-
-            logFileList.Sort();
-            await CommandHelper.ShellOpenFile(logsPath + "\\" + logFileList[logFileList.Count - 1]);
         }
 
         public async void OpenConfigsFolder(object sender, RoutedEventArgs e)
@@ -519,75 +493,7 @@ namespace DBMT
         }
 
 
-        private async Task<Dictionary<string, List<string>>> GetBuffHash_VSShaderHashValues_Dict()
-        {
-            string frameAnalyseFolder = "";
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder.Replace("/", "\\")); ;
-            List<string> frameAnalysisFileList = new List<string>();
-            foreach (string directory in directories)
-            {
-                string directoryName = Path.GetFileName(directory);
-
-                if (directoryName.StartsWith("FrameAnalysis-"))
-                {
-                    frameAnalysisFileList.Add(directoryName);
-                }
-            }
-
-            //Get FA numbers to reserve
-            frameAnalysisFileList.Sort();
-            if (frameAnalysisFileList.Count > 0)
-            {
-                //排序后是从小到大的，时间上也是如此，我们这里是找最新的一个，所以选-1个
-                frameAnalyseFolder = frameAnalysisFileList[frameAnalysisFileList.Count - 1];
-            }
-            else
-            {
-                await MessageHelper.Show("未找到FrameAnalysisFolder", "Can't find any FrameAnalysisFolder");
-            }
-
-            if (frameAnalyseFolder == "")
-            {
-                await MessageHelper.Show("当前指定的FrameAnalysisFolder不存在，请重新设置", "Current specified FrameAnalysisFolder didn't exists, please check your setting");
-            }
-
-            string frameAnalysisFolderPath = MainConfig.Path_LoaderFolder + frameAnalyseFolder;
-
-            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = new Dictionary<string, List<string>>();
-
-            // 获取当前目录下的所有文件
-            string[] files = Directory.GetFiles(frameAnalysisFolderPath);
-            foreach (string fileName in files)
-            {
-                if (!fileName.EndsWith(".txt"))
-                {
-                    continue;
-                }
-
-                int vsIndex = fileName.IndexOf("-vs=");
-                if (vsIndex != -1)
-                {
-                    string bufferHash = fileName.Substring(vsIndex - 8, 8);
-                    string vsShaderHash = fileName.Substring(vsIndex + 4, 16);
-
-                    List<string> tmpList = new List<string>();
-                    if (buffHash_vsShaderHashValues_Dict.ContainsKey(bufferHash))
-                    {
-                        tmpList = buffHash_vsShaderHashValues_Dict[bufferHash];
-                    }
-                    tmpList.Add(vsShaderHash);
-                    buffHash_vsShaderHashValues_Dict[bufferHash] = tmpList;
-                }
-                else
-                {
-                    continue;
-                }
-
-            }
-
-            return buffHash_vsShaderHashValues_Dict;
-        }
-
+       
 
         public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
         {
@@ -603,7 +509,7 @@ namespace DBMT
                 DrawIBList.Add(TextBoxSkipIBList.Text);
             }
 
-            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await GetBuffHash_VSShaderHashValues_Dict();
+            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await DrawIBHelper.GetBuffHash_VSShaderHashValues_Dict();
 
             string outputContent = "";
 
@@ -665,7 +571,7 @@ namespace DBMT
                 DrawIBList.Add(TextBoxSkipIBList.Text);
             }
 
-            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await GetBuffHash_VSShaderHashValues_Dict();
+            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await DrawIBHelper.GetBuffHash_VSShaderHashValues_Dict();
 
             string outputContent = "";
 
@@ -855,7 +761,6 @@ namespace DBMT
                 await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
                 return false;
             }
-            //MessageBox.Show(reverse_setting_path);
             JObject jsonObject = new JObject();
             jsonObject["EncryptFilePath"] = IniPath;
             File.WriteAllText("Configs\\ArmorSetting.json", jsonObject.ToString());
@@ -865,144 +770,13 @@ namespace DBMT
         }
 
 
-        public async Task<string> obfuscate(string obfusVersion = "Dev")
-        {
-            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".ini");
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
-                string readIniPath = file.Path;
-                if (DBMTStringUtils.ContainsChinese(readIniPath))
-                {
-                    await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
-                    return "";
-                }
-
-                if (string.IsNullOrEmpty(readIniPath))
-                {
-                    await MessageHelper.Show("Please select a correct ini file.");
-                    return "";
-                }
-                string readDirectoryPath = Path.GetDirectoryName(readIniPath);
-
-                //Read every line and obfuscate every Resource section.
-                //need a dict to store the old filename and the new filename.
-                string[] readIniLines = File.ReadAllLines(readIniPath);
-                List<string> newIniLines = new List<string>();
-                Dictionary<string, string> fileNameUuidDict = new Dictionary<string, string>();
-                foreach (string iniLine in readIniLines)
-                {
-                    string lowerIniLine = iniLine.ToLower();
-                    if (lowerIniLine.StartsWith("filename"))
-                    {
-                        int firstEqualSignIndex = iniLine.IndexOf("=");
-                        string valSection = iniLine.Substring(firstEqualSignIndex);
-                        string resourceFileName = valSection.Substring(1).Trim();
-                        //generate a uuid to replace this filename
-                        string randomUUID = Guid.NewGuid().ToString();
-
-                        //因为不能有重复键
-                        if (!fileNameUuidDict.ContainsKey(resourceFileName))
-                        {
-                            fileNameUuidDict.Add(resourceFileName, randomUUID);
-                        }
-                        else
-                        {
-                            randomUUID = fileNameUuidDict[resourceFileName];
-                        }
-
-                        string newIniLine = "";
-                        if (resourceFileName.EndsWith(".dds"))
-                        {
-                            if (obfusVersion == "Dev")
-                            {
-                                newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".dds");
-                            }
-                            else
-                            {
-                                newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".bundle");
-                            }
-                        }
-                        else if (resourceFileName.EndsWith(".png"))
-                        {
-                            newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".png");
-                        }
-                        else
-                        {
-                            newIniLine = iniLine.Replace(resourceFileName, randomUUID + ".assets");
-                        }
-                        newIniLines.Add(newIniLine);
-                    }
-                    else
-                    {
-                        newIniLines.Add(iniLine);
-
-                    }
-                }
-
-
-                string parentDirectory = Directory.GetParent(readDirectoryPath).FullName;
-                string ModFolderName = Path.GetFileName(readDirectoryPath);
-
-                string newOutputDirectory = parentDirectory + "\\" + ModFolderName + "-Release\\";
-
-                Directory.CreateDirectory(newOutputDirectory);
-
-                //Create a new ini file.
-                string newIniFilePath = newOutputDirectory + Guid.NewGuid().ToString() + ".ini";
-                File.WriteAllLines(newIniFilePath, newIniLines);
-
-                foreach (KeyValuePair<string, string> pair in fileNameUuidDict)
-                {
-                    string key = pair.Key;
-                    string value = pair.Value;
-
-                    string oldResourceFilePath = readDirectoryPath + "\\" + key;
-
-
-                    string newResourceFilePath = "";
-                    if (key.EndsWith(".dds"))
-                    {
-                        if (obfusVersion == "Dev")
-                        {
-                            newResourceFilePath = newOutputDirectory + value + ".dds";
-                        }
-                        else
-                        {
-                            newResourceFilePath = newOutputDirectory + value + ".bundle";
-                        }
-                    }
-                    else if (key.EndsWith(".png"))
-                    {
-                        newResourceFilePath = newOutputDirectory + value + ".png";
-                    }
-                    else
-                    {
-                        newResourceFilePath = newOutputDirectory + value + ".assets";
-                    }
-
-                    if (File.Exists(oldResourceFilePath))
-                    {
-                        File.Copy(oldResourceFilePath, newResourceFilePath, true);
-                    }
-
-                }
-
-                await MessageHelper.Show("混淆成功", "Obfuscated success.");
-
-                return newIniFilePath;
-
-            }
-
-
-            return "";
-        }
+        
 
         public async void Encryption_EncryptAll(object sender, RoutedEventArgs e)
         {
 
             //混淆并返回新的ini文件的路径
-            string NewModInIPath =await obfuscate("Play");
+            string NewModInIPath =await EncryptionHelper.Obfuscate_ModFileName("Play");
             if (NewModInIPath == "")
             {
                 return;
@@ -1012,46 +786,28 @@ namespace DBMT
             await DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", NewModInIPath);
         }
 
-        public async Task<bool> DBMT_Encryption_RunCommand_OpenIni(string command)
-        {
-            FileOpenPicker picker =  CommandHelper.Get_FileOpenPicker(".ini");
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
-                string readIniPath = file.Path;
-                await DBMT_Encryption_RunCommand(command, readIniPath);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public async void Encryption_EncryptBufferAndIni(object sender, RoutedEventArgs e)
         {
-
-            await DBMT_Encryption_RunCommand_OpenIni("encrypt_buffer_ini_v5");
+            string ini_file_path = await CommandHelper.ChooseFileAndGetPath(".ini");
+            if (ini_file_path != "")
+            {
+                await DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", ini_file_path);
+            }
         }
 
         public async void Encryption_Obfuscate(object sender, RoutedEventArgs e)
         {
-            await obfuscate("Play");
+            await EncryptionHelper.Obfuscate_ModFileName("Play");
         }
 
         public async void Encryption_EncryptBuffer(object sender, RoutedEventArgs e)
         {
             string EncryptionCommand = "encrypt_buffer_acptpro_V4";
 
-            FolderPicker folderPicker =  CommandHelper.Get_FolderPicker();
-            folderPicker.FileTypeFilter.Add("*");
-            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-
-
-            if (folder != null)
+            string selected_folder_path = await CommandHelper.ChooseFolderAndGetPath();
+            if (selected_folder_path != "")
             {
-                string selectedPath = folder.Path;
-                if (DBMTStringUtils.ContainsChinese(selectedPath))
+                if (DBMTStringUtils.ContainsChinese(selected_folder_path))
                 {
                     await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
                     return;
@@ -1059,7 +815,7 @@ namespace DBMT
 
                 //判断目标路径下是否有ini文件
                 // 使用Directory.GetFiles方法，并指定搜索模式为*.ini
-                string[] iniFiles = Directory.GetFiles(selectedPath, "*.ini");
+                string[] iniFiles = Directory.GetFiles(selected_folder_path, "*.ini");
                 if (iniFiles.Length == 0)
                 {
                     await MessageHelper.Show("目标路径中无法找到mod的ini文件", "Target Path Can't find ini file.");
@@ -1069,16 +825,20 @@ namespace DBMT
 
                 JObject jsonObject = new JObject();
                 jsonObject["targetACLFile"] = "Configs\\ACLSetting.json";
-
                 string json_string = jsonObject.ToString(Formatting.Indented);
-                File.WriteAllText(selectedPath, json_string);
+                File.WriteAllText(selected_folder_path, json_string);
+
                 await CommandHelper.runCommand(EncryptionCommand, "DBMT-Encryptor.vmp.exe");
             }
         }
 
         public async void Encryption_EncryptIni(object sender, RoutedEventArgs e)
         {
-            await DBMT_Encryption_RunCommand_OpenIni("encrypt_buffer_ini_v5");
+            string ini_file_path = await CommandHelper.ChooseFileAndGetPath(".ini");
+            if (ini_file_path != "")
+            {
+                await DBMT_Encryption_RunCommand("encrypt_ini_acptpro_V5", ini_file_path);
+            }
         }
 
     }

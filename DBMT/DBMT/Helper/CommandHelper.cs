@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
 
@@ -216,6 +217,35 @@ namespace DBMT
             picker.ViewMode = PickerViewMode.Thumbnail;
             picker.SuggestedStartLocation = PickerLocationId.Desktop;
             return picker;
+        }
+
+        public static async Task<string> ChooseFileAndGetPath(string Suffix)
+        {
+            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(Suffix);
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                return file.Path;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public static async Task<string> ChooseFolderAndGetPath()
+        {
+            FolderPicker folderPicker = CommandHelper.Get_FolderPicker();
+            folderPicker.FileTypeFilter.Add("*");
+            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+            if (folder != null)
+            {
+                return folder.Path;
+            }
+            else
+            {
+                return "";
+            }
         }
 
     }
