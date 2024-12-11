@@ -221,31 +221,48 @@ namespace DBMT
 
         public static async Task<string> ChooseFileAndGetPath(string Suffix)
         {
-            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(Suffix);
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
+            try
             {
-                return file.Path;
+                FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(Suffix);
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    return file.Path;
+                }
+                else
+                {
+                    return "";
+                }
             }
-            else
+            catch (Exception exception)
             {
-                return "";
+                await MessageHelper.Show(exception.ToString());
             }
+            return "";
         }
 
         public static async Task<string> ChooseFolderAndGetPath()
         {
-            FolderPicker folderPicker = CommandHelper.Get_FolderPicker();
-            folderPicker.FileTypeFilter.Add("*");
-            StorageFolder folder = await folderPicker.PickSingleFolderAsync();
-            if (folder != null)
+            try
             {
-                return folder.Path;
+                FolderPicker folderPicker = CommandHelper.Get_FolderPicker();
+                folderPicker.FileTypeFilter.Add("*");
+                StorageFolder folder = await folderPicker.PickSingleFolderAsync();
+                if (folder != null)
+                {
+                    return folder.Path;
+                }
+                else
+                {
+                    return "";
+                }
             }
-            else
+            catch (Exception exception)
             {
-                return "";
+                await MessageHelper.Show(exception.ToString());
             }
+            return "";
+            
         }
 
     }

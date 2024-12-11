@@ -41,41 +41,22 @@ namespace DBMT
             LoadDirectoryNames();
             
         }
-        // 辅助方法：获取当前窗口的句柄
-
-        
-
 
         private async void ChooseProcessPathButtonClick(object sender, RoutedEventArgs e)
         {
-            try {
-                FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".exe");
-                StorageFile file = await picker.PickSingleFileAsync();
-                if (file != null)
-                {
-                    ProcessPathTextBox.Text = file.Path;
-                }
-            }
-            catch (Exception exception)
+            string filepath = await CommandHelper.ChooseFileAndGetPath(".exe");
+            if (filepath != "")
             {
-                await MessageHelper.Show(exception.ToString());
+                ProcessPathTextBox.Text = filepath;
             }
         }
 
         private async void ChooseStarterPathButtonClick(object sender, RoutedEventArgs e)
         {
-            try
+            string filepath = await CommandHelper.ChooseFileAndGetPath(".exe");
+            if (filepath != "")
             {
-                FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".exe");
-                StorageFile file = await picker.PickSingleFileAsync();
-                if (file != null)
-                {
-                    StarterPathTextBox.Text = file.Path;
-                }
-            }
-            catch (Exception exception)
-            {
-                await MessageHelper.Show(exception.ToString());
+                StarterPathTextBox.Text = filepath;
             }
         }
 
