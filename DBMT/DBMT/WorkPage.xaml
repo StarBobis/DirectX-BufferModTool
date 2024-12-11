@@ -50,11 +50,11 @@
                 </MenuBarItem>
 
                 <MenuBarItem Title="Mod逆向">
-                    <MenuFlyoutItem Text="从Dump文件中逆向提取"/>
+                    <MenuFlyoutItem Text="从Dump文件中逆向提取" Click="ReverseLv5_ReverseExtract"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="一键逆向普通单个Mod的ini"/>
-                    <MenuFlyoutItem Text="一键逆向Toggle按键切换Mod的ini"/>
-                    <MenuFlyoutItem Text="一键逆向DrawIndexed分支Mod的ini"/>
+                    <MenuFlyoutItem Text="一键逆向普通单个Mod的ini" Click="ReverseLv5_ReverseSingleIni"/>
+                    <MenuFlyoutItem Text="一键逆向Toggle按键切换Mod的ini" Click="ReverseLv5_ReverseToggleSwitchIni"/>
+                    <MenuFlyoutItem Text="一键逆向DrawIndexed分支Mod的ini" Click="ReverseLv5_ReverseDrawIndexedSwitchIni"/>
                 </MenuBarItem>
 
                 <MenuBarItem Title="Mod加密">

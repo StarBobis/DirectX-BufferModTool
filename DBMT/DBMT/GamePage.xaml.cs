@@ -43,23 +43,12 @@ namespace DBMT
         }
         // 辅助方法：获取当前窗口的句柄
 
-        private FileOpenPicker GetFilePicker(string Suffix)
-        {
-            FileOpenPicker picker = new FileOpenPicker();
-            // 获取当前窗口的HWND
-            nint windowHandle = WindowNative.GetWindowHandle(App.m_window);
-            InitializeWithWindow.Initialize(picker, windowHandle);
-
-            picker.ViewMode = PickerViewMode.Thumbnail;
-            picker.SuggestedStartLocation = PickerLocationId.Desktop;
-            picker.FileTypeFilter.Add(Suffix);
-            return picker;
-        }
+        
 
 
         private async void ChooseProcessPathButtonClick(object sender, RoutedEventArgs e)
         {
-            FileOpenPicker picker = GetFilePicker(".exe");
+            FileOpenPicker picker =await CommandHelper.GetFilePicker(".exe");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
@@ -70,7 +59,7 @@ namespace DBMT
         private async void ChooseStarterPathButtonClick(object sender, RoutedEventArgs e)
         {
 
-            FileOpenPicker picker = GetFilePicker(".exe");
+            FileOpenPicker picker = await CommandHelper.GetFilePicker(".exe");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {

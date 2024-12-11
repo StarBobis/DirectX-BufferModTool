@@ -18,6 +18,8 @@ using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using DBMT.Helper;
+using Windows.Storage.Pickers;
+using Windows.Storage;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -270,17 +272,28 @@ namespace DBMT
             }
         }
 
-        public async void ExtractModel(object sender, RoutedEventArgs e)
+        public async Task<bool> PreDoBeforeExtract()
         {
             if (TextBoxDrawIBList.Text.Trim() == "")
             {
-                await MessageHelper.Show("在运行之前请填写您的绘制IB的哈希值并进行配置","Please fill your DrawIB and config it before run.");
-                return;
+                await MessageHelper.Show("在运行之前请填写您的绘制IB的哈希值并进行配置", "Please fill your DrawIB and config it before run.");
+                return false;
             }
 
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
                 await MessageHelper.Show("请先指定工作空间");
+                return false;
+            }
+
+            return true;
+        }
+
+        public async void ExtractModel(object sender, RoutedEventArgs e)
+        {
+            bool Prepare = await PreDoBeforeExtract();
+            if (!Prepare)
+            {
                 return;
             }
 
@@ -685,7 +698,146 @@ namespace DBMT
         }
 
 
+        public async void ReverseLv5_ReverseExtract(object sender, RoutedEventArgs e)
+        {
+            bool Prepare = await PreDoBeforeExtract();
+            if (!Prepare)
+            {
+                return;
+            }
 
+            bool command_run_result =await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
+            if (command_run_result)
+            {
+                ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
+
+                await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
+            }
+        }
+
+        private async Task<string> RunReverseIniCommand(string commandStr)
+        {
+            if (string.IsNullOrEmpty(MainConfig.CurrentGameName))
+            {
+                await MessageHelper.Show("在逆向Mod之前请选择当前要进行格式转换的二创模型的所属游戏", "Please select your current game before reverse.");
+                return "";
+            }
+
+            FileOpenPicker picker = await CommandHelper.GetFilePicker(".ini");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string filePath = file.Path;
+                if (DBMTStringUtils.ContainsChinese(filePath))
+                {
+                    await MessageHelper.Show("目标Mod的ini文件路径中不能出现中文", "Target mod ini file path can't contains Chinese.");
+                    return "";
+                }
+
+                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // 读取文件内容
+                JObject runInputJson = JObject.Parse(json);
+                runInputJson["GameName"] = MainConfig.CurrentGameName;
+                runInputJson["ReverseFilePath"] = filePath;
+                File.WriteAllText(MainConfig.Path_RunInputJson, runInputJson.ToString());
+
+                bool RunResult = await CommandHelper.runCommand(commandStr, "3Dmigoto-Sword-Lv5.vmp.exe");
+                if (RunResult)
+                {
+                    return filePath;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        private static void SearchDirectory(string currentDirectory, List<string> result)
+        {
+            // 获取当前目录下的所有文件
+            string[] files = Directory.GetFiles(currentDirectory);
+
+            // 检查是否有.dds或.png文件
+            foreach (string file in files)
+            {
+                string extension = Path.GetExtension(file).ToLower();
+                if (extension == ".dds" || extension == ".png")
+                {
+                    // 如果找到了目标文件，将目录加入结果列表
+                    if (!result.Contains(currentDirectory))
+                    {
+                        result.Add(currentDirectory);
+                    }
+                    break; // 找到了一种类型的文件就不再继续查找当前目录中的其他文件
+                }
+            }
+
+            // 递归搜索子目录
+            string[] subdirectories = Directory.GetDirectories(currentDirectory);
+            foreach (string subdirectory in subdirectories)
+            {
+                SearchDirectory(subdirectory, result);
+            }
+            
+        }
+
+        public static List<string> FindDirectoriesWithImages(string rootDirectory)
+        {
+            if (string.IsNullOrEmpty(rootDirectory) || !Directory.Exists(rootDirectory))
+            {
+                throw new ArgumentException("The specified directory does not exist or is invalid.", nameof(rootDirectory));
+            }
+
+            var directoriesWithImages = new List<string>();
+            SearchDirectory(rootDirectory, directoriesWithImages);
+            return directoriesWithImages;
+        }
+
+        private async void ConvertTexturesInMod(string ModIniFilePath)
+        {
+            if (!string.IsNullOrEmpty(ModIniFilePath))
+            {
+                string ModFolderPath = Path.GetDirectoryName(ModIniFilePath);
+                List<string> result = FindDirectoriesWithImages(ModFolderPath);
+                foreach (string TextyreFolder in result)
+                {
+                    string TargetTexturesFolderPath = TextyreFolder + "/ConvertedTextures/";
+                    //MessageBox.Show(TargetTexturesFolderPath);
+                    Directory.CreateDirectory(TargetTexturesFolderPath);
+                    TextureHelper.ConvertAllTextureFilesToTargetFolder(TextyreFolder, TargetTexturesFolderPath);
+                }
+
+                string ModFolderName = Path.GetFileName(ModFolderPath);
+                string ModFolderParentPath = Path.GetDirectoryName(ModFolderPath);
+                string ModReverseFolderPath = ModFolderParentPath + "\\" + ModFolderName + "-Reverse\\";
+
+                await CommandHelper.ShellOpenFolder(ModReverseFolderPath);
+            }
+        }
+
+        public async void ReverseLv5_ReverseSingleIni(object sender, RoutedEventArgs e)
+        {
+            string ModIniFilePath =await RunReverseIniCommand("ReverseSingleLv5");
+            ConvertTexturesInMod(ModIniFilePath);
+        }
+
+
+        public async void ReverseLv5_ReverseToggleSwitchIni(object sender, RoutedEventArgs e)
+        {
+            string ModIniFilePath = await RunReverseIniCommand("ReverseMergedLv5");
+            ConvertTexturesInMod(ModIniFilePath);
+        }
+
+
+        public async void ReverseLv5_ReverseDrawIndexedSwitchIni(object sender, RoutedEventArgs e)
+        {
+            string ModIniFilePath = await RunReverseIniCommand("ReverseOutfitCompilerLv4");
+            ConvertTexturesInMod(ModIniFilePath);
+        }
 
     }
 }

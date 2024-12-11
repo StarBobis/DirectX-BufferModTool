@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage.Pickers;
+using WinRT.Interop;
 
 namespace DBMT
 {
@@ -188,6 +190,21 @@ namespace DBMT
             }
             
 
+        }
+
+
+
+        public static async Task<FileOpenPicker> GetFilePicker(string Suffix)
+        {
+            FileOpenPicker picker = new FileOpenPicker();
+            // 获取当前窗口的HWND
+            nint windowHandle = WindowNative.GetWindowHandle(App.m_window);
+            InitializeWithWindow.Initialize(picker, windowHandle);
+
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = PickerLocationId.Desktop;
+            picker.FileTypeFilter.Add(Suffix);
+            return picker;
         }
 
     }
