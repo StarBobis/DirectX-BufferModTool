@@ -48,22 +48,34 @@ namespace DBMT
 
         private async void ChooseProcessPathButtonClick(object sender, RoutedEventArgs e)
         {
-            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".exe");
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
+            try {
+                FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".exe");
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    ProcessPathTextBox.Text = file.Path;
+                }
+            }
+            catch (Exception exception)
             {
-                ProcessPathTextBox.Text = file.Path;
+                await MessageHelper.Show(exception.ToString());
             }
         }
 
         private async void ChooseStarterPathButtonClick(object sender, RoutedEventArgs e)
         {
-
-            FileOpenPicker picker =  CommandHelper.Get_FileOpenPicker(".exe");
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
+            try
             {
-                StarterPathTextBox.Text = file.Path;
+                FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".exe");
+                StorageFile file = await picker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    StarterPathTextBox.Text = file.Path;
+                }
+            }
+            catch (Exception exception)
+            {
+                await MessageHelper.Show(exception.ToString());
             }
         }
 
