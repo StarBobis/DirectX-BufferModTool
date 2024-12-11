@@ -49,14 +49,7 @@ namespace DBMT
 
         private void SetDefaultBackGroundImage()
         {
-            string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
-            string imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround_DIY.png");
-            if (!File.Exists(imagePath))
-            {
-                imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround.png");
-            }
-
-            // 创建 BitmapImage 并设置 ImageSource
+            string imagePath = PathHelper.GetCurrentGameBackGroundPicturePath();
             BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
             WorkBGImageBrush.ImageSource = bitmap;
         }

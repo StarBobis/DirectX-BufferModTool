@@ -80,27 +80,12 @@ namespace DBMT
             }
         }
 
+        
+
+
         private void SetGameBackGroundImage()
         {
-            string basePath = Directory.GetCurrentDirectory();
-
-            //设置背景图片
-            //默认为各个游戏用户设置的DIY图片
-            string imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png");
-
-            //如果不存在DIY背景图，则使用默认游戏的背景图
-            if (!File.Exists(imagePath))
-            {
-                imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png");
-            }
-
-            //如果默认游戏的背景图还不存在，则使用主页的背景图
-            if (!File.Exists(imagePath))
-            {
-                imagePath = Path.Combine(basePath, "Assets", "HomePageBackGround.png");
-            }
-
-            // 创建 BitmapImage 并设置 ImageSource
+            string imagePath = PathHelper.GetCurrentGameBackGroundPicturePath();
             BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
             GameBGImageBrush.ImageSource = bitmap;
         }
