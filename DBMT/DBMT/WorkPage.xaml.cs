@@ -85,6 +85,13 @@ namespace DBMT
 
         public void InitializeWorkSpace(string WorkSpaceName = "")
         {
+            //如果存储工作空间的output文件夹不存在就创建
+            if (!Directory.Exists(MainConfig.Path_OutputFolder))
+            {
+                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+            }
+
+
             ComboBoxWorkSpaceSelection.Items.Clear();
             string[] WorkSpaceNameList = DBMTFileUtils.ReadWorkSpaceNameList(MainConfig.Path_OutputFolder);
             foreach (string WorkSpaceNameItem in WorkSpaceNameList)
