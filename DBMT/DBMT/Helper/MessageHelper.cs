@@ -20,8 +20,5 @@ namespace DBMT
             InitializeWithWindow.Initialize(messageDialog, windowHandle);
             await messageDialog.ShowAsync();
         }
-
-
-
     }
 }
