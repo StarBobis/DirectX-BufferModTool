@@ -7,7 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
     
     <!-- 支持滑条，不然显示不完全 -->
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -39,8 +40,8 @@
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="一键逆向时生成模型文件的命名风格" VerticalAlignment="Center" Margin="10,0,10,0"  />
                     <ComboBox Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="模型命名风格" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ComboBox_ModelFileNameStyle">
-                        <x:String>GIMI</x:String>
                         <x:String>Number</x:String>
+                        <x:String>GIMI</x:String>
                     </ComboBox>
 
 
@@ -130,9 +131,9 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="全局贴图转换格式设置" VerticalAlignment="Center" Margin="10,0,10,0"  />
                     <ComboBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="目标格式" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ComboBox_AutoTextureFormat">
+                        <x:String>.jpg</x:String>
                         <x:String>.tga</x:String>
                         <x:String>.png</x:String>
-                        <x:String>.jpg</x:String>
                     </ComboBox>
 
                     <TextBlock  Grid.Column="0" Grid.Row="1" Text="提取模型时自动贴图仅转换DiffuseMap.dds" VerticalAlignment="Center" Margin="10,0,10,0" />

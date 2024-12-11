@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DBMT
 {
+  
+
+
     public static class MainConfig
     {
         public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.0.9.5 "; //程序窗口名称
@@ -16,11 +19,13 @@ namespace DBMT
         public const string Path_MainConfig = "Configs\\Main.json";
         public const string Path_RunResultJson = "Configs\\RunResult.json";
         public const string Path_RunInputJson = "Configs\\RunInput.json";
-        public const string Path_Game_SettingJson = "Configs\\Setting.json";
-        public const string Path_Texture_SettingJson = "Configs\\TextureSetting.json";
+       
         public const string Path_DeviceKeySetting = "Configs\\DeviceKeySetting.json";
         public const string Path_ACLFolderJson = "Configs\\ACLFolder.json";
 
+        //两个主要设置配置
+        public const string Path_Game_SettingJson = "Configs\\Setting.json";
+        public const string Path_Texture_SettingJson = "Configs\\TextureSetting.json";
 
         //当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
         public static string ApplicationRunPath = AppDomain.CurrentDomain.BaseDirectory.ToString();

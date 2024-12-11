@@ -33,6 +33,8 @@ namespace DBMT
             InitializeGUI();
         }
 
+     
+
         private async void InitializeGUI()
         {
             // C# code to set AppTitleBar uielement as titlebar
@@ -148,6 +150,13 @@ namespace DBMT
                 var pageTag = item.Tag.ToString();
                 Type pageType = null;
 
+                ////切换到非设置界面时，保存所有数据
+                //if (pageType != typeof(SettingsPage))
+                //{
+                //    SettingsHelper.SaveGameSettingsToConfig();
+                //    SettingsHelper.SaveTextureSettingsToConfig();
+                //}
+
                 switch (pageTag)
                 {
                     case "HomePage":
@@ -170,5 +179,7 @@ namespace DBMT
                 }
             }
         }
+     
+
     }
 }

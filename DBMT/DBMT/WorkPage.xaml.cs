@@ -309,6 +309,8 @@ namespace DBMT
                 {
                     ConvertDedupedTexturesToTargetFormat();
                 }
+
+                OpenCurrentWorkSpaceFolder(sender, e);
             }
             else
             {
@@ -723,7 +725,7 @@ namespace DBMT
                 return "";
             }
 
-            FileOpenPicker picker = await CommandHelper.Get_FileOpenPicker(".ini");
+            FileOpenPicker picker =  CommandHelper.Get_FileOpenPicker(".ini");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
@@ -858,7 +860,7 @@ namespace DBMT
 
         public async Task<string> obfuscate(string obfusVersion = "Dev")
         {
-            FileOpenPicker picker =await CommandHelper.Get_FileOpenPicker(".ini");
+            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".ini");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
@@ -1005,7 +1007,7 @@ namespace DBMT
 
         public async Task<bool> DBMT_Encryption_RunCommand_OpenIni(string command)
         {
-            FileOpenPicker picker = await CommandHelper.Get_FileOpenPicker(".ini");
+            FileOpenPicker picker =  CommandHelper.Get_FileOpenPicker(".ini");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
@@ -1034,7 +1036,7 @@ namespace DBMT
         {
             string EncryptionCommand = "encrypt_buffer_acptpro_V4";
 
-            FolderPicker folderPicker = await CommandHelper.Get_FolderPicker();
+            FolderPicker folderPicker =  CommandHelper.Get_FolderPicker();
             folderPicker.FileTypeFilter.Add("*");
             StorageFolder folder = await folderPicker.PickSingleFolderAsync();
 

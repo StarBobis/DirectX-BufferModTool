@@ -186,14 +186,14 @@ namespace DBMT
                 return false;
             }else
             {
-                return false;
+                return true;
             }
             
-
+            
         }
 
 
-        public static async Task<FileOpenPicker> Get_FileOpenPicker(string Suffix)
+        public static FileOpenPicker Get_FileOpenPicker(string Suffix)
         {
             FileOpenPicker picker = new FileOpenPicker();
             // 获取当前窗口的HWND
@@ -206,7 +206,7 @@ namespace DBMT
             return picker;
         }
 
-        public static async Task<FolderPicker> Get_FolderPicker()
+        public static FolderPicker Get_FolderPicker()
         {
             FolderPicker picker = new FolderPicker();
             // 获取当前窗口的HWND
