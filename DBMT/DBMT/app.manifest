@@ -13,6 +13,7 @@
   
   <application xmlns="urn:schemas-microsoft-com:asm.v3">
     <windowsSettings>
+		<!--设为Unaware 可以避免缩放不是100%时正确显示界面，但是会糊掉，最终还是决定用这个PerMonitorV2-->
       <dpiAwareness xmlns="http://schemas.microsoft.com/SMI/2016/WindowsSettings">PerMonitorV2</dpiAwareness>
     </windowsSettings>
   </application>
