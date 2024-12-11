@@ -46,7 +46,6 @@ namespace DBMT.Helper
 
                 string TextureFormatString = GetAutoTextureFormat();
                 CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, TargetFolderPath);
-
             }
         }
 

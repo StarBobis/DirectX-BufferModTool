@@ -258,8 +258,9 @@ namespace DBMT
 
         }
 
-        void ConvertDedupedTexturesToTargetFormat()
+        async void ConvertDedupedTexturesToTargetFormat()
         {
+
             string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
             List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
             foreach (string DrawIB in DrawIBList)
@@ -269,6 +270,7 @@ namespace DBMT
                 //MessageHelper.Show(DedupedTexturesFolderPath);
                 if (!Directory.Exists(DedupedTexturesFolderPath))
                 {
+                    await MessageHelper.Show("无法找到DedupedTextures文件夹: " + DedupedTexturesFolderPath);
                     return;
                 }
 
@@ -276,6 +278,7 @@ namespace DBMT
                 string DedupedTexturesConvertFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures_" + TextureFormatString + "/";
                 //MessageHelper.Show(DedupedTexturesConvertFolderPath);
                 TextureHelper.ConvertAllTextureFilesToTargetFolder(DedupedTexturesFolderPath, DedupedTexturesConvertFolderPath);
+                //await MessageHelper.Show("转换成功");
             }
         }
 
@@ -314,6 +317,7 @@ namespace DBMT
 
                 if (MainConfig.ConvertDedupedTextures)
                 {
+                    //await MessageHelper.Show("勾选了转换Deduped贴图，开始转换Deduped贴图");
                     ConvertDedupedTexturesToTargetFormat();
                 }
 

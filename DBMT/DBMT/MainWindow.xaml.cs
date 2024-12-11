@@ -116,6 +116,9 @@ namespace DBMT
                 MainConfig.LogFileReserveNumber = (int)jsonObject["LogFileReserveNumber"];
             }
 
+            //读取全局设置，这样工作台就能直接用了。
+            SettingsHelper.ReadGameSettingsFromConfig();
+            SettingsHelper.ReadTextureSettingsFromConfig();
         }
 
         private void MoveWindowToCenterScreen()
@@ -284,6 +287,9 @@ namespace DBMT
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
+            //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
+            contentFrame.Navigate(typeof(HomePage));
+
             if (MainConfig.AutoCleanFrameAnalysisFolder)
             {
                 cleanFrameAnalysisFiles();
