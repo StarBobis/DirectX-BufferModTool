@@ -87,45 +87,8 @@ namespace DBMT
                 Directory.CreateDirectory("Logs");
             }
 
-
-            if (File.Exists(MainConfig.Path_Texture_SettingJson))
-            {
-                string json = File.ReadAllText(MainConfig.Path_Texture_SettingJson); // 读取文件内容
-                JObject jsonObject = JObject.Parse(json);
-
-                //AutoTextureFormat
-                if (jsonObject.ContainsKey("AutoTextureFormat"))
-                {
-                    MainConfig.AutoTextureFormat = (int)jsonObject["AutoTextureFormat"];
-                }
-
-                //ConvertDedupedTextures
-                if (jsonObject.ContainsKey("ConvertDedupedTextures"))
-                {
-                    MainConfig.ConvertDedupedTextures = (bool)jsonObject["ConvertDedupedTextures"];
-                }
-
-                if (jsonObject.ContainsKey("AutoTextureOnlyConvertDiffuseMap"))
-                {
-                    MainConfig.AutoTextureOnlyConvertDiffuseMap = (bool)jsonObject["AutoTextureOnlyConvertDiffuseMap"];
-                }
-
-            }
-
-            //读取并设置一些配置变量，用于传递给每个DrawIB的ConfigMod窗口
-            if (File.Exists(MainConfig.Path_Game_SettingJson))
-            {
-                string json = File.ReadAllText(MainConfig.Path_Game_SettingJson); // 读取文件内容
-                JObject jsonObject = JObject.Parse(json);
-                MainConfig.AutoCleanFrameAnalysisFolder = (bool)jsonObject["AutoCleanFrameAnalysisFolder"];
-                MainConfig.FrameAnalysisFolderReserveNumber = (int)jsonObject["FrameAnalysisFolderReserveNumber"];
-                MainConfig.AutoCleanLogFile = (bool)jsonObject["AutoCleanLogFile"];
-                MainConfig.LogFileReserveNumber = (int)jsonObject["LogFileReserveNumber"];
-            }
-
-            //读取全局设置，这样工作台就能直接用了。
-            SettingsHelper.ReadGameSettingsFromConfig();
-            SettingsHelper.ReadTextureSettingsFromConfig();
+            //读取配置文件
+            MainConfig.LoadConfigFromFiles();
         }
 
         private void MoveWindowToCenterScreen()
