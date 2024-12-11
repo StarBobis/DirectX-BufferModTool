@@ -172,9 +172,19 @@ namespace DBMT
 
         private async void SavePathSettingsToD3dxIni(object sender, RoutedEventArgs e)
         {
-            ConfigHelper.SaveAttributeToD3DXIni("[loader]","target",ProcessPathTextBox.Text);
-            ConfigHelper.SaveAttributeToD3DXIni("[loader]","launch", StarterPathTextBox.Text);
-            await MessageHelper.Show("保存成功");
+            try
+            {
+                ConfigHelper.SaveAttributeToD3DXIni("[loader]", "target", ProcessPathTextBox.Text);
+                ConfigHelper.SaveAttributeToD3DXIni("[loader]", "launch", StarterPathTextBox.Text);
+
+                await MessageHelper.Show("保存成功");
+
+            }
+            catch (Exception ex)
+            {
+                await MessageHelper.Show("保存失败：" + ex.ToString());
+            }
+            
         }
 
         private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
