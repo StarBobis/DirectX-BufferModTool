@@ -41,7 +41,7 @@ namespace DBMT
                 MainConfig.SetCurrentGame(MainConfig.CurrentGameName);
             }
 
-            string WorkSpaceName = MainConfig.ReadCurrentWorkSpaceFromMainJson();
+            MainConfig.ReadCurrentWorkSpaceFromMainJson();
             InitializeWorkSpace(MainConfig.CurrentWorkSpace);
         }
 
