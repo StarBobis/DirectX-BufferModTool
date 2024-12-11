@@ -10,6 +10,12 @@ namespace DBMT.Helper
     public class PathHelper
     {
 
+        public static string GetAssetsFolderPath()
+        {
+            return Path.Combine(Directory.GetCurrentDirectory(),"Assets\\");
+        }
+
+
         public static string GetLatestLogFilePath()
         {
             string logsPath = MainConfig.ApplicationRunPath + "Logs";

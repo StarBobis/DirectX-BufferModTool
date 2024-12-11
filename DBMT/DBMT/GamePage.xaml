@@ -15,6 +15,21 @@
             <ImageBrush ImageSource="Assets/HSR.png" Stretch="UniformToFill" x:Name="GameBGImageBrush" />
         </Grid.Background>
 
+        <!--自定义背景-->
+        <Border 
+CornerRadius="18"
+Margin="0,5,5,0"
+VerticalAlignment="Top"
+HorizontalAlignment="Right">
+
+            <Button Click="SetDIYGameBackGroundImage"
+    Width="45" Height="45"
+    BorderThickness="0"
+    Background="Transparent" >
+                <SymbolIcon Symbol="Setting" />
+            </Button>
+        </Border>
+
         <!-- 按钮永远置于右下角，距离下面和右边固定为30px -->
         <Border Margin="0,0,20,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" CornerRadius="5" >
             <Border.Background>
@@ -31,7 +46,9 @@
             <Border.Background>
                 <SolidColorBrush Color="Black" Opacity="0.8"/>
             </Border.Background>
+
             
+
             <Grid>
                 <!-- 定义行 -->
                 <Grid.RowDefinitions>

@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using DBMT.Helper;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -43,6 +44,21 @@ namespace DBMT
 
             MainConfig.ReadCurrentWorkSpaceFromMainJson();
             InitializeWorkSpace(MainConfig.CurrentWorkSpace);
+            SetDefaultBackGroundImage();
+        }
+
+        private void SetDefaultBackGroundImage()
+        {
+            string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
+            string imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround_DIY.png");
+            if (!File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround.png");
+            }
+
+            // 创建 BitmapImage 并设置 ImageSource
+            BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
+            WorkBGImageBrush.ImageSource = bitmap;
         }
 
         private void ComboBoxWorkSpaceSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)

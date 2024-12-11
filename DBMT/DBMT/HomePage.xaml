@@ -11,11 +11,27 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        
         <!-- 设置背景图片 -->
         <Grid.Background>
             <ImageBrush x:Name="HomeBGImageBrush" Stretch="UniformToFill" ImageSource="Assets/HomePageBackGround.png" />
         </Grid.Background>
-        
+
+        <!-- 设置主页背景 -->
+        <Border 
+            CornerRadius="18"
+            Margin="0,5,5,0"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Right">
+
+            <Button Click="SetDIYBackGroundImage"
+                Width="45" Height="45"
+                BorderThickness="0"
+                Background="Transparent" >
+                <SymbolIcon Symbol="Setting" />
+            </Button>
+        </Border>
+
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20">
             <TextBlock Text="DirectX Buffer Mod Tool" FontSize="24" FontWeight="Bold" Foreground="White"/>
             <TextBlock Text="--- 愿此行，终抵群星。" FontSize="12" Margin="0,5,0,15" Foreground="White" />

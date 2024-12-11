@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using DBMT.Helper;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,6 +30,21 @@ namespace DBMT
             this.InitializeComponent();
 
             ReadSettingsFromConfig();
+            SetDefaultBackGroundImage();
+        }
+
+        private void SetDefaultBackGroundImage()
+        {
+            string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
+            string imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround_DIY.png");
+            if (!File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround.png");
+            }
+
+            // 创建 BitmapImage 并设置 ImageSource
+            BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
+            SettingsBGImageBrush.ImageSource = bitmap;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

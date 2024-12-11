@@ -24,6 +24,7 @@ using DBMT_Core;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using Windows.UI.Popups;
+using DBMT.Helper;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -69,25 +70,56 @@ namespace DBMT
             if (comboBox != null && comboBox.SelectedItem != null)
             {
                 // 执行你想要的操作，例如获取选中的项并进行处理
-                string basePath = Directory.GetCurrentDirectory();
                 string selectedGame = comboBox.SelectedItem.ToString();
 
                 MainConfig.SetCurrentGame(selectedGame);
                 //读取d3dx.ini中的设置
                 ReadPathSettingFromD3dxIni();
 
-                //设置背景图片
-                string imagePath = Path.Combine(basePath, "Assets", selectedGame + ".png");
-                if (!File.Exists(imagePath))
-                {
-                    imagePath = Path.Combine(basePath, "Assets", "DefaultGame.png");
-                }
-
-                // 创建 BitmapImage 并设置 ImageSource
-                BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
-                GameBGImageBrush.ImageSource = bitmap;
+                SetGameBackGroundImage();
             }
         }
+
+        private void SetGameBackGroundImage()
+        {
+            string basePath = Directory.GetCurrentDirectory();
+
+            //设置背景图片
+            //默认为各个游戏用户设置的DIY图片
+            string imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png");
+
+            //如果不存在DIY背景图，则使用默认游戏的背景图
+            if (!File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png");
+            }
+
+            //如果默认游戏的背景图还不存在，则使用主页的背景图
+            if (!File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(basePath, "Assets", "HomePageBackGround.png");
+            }
+
+            // 创建 BitmapImage 并设置 ImageSource
+            BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
+            GameBGImageBrush.ImageSource = bitmap;
+        }
+
+
+        private async void SetDIYGameBackGroundImage(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker PicturePicker = CommandHelper.Get_FileOpenPicker(".png");
+            StorageFile file = await PicturePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
+                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.CurrentGameName + "_DIY.png");
+                File.Copy(file.Path, TargetPicturePath, true);
+
+                SetGameBackGroundImage();
+            }
+        }
+
 
         private void InitializePathConfigButtonClieck(object sender, RoutedEventArgs e)
         {

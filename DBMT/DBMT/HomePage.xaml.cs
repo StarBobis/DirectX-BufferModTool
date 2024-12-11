@@ -15,6 +15,9 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.System;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Pickers;
+using Windows.Storage;
+using DBMT.Helper;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,21 +29,10 @@ namespace DBMT
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        //DesktopAcrylicController m_backdropController;
-
-        //private bool TrySetSystemBackdrop()
-        //{
-        //    if (DesktopAcrylicController.IsSupported())
-        //    {
-        //        m_backdropController = new DesktopAcrylicController();
-        //        return true;
-        //    }
-        //    return false;
-        //}
-
         public HomePage()
         {
             this.InitializeComponent();
+            SetDefaultBackGroundImage();
         }
 
         private void OpenLinkButtonClick(object sender, RoutedEventArgs e)
@@ -51,5 +43,34 @@ namespace DBMT
                 IAsyncOperation<bool> asyncOperation = Launcher.LaunchUriAsync(new Uri(button.Tag.ToString()));
             }
         }
+
+        private void SetDefaultBackGroundImage()
+        {
+            string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
+            string imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround_DIY.png");
+            if (!File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround.png");
+            }
+
+            // 创建 BitmapImage 并设置 ImageSource
+            BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
+            HomeBGImageBrush.ImageSource = bitmap;
+        }
+
+        private async void SetDIYBackGroundImage(object sender, RoutedEventArgs e)
+        {
+            FileOpenPicker PicturePicker =  CommandHelper.Get_FileOpenPicker(".png");
+            StorageFile file = await PicturePicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
+                string TargetPicturePath = Path.Combine(AssetsFolderPath, "HomePageBackGround_DIY.png");
+                File.Copy(file.Path, TargetPicturePath,true);
+                SetDefaultBackGroundImage();
+            }
+        }
+
+
     }
 }
