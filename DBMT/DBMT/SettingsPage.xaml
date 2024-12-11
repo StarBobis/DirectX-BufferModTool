@@ -32,10 +32,21 @@
                         <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock  Grid.Column="0" Grid.Row="0" Text="退出DBMT之前自动清理生成的日志文件" VerticalAlignment="Center" Margin="10,0,10,0" />
+                    <StackPanel  Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Margin="10,0,10,0" Orientation="Horizontal">
+                        <TextBlock  Text="退出DBMT之前自动清理生成的日志文件" VerticalAlignment="Center" />
+
+                        <TextBlock  Text="保留日志文件的数量" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                        <NumberBox x:Name="NumberBox_LogFileReserveNumber" Margin="20,0,0,0"  PlaceholderText="0"  SmallChange="1"  LargeChange="10" />
+                    </StackPanel>
                     <ToggleSwitch Grid.Column="1"  Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center"   Margin="5,5,5,5" x:Name="ToggleSwitch_AutoCleanLogFile"/>
 
-                    <TextBlock Grid.Column="0" Grid.Row="1" Text="退出DBMT之前自动清理Dump生成的FrameAnalysis文件夹" VerticalAlignment="Center" Margin="10,0,10,0" />
+                    <StackPanel  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10,0,10,0" Orientation="Horizontal">
+                        <TextBlock  Text="退出DBMT之前自动清理Dump生成的FrameAnalysis文件夹" VerticalAlignment="Center" />
+                        <TextBlock  Text="保留FraemAnalysis文件数量" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                        <NumberBox x:Name="NumberBox_FrameAnalysisFolderReserveNumber" Margin="20,0,0,0"  PlaceholderText="0"  SmallChange="1"  LargeChange="10" />
+                    </StackPanel>
+                    
+                    
                     <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_AutoCleanFrameAnalysisFolder"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="一键逆向时生成模型文件的命名风格" VerticalAlignment="Center" Margin="10,0,10,0"  />

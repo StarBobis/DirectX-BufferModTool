@@ -41,7 +41,9 @@ namespace DBMT
         public void SaveSettingsToConfig()
         {
             SettingsHelper.AutoCleanLogFile = ToggleSwitch_AutoCleanLogFile.IsOn;
+            SettingsHelper.LogFileReserveNumber = (int)NumberBox_LogFileReserveNumber.Value;
             SettingsHelper.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
+            SettingsHelper.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
             SettingsHelper.ModelFileNameStyle = ComboBox_ModelFileNameStyle.SelectedIndex;
 
             SettingsHelper.MoveIBRelatedFiles = ToggleSwitch_MoveIBRelatedFiles.IsOn;
@@ -72,7 +74,11 @@ namespace DBMT
             SettingsHelper.ReadTextureSettingsFromConfig();
 
             ToggleSwitch_AutoCleanLogFile.IsOn = SettingsHelper.AutoCleanLogFile;
+            NumberBox_LogFileReserveNumber.Value = SettingsHelper.LogFileReserveNumber;
+
             ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = SettingsHelper.AutoCleanFrameAnalysisFolder;
+            NumberBox_FrameAnalysisFolderReserveNumber.Value = SettingsHelper.FrameAnalysisFolderReserveNumber;
+           
             ComboBox_ModelFileNameStyle.SelectedIndex = SettingsHelper.ModelFileNameStyle;
 
             ToggleSwitch_MoveIBRelatedFiles.IsOn = SettingsHelper.MoveIBRelatedFiles;
