@@ -2,25 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
+using DBMT.Helper;
+using DBMT_Core;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using DBMT_Core;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
-using DBMT.Helper;
-using Windows.Storage.Pickers;
-using Windows.Storage;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -71,7 +62,7 @@ namespace DBMT
             string Configpath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "\\Config.json";
             if (File.Exists(Configpath))
             {
-                
+
                 //切换到对应配置
                 string jsonData = File.ReadAllText(Configpath);
                 JObject jobj = JObject.Parse(jsonData);
@@ -259,9 +250,9 @@ namespace DBMT
                             }
                         }
                         else if (!ddsFilePath.EndsWith(".dds"))
-                         {
-                                continue;
-                         }
+                        {
+                            continue;
+                        }
 
                         string TextureFormatString = TextureHelper.GetAutoTextureFormat();
                         CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
@@ -338,9 +329,9 @@ namespace DBMT
             }
             else
             {
-                OpenLatestLogFile(sender,e);
+                OpenLatestLogFile(sender, e);
             }
-            
+
         }
 
 
@@ -359,7 +350,7 @@ namespace DBMT
             }
             else
             {
-                OpenLatestLogFile(sender,e);
+                OpenLatestLogFile(sender, e);
             }
         }
 
@@ -367,7 +358,7 @@ namespace DBMT
         public async void OpenWorkSpaceGenerateModFolder(object sender, RoutedEventArgs e)
         {
             string GeneratedModFolderPath = MainConfig.Path_OutputFolder + "/" + MainConfig.CurrentWorkSpace + "/GeneratedMod/";
-           
+
             if (Directory.Exists(GeneratedModFolderPath))
             {
                 await CommandHelper.ShellOpenFolder(GeneratedModFolderPath);
@@ -426,7 +417,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("目标目录没有任何FrameAnalysis文件夹","Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("目标目录没有任何FrameAnalysis文件夹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -483,7 +474,7 @@ namespace DBMT
 
         public async void OpenLogsFolder(object sender, RoutedEventArgs e)
         {
-            string LogsFolderPath = Path.Combine(Directory.GetCurrentDirectory() ,"Logs\\");
+            string LogsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Logs\\");
             await CommandHelper.ShellOpenFolder(LogsFolderPath);
         }
 
@@ -491,7 +482,7 @@ namespace DBMT
         public async void OpenLatestLogFile(object sender, RoutedEventArgs e)
         {
             string LogFilePath = PathHelper.GetLatestLogFilePath();
-            if(File.Exists(LogFilePath))
+            if (File.Exists(LogFilePath))
             {
                 await CommandHelper.ShellOpenFile(LogFilePath);
             }
@@ -510,7 +501,7 @@ namespace DBMT
         }
 
 
-       
+
 
         public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
         {
@@ -607,11 +598,11 @@ namespace DBMT
                             continue;
                         }
                         WritedHashList.Add(hash);
-                        outputContent = outputContent + "[ShaderOverride_" + hash + "]\r\n";
-                        outputContent = outputContent + "hash = " + hash + "\r\n";
-                        outputContent = outputContent + "if $costume_mods\r\n";
-                        outputContent = outputContent + "  checktextureoverride = ib\r\n";
-                        outputContent = outputContent + "endif\r\n\r\n";
+                        outputContent += "[ShaderOverride_" + hash + "]\r\n";
+                        outputContent += "hash = " + hash + "\r\n";
+                        outputContent += "if $costume_mods\r\n";
+                        outputContent += "  checktextureoverride = ib\r\n";
+                        outputContent += "endif\r\n\r\n";
                     }
                 }
 
@@ -641,14 +632,14 @@ namespace DBMT
             //逆向提取之前要保存DrawIB列表。
             SaveDrawIBList();
 
-            bool command_run_result =await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
+            bool command_run_result = await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
             if (command_run_result)
             {
                 ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
                 await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
             }
-            
+
         }
 
         private async Task<string> RunReverseIniCommand(string commandStr)
@@ -659,7 +650,7 @@ namespace DBMT
                 return "";
             }
 
-            FileOpenPicker picker =  CommandHelper.Get_FileOpenPicker(".ini");
+            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".ini");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
@@ -718,7 +709,7 @@ namespace DBMT
             {
                 SearchDirectory(subdirectory, result);
             }
-            
+
         }
 
         public static List<string> FindDirectoriesWithImages(string rootDirectory)
@@ -757,7 +748,7 @@ namespace DBMT
 
         public async void ReverseLv5_ReverseSingleIni(object sender, RoutedEventArgs e)
         {
-            string ModIniFilePath =await RunReverseIniCommand("ReverseSingleLv5");
+            string ModIniFilePath = await RunReverseIniCommand("ReverseSingleLv5");
             ConvertTexturesInMod(ModIniFilePath);
         }
 
@@ -791,13 +782,13 @@ namespace DBMT
         }
 
 
-        
+
 
         public async void Encryption_EncryptAll(object sender, RoutedEventArgs e)
         {
 
             //混淆并返回新的ini文件的路径
-            string NewModInIPath =await EncryptionHelper.Obfuscate_ModFileName("Play");
+            string NewModInIPath = await EncryptionHelper.Obfuscate_ModFileName("Play");
             if (NewModInIPath == "")
             {
                 return;

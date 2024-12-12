@@ -194,7 +194,8 @@ namespace DBMT
 
         private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
         {
-            string d3dxini_path = ConfigHelper.GetD3DXIniPath();
+            //string d3dxini_path = ConfigHelper.GetD3DXIniPath();
+            string d3dxini_path = MainConfig.Path_D3DXINI;
             await CommandHelper.ShellOpenFile(d3dxini_path);
         }
 
