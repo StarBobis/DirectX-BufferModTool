@@ -79,7 +79,95 @@ namespace DBMT
             return buffHash_vsShaderHashValues_Dict;
         }
 
+        public static async void GenerateVSCheck(List<string> DrawIBList)
+        {
+            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await DrawIBHelper.GetBuffHash_VSShaderHashValues_Dict();
 
+            string outputContent = "";
+
+            List<string> WritedHashList = new List<string>();
+
+            foreach (string DrawIB in DrawIBList)
+            {
+
+                if (buffHash_vsShaderHashValues_Dict.ContainsKey(DrawIB))
+                {
+                    List<string> VSHashList = buffHash_vsShaderHashValues_Dict[DrawIB];
+                    foreach (string hash in VSHashList)
+                    {
+                        if (WritedHashList.Contains(hash))
+                        {
+                            continue;
+                        }
+                        WritedHashList.Add(hash);
+                        outputContent += "[ShaderOverride_" + hash + "]\r\n";
+                        outputContent += "hash = " + hash + "\r\n";
+                        outputContent += "if $costume_mods\r\n";
+                        outputContent += "  checktextureoverride = ib\r\n";
+                        outputContent += "endif\r\n\r\n";
+                    }
+                }
+
+            }
+
+            if (!File.Exists(MainConfig.Path_OutputFolder))
+            {
+                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+            }
+
+            string outputPath = MainConfig.Path_OutputFolder + "VertexShaderCheck.ini";
+            File.WriteAllText(outputPath, outputContent);
+        }
+
+
+
+        public static async void GenerateSkipIB(List<string> DrawIBList)
+        {
+
+            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await DrawIBHelper.GetBuffHash_VSShaderHashValues_Dict();
+
+            string outputContent = "";
+
+            List<string> WritedHashList = new List<string>();
+
+            foreach (string DrawIB in DrawIBList)
+            {
+                outputContent = outputContent + "[TextureOverride_IB_" + DrawIB + "]\r\n";
+                outputContent = outputContent + "hash = " + DrawIB + "\r\n";
+                outputContent = outputContent + "handling = skip\r\n";
+                outputContent = outputContent + "\r\n";
+
+                if (MainConfig.CurrentGameName == "Game001" || MainConfig.CurrentGameName == "LiarsBar")
+                {
+                    if (buffHash_vsShaderHashValues_Dict.ContainsKey(DrawIB))
+                    {
+                        List<string> VSHashList = buffHash_vsShaderHashValues_Dict[DrawIB];
+                        foreach (string hash in VSHashList)
+                        {
+                            if (WritedHashList.Contains(hash))
+                            {
+                                continue;
+                            }
+                            WritedHashList.Add(hash);
+                            outputContent = outputContent + "[ShaderOverride_" + hash + "]\r\n";
+                            outputContent = outputContent + "hash = " + hash + "\r\n";
+                            outputContent = outputContent + "if $costume_mods\r\n";
+                            outputContent = outputContent + "  checktextureoverride = ib\r\n";
+                            outputContent = outputContent + "endif\r\n\r\n";
+                        }
+                    }
+                }
+
+            }
+
+            if (!File.Exists(MainConfig.Path_OutputFolder))
+            {
+                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+            }
+
+            string outputPath = MainConfig.Path_OutputFolder + "IBSkip.ini";
+            File.WriteAllText(outputPath, outputContent);
+        }
 
     }
 }

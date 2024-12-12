@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using DBMT_Core;
+using Microsoft.UI.Xaml.Controls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -263,6 +264,47 @@ namespace DBMT
             }
             return "";
             
+        }
+
+        public static async Task<string> RunReverseIniCommand(string commandStr)
+        {
+            if (string.IsNullOrEmpty(MainConfig.CurrentGameName))
+            {
+                await MessageHelper.Show("在逆向Mod之前请选择当前要进行格式转换的二创模型的所属游戏", "Please select your current game before reverse.");
+                return "";
+            }
+
+            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".ini");
+            StorageFile file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                string filePath = file.Path;
+                if (DBMTStringUtils.ContainsChinese(filePath))
+                {
+                    await MessageHelper.Show("目标Mod的ini文件路径中不能出现中文", "Target mod ini file path can't contains Chinese.");
+                    return "";
+                }
+
+                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // 读取文件内容
+                JObject runInputJson = JObject.Parse(json);
+                runInputJson["GameName"] = MainConfig.CurrentGameName;
+                runInputJson["ReverseFilePath"] = filePath;
+                File.WriteAllText(MainConfig.Path_RunInputJson, runInputJson.ToString());
+
+                bool RunResult = await CommandHelper.runCommand(commandStr, "3Dmigoto-Sword-Lv5.vmp.exe");
+                if (RunResult)
+                {
+                    return filePath;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            else
+            {
+                return "";
+            }
         }
 
     }

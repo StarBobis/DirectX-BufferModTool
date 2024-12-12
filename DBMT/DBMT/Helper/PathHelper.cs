@@ -91,6 +91,30 @@ namespace DBMT
         }
 
 
+        public static string GetLatestFrameAnalysisFolder()
+        {
+            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder);
+            List<string> frameAnalysisFileList = new List<string>();
+            foreach (string directory in directories)
+            {
+                string directoryName = Path.GetFileName(directory);
 
+                if (directoryName.StartsWith("FrameAnalysis-"))
+                {
+                    frameAnalysisFileList.Add(directoryName);
+                }
+            }
+
+            //
+            if (frameAnalysisFileList.Count > 0)
+            {
+                frameAnalysisFileList.Sort();
+
+                string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
+                return latestFrameAnalysisFolder;
+            }
+
+            return "";
+        }
     }
 }

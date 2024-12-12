@@ -25,14 +25,6 @@ namespace DBMT
         public WorkPage()
         {
             this.InitializeComponent();
-
-            //if (MainConfig.CurrentGameName == "")
-            //{
-            //    MainConfig.ReadCurrentGameFromMainJson();
-            //    MainConfig.SetCurrentGame(MainConfig.CurrentGameName);
-            //}
-
-            //MainConfig.ReadCurrentWorkSpaceFromMainJson();
             InitializeWorkSpace(MainConfig.CurrentWorkSpace);
             SetDefaultBackGroundImage();
         }
@@ -48,7 +40,6 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                //MainConfig.CurrentWorkSpace = ComboBoxWorkSpaceSelection.Text;
                 MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "WorkSpaceName", ComboBoxWorkSpaceSelection.Text);
                 MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
                 ReadDrawIBListFromWorkSpace();
@@ -214,83 +205,6 @@ namespace DBMT
             await MessageHelper.Show("保存成功");
         }
 
-        async void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
-        {
-            try
-            {
-                string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
-                List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
-                foreach (string DrawIB in DrawIBList)
-                {
-                    string DrawIBPath = WorkSpacePath + DrawIB + "/";
-                    if (!Directory.Exists(DrawIBPath))
-                    {
-                        continue;
-                    }
-                    //在这里把所有output目录下的dds转为png格式
-                    string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
-                    foreach (string outputDirectory in subdirectories)
-                    {
-                        //MessageBox.Show(Path.GetDirectoryName(outputDirectory));
-
-                        if (!Path.GetFileName(outputDirectory).StartsWith("TYPE_"))
-                        {
-                            continue;
-                        }
-
-
-                        string[] filePathArray = Directory.GetFiles(outputDirectory);
-                        foreach (string ddsFilePath in filePathArray)
-                        {
-                            if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "AutoTextureOnlyConvertDiffuseMap"))
-                            {
-                                if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
-                                {
-                                    continue;
-                                }
-                            }
-                            else if (!ddsFilePath.EndsWith(".dds"))
-                            {
-                                continue;
-                            }
-
-                            string TextureFormatString = TextureHelper.GetAutoTextureFormat();
-                            CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                await MessageHelper.Show("Can't convert texture files: " + ex.ToString());
-            }
-            
-
-        }
-
-        async void ConvertDedupedTexturesToTargetFormat()
-        {
-
-            string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
-            List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
-            foreach (string DrawIB in DrawIBList)
-            {
-                //在这里把所有output目录下的dds转为png格式
-                string DedupedTexturesFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures/";
-                //MessageHelper.Show(DedupedTexturesFolderPath);
-                if (!Directory.Exists(DedupedTexturesFolderPath))
-                {
-                    await MessageHelper.Show("无法找到DedupedTextures文件夹: " + DedupedTexturesFolderPath);
-                    return;
-                }
-
-                string TextureFormatString = TextureHelper.GetAutoTextureFormat();
-                string DedupedTexturesConvertFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures_" + TextureFormatString + "/";
-                //MessageHelper.Show(DedupedTexturesConvertFolderPath);
-                TextureHelper.ConvertAllTextureFilesToTargetFolder(DedupedTexturesFolderPath, DedupedTexturesConvertFolderPath);
-                //await MessageHelper.Show("转换成功");
-            }
-        }
 
         public async Task<bool> PreDoBeforeExtract()
         {
@@ -323,12 +237,11 @@ namespace DBMT
 
             if (RunResult)
             {
-                ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
+                TextureHelper.ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
                 if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ConvertDedupedTextures"))
                 {
-                    //await MessageHelper.Show("勾选了转换Deduped贴图，开始转换Deduped贴图");
-                    ConvertDedupedTexturesToTargetFormat();
+                    TextureHelper.ConvertDedupedTexturesToTargetFormat();
                 }
 
                 OpenCurrentWorkSpaceFolder(sender, e);
@@ -389,35 +302,9 @@ namespace DBMT
             }
         }
 
-        string GetLatestFrameAnalysisFolder()
-        {
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder);
-            List<string> frameAnalysisFileList = new List<string>();
-            foreach (string directory in directories)
-            {
-                string directoryName = Path.GetFileName(directory);
-
-                if (directoryName.StartsWith("FrameAnalysis-"))
-                {
-                    frameAnalysisFileList.Add(directoryName);
-                }
-            }
-
-            //
-            if (frameAnalysisFileList.Count > 0)
-            {
-                frameAnalysisFileList.Sort();
-
-                string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
-                return latestFrameAnalysisFolder;
-            }
-
-            return "";
-        }
-
         public async void OpenLatestFrameAnalysisFolder(object sender, RoutedEventArgs e)
         {
-            string latestFrameAnalysisFolder = GetLatestFrameAnalysisFolder();
+            string latestFrameAnalysisFolder = PathHelper.GetLatestFrameAnalysisFolder();
             if (!string.IsNullOrEmpty(latestFrameAnalysisFolder))
             {
                 await CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder);
@@ -448,7 +335,7 @@ namespace DBMT
 
         public async void OpenLatestFrameAnalysisDedupedFolder(object sender, RoutedEventArgs e)
         {
-            string latestFrameAnalysisFolder = GetLatestFrameAnalysisFolder();
+            string latestFrameAnalysisFolder = PathHelper.GetLatestFrameAnalysisFolder();
             if (!string.IsNullOrEmpty(latestFrameAnalysisFolder))
             {
                 await CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder + "\\deduped\\");
@@ -459,18 +346,15 @@ namespace DBMT
             }
         }
 
-
         public async void OpenExtractTypesFolder(object sender, RoutedEventArgs e)
         {
-            string ExtractTypeFolderPath = "Configs\\ExtractTypes\\";
-            string GameTypeFolderPath = ExtractTypeFolderPath + MainConfig.CurrentGameName + "\\";
-            if (Directory.Exists(GameTypeFolderPath))
+            if (Directory.Exists(MainConfig.Path_GameTypeFolder))
             {
-                await CommandHelper.ShellOpenFolder(GameTypeFolderPath);
+                await CommandHelper.ShellOpenFolder(MainConfig.Path_GameTypeFolder);
             }
             else
             {
-                await CommandHelper.ShellOpenFolder(ExtractTypeFolderPath);
+                await CommandHelper.ShellOpenFolder(MainConfig.Path_ExtractTypesFolder);
             }
         }
 
@@ -507,124 +391,33 @@ namespace DBMT
             TextBoxSkipIBList.Text = "";
         }
 
-
-
-
-        public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
+        private List<string> GetSkipIBList()
         {
-            //这里不需要区分match_first_index,这是因为我们实际测试中不再需要用到match_first_index的过滤了。
-            //直接分割然后输出即可
-            List<string> DrawIBList = new List<string>();
+            List<string> SkipIBList = new List<string>();
             if (TextBoxSkipIBList.Text.Contains(","))
             {
-                DrawIBList = TextBoxSkipIBList.Text.Split(',').ToList();
+                SkipIBList = TextBoxSkipIBList.Text.Split(',').ToList();
             }
             else
             {
-                DrawIBList.Add(TextBoxSkipIBList.Text);
+                SkipIBList.Add(TextBoxSkipIBList.Text);
             }
+            return SkipIBList; 
+        }
 
-            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await DrawIBHelper.GetBuffHash_VSShaderHashValues_Dict();
-
-            string outputContent = "";
-
-            List<string> WritedHashList = new List<string>();
-
-            foreach (string DrawIB in DrawIBList)
-            {
-                outputContent = outputContent + "[TextureOverride_IB_" + DrawIB + "]\r\n";
-                outputContent = outputContent + "hash = " + DrawIB + "\r\n";
-                outputContent = outputContent + "handling = skip\r\n";
-                outputContent = outputContent + "\r\n";
-
-                if (MainConfig.CurrentGameName == "Game001" || MainConfig.CurrentGameName == "LiarsBar")
-                {
-                    if (buffHash_vsShaderHashValues_Dict.ContainsKey(DrawIB))
-                    {
-                        List<string> VSHashList = buffHash_vsShaderHashValues_Dict[DrawIB];
-                        foreach (string hash in VSHashList)
-                        {
-                            if (WritedHashList.Contains(hash))
-                            {
-                                continue;
-                            }
-                            WritedHashList.Add(hash);
-                            outputContent = outputContent + "[ShaderOverride_" + hash + "]\r\n";
-                            outputContent = outputContent + "hash = " + hash + "\r\n";
-                            outputContent = outputContent + "if $costume_mods\r\n";
-                            outputContent = outputContent + "  checktextureoverride = ib\r\n";
-                            outputContent = outputContent + "endif\r\n\r\n";
-                        }
-                    }
-                }
-
-            }
-
-            if (!File.Exists(MainConfig.Path_OutputFolder))
-            {
-                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
-            }
-
-            string outputPath = MainConfig.Path_OutputFolder + "IBSkip.ini";
-            File.WriteAllText(outputPath, outputContent);
-
+        public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
+        {
+            List<string> DrawIBList = GetSkipIBList();
+            DrawIBHelper.GenerateSkipIB(DrawIBList);
             await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
         }
 
 
         public async void ExecuteGenerateVSCheck(object sender, RoutedEventArgs e)
         {
-            //这里不需要区分match_first_index,这是因为我们实际测试中不再需要用到match_first_index的过滤了。
-            //直接分割然后输出即可
-            List<string> DrawIBList = new List<string>();
-            if (TextBoxSkipIBList.Text.Contains(","))
-            {
-                DrawIBList = TextBoxSkipIBList.Text.Split(',').ToList();
-            }
-            else
-            {
-                DrawIBList.Add(TextBoxSkipIBList.Text);
-            }
-
-            Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = await DrawIBHelper.GetBuffHash_VSShaderHashValues_Dict();
-
-            string outputContent = "";
-
-            List<string> WritedHashList = new List<string>();
-
-            foreach (string DrawIB in DrawIBList)
-            {
-
-                if (buffHash_vsShaderHashValues_Dict.ContainsKey(DrawIB))
-                {
-                    List<string> VSHashList = buffHash_vsShaderHashValues_Dict[DrawIB];
-                    foreach (string hash in VSHashList)
-                    {
-                        if (WritedHashList.Contains(hash))
-                        {
-                            continue;
-                        }
-                        WritedHashList.Add(hash);
-                        outputContent += "[ShaderOverride_" + hash + "]\r\n";
-                        outputContent += "hash = " + hash + "\r\n";
-                        outputContent += "if $costume_mods\r\n";
-                        outputContent += "  checktextureoverride = ib\r\n";
-                        outputContent += "endif\r\n\r\n";
-                    }
-                }
-
-            }
-
-            if (!File.Exists(MainConfig.Path_OutputFolder))
-            {
-                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
-            }
-
-            string outputPath = MainConfig.Path_OutputFolder + "VertexShaderCheck.ini";
-            File.WriteAllText(outputPath, outputContent);
-
+            List<string> DrawIBList = GetSkipIBList();
+            DrawIBHelper.GenerateVSCheck(DrawIBList);
             await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
-
         }
 
 
@@ -642,167 +435,41 @@ namespace DBMT
             bool command_run_result = await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
             if (command_run_result)
             {
-                ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
+                TextureHelper.ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
                 await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
             }
-
         }
 
-        private async Task<string> RunReverseIniCommand(string commandStr)
-        {
-            if (string.IsNullOrEmpty(MainConfig.CurrentGameName))
-            {
-                await MessageHelper.Show("在逆向Mod之前请选择当前要进行格式转换的二创模型的所属游戏", "Please select your current game before reverse.");
-                return "";
-            }
-
-            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".ini");
-            StorageFile file = await picker.PickSingleFileAsync();
-            if (file != null)
-            {
-                string filePath = file.Path;
-                if (DBMTStringUtils.ContainsChinese(filePath))
-                {
-                    await MessageHelper.Show("目标Mod的ini文件路径中不能出现中文", "Target mod ini file path can't contains Chinese.");
-                    return "";
-                }
-
-                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // 读取文件内容
-                JObject runInputJson = JObject.Parse(json);
-                runInputJson["GameName"] = MainConfig.CurrentGameName;
-                runInputJson["ReverseFilePath"] = filePath;
-                File.WriteAllText(MainConfig.Path_RunInputJson, runInputJson.ToString());
-
-                bool RunResult = await CommandHelper.runCommand(commandStr, "3Dmigoto-Sword-Lv5.vmp.exe");
-                if (RunResult)
-                {
-                    return filePath;
-                }
-                else
-                {
-                    return "";
-                }
-            }
-            else
-            {
-                return "";
-            }
-        }
-
-        private static void SearchDirectory(string currentDirectory, List<string> result)
-        {
-            // 获取当前目录下的所有文件
-            string[] files = Directory.GetFiles(currentDirectory);
-
-            // 检查是否有.dds或.png文件
-            foreach (string file in files)
-            {
-                string extension = Path.GetExtension(file).ToLower();
-                if (extension == ".dds" || extension == ".png")
-                {
-                    // 如果找到了目标文件，将目录加入结果列表
-                    if (!result.Contains(currentDirectory))
-                    {
-                        result.Add(currentDirectory);
-                    }
-                    break; // 找到了一种类型的文件就不再继续查找当前目录中的其他文件
-                }
-            }
-
-            // 递归搜索子目录
-            string[] subdirectories = Directory.GetDirectories(currentDirectory);
-            foreach (string subdirectory in subdirectories)
-            {
-                SearchDirectory(subdirectory, result);
-            }
-
-        }
-
-        public static List<string> FindDirectoriesWithImages(string rootDirectory)
-        {
-            if (string.IsNullOrEmpty(rootDirectory) || !Directory.Exists(rootDirectory))
-            {
-                throw new ArgumentException("The specified directory does not exist or is invalid.", nameof(rootDirectory));
-            }
-
-            var directoriesWithImages = new List<string>();
-            SearchDirectory(rootDirectory, directoriesWithImages);
-            return directoriesWithImages;
-        }
-
-        private async void ConvertTexturesInMod(string ModIniFilePath)
-        {
-            if (!string.IsNullOrEmpty(ModIniFilePath))
-            {
-                string ModFolderPath = Path.GetDirectoryName(ModIniFilePath);
-                List<string> result = FindDirectoriesWithImages(ModFolderPath);
-                foreach (string TextyreFolder in result)
-                {
-                    string TargetTexturesFolderPath = TextyreFolder + "/ConvertedTextures/";
-                    //MessageBox.Show(TargetTexturesFolderPath);
-                    Directory.CreateDirectory(TargetTexturesFolderPath);
-                    TextureHelper.ConvertAllTextureFilesToTargetFolder(TextyreFolder, TargetTexturesFolderPath);
-                }
-
-                string ModFolderName = Path.GetFileName(ModFolderPath);
-                string ModFolderParentPath = Path.GetDirectoryName(ModFolderPath);
-                string ModReverseFolderPath = ModFolderParentPath + "\\" + ModFolderName + "-Reverse\\";
-
-                await CommandHelper.ShellOpenFolder(ModReverseFolderPath);
-            }
-        }
 
         public async void ReverseLv5_ReverseSingleIni(object sender, RoutedEventArgs e)
         {
-            string ModIniFilePath = await RunReverseIniCommand("ReverseSingleLv5");
-            ConvertTexturesInMod(ModIniFilePath);
+            string ModIniFilePath = await CommandHelper.RunReverseIniCommand("ReverseSingleLv5");
+            TextureHelper.ConvertTexturesInMod(ModIniFilePath);
         }
-
 
         public async void ReverseLv5_ReverseToggleSwitchIni(object sender, RoutedEventArgs e)
         {
-            string ModIniFilePath = await RunReverseIniCommand("ReverseMergedLv5");
-            ConvertTexturesInMod(ModIniFilePath);
+            string ModIniFilePath = await CommandHelper.RunReverseIniCommand("ReverseMergedLv5");
+            TextureHelper.ConvertTexturesInMod(ModIniFilePath);
         }
-
 
         public async void ReverseLv5_ReverseDrawIndexedSwitchIni(object sender, RoutedEventArgs e)
         {
-            string ModIniFilePath = await RunReverseIniCommand("ReverseOutfitCompilerLv4");
-            ConvertTexturesInMod(ModIniFilePath);
+            string ModIniFilePath = await CommandHelper.RunReverseIniCommand("ReverseOutfitCompilerLv4");
+            TextureHelper.ConvertTexturesInMod(ModIniFilePath);
         }
-
-        private async Task<bool> DBMT_Encryption_RunCommand(string CommandString, string IniPath)
-        {
-            if (DBMTStringUtils.ContainsChinese(IniPath))
-            {
-                await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
-                return false;
-            }
-            JObject jsonObject = new JObject();
-            jsonObject["EncryptFilePath"] = IniPath;
-            File.WriteAllText("Configs\\ArmorSetting.json", jsonObject.ToString());
-
-            await CommandHelper.runCommand(CommandString, "DBMT-Encryptor.vmp.exe");
-            return true;
-        }
-
-
-
 
         public async void Encryption_EncryptAll(object sender, RoutedEventArgs e)
         {
-
             //混淆并返回新的ini文件的路径
             string NewModInIPath = await EncryptionHelper.Obfuscate_ModFileName("Play");
             if (NewModInIPath == "")
             {
                 return;
             }
-
             //调用加密Buffer并加密ini文件
-            await DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", NewModInIPath);
+            await EncryptionHelper.DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", NewModInIPath);
         }
 
         public async void Encryption_EncryptBufferAndIni(object sender, RoutedEventArgs e)
@@ -810,7 +477,7 @@ namespace DBMT
             string ini_file_path = await CommandHelper.ChooseFileAndGetPath(".ini");
             if (ini_file_path != "")
             {
-                await DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", ini_file_path);
+                await EncryptionHelper.DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", ini_file_path);
             }
         }
 
@@ -856,7 +523,7 @@ namespace DBMT
             string ini_file_path = await CommandHelper.ChooseFileAndGetPath(".ini");
             if (ini_file_path != "")
             {
-                await DBMT_Encryption_RunCommand("encrypt_ini_acptpro_V5", ini_file_path);
+                await EncryptionHelper.DBMT_Encryption_RunCommand("encrypt_ini_acptpro_V5", ini_file_path);
             }
         }
 

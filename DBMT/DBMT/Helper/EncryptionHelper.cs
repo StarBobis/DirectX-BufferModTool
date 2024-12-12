@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using Newtonsoft.Json.Linq;
 
 namespace DBMT
 {
@@ -144,6 +145,23 @@ namespace DBMT
 
 
             return "";
+        }
+
+
+
+        public static async Task<bool> DBMT_Encryption_RunCommand(string CommandString, string IniPath)
+        {
+            if (DBMTStringUtils.ContainsChinese(IniPath))
+            {
+                await MessageHelper.Show("目标路径中不能含有中文字符", "Target Path Can't Contains Chinese.");
+                return false;
+            }
+            JObject jsonObject = new JObject();
+            jsonObject["EncryptFilePath"] = IniPath;
+            File.WriteAllText("Configs\\ArmorSetting.json", jsonObject.ToString());
+
+            await CommandHelper.runCommand(CommandString, "DBMT-Encryptor.vmp.exe");
+            return true;
         }
 
     }

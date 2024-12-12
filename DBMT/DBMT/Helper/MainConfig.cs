@@ -33,6 +33,8 @@ namespace DBMT
         public static string CurrentMode = "Dev"; //当前工作模式，分为Dev和Play，默认为Dev
         public static string RunResult = "";
 
+        public const string Path_ExtractTypesFolder = "Configs\\ExtractTypes\\";
+
         ////运行后程序动态生成
         public static string Path_Base
         {
@@ -60,6 +62,11 @@ namespace DBMT
         public static string Path_D3DXINI
         {
             get { return Path.Combine(Path_LoaderFolder, "d3dx.ini"); }
+        }
+
+        public static string Path_GameTypeFolder
+        {
+            get { return Path.Combine(Path_ExtractTypesFolder, MainConfig.GetConfig<string>(ConfigFiles.Main, "GameName") + "\\"); }
         }
 
 
