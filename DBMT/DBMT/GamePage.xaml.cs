@@ -73,7 +73,8 @@ namespace DBMT
                 string selectedGame = comboBox.SelectedItem.ToString();
 
                 //MainConfig.SetCurrentGame(selectedGame);
-                MainConfig.SetConfig("CurrentGameName", selectedGame);
+                MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
+                MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
                 //读取d3dx.ini中的设置
                 ReadPathSettingFromD3dxIni();
 
@@ -91,8 +92,8 @@ namespace DBMT
             //设置背景图片
             // 优先级：DIY > 默认 > 主页背景
             string[] imagePaths = {
-                Path.Combine(basePath, "Assets", MainConfig.GetConfig<string>("CurrentGameName") + "_DIY.png"),
-                Path.Combine(basePath, "Assets", MainConfig.GetConfig<string>("CurrentGameName") + ".png"),
+                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png"),
+                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png"),
                 Path.Combine(basePath, "Assets", "HomePageBackGround.png")
             };
 
