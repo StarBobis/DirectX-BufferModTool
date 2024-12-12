@@ -634,6 +634,9 @@ namespace DBMT
                 return;
             }
 
+            //逆向提取之前要保存DrawIB列表。
+            SaveDrawIBList();
+
             bool command_run_result =await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
             if (command_run_result)
             {
