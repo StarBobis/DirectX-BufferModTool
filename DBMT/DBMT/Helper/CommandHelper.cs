@@ -19,64 +19,83 @@ namespace DBMT
     {
         public static async Task<bool> ShellOpenFile(string FilePath)
         {
-            if (File.Exists(FilePath))
+            try
             {
-                try
-                {
-                    string workingDirectory = System.IO.Path.GetDirectoryName(FilePath); // 获取程序所在目录
 
-                    ProcessStartInfo startInfo = new ProcessStartInfo
+                if (File.Exists(FilePath))
+                {
+                    try
                     {
-                        FileName = FilePath,
-                        UseShellExecute = true, // 允许操作系统决定如何打开文件
-                        WorkingDirectory = workingDirectory // 设置工作路径为程序所在路径
-                    };
+                        string workingDirectory = System.IO.Path.GetDirectoryName(FilePath); // 获取程序所在目录
 
-                    Process.Start(startInfo);
+                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        {
+                            FileName = FilePath,
+                            UseShellExecute = true, // 允许操作系统决定如何打开文件
+                            WorkingDirectory = workingDirectory // 设置工作路径为程序所在路径
+                        };
+
+                        Process.Start(startInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        await MessageHelper.Show("打开文件出错: \n" + FilePath + "\n" + ex.Message);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    await MessageHelper.Show("打开文件出错: \n" + FilePath + "\n" + ex.Message);
+                    await MessageHelper.Show("要打开的文件路径不存在: \n" + FilePath);
                     return false;
                 }
+                return true;
             }
-            else
+            catch(Exception ex)
             {
-                await MessageHelper.Show("要打开的文件路径不存在: \n" + FilePath);
+                await MessageHelper.Show("Error: " + ex.ToString());
                 return false;
             }
-            return true;
+
         }
 
 
         public static async Task<bool> ShellOpenFolder(string FolderPath)
         {
-            if (Directory.Exists(FolderPath))
+            try
             {
-                try
+                if (Directory.Exists(FolderPath))
                 {
-                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    try
                     {
-                        FileName = FolderPath,
-                        UseShellExecute = true, // 允许操作系统决定如何打开文件夹
-                        WorkingDirectory = FolderPath // 设置工作路径为要打开的文件夹路径
-                    };
+                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        {
+                            FileName = FolderPath,
+                            UseShellExecute = true, // 允许操作系统决定如何打开文件夹
+                            WorkingDirectory = FolderPath // 设置工作路径为要打开的文件夹路径
+                        };
 
-                    Process.Start(startInfo);
+                        Process.Start(startInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        await MessageHelper.Show("打开文件夹出错: \n" + FolderPath + "\n" + ex.Message);
+                        return false;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    await MessageHelper.Show("打开文件夹出错: \n" + FolderPath + "\n" + ex.Message);
+                    await MessageHelper.Show("要打开的文件夹路径不存在: \n" + FolderPath);
                     return false;
                 }
+
+                return true;
             }
-            else
+            catch (Exception ex)
             {
-                await MessageHelper.Show("要打开的文件夹路径不存在: \n" + FolderPath);
+                await MessageHelper.Show("Error: " + ex.ToString());
                 return false;
             }
-
-            return true;
+            
         }
 
 
