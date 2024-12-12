@@ -79,6 +79,9 @@ namespace DBMT
 
                 SetGameBackGroundImage();
             }
+
+            //因为现在每次都从文件中读取，所以必须在这里保存到文件
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
         }
 
         private void SetGameBackGroundImage()
