@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBMT", "DBMT.csproj", "{F43FA6A2-ED33-4C9B-B55E-786CA69B5293}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F43FA6A2-ED33-4C9B-B55E-786CA69B5293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F43FA6A2-ED33-4C9B-B55E-786CA69B5293}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F43FA6A2-ED33-4C9B-B55E-786CA69B5293}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F43FA6A2-ED33-4C9B-B55E-786CA69B5293}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEF955E4-DC8B-4B32-832E-DA7E9214CD06}
+	EndGlobalSection
+EndGlobal

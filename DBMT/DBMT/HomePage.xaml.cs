@@ -53,7 +53,7 @@ namespace DBMT
                 imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround.png");
             }
 
-            // ´´½¨ BitmapImage ²¢ÉèÖÃ ImageSource
+            // åˆ›å»º BitmapImage å¹¶è®¾ç½® ImageSource
             BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
             HomeBGImageBrush.ImageSource = bitmap;
         }

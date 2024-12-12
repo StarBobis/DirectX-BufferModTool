@@ -31,7 +31,7 @@ namespace DBMT
         {
             this.InitializeComponent();
             Window window = App.m_window;
-            window.ExtendsContentIntoTitleBar = true;
+            //window.ExtendsContentIntoTitleBar = true;
 
             InitializeGUI();
         }
@@ -45,52 +45,52 @@ namespace DBMT
             //window.ExtendsContentIntoTitleBar = true;  // enable custom titlebar
             //window.SetTitleBar(AppTitleBar);      // set user ui element as titlebar
 
-            //ÉèÖÃ±êÌâºÍ¿í¸ß
+            //è®¾ç½®æ ‡é¢˜å’Œå®½é«˜
             this.Title = MainConfig.DBMT_Title;
             this.AppWindow.Resize(new SizeInt32(1000, 600));
 
-            //ÒÆ¶¯´°¿Úµ½ÆÁÄ»ÖĞĞÄ
+            //ç§»åŠ¨çª—å£åˆ°å±å¹•ä¸­å¿ƒ
             MoveWindowToCenterScreen();
 
-            //Ä¬ÈÏÑ¡ÖĞÖ÷Ò³½çÃæ
+            //é»˜è®¤é€‰ä¸­ä¸»é¡µç•Œé¢
             if (nvSample.MenuItems.Count > 0)
             {
                 nvSample.SelectedItem = nvSample.MenuItems[0];
                 contentFrame.Navigate(typeof(HomePage));
             }
-            //ÉèÖÃÍ¼±ê
+            //è®¾ç½®å›¾æ ‡
             this.AppWindow.SetIcon("Assets/XiaoMai.ico");
 
-            //µ±Ç°Â·¾¶²»ÄÜ´¦ÓÚÖĞÎÄÂ·¾¶ÏÂ,·ñÔò²¿·Ö·½·¨ÎŞ·¨ÕıÈ·Ö´ĞĞ
-            //¼ì²éµ±Ç°³ÌĞòÊÇ·ñÎªÎ»ÓÚÖĞÎÄÂ·¾¶ÏÂ
+            //å½“å‰è·¯å¾„ä¸èƒ½å¤„äºä¸­æ–‡è·¯å¾„ä¸‹,å¦åˆ™éƒ¨åˆ†æ–¹æ³•æ— æ³•æ­£ç¡®æ‰§è¡Œ
+            //æ£€æŸ¥å½“å‰ç¨‹åºæ˜¯å¦ä¸ºä½äºä¸­æ–‡è·¯å¾„ä¸‹
             if (DBMTStringUtils.ContainsChinese(MainConfig.ApplicationRunPath))
             {
-                await MessageHelper.Show("DBMTËùÔÚÂ·¾¶²»ÄÜº¬ÓĞÖĞÎÄ£¬ÇëÖØĞÂ½«DBMT·ÅÖÃµ½´¿Ó¢ÎÄÂ·¾¶.", "DBMT can't be put in a path that contains Chinese, please put DBMT in pure english path!");
-                //×¢Òâ£¬ÕâÀï¿ÉÄÜ»áµ¼ÖÂ¿ÕÒıÓÃÒì³££¬App.Current.Exist()²»Ò»¶¨»áÕıÈ·µÄ½áÊø³ÌĞò
+                await MessageHelper.Show("DBMTæ‰€åœ¨è·¯å¾„ä¸èƒ½å«æœ‰ä¸­æ–‡ï¼Œè¯·é‡æ–°å°†DBMTæ”¾ç½®åˆ°çº¯è‹±æ–‡è·¯å¾„.", "DBMT can't be put in a path that contains Chinese, please put DBMT in pure english path!");
+                //æ³¨æ„ï¼Œè¿™é‡Œå¯èƒ½ä¼šå¯¼è‡´ç©ºå¼•ç”¨å¼‚å¸¸ï¼ŒApp.Current.Exist()ä¸ä¸€å®šä¼šæ­£ç¡®çš„ç»“æŸç¨‹åº
                 //App.Current.Exit();
-                //Õ¹Ê¾Íê´°¿ÚºóÁ¢¿Ì¸Éµô³ÌĞò£¬·ÀÖ¹¿ÉÄÜµÄÒì²½Ïß³Ì¿ÕÒıÓÃ¡£
+                //å±•ç¤ºå®Œçª—å£åç«‹åˆ»å¹²æ‰ç¨‹åºï¼Œé˜²æ­¢å¯èƒ½çš„å¼‚æ­¥çº¿ç¨‹ç©ºå¼•ç”¨ã€‚
                 Environment.Exit(0);
             }
 
-            //¼ì²éDBMTºËĞÄÊÇ·ñ´æÔÚ
+            //æ£€æŸ¥DBMTæ ¸å¿ƒæ˜¯å¦å­˜åœ¨
             if (!File.Exists(MainConfig.ApplicationRunPath + "Plugins\\" + MainConfig.MMT_EXE_FileName))
             {
-                await MessageHelper.Show("Î´ÕÒµ½" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",Çë½«Æä·ÅÔÚ±¾³ÌĞòPluginsÄ¿Â¼ÏÂ£¬¼´½«ÍË³ö³ÌĞò¡£","Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
-                //×¢Òâ£¬ÕâÀï¿ÉÄÜ»áµ¼ÖÂ¿ÕÒıÓÃÒì³££¬App.Current.Exist()²»Ò»¶¨»áÕıÈ·µÄ½áÊø³ÌĞò
+                await MessageHelper.Show("æœªæ‰¾åˆ°" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",è¯·å°†å…¶æ”¾åœ¨æœ¬ç¨‹åºPluginsç›®å½•ä¸‹ï¼Œå³å°†é€€å‡ºç¨‹åºã€‚","Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
+                //æ³¨æ„ï¼Œè¿™é‡Œå¯èƒ½ä¼šå¯¼è‡´ç©ºå¼•ç”¨å¼‚å¸¸ï¼ŒApp.Current.Exist()ä¸ä¸€å®šä¼šæ­£ç¡®çš„ç»“æŸç¨‹åº
                 //App.Current.Exit();
 
-                //Õ¹Ê¾Íê´°¿ÚºóÁ¢¿Ì¸Éµô³ÌĞò£¬·ÀÖ¹¿ÉÄÜµÄÒì²½Ïß³Ì¿ÕÒıÓÃ¡£
+                //å±•ç¤ºå®Œçª—å£åç«‹åˆ»å¹²æ‰ç¨‹åºï¼Œé˜²æ­¢å¯èƒ½çš„å¼‚æ­¥çº¿ç¨‹ç©ºå¼•ç”¨ã€‚
                 Environment.Exit(0);
             }
 
-            //Èç¹ûDBMT´æÔÚ£¬Ôò¿ªÊ¼Õı³£³õÊ¼»¯¡£
-            //³õÊ¼»¯LogsÄ¿Â¼
+            //å¦‚æœDBMTå­˜åœ¨ï¼Œåˆ™å¼€å§‹æ­£å¸¸åˆå§‹åŒ–ã€‚
+            //åˆå§‹åŒ–Logsç›®å½•
             if (!Directory.Exists("Logs"))
             {
                 Directory.CreateDirectory("Logs");
             }
 
-            //¶ÁÈ¡ÅäÖÃÎÄ¼ş
+            //è¯»å–é…ç½®æ–‡ä»¶
             MainConfig.LoadConfigFromFiles();
         }
 
@@ -98,17 +98,17 @@ namespace DBMT
         {
             if (this.AppWindow != null)
             {
-                // »ñÈ¡Ö÷ÏÔÊ¾Æ÷µÄ¹¤×÷Çø´óĞ¡
+                // è·å–ä¸»æ˜¾ç¤ºå™¨çš„å·¥ä½œåŒºå¤§å°
                 var displayArea = DisplayArea.GetFromWindowId(this.AppWindow.Id, DisplayAreaFallback.Nearest);
 
-                // »ñÈ¡´°¿Úµ±Ç°µÄ³ß´ç
+                // è·å–çª—å£å½“å‰çš„å°ºå¯¸
                 var windowSize = this.AppWindow.Size;
 
-                // ¼ÆËã´°¿Ú¾ÓÖĞËùĞèµÄ×óÉÏ½Ç×ø±ê
+                // è®¡ç®—çª—å£å±…ä¸­æ‰€éœ€çš„å·¦ä¸Šè§’åæ ‡
                 int x = (int)((displayArea.WorkArea.Width - windowSize.Width) / 2);
                 int y = (int)((displayArea.WorkArea.Height - windowSize.Height) / 2);
 
-                // ÉèÖÃ´°¿ÚÎ»ÖÃ
+                // è®¾ç½®çª—å£ä½ç½®
                 this.AppWindow.Move(new PointInt32 { X = x, Y = y });
             }
         }
@@ -116,7 +116,7 @@ namespace DBMT
         private void nvSample_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
 
-            // Èç¹ûµã»÷µÄÊÇÉèÖÃ°´Å¥£¬Ôòµ¼º½µ½ÉèÖÃÒ³Ãæ
+            // å¦‚æœç‚¹å‡»çš„æ˜¯è®¾ç½®æŒ‰é’®ï¼Œåˆ™å¯¼èˆªåˆ°è®¾ç½®é¡µé¢
             if (args.IsSettingsInvoked)
             {
                 contentFrame.Navigate(typeof(SettingsPage));
@@ -126,7 +126,7 @@ namespace DBMT
                 var pageTag = item.Tag.ToString();
                 Type pageType = null;
 
-                ////ÇĞ»»µ½·ÇÉèÖÃ½çÃæÊ±£¬±£´æËùÓĞÊı¾İ
+                ////åˆ‡æ¢åˆ°éè®¾ç½®ç•Œé¢æ—¶ï¼Œä¿å­˜æ‰€æœ‰æ•°æ®
                 //if (pageType != typeof(SettingsPage))
                 //{
                 //    SettingsHelper.SaveGameSettingsToConfig();
@@ -159,7 +159,7 @@ namespace DBMT
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
-            //¹Ø±ÕÖ®Ç°Ìø×ªµ½Ö÷Ò³£¬´¥·¢Setting½çÃæµÄ½çÃæÇĞ»»·½·¨´Ó¶ø±£´æÉèÖÃÖĞµÄÄÚÈİ¡£
+            //å…³é—­ä¹‹å‰è·³è½¬åˆ°ä¸»é¡µï¼Œè§¦å‘Settingç•Œé¢çš„ç•Œé¢åˆ‡æ¢æ–¹æ³•ä»è€Œä¿å­˜è®¾ç½®ä¸­çš„å†…å®¹ã€‚
             contentFrame.Navigate(typeof(HomePage));
 
             if (MainConfig.GetConfig<bool>("AutoCleanFrameAnalysisFolder"))
