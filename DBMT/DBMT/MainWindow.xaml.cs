@@ -89,7 +89,9 @@ namespace DBMT
             }
 
             //读取配置文件
-            MainConfig.LoadConfigFromFiles();
+            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Main);
+            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
+            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Texture_Setting);
         }
 
         private void MoveWindowToCenterScreen()
@@ -160,12 +162,12 @@ namespace DBMT
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
 
-            if (MainConfig.GetConfig<bool>("AutoCleanFrameAnalysisFolder"))
+            if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting,"AutoCleanFrameAnalysisFolder"))
             {
                 SettingsHelper.CleanFrameAnalysisFiles();
             }
 
-            if (MainConfig.GetConfig<bool>("AutoCleanLogFile"))
+            if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting,"AutoCleanLogFile"))
             {
                 SettingsHelper.CleanLogFiles();
             }

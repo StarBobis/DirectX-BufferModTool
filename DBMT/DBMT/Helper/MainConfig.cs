@@ -37,7 +37,9 @@ namespace DBMT
         public static string Path_Base
         {
             get { return Directory.GetCurrentDirectory(); }
-            set { Path_Base = value; }
+            
+            //不需要设置
+            //set { Path_Base = value; }
         }
         public static string Path_Game_ConfigJson
         {
@@ -60,24 +62,11 @@ namespace DBMT
             get { return Path.Combine(Path_LoaderFolder, "d3dx.ini"); }
         }
 
-        ////首选项设置
 
-        //json文件
-        private static Dictionary<string, string> JsonFiles = new();
-        private static Dictionary<string, JObject> JsonObjects = new();
+        // 使用枚举而不是魔法值
+        public enum ConfigFiles { Main, Game_Setting, Texture_Setting }
 
-        //默认配置
-        // texure
-        // {
-        //  "ForbidAutoTexture": false,
-        //  "ConvertDedupedTextures": false,
-        //  "UseHashTexture": false,
-        //  "AutoTextureFormat": 0,
-        //  "AutoTextureOnlyConvertDiffuseMap": true,
-        //  "ForbidMoveTrianglelistTextures": false,
-        //  "ForbidMoveDedupedTextures": false,
-        //  "ForbidMoveRenderTextures": false
-        //}
+        //贴图配置
         private static JObject DefaultConfig_Texure = new JObject
         {
             { "ForbidAutoTexture", false },
@@ -90,21 +79,7 @@ namespace DBMT
             { "ForbidMoveRenderTextures", false }
         };
 
-        // game
-        //{
-        //  "WindowTopMost": false,
-        //  "AutoCleanFrameAnalysisFolder": true,
-        //  "AutoCleanLogFile": true,
-        //  "FrameAnalysisFolderReserveNumber": 0,
-        //  "LogFileReserveNumber": 0,
-        //  "ModelFileNameStyle": 0,
-        //  "MoveIBRelatedFiles": false,
-        //  "DontSplitModelByMatchFirstIndex": false,
-        //  "GenerateSeperatedMod": false,
-        //  "Author": "",
-        //  "AuthorLink": "",
-        //  "ModSwitchKey": "\"x\",\"m\",\"k\",\"l\",\"u\",\"i\",\"o\",\"p\",\"[\",\"]\",\"y\""
-        //}
+        //全局配置
         private static readonly JObject DefaultConfig_Game = new JObject
         {
             { "WindowTopMost", false },
@@ -121,72 +96,54 @@ namespace DBMT
             { "ModSwitchKey","\"x\",\"m\",\"k\",\"l\",\"u\",\"i\",\"o\",\"p\",\"[\",\"]\",\"y\""}
         };
 
-        // main
-        //{
-        //  "GameName": "HSR",
-        //  "WorkSpaceName": "Test222"
-        //}
+        //Main.json
         private static readonly JObject DefaultConfig_Main = new JObject
         {
             { "GameName", "HSR" },
-            { "WorkSpaceName", "Test222" }
+            { "WorkSpaceName", "" }
         };
 
         private static readonly Dictionary<string, JObject> DefaultConfigs = new Dictionary<string, JObject>
         {
-            { "Main", DefaultConfig_Main },
-            { "Game_Setting", DefaultConfig_Game },
-            { "Texture_Setting", DefaultConfig_Texure }
+            { ConfigFiles.Main.ToString(), DefaultConfig_Main },
+            { ConfigFiles.Game_Setting.ToString(), DefaultConfig_Game },
+            { ConfigFiles.Texture_Setting.ToString(), DefaultConfig_Texure }
         };
 
-        /// <summary>
-        /// 配置文件列表
-        /// </summary>
-        public enum ConfigFiles { Main, Game_Setting, Texture_Setting }
+        private static Dictionary<string, string> JsonFiles = new Dictionary<string, string>(){
+            { ConfigFiles.Main.ToString(),Path_MainConfig},
+            { ConfigFiles.Game_Setting.ToString(),Path_Game_SettingJson},
+            { ConfigFiles.Texture_Setting.ToString(),Path_Texture_SettingJson}
+        };
 
-        /// <summary>
-        /// 从配置文件中加载配置，如果配置文件不存在，则使用默认配置
-        /// </summary>
-        public static void LoadConfigFromFiles()
+        //动态读取的配置保存在内存中
+        private static Dictionary<string, JObject> JsonObjects = new();
+
+
+        public static void LoadConfigFile(ConfigFiles configFiles)
         {
-            // 先清空
-            JsonFiles.Clear();
-            JsonObjects.Clear();
+            string ConfigNameKey = configFiles.ToString();
 
-            // 加载配置文件
-            JsonFiles.Add("Main", Path_MainConfig);
-            JsonFiles.Add("Game_Setting", Path_Game_SettingJson);
-            JsonFiles.Add("Texture_Setting", Path_Texture_SettingJson);
-            foreach (var file in JsonFiles)
+            if (!File.Exists(Path_MainConfig))
             {
-                if (!File.Exists(file.Value))
-                {
-                    // 给个 警告
-                    Console.WriteLine("File not found: " + file.Value);
-                    // 如果文件不存在，就用默认配置
-                    JsonObjects.Add(file.Key, DefaultConfigs[file.Key]);
-                    SaveConfig(file.Key);
-                    continue;
-                }
-
-                string json = File.ReadAllText(file.Value); // 读取文件内容
+                //如果文件不存在，就用默认配置，节省读取IO
+                JsonObjects[ConfigNameKey] = DefaultConfigs[ConfigNameKey];
+            }
+            else
+            {
+                string json = File.ReadAllText(Path_MainConfig); // 读取文件内容
                 JObject jsonObject = JObject.Parse(json);
 
                 // 配置文件可能 不完整，缺少一些配置项，所以需要用默认配置来填充
                 // 使得 DefaultConfigs[file.Key] 中 存在的 配置项 jsonObject 中也存在
-                bool needSave = false;
-                foreach (var defaultConfig in DefaultConfigs[file.Key])
+                foreach (var defaultConfig in DefaultConfigs[ConfigNameKey])
                 {
                     if (!jsonObject.ContainsKey(defaultConfig.Key))
                     {
                         jsonObject.Add(defaultConfig.Key, defaultConfig.Value);
-                        needSave = true;
                     }
                 }
-
-                JsonObjects.Add(file.Key, jsonObject);
-
-                if (needSave) { SaveConfig(file.Key); }
+                JsonObjects[ConfigNameKey] = jsonObject;
             }
         }
 
@@ -296,40 +253,17 @@ namespace DBMT
             throw new Exception("File not found in config files");
         }
 
-        /// <summary>
-        /// 从任意文件中设置配置，不推荐使用，如果可能的话，还是建议指定文件
-        /// </summary>
-        /// <param name="key"> 配置项名称 </param>
-        /// <param name="value"> 配置项值 </param>
-        /// <returns> 返回配置项值 </returns>
-        /// <exception cref="Exception"></exception>
-        //从任意文件中设置配置，不推荐使用，如果可能的话，还是建议指定文件
-        [Obsolete("不推荐使用，如果可能的话，还是建议指定文件")]
-        public static dynamic SetConfig(string key, dynamic value)
-        {
-            foreach (var file in JsonFiles)
-            {
-                if (JsonObjects.ContainsKey(file.Key))
-                {
-                    JsonObjects[file.Key][key] = JToken.FromObject(value);
-                    return value;
-                }
-            }
-            // 抛出异常
-            throw new Exception("File not found cotaining key in config files");
-        }
 
-
-        private static void SaveConfig(string file)
+        private static void SaveConfig(string filetype_key)
         {
-            if (JsonObjects.ContainsKey(file))
+            if (JsonObjects.ContainsKey(filetype_key))
             {
-                File.WriteAllText(JsonFiles[file], JsonObjects[file].ToString());
+                File.WriteAllText(JsonFiles[filetype_key], JsonObjects[filetype_key].ToString());
             }
             else
             {
                 // 抛出异常
-                throw new Exception($"File not found in config file [ {file} ] ");
+                throw new Exception($"File not found in config file [ {filetype_key} ] ");
             }
         }
 
@@ -340,15 +274,8 @@ namespace DBMT
         /// <exception cref="Exception"></exception>
         public static void SaveConfig(ConfigFiles configFiles) => SaveConfig(configFiles.ToString());
 
-        /// <summary>
-        /// 保存所有配置文件
-        /// </summary>
-        public static void SaveAllConfig()
-        {
-            foreach (var file in JsonFiles)
-            {
-                SaveConfig(file.Key);
-            }
-        }
+
+
+
     }
 }

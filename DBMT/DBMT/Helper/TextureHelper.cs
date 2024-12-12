@@ -11,7 +11,7 @@ namespace DBMT
     {
         public static string GetAutoTextureFormat()
         {
-            return MainConfig.GetConfig<int>("AutoTextureFormat") switch
+            return MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Texture_Setting, "AutoTextureFormat") switch
             {
                 0 => "jpg",
                 1 => "tga",

@@ -194,8 +194,7 @@ namespace DBMT
             }
 
             //(2) 接下来要把当前的游戏名称+类型保存到MainSetting.json里
-            //MainConfig.SaveCurrentGameNameToMainJson();
-            MainConfig.SaveAllConfig();
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
 
             //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件。
             List<string> drawIBList = GetDrawIBListFromTextBoxDrawIBList();
@@ -215,49 +214,57 @@ namespace DBMT
             await MessageHelper.Show("保存成功");
         }
 
-        void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
+        async void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
         {
-            string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
-            List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
-            foreach (string DrawIB in DrawIBList)
+            try
             {
-                string DrawIBPath = WorkSpacePath + DrawIB + "/";
-                if (!Directory.Exists(DrawIBPath))
+                string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
+                List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
+                foreach (string DrawIB in DrawIBList)
                 {
-                    continue;
-                }
-                //在这里把所有output目录下的dds转为png格式
-                string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
-                foreach (string outputDirectory in subdirectories)
-                {
-                    //MessageBox.Show(Path.GetDirectoryName(outputDirectory));
-
-                    if (!Path.GetFileName(outputDirectory).StartsWith("TYPE_"))
+                    string DrawIBPath = WorkSpacePath + DrawIB + "/";
+                    if (!Directory.Exists(DrawIBPath))
                     {
                         continue;
                     }
-
-
-                    string[] filePathArray = Directory.GetFiles(outputDirectory);
-                    foreach (string ddsFilePath in filePathArray)
+                    //在这里把所有output目录下的dds转为png格式
+                    string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
+                    foreach (string outputDirectory in subdirectories)
                     {
-                        if (MainConfig.GetConfig<bool>("ConvertDiffuseMapOnly"))
-                        {
-                            if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
-                            {
-                                continue;
-                            }
-                        }
-                        else if (!ddsFilePath.EndsWith(".dds"))
+                        //MessageBox.Show(Path.GetDirectoryName(outputDirectory));
+
+                        if (!Path.GetFileName(outputDirectory).StartsWith("TYPE_"))
                         {
                             continue;
                         }
 
-                        string TextureFormatString = TextureHelper.GetAutoTextureFormat();
-                        CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
+
+                        string[] filePathArray = Directory.GetFiles(outputDirectory);
+                        foreach (string ddsFilePath in filePathArray)
+                        {
+                            if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "AutoTextureOnlyConvertDiffuseMap"))
+                            {
+                                if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
+                                {
+                                    continue;
+                                }
+                            }
+                            else if (!ddsFilePath.EndsWith(".dds"))
+                            {
+                                continue;
+                            }
+
+                            string TextureFormatString = TextureHelper.GetAutoTextureFormat();
+                            CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                await MessageHelper.Show("Can't convert texture files: " + ex.ToString());
+            }
+            
 
         }
 
@@ -318,7 +325,7 @@ namespace DBMT
             {
                 ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
-                if (MainConfig.GetConfig<bool>("ConvertDedupedTextures"))
+                if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ConvertDedupedTextures"))
                 {
                     //await MessageHelper.Show("勾选了转换Deduped贴图，开始转换Deduped贴图");
                     ConvertDedupedTexturesToTargetFormat();
@@ -356,6 +363,7 @@ namespace DBMT
 
         public async void OpenWorkSpaceGenerateModFolder(object sender, RoutedEventArgs e)
         {
+
             string GeneratedModFolderPath = MainConfig.Path_OutputFolder + "/" + MainConfig.CurrentWorkSpace + "/GeneratedMod/";
 
             if (Directory.Exists(GeneratedModFolderPath))

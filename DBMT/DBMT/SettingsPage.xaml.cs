@@ -57,58 +57,61 @@ namespace DBMT
 
         public void SaveSettingsToConfig()
         {
-            MainConfig.SetConfig("AutoCleanLogFile", ToggleSwitch_AutoCleanLogFile.IsOn);
-            MainConfig.SetConfig("LogFileReserveNumber", (int)NumberBox_LogFileReserveNumber.Value);
-            MainConfig.SetConfig("AutoCleanFrameAnalysisFolder", ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn);
-            MainConfig.SetConfig("FrameAnalysisFolderReserveNumber", (int)NumberBox_FrameAnalysisFolderReserveNumber.Value);
-            MainConfig.SetConfig("ModelFileNameStyle", ComboBox_ModelFileNameStyle.SelectedIndex);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "AutoCleanLogFile", ToggleSwitch_AutoCleanLogFile.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "LogFileReserveNumber", (int)NumberBox_LogFileReserveNumber.Value);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "AutoCleanFrameAnalysisFolder", ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "FrameAnalysisFolderReserveNumber", (int)NumberBox_FrameAnalysisFolderReserveNumber.Value);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "ModelFileNameStyle", ComboBox_ModelFileNameStyle.SelectedIndex);
 
-            MainConfig.SetConfig("MoveIBRelatedFiles", ToggleSwitch_MoveIBRelatedFiles.IsOn);
-            MainConfig.SetConfig("DontSplitModelByMatchFirstIndex", ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "MoveIBRelatedFiles", ToggleSwitch_MoveIBRelatedFiles.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "DontSplitModelByMatchFirstIndex", ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn);
 
-            MainConfig.SetConfig("GenerateSeperatedMod", ToggleSwitch_GenerateSeperatedMod.IsOn);
-            MainConfig.SetConfig("Author", TextBox_Author.Text);
-            MainConfig.SetConfig("AuthorLink", TextBox_AuthorLink.Text);
-            MainConfig.SetConfig("ModSwitchKey", TextBox_ModSwitchKey.Text);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "GenerateSeperatedMod", ToggleSwitch_GenerateSeperatedMod.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "Author", TextBox_Author.Text);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "AuthorLink", TextBox_AuthorLink.Text);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "ModSwitchKey", TextBox_ModSwitchKey.Text);
 
-            MainConfig.SetConfig("AutoTextureFormat", ComboBox_AutoTextureFormat.SelectedIndex);
-            MainConfig.SetConfig("AutoTextureOnlyConvertDiffuseMap", ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn);
-            MainConfig.SetConfig("ConvertDedupedTextures", ToggleSwitch_ConvertDedupedTextures.IsOn);
-            MainConfig.SetConfig("ForbidMoveTrianglelistTextures", ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn);
-            MainConfig.SetConfig("ForbidMoveDedupedTextures", ToggleSwitch_ForbidMoveDedupedTextures.IsOn);
-            MainConfig.SetConfig("ForbidMoveRenderTextures", ToggleSwitch_ForbidMoveRenderTextures.IsOn);
-            MainConfig.SetConfig("ForbidAutoTexture", ToggleSwitch_ForbidAutoTexture.IsOn);
-            MainConfig.SetConfig("UseHashTexture", ToggleSwitch_UseHashTexture.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "AutoTextureFormat", ComboBox_AutoTextureFormat.SelectedIndex);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "AutoTextureOnlyConvertDiffuseMap", ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "ConvertDedupedTextures", ToggleSwitch_ConvertDedupedTextures.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "ForbidMoveTrianglelistTextures", ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "ForbidMoveDedupedTextures", ToggleSwitch_ForbidMoveDedupedTextures.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "ForbidMoveRenderTextures", ToggleSwitch_ForbidMoveRenderTextures.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "ForbidAutoTexture", ToggleSwitch_ForbidAutoTexture.IsOn);
+            MainConfig.SetConfig(MainConfig.ConfigFiles.Texture_Setting, "UseHashTexture", ToggleSwitch_UseHashTexture.IsOn);
 
-            MainConfig.SaveAllConfig();
+            //保存全局设置和贴图设置
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Texture_Setting);
         }
 
         public void ReadSettingsFromConfig()
         {
             //防止程序启动时没正确读取，这里冗余读取一次，后面看情况可以去掉。
-            MainConfig.LoadConfigFromFiles();
+            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
+            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Texture_Setting);
 
-            ToggleSwitch_AutoCleanLogFile.IsOn = MainConfig.GetConfig<bool>("AutoCleanLogFile");
-            NumberBox_LogFileReserveNumber.Value = MainConfig.GetConfig<int>("LogFileReserveNumber");
-            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = MainConfig.GetConfig<bool>("AutoCleanFrameAnalysisFolder");
-            NumberBox_FrameAnalysisFolderReserveNumber.Value = MainConfig.GetConfig<int>("FrameAnalysisFolderReserveNumber");
-            ComboBox_ModelFileNameStyle.SelectedIndex = MainConfig.GetConfig<int>("ModelFileNameStyle");
-            ToggleSwitch_MoveIBRelatedFiles.IsOn = MainConfig.GetConfig<bool>("MoveIBRelatedFiles");
-            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = MainConfig.GetConfig<bool>("DontSplitModelByMatchFirstIndex");
+            ToggleSwitch_AutoCleanLogFile.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting, "AutoCleanLogFile");
+            NumberBox_LogFileReserveNumber.Value = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting, "LogFileReserveNumber");
+            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting, "AutoCleanFrameAnalysisFolder");
+            NumberBox_FrameAnalysisFolderReserveNumber.Value = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting, "FrameAnalysisFolderReserveNumber");
+            ComboBox_ModelFileNameStyle.SelectedIndex = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting, "ModelFileNameStyle");
+            ToggleSwitch_MoveIBRelatedFiles.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting, "MoveIBRelatedFiles");
+            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting, "DontSplitModelByMatchFirstIndex");
 
-            ToggleSwitch_GenerateSeperatedMod.IsOn = MainConfig.GetConfig<bool>("GenerateSeperatedMod");
-            TextBox_Author.Text = MainConfig.GetConfig<string>("Author");
-            TextBox_AuthorLink.Text = MainConfig.GetConfig<string>("AuthorLink");
-            TextBox_ModSwitchKey.Text = MainConfig.GetConfig<string>("ModSwitchKey");
+            ToggleSwitch_GenerateSeperatedMod.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting, "GenerateSeperatedMod");
+            TextBox_Author.Text = MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Game_Setting, "Author");
+            TextBox_AuthorLink.Text = MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Game_Setting, "AuthorLink");
+            TextBox_ModSwitchKey.Text = MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Game_Setting, "ModSwitchKey");
 
-            ComboBox_AutoTextureFormat.SelectedIndex = MainConfig.GetConfig<int>("AutoTextureFormat");
-            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = MainConfig.GetConfig<bool>("AutoTextureOnlyConvertDiffuseMap");
-            ToggleSwitch_ConvertDedupedTextures.IsOn = MainConfig.GetConfig<bool>("ConvertDedupedTextures");
-            ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = MainConfig.GetConfig<bool>("ForbidMoveTrianglelistTextures");
-            ToggleSwitch_ForbidMoveDedupedTextures.IsOn = MainConfig.GetConfig<bool>("ForbidMoveDedupedTextures");
-            ToggleSwitch_ForbidMoveRenderTextures.IsOn = MainConfig.GetConfig<bool>("ForbidMoveRenderTextures");
-            ToggleSwitch_ForbidAutoTexture.IsOn = MainConfig.GetConfig<bool>("ForbidAutoTexture");
-            ToggleSwitch_UseHashTexture.IsOn = MainConfig.GetConfig<bool>("UseHashTexture");
+            ComboBox_AutoTextureFormat.SelectedIndex = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Texture_Setting, "AutoTextureFormat");
+            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "AutoTextureOnlyConvertDiffuseMap");
+            ToggleSwitch_ConvertDedupedTextures.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ConvertDedupedTextures");
+            ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ForbidMoveTrianglelistTextures");
+            ToggleSwitch_ForbidMoveDedupedTextures.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ForbidMoveDedupedTextures");
+            ToggleSwitch_ForbidMoveRenderTextures.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ForbidMoveRenderTextures");
+            ToggleSwitch_ForbidAutoTexture.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ForbidAutoTexture");
+            ToggleSwitch_UseHashTexture.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "UseHashTexture");
         }
 
     }

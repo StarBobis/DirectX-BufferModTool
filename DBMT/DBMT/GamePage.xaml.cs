@@ -118,7 +118,7 @@ namespace DBMT
             if (file != null)
             {
                 string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
-                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.GetConfig<string>("CurrentGameName") + "_DIY.png");
+                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Main,"CurrentGameName") + "_DIY.png");
                 File.Copy(file.Path, TargetPicturePath, true);
 
                 SetGameBackGroundImage();
@@ -201,19 +201,19 @@ namespace DBMT
 
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {
-            string MigotoLoaderExePath = Path.Combine(MainConfig.GetConfig<string>("Path_LoaderFolder"), "3Dmigoto Loader.exe");
+            string MigotoLoaderExePath = Path.Combine(MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Game_Setting, "Path_LoaderFolder"), "3Dmigoto Loader.exe");
             await CommandHelper.ShellOpenFile(MigotoLoaderExePath);
         }
         private async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
         {
             
-            await CommandHelper.ShellOpenFolder(MainConfig.GetConfig<string>("Path_LoaderFolder"));
+            await CommandHelper.ShellOpenFolder(MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Game_Setting, "Path_LoaderFolder"));
         }
 
         private async void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
         {
 
-            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.GetConfig<string>("Path_LoaderFolder"),"ShaderFixes") );
+            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Game_Setting, "Path_LoaderFolder"),"ShaderFixes") );
         }
     }
 }
