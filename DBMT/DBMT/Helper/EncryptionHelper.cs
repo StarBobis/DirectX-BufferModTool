@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 
-namespace DBMT.Helper
+namespace DBMT
 {
     public class EncryptionHelper
     {
