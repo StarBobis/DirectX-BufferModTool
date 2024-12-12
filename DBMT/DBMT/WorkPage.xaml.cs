@@ -59,7 +59,7 @@ namespace DBMT
             if (ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
                 //MainConfig.CurrentWorkSpace = ComboBoxWorkSpaceSelection.Text;
-                MainConfig.SetConfig("CurrentWorkSpace", ComboBoxWorkSpaceSelection.Text);
+                MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "WorkSpaceName", ComboBoxWorkSpaceSelection.Text);
                 MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
                 ReadDrawIBListFromWorkSpace();
             }
