@@ -56,7 +56,7 @@ namespace DBMT
             }
 
             logFileList.Sort();
-            string LogFilePath = logsPath + "\\" + logFileList[logFileList.Count - 1];
+            string LogFilePath = logsPath + "\\" + logFileList[^1];
             return LogFilePath;
         }
 

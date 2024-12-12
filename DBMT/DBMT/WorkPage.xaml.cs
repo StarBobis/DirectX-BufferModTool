@@ -2,25 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+using System.Threading.Tasks;
+using DBMT.Helper;
+using DBMT_Core;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using DBMT_Core;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using Newtonsoft.Json.Linq;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Newtonsoft.Json;
+
+using Newtonsoft.Json.Linq;
 using DBMT;
 using Windows.Storage.Pickers;
+
 using Windows.Storage;
-using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.Pickers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -71,8 +66,8 @@ namespace DBMT
             string Configpath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "\\Config.json";
             if (File.Exists(Configpath))
             {
-                
-                //ÇĞ»»µ½¶ÔÓ¦ÅäÖÃ
+
+                //åˆ‡æ¢åˆ°å¯¹åº”é…ç½®
                 string jsonData = File.ReadAllText(Configpath);
                 JObject jobj = JObject.Parse(jsonData);
                 // Access the DrawIBList property and convert it to a List<string>
@@ -86,7 +81,7 @@ namespace DBMT
 
                 if (!string.IsNullOrEmpty(DrawIBListString) && DrawIBListString.Length > 1)
                 {
-                    // ÒÆ³ı×îºóÒ»¸ö×Ö·û
+                    // ç§»é™¤æœ€åä¸€ä¸ªå­—ç¬¦
                     DrawIBListString = DrawIBListString.Substring(0, DrawIBListString.Length - 1);
                 }
             }
@@ -95,7 +90,7 @@ namespace DBMT
 
         public void InitializeWorkSpace(string WorkSpaceName = "")
         {
-            //Èç¹û´æ´¢¹¤×÷¿Õ¼äµÄoutputÎÄ¼ş¼Ğ²»´æÔÚ¾Í´´½¨
+            //å¦‚æœå­˜å‚¨å·¥ä½œç©ºé—´çš„outputæ–‡ä»¶å¤¹ä¸å­˜åœ¨å°±åˆ›å»º
             if (!Directory.Exists(MainConfig.Path_OutputFolder))
             {
                 Directory.CreateDirectory(MainConfig.Path_OutputFolder);
@@ -130,22 +125,22 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("¹¤×÷¿Õ¼äÃû³Æ²»ÄÜÎª¿Õ");
+                await MessageHelper.Show("å·¥ä½œç©ºé—´åç§°ä¸èƒ½ä¸ºç©º");
                 return;
             }
 
             if (!ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                ////Èç¹û°üº¬ÁË´ËÃüÃû¿Õ¼ä£¬¾Í²»´´½¨ÎÄ¼ş¼Ğ£¬·ñÔò¾Í´´½¨
+                ////å¦‚æœåŒ…å«äº†æ­¤å‘½åç©ºé—´ï¼Œå°±ä¸åˆ›å»ºæ–‡ä»¶å¤¹ï¼Œå¦åˆ™å°±åˆ›å»º
                 Directory.CreateDirectory(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text);
 
-                await MessageHelper.Show("¹¤×÷¿Õ¼ä´´½¨³É¹¦");
+                await MessageHelper.Show("å·¥ä½œç©ºé—´åˆ›å»ºæˆåŠŸ");
 
                 InitializeWorkSpace(ComboBoxWorkSpaceSelection.Text);
             }
             else
             {
-                await MessageHelper.Show("µ±Ç°¹¤×÷¿Õ¼äÒÑ´æÔÚ,ÎŞ·¨ÖØ¸´´´½¨");
+                await MessageHelper.Show("å½“å‰å·¥ä½œç©ºé—´å·²å­˜åœ¨,æ— æ³•é‡å¤åˆ›å»º");
             }
         }
 
@@ -154,7 +149,7 @@ namespace DBMT
             string WorkSpaceFolderPath = MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text;
             Directory.Delete(WorkSpaceFolderPath, true);
             Directory.CreateDirectory(WorkSpaceFolderPath);
-            await MessageHelper.Show("ÇåÀí³É¹¦", "Clean Success");
+            await MessageHelper.Show("æ¸…ç†æˆåŠŸ", "Clean Success");
         }
 
         public async void OpenCurrentWorkSpaceFolder(object sender, RoutedEventArgs e)
@@ -168,7 +163,7 @@ namespace DBMT
                 }
                 else
                 {
-                    await MessageHelper.Show("´ËÄ¿Â¼²»´æÔÚ£¬Çë¼ì²éÄúµÄOutputÎÄ¼ş¼ĞÊÇ·ñÉèÖÃÕıÈ·", "This folder doesn't exists,please check if your OutputFolder is correct.");
+                    await MessageHelper.Show("æ­¤ç›®å½•ä¸å­˜åœ¨ï¼Œè¯·æ£€æŸ¥æ‚¨çš„Outputæ–‡ä»¶å¤¹æ˜¯å¦è®¾ç½®æ­£ç¡®", "This folder doesn't exists,please check if your OutputFolder is correct.");
                 }
             }
         }
@@ -196,25 +191,25 @@ namespace DBMT
 
         public async void SaveDrawIBList()
         {
-            //(1) ¼ì²éÓÎÏ·ÀàĞÍÊÇ·ñÉèÖÃ
+            //(1) æ£€æŸ¥æ¸¸æˆç±»å‹æ˜¯å¦è®¾ç½®
             if (MainConfig.CurrentGameName == "")
             {
-                await MessageHelper.Show("ÇëÏÈÑ¡ÔñÓÎÏ·ÀàĞÍ", "Please select a game before this.");
+                await MessageHelper.Show("è¯·å…ˆé€‰æ‹©æ¸¸æˆç±»å‹", "Please select a game before this.");
                 return;
             }
 
-            //(2) ½ÓÏÂÀ´Òª°Ñµ±Ç°µÄÓÎÏ·Ãû³Æ+ÀàĞÍ±£´æµ½MainSetting.jsonÀï
+            //(2) æ¥ä¸‹æ¥è¦æŠŠå½“å‰çš„æ¸¸æˆåç§°+ç±»å‹ä¿å­˜åˆ°MainSetting.jsoné‡Œ
             //MainConfig.SaveCurrentGameNameToMainJson();
             MainConfig.SaveAllConfig();
 
-            //(3) ½ÓÏÂÀ´°ÑËùÓĞµÄdrawIBListÖĞµÄDrawIB±£ÁôÏÂÀ´´æ´¢µ½¶ÔÓ¦ÅäÖÃÎÄ¼ş¡£
+            //(3) æ¥ä¸‹æ¥æŠŠæ‰€æœ‰çš„drawIBListä¸­çš„DrawIBä¿ç•™ä¸‹æ¥å­˜å‚¨åˆ°å¯¹åº”é…ç½®æ–‡ä»¶ã€‚
             List<string> drawIBList = GetDrawIBListFromTextBoxDrawIBList();
 
             JObject jobj = new JObject();
             jobj["DrawIBList"] = new JArray(drawIBList);
             string json_string = jobj.ToString(Formatting.Indented);
 
-            // ½«JSON×Ö·û´®Ğ´ÈëÎÄ¼ş
+            // å°†JSONå­—ç¬¦ä¸²å†™å…¥æ–‡ä»¶
             File.WriteAllText(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\Config.Json", json_string);
 
         }
@@ -222,7 +217,7 @@ namespace DBMT
         public async void SaveDrawIBListToConfig(object sender, RoutedEventArgs e)
         {
             SaveDrawIBList();
-            await MessageHelper.Show("±£´æ³É¹¦");
+            await MessageHelper.Show("ä¿å­˜æˆåŠŸ");
         }
 
         void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
@@ -236,7 +231,7 @@ namespace DBMT
                 {
                     continue;
                 }
-                //ÔÚÕâÀï°ÑËùÓĞoutputÄ¿Â¼ÏÂµÄdds×ªÎªpng¸ñÊ½
+                //åœ¨è¿™é‡ŒæŠŠæ‰€æœ‰outputç›®å½•ä¸‹çš„ddsè½¬ä¸ºpngæ ¼å¼
                 string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
                 foreach (string outputDirectory in subdirectories)
                 {
@@ -259,9 +254,9 @@ namespace DBMT
                             }
                         }
                         else if (!ddsFilePath.EndsWith(".dds"))
-                         {
-                                continue;
-                         }
+                        {
+                            continue;
+                        }
 
                         string TextureFormatString = TextureHelper.GetAutoTextureFormat();
                         CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
@@ -278,12 +273,12 @@ namespace DBMT
             List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
             foreach (string DrawIB in DrawIBList)
             {
-                //ÔÚÕâÀï°ÑËùÓĞoutputÄ¿Â¼ÏÂµÄdds×ªÎªpng¸ñÊ½
+                //åœ¨è¿™é‡ŒæŠŠæ‰€æœ‰outputç›®å½•ä¸‹çš„ddsè½¬ä¸ºpngæ ¼å¼
                 string DedupedTexturesFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures/";
                 //MessageHelper.Show(DedupedTexturesFolderPath);
                 if (!Directory.Exists(DedupedTexturesFolderPath))
                 {
-                    await MessageHelper.Show("ÎŞ·¨ÕÒµ½DedupedTexturesÎÄ¼ş¼Ğ: " + DedupedTexturesFolderPath);
+                    await MessageHelper.Show("æ— æ³•æ‰¾åˆ°DedupedTexturesæ–‡ä»¶å¤¹: " + DedupedTexturesFolderPath);
                     return;
                 }
 
@@ -291,7 +286,7 @@ namespace DBMT
                 string DedupedTexturesConvertFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures_" + TextureFormatString + "/";
                 //MessageHelper.Show(DedupedTexturesConvertFolderPath);
                 TextureHelper.ConvertAllTextureFilesToTargetFolder(DedupedTexturesFolderPath, DedupedTexturesConvertFolderPath);
-                //await MessageHelper.Show("×ª»»³É¹¦");
+                //await MessageHelper.Show("è½¬æ¢æˆåŠŸ");
             }
         }
 
@@ -299,13 +294,13 @@ namespace DBMT
         {
             if (TextBoxDrawIBList.Text.Trim() == "")
             {
-                await MessageHelper.Show("ÔÚÔËĞĞÖ®Ç°ÇëÌîĞ´ÄúµÄ»æÖÆIBµÄ¹şÏ£Öµ²¢½øĞĞÅäÖÃ", "Please fill your DrawIB and config it before run.");
+                await MessageHelper.Show("åœ¨è¿è¡Œä¹‹å‰è¯·å¡«å†™æ‚¨çš„ç»˜åˆ¶IBçš„å“ˆå¸Œå€¼å¹¶è¿›è¡Œé…ç½®", "Please fill your DrawIB and config it before run.");
                 return false;
             }
 
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("ÇëÏÈÖ¸¶¨¹¤×÷¿Õ¼ä");
+                await MessageHelper.Show("è¯·å…ˆæŒ‡å®šå·¥ä½œç©ºé—´");
                 return false;
             }
 
@@ -330,7 +325,7 @@ namespace DBMT
 
                 if (MainConfig.GetConfig<bool>("ConvertDedupedTextures"))
                 {
-                    //await MessageHelper.Show("¹´Ñ¡ÁË×ª»»DedupedÌùÍ¼£¬¿ªÊ¼×ª»»DedupedÌùÍ¼");
+                    //await MessageHelper.Show("å‹¾é€‰äº†è½¬æ¢Dedupedè´´å›¾ï¼Œå¼€å§‹è½¬æ¢Dedupedè´´å›¾");
                     ConvertDedupedTexturesToTargetFormat();
                 }
 
@@ -338,9 +333,9 @@ namespace DBMT
             }
             else
             {
-                OpenLatestLogFile(sender,e);
+                OpenLatestLogFile(sender, e);
             }
-            
+
         }
 
 
@@ -348,7 +343,7 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("ÇëÏÈÑ¡Ôñ¹¤×÷¿Õ¼ä");
+                await MessageHelper.Show("è¯·å…ˆé€‰æ‹©å·¥ä½œç©ºé—´");
                 return;
             }
 
@@ -359,7 +354,7 @@ namespace DBMT
             }
             else
             {
-                OpenLatestLogFile(sender,e);
+                OpenLatestLogFile(sender, e);
             }
         }
 
@@ -367,14 +362,14 @@ namespace DBMT
         public async void OpenWorkSpaceGenerateModFolder(object sender, RoutedEventArgs e)
         {
             string GeneratedModFolderPath = MainConfig.Path_OutputFolder + "/" + MainConfig.CurrentWorkSpace + "/GeneratedMod/";
-           
+
             if (Directory.Exists(GeneratedModFolderPath))
             {
                 await CommandHelper.ShellOpenFolder(GeneratedModFolderPath);
             }
             else
             {
-                await MessageHelper.Show("Äú»¹Î´Éú³É¶ş´´Ä£ĞÍ", "You have not generate any mod yet");
+                await MessageHelper.Show("æ‚¨è¿˜æœªç”ŸæˆäºŒåˆ›æ¨¡å‹", "You have not generate any mod yet");
             }
         }
 
@@ -387,7 +382,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("´ËÄ¿Â¼²»´æÔÚ£¬Çë¼ì²éÄúµÄModsÎÄ¼ş¼ĞÊÇ·ñÉèÖÃÕıÈ·", "This path didn't exists, please check if your Mods folder is correct");
+                await MessageHelper.Show("æ­¤ç›®å½•ä¸å­˜åœ¨ï¼Œè¯·æ£€æŸ¥æ‚¨çš„Modsæ–‡ä»¶å¤¹æ˜¯å¦è®¾ç½®æ­£ç¡®", "This path didn't exists, please check if your Mods folder is correct");
             }
         }
 
@@ -426,7 +421,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("Ä¿±êÄ¿Â¼Ã»ÓĞÈÎºÎFrameAnalysisÎÄ¼ş¼Ğ","Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("ç›®æ ‡ç›®å½•æ²¡æœ‰ä»»ä½•FrameAnalysisæ–‡ä»¶å¤¹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -444,7 +439,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("Ã»ÓĞÕÒµ½ÈÎºÎFrameAnalysisÎÄ¼ş¼Ğ", "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("æ²¡æœ‰æ‰¾åˆ°ä»»ä½•FrameAnalysisæ–‡ä»¶å¤¹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -457,7 +452,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("Ä¿±êÄ¿Â¼Ã»ÓĞÈÎºÎFrameAnalysisÎÄ¼ş¼Ğ", "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("ç›®æ ‡ç›®å½•æ²¡æœ‰ä»»ä½•FrameAnalysisæ–‡ä»¶å¤¹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -483,7 +478,7 @@ namespace DBMT
 
         public async void OpenLogsFolder(object sender, RoutedEventArgs e)
         {
-            string LogsFolderPath = Path.Combine(Directory.GetCurrentDirectory() ,"Logs\\");
+            string LogsFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Logs\\");
             await CommandHelper.ShellOpenFolder(LogsFolderPath);
         }
 
@@ -491,7 +486,7 @@ namespace DBMT
         public async void OpenLatestLogFile(object sender, RoutedEventArgs e)
         {
             string LogFilePath = PathHelper.GetLatestLogFilePath();
-            if(File.Exists(LogFilePath))
+            if (File.Exists(LogFilePath))
             {
                 await CommandHelper.ShellOpenFile(LogFilePath);
             }
@@ -510,12 +505,12 @@ namespace DBMT
         }
 
 
-       
+
 
         public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
         {
-            //ÕâÀï²»ĞèÒªÇø·Ömatch_first_index,ÕâÊÇÒòÎªÎÒÃÇÊµ¼Ê²âÊÔÖĞ²»ÔÙĞèÒªÓÃµ½match_first_indexµÄ¹ıÂËÁË¡£
-            //Ö±½Ó·Ö¸îÈ»ºóÊä³ö¼´¿É
+            //è¿™é‡Œä¸éœ€è¦åŒºåˆ†match_first_index,è¿™æ˜¯å› ä¸ºæˆ‘ä»¬å®é™…æµ‹è¯•ä¸­ä¸å†éœ€è¦ç”¨åˆ°match_first_indexçš„è¿‡æ»¤äº†ã€‚
+            //ç›´æ¥åˆ†å‰²ç„¶åè¾“å‡ºå³å¯
             List<string> DrawIBList = new List<string>();
             if (TextBoxSkipIBList.Text.Contains(","))
             {
@@ -576,8 +571,8 @@ namespace DBMT
 
         public async void ExecuteGenerateVSCheck(object sender, RoutedEventArgs e)
         {
-            //ÕâÀï²»ĞèÒªÇø·Ömatch_first_index,ÕâÊÇÒòÎªÎÒÃÇÊµ¼Ê²âÊÔÖĞ²»ÔÙĞèÒªÓÃµ½match_first_indexµÄ¹ıÂËÁË¡£
-            //Ö±½Ó·Ö¸îÈ»ºóÊä³ö¼´¿É
+            //è¿™é‡Œä¸éœ€è¦åŒºåˆ†match_first_index,è¿™æ˜¯å› ä¸ºæˆ‘ä»¬å®é™…æµ‹è¯•ä¸­ä¸å†éœ€è¦ç”¨åˆ°match_first_indexçš„è¿‡æ»¤äº†ã€‚
+            //ç›´æ¥åˆ†å‰²ç„¶åè¾“å‡ºå³å¯
             List<string> DrawIBList = new List<string>();
             if (TextBoxSkipIBList.Text.Contains(","))
             {
@@ -607,11 +602,11 @@ namespace DBMT
                             continue;
                         }
                         WritedHashList.Add(hash);
-                        outputContent = outputContent + "[ShaderOverride_" + hash + "]\r\n";
-                        outputContent = outputContent + "hash = " + hash + "\r\n";
-                        outputContent = outputContent + "if $costume_mods\r\n";
-                        outputContent = outputContent + "  checktextureoverride = ib\r\n";
-                        outputContent = outputContent + "endif\r\n\r\n";
+                        outputContent += "[ShaderOverride_" + hash + "]\r\n";
+                        outputContent += "hash = " + hash + "\r\n";
+                        outputContent += "if $costume_mods\r\n";
+                        outputContent += "  checktextureoverride = ib\r\n";
+                        outputContent += "endif\r\n\r\n";
                     }
                 }
 
@@ -638,39 +633,39 @@ namespace DBMT
                 return;
             }
 
-            //ÄæÏòÌáÈ¡Ö®Ç°Òª±£´æDrawIBÁĞ±í¡£
+            //é€†å‘æå–ä¹‹å‰è¦ä¿å­˜DrawIBåˆ—è¡¨ã€‚
             SaveDrawIBList();
 
-            bool command_run_result =await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
+            bool command_run_result = await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
             if (command_run_result)
             {
                 ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
                 await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
             }
-            
+
         }
 
         private async Task<string> RunReverseIniCommand(string commandStr)
         {
             if (string.IsNullOrEmpty(MainConfig.CurrentGameName))
             {
-                await MessageHelper.Show("ÔÚÄæÏòModÖ®Ç°ÇëÑ¡Ôñµ±Ç°Òª½øĞĞ¸ñÊ½×ª»»µÄ¶ş´´Ä£ĞÍµÄËùÊôÓÎÏ·", "Please select your current game before reverse.");
+                await MessageHelper.Show("åœ¨é€†å‘Modä¹‹å‰è¯·é€‰æ‹©å½“å‰è¦è¿›è¡Œæ ¼å¼è½¬æ¢çš„äºŒåˆ›æ¨¡å‹çš„æ‰€å±æ¸¸æˆ", "Please select your current game before reverse.");
                 return "";
             }
 
-            FileOpenPicker picker =  CommandHelper.Get_FileOpenPicker(".ini");
+            FileOpenPicker picker = CommandHelper.Get_FileOpenPicker(".ini");
             StorageFile file = await picker.PickSingleFileAsync();
             if (file != null)
             {
                 string filePath = file.Path;
                 if (DBMTStringUtils.ContainsChinese(filePath))
                 {
-                    await MessageHelper.Show("Ä¿±êModµÄiniÎÄ¼şÂ·¾¶ÖĞ²»ÄÜ³öÏÖÖĞÎÄ", "Target mod ini file path can't contains Chinese.");
+                    await MessageHelper.Show("ç›®æ ‡Modçš„iniæ–‡ä»¶è·¯å¾„ä¸­ä¸èƒ½å‡ºç°ä¸­æ–‡", "Target mod ini file path can't contains Chinese.");
                     return "";
                 }
 
-                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // ¶ÁÈ¡ÎÄ¼şÄÚÈİ
+                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // è¯»å–æ–‡ä»¶å†…å®¹
                 JObject runInputJson = JObject.Parse(json);
                 runInputJson["GameName"] = MainConfig.CurrentGameName;
                 runInputJson["ReverseFilePath"] = filePath;
@@ -694,31 +689,31 @@ namespace DBMT
 
         private static void SearchDirectory(string currentDirectory, List<string> result)
         {
-            // »ñÈ¡µ±Ç°Ä¿Â¼ÏÂµÄËùÓĞÎÄ¼ş
+            // è·å–å½“å‰ç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
             string[] files = Directory.GetFiles(currentDirectory);
 
-            // ¼ì²éÊÇ·ñÓĞ.dds»ò.pngÎÄ¼ş
+            // æ£€æŸ¥æ˜¯å¦æœ‰.ddsæˆ–.pngæ–‡ä»¶
             foreach (string file in files)
             {
                 string extension = Path.GetExtension(file).ToLower();
                 if (extension == ".dds" || extension == ".png")
                 {
-                    // Èç¹ûÕÒµ½ÁËÄ¿±êÎÄ¼ş£¬½«Ä¿Â¼¼ÓÈë½á¹ûÁĞ±í
+                    // å¦‚æœæ‰¾åˆ°äº†ç›®æ ‡æ–‡ä»¶ï¼Œå°†ç›®å½•åŠ å…¥ç»“æœåˆ—è¡¨
                     if (!result.Contains(currentDirectory))
                     {
                         result.Add(currentDirectory);
                     }
-                    break; // ÕÒµ½ÁËÒ»ÖÖÀàĞÍµÄÎÄ¼ş¾Í²»ÔÙ¼ÌĞø²éÕÒµ±Ç°Ä¿Â¼ÖĞµÄÆäËûÎÄ¼ş
+                    break; // æ‰¾åˆ°äº†ä¸€ç§ç±»å‹çš„æ–‡ä»¶å°±ä¸å†ç»§ç»­æŸ¥æ‰¾å½“å‰ç›®å½•ä¸­çš„å…¶ä»–æ–‡ä»¶
                 }
             }
 
-            // µİ¹éËÑË÷×ÓÄ¿Â¼
+            // é€’å½’æœç´¢å­ç›®å½•
             string[] subdirectories = Directory.GetDirectories(currentDirectory);
             foreach (string subdirectory in subdirectories)
             {
                 SearchDirectory(subdirectory, result);
             }
-            
+
         }
 
         public static List<string> FindDirectoriesWithImages(string rootDirectory)
@@ -757,7 +752,7 @@ namespace DBMT
 
         public async void ReverseLv5_ReverseSingleIni(object sender, RoutedEventArgs e)
         {
-            string ModIniFilePath =await RunReverseIniCommand("ReverseSingleLv5");
+            string ModIniFilePath = await RunReverseIniCommand("ReverseSingleLv5");
             ConvertTexturesInMod(ModIniFilePath);
         }
 
@@ -779,7 +774,7 @@ namespace DBMT
         {
             if (DBMTStringUtils.ContainsChinese(IniPath))
             {
-                await MessageHelper.Show("Ä¿±êÂ·¾¶ÖĞ²»ÄÜº¬ÓĞÖĞÎÄ×Ö·û", "Target Path Can't Contains Chinese.");
+                await MessageHelper.Show("ç›®æ ‡è·¯å¾„ä¸­ä¸èƒ½å«æœ‰ä¸­æ–‡å­—ç¬¦", "Target Path Can't Contains Chinese.");
                 return false;
             }
             JObject jsonObject = new JObject();
@@ -791,19 +786,19 @@ namespace DBMT
         }
 
 
-        
+
 
         public async void Encryption_EncryptAll(object sender, RoutedEventArgs e)
         {
 
-            //»ìÏı²¢·µ»ØĞÂµÄiniÎÄ¼şµÄÂ·¾¶
-            string NewModInIPath =await EncryptionHelper.Obfuscate_ModFileName("Play");
+            //æ··æ·†å¹¶è¿”å›æ–°çš„iniæ–‡ä»¶çš„è·¯å¾„
+            string NewModInIPath = await EncryptionHelper.Obfuscate_ModFileName("Play");
             if (NewModInIPath == "")
             {
                 return;
             }
 
-            //µ÷ÓÃ¼ÓÃÜBuffer²¢¼ÓÃÜiniÎÄ¼ş
+            //è°ƒç”¨åŠ å¯†Bufferå¹¶åŠ å¯†iniæ–‡ä»¶
             await DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", NewModInIPath);
         }
 
@@ -830,16 +825,16 @@ namespace DBMT
             {
                 if (DBMTStringUtils.ContainsChinese(selected_folder_path))
                 {
-                    await MessageHelper.Show("Ä¿±êÂ·¾¶ÖĞ²»ÄÜº¬ÓĞÖĞÎÄ×Ö·û", "Target Path Can't Contains Chinese.");
+                    await MessageHelper.Show("ç›®æ ‡è·¯å¾„ä¸­ä¸èƒ½å«æœ‰ä¸­æ–‡å­—ç¬¦", "Target Path Can't Contains Chinese.");
                     return;
                 }
 
-                //ÅĞ¶ÏÄ¿±êÂ·¾¶ÏÂÊÇ·ñÓĞiniÎÄ¼ş
-                // Ê¹ÓÃDirectory.GetFiles·½·¨£¬²¢Ö¸¶¨ËÑË÷Ä£Ê½Îª*.ini
+                //åˆ¤æ–­ç›®æ ‡è·¯å¾„ä¸‹æ˜¯å¦æœ‰iniæ–‡ä»¶
+                // ä½¿ç”¨Directory.GetFilesæ–¹æ³•ï¼Œå¹¶æŒ‡å®šæœç´¢æ¨¡å¼ä¸º*.ini
                 string[] iniFiles = Directory.GetFiles(selected_folder_path, "*.ini");
                 if (iniFiles.Length == 0)
                 {
-                    await MessageHelper.Show("Ä¿±êÂ·¾¶ÖĞÎŞ·¨ÕÒµ½modµÄiniÎÄ¼ş", "Target Path Can't find ini file.");
+                    await MessageHelper.Show("ç›®æ ‡è·¯å¾„ä¸­æ— æ³•æ‰¾åˆ°modçš„iniæ–‡ä»¶", "Target Path Can't find ini file.");
                     return;
                 }
 
