@@ -30,6 +30,9 @@ namespace DBMT
         public MainWindow()
         {
             this.InitializeComponent();
+            Window window = App.m_window;
+            window.ExtendsContentIntoTitleBar = true;
+
             InitializeGUI();
         }
 
@@ -152,109 +155,7 @@ namespace DBMT
                 }
             }
         }
-
-        private void cleanFrameAnalysisFiles()
-        {
-            if (!Directory.Exists(MainConfig.Path_LoaderFolder))
-            {
-                return;
-            }
-
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder);
-
-            List<string> frameAnalysisFileList = new List<string>();
-            foreach (string directory in directories)
-            {
-                string directoryName = Path.GetFileName(directory);
-
-                if (directoryName.StartsWith("FrameAnalysis-"))
-                {
-                    frameAnalysisFileList.Add(directoryName);
-                }
-            }
-
-            if (frameAnalysisFileList.Count == 0)
-            {
-                return;
-            }
-
-            //Get FA numbers to reserve
-            frameAnalysisFileList.Sort();
-
-            //int n = MainConfig.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
-            int n = MainConfig.GetConfig<int>("FrameAnalysisFolderReserveNumber"); // 你想移除的元素数量
-            if (n > 0 && frameAnalysisFileList.Count > n)
-            {
-                frameAnalysisFileList.RemoveRange(frameAnalysisFileList.Count - n, n);
-
-            }
-            else if (frameAnalysisFileList.Count <= n)
-            {
-                // 如果 n 大于等于列表的长度，就清空整个列表
-                frameAnalysisFileList.Clear();
-            }
-            if (frameAnalysisFileList.Count > 0)
-            {
-                foreach (string directoryName in frameAnalysisFileList)
-                {
-                    string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + directoryName;
-                    //FileSystem.DeleteDirectory(latestFrameAnalysisFolder, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
-                    Directory.Delete(latestFrameAnalysisFolder, true);
-                }
-            }
-
-        }
-
-        private void cleanLogFiles()
-        {
-            string logsPath = MainConfig.ApplicationRunPath + "Logs";
-
-            if (!Directory.Exists(logsPath))
-            {
-                return;
-            }
-
-            //移除log文件
-            string[] logFiles = Directory.GetFiles(logsPath); ;
-            List<string> logFileList = new List<string>();
-            foreach (string logFile in logFiles)
-            {
-                string logfileName = Path.GetFileName(logFile);
-                if (logfileName.EndsWith(".log") && logfileName.Length > 15)
-                {
-                    logFileList.Add(logfileName);
-                }
-            }
-
-            if (logFileList.Count == 0)
-            {
-                return;
-            }
-
-            logFileList.Sort();
-            int n = MainConfig.GetConfig<int>("FrameAnalysisFolderReserveNumber"); // 你想移除的元素数量
-            if (n > 0 && logFileList.Count > n)
-            {
-                logFileList.RemoveRange(logFileList.Count - n, n);
-
-            }
-            else if (logFileList.Count <= n)
-            {
-                // 如果 n 大于等于列表的长度，就清空整个列表
-                logFileList.Clear();
-            }
-            if (logFileList.Count > 0)
-            {
-                foreach (string logfileName in logFileList)
-                {
-                    File.Delete(logsPath + "\\" + logfileName);
-
-                    //移动到回收站有时无法生效
-                    //FileSystem.DeleteFile();
-                    //Directory.Delete(latestFrameAnalysisFolder, true);
-                }
-            }
-        }
+       
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
@@ -263,11 +164,12 @@ namespace DBMT
 
             if (MainConfig.GetConfig<bool>("AutoCleanFrameAnalysisFolder"))
             {
-                cleanFrameAnalysisFiles();
+                SettingsHelper.CleanFrameAnalysisFiles();
             }
+
             if (MainConfig.GetConfig<bool>("AutoCleanLogFile"))
             {
-                cleanLogFiles();
+                SettingsHelper.CleanLogFiles();
             }
         }
     }

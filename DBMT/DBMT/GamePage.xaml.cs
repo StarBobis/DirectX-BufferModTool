@@ -24,7 +24,7 @@ using DBMT_Core;
 using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using Windows.UI.Popups;
-using DBMT.Helper;
+using DBMT;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
