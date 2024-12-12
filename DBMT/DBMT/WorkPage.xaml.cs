@@ -229,6 +229,11 @@ namespace DBMT
             List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
             foreach (string DrawIB in DrawIBList)
             {
+                string DrawIBPath = WorkSpacePath + DrawIB + "/";
+                if (!Directory.Exists(DrawIBPath))
+                {
+                    continue;
+                }
                 //在这里把所有output目录下的dds转为png格式
                 string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
                 foreach (string outputDirectory in subdirectories)
@@ -644,6 +649,7 @@ namespace DBMT
 
                 await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
             }
+            
         }
 
         private async Task<string> RunReverseIniCommand(string commandStr)
