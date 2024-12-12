@@ -24,7 +24,10 @@ QQ交流群: 894808210 或者直接提issue
 # MOD相关
 下载DBMT的配套Blender插件：[Catter](https://github.com/StarBobis/Catter)
 
+超好用的Mod管理器：[XXMM](https://github.com/XiaoLinXiaoZhu/XX-Mod-Manager)
+
 使用DBMT前必看的教程文档：[DBMT文档](https://www.yuque.com/airde/lx53p6)
 
 与MOD制作相关的技术文档：[MOD技术文档](https://www.yuque.com/zelbert/egu6ei)
+
 
