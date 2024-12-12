@@ -63,29 +63,45 @@ namespace DBMT
 
         private void GameSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // »ñÈ¡´¥·¢ÊÂ¼şµÄ ComboBox ÊµÀı
+            // è·å–è§¦å‘äº‹ä»¶çš„ ComboBox å®ä¾‹
             var comboBox = sender as ComboBox;
 
-            // ¼ì²éÊÇ·ñÓĞĞÂÑ¡ÖĞµÄÏî
+            // æ£€æŸ¥æ˜¯å¦æœ‰æ–°é€‰ä¸­çš„é¡¹
             if (comboBox != null && comboBox.SelectedItem != null)
             {
-                // Ö´ĞĞÄãÏëÒªµÄ²Ù×÷£¬ÀıÈç»ñÈ¡Ñ¡ÖĞµÄÏî²¢½øĞĞ´¦Àí
+                // æ‰§è¡Œä½ æƒ³è¦çš„æ“ä½œï¼Œä¾‹å¦‚è·å–é€‰ä¸­çš„é¡¹å¹¶è¿›è¡Œå¤„ç†
                 string selectedGame = comboBox.SelectedItem.ToString();
 
-                MainConfig.SetCurrentGame(selectedGame);
-                //¶ÁÈ¡d3dx.iniÖĞµÄÉèÖÃ
+                //MainConfig.SetCurrentGame(selectedGame);
+                MainConfig.SetConfig("CurrentGameName", selectedGame);
+                //è¯»å–d3dx.iniä¸­çš„è®¾ç½®
                 ReadPathSettingFromD3dxIni();
 
                 SetGameBackGroundImage();
             }
         }
 
-        
-
-
         private void SetGameBackGroundImage()
         {
-            string imagePath = PathHelper.GetCurrentGameBackGroundPicturePath();
+            string basePath = MainConfig.Path_Base;
+
+            //è®¾ç½®èƒŒæ™¯å›¾ç‰‡
+            // ä¼˜å…ˆçº§ï¼šDIY > é»˜è®¤ > ä¸»é¡µèƒŒæ™¯
+            string[] imagePaths = {
+                Path.Combine(basePath, "Assets", MainConfig.GetConfig<string>("CurrentGameName") + "_DIY.png"),
+                Path.Combine(basePath, "Assets", MainConfig.GetConfig<string>("CurrentGameName") + ".png"),
+                Path.Combine(basePath, "Assets", "HomePageBackGround.png")
+            };
+
+            string imagePath = "";
+            foreach (string path in imagePaths)
+            {
+                if (!File.Exists(path)) { continue; }
+                imagePath = path;
+                break;
+            }   
+
+            // åˆ›å»º BitmapImage å¹¶è®¾ç½® ImageSource
             BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
             GameBGImageBrush.ImageSource = bitmap;
         }
@@ -98,7 +114,7 @@ namespace DBMT
             if (file != null)
             {
                 string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
-                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.CurrentGameName + "_DIY.png");
+                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.GetConfig<string>("CurrentGameName") + "_DIY.png");
                 File.Copy(file.Path, TargetPicturePath, true);
 
                 SetGameBackGroundImage();
@@ -123,16 +139,16 @@ namespace DBMT
                 return;
             }
 
-            // »ñÈ¡ËùÓĞ×ÓÄ¿Â¼Ãû³Æ
+            // è·å–æ‰€æœ‰å­ç›®å½•åç§°
             var directories = Directory.EnumerateDirectories(GamesPath)
                                         .Select(Path.GetFileName)
                                         .Where(name => !string.IsNullOrEmpty(name))
                                         .OrderByDescending(name => name);
 
-            // Çå¿Õ ComboBox µ±Ç°Ïî
+            // æ¸…ç©º ComboBox å½“å‰é¡¹
             GameSelectionComboBox.Items.Clear();
 
-            // ½«Ã¿¸öÄ¿Â¼Ãû³ÆÌí¼Óµ½ ComboBox ÖĞ
+            // å°†æ¯ä¸ªç›®å½•åç§°æ·»åŠ åˆ° ComboBox ä¸­
             foreach (var dirName in directories)
             {
                 GameSelectionComboBox.Items.Add(dirName);
@@ -162,12 +178,12 @@ namespace DBMT
                 ConfigHelper.SaveAttributeToD3DXIni("[loader]", "target", ProcessPathTextBox.Text);
                 ConfigHelper.SaveAttributeToD3DXIni("[loader]", "launch", StarterPathTextBox.Text);
 
-                await MessageHelper.Show("±£´æ³É¹¦");
+                await MessageHelper.Show("ä¿å­˜æˆåŠŸ");
 
             }
             catch (Exception ex)
             {
-                await MessageHelper.Show("±£´æÊ§°Ü£º" + ex.ToString());
+                await MessageHelper.Show("ä¿å­˜å¤±è´¥ï¼š" + ex.ToString());
             }
             
         }
@@ -180,19 +196,19 @@ namespace DBMT
 
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {
-            string MigotoLoaderExePath = Path.Combine(MainConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
+            string MigotoLoaderExePath = Path.Combine(MainConfig.GetConfig<string>("Path_LoaderFolder"), "3Dmigoto Loader.exe");
             await CommandHelper.ShellOpenFile(MigotoLoaderExePath);
         }
         private async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
         {
             
-            await CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder);
+            await CommandHelper.ShellOpenFolder(MainConfig.GetConfig<string>("Path_LoaderFolder"));
         }
 
         private async void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
         {
 
-            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.Path_LoaderFolder,"ShaderFixes") );
+            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.GetConfig<string>("Path_LoaderFolder"),"ShaderFixes") );
         }
     }
 }
