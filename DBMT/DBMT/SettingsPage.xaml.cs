@@ -57,9 +57,6 @@ namespace DBMT
 
         public void SaveSettingsToConfig()
         {
-            const MainConfig.ConfigFiles g = MainConfig.ConfigFiles.Game_Setting;
-            const MainConfig.ConfigFiles t = MainConfig.ConfigFiles.Texture_Setting;
-
             MainConfig.SetConfig("AutoCleanLogFile", ToggleSwitch_AutoCleanLogFile.IsOn);
             MainConfig.SetConfig("LogFileReserveNumber", (int)NumberBox_LogFileReserveNumber.Value);
             MainConfig.SetConfig("AutoCleanFrameAnalysisFolder", ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn);

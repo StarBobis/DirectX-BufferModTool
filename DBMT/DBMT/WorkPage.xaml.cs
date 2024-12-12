@@ -36,13 +36,13 @@ namespace DBMT
         {
             this.InitializeComponent();
 
-            if (MainConfig.CurrentGameName == "")
-            {
-                MainConfig.ReadCurrentGameFromMainJson();
-                MainConfig.SetCurrentGame(MainConfig.CurrentGameName);
-            }
+            //if (MainConfig.CurrentGameName == "")
+            //{
+            //    MainConfig.ReadCurrentGameFromMainJson();
+            //    MainConfig.SetCurrentGame(MainConfig.CurrentGameName);
+            //}
 
-            MainConfig.ReadCurrentWorkSpaceFromMainJson();
+            //MainConfig.ReadCurrentWorkSpaceFromMainJson();
             InitializeWorkSpace(MainConfig.CurrentWorkSpace);
             SetDefaultBackGroundImage();
         }
@@ -65,8 +65,9 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                MainConfig.CurrentWorkSpace = ComboBoxWorkSpaceSelection.Text;
-                MainConfig.SaveCurrentWorkSpaceToMainJson();
+                //MainConfig.CurrentWorkSpace = ComboBoxWorkSpaceSelection.Text;
+                MainConfig.SetConfig("CurrentWorkSpace", ComboBoxWorkSpaceSelection.Text);
+                MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
                 ReadDrawIBListFromWorkSpace();
             }
         }
@@ -210,7 +211,8 @@ namespace DBMT
             }
 
             //(2) 接下来要把当前的游戏名称+类型保存到MainSetting.json里
-            MainConfig.SaveCurrentGameNameToMainJson();
+            //MainConfig.SaveCurrentGameNameToMainJson();
+            MainConfig.SaveAllConfig();
 
             //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件。
             List<string> drawIBList = GetDrawIBListFromTextBoxDrawIBList();
@@ -251,20 +253,17 @@ namespace DBMT
                     string[] filePathArray = Directory.GetFiles(outputDirectory);
                     foreach (string ddsFilePath in filePathArray)
                     {
-                        if (MainConfig.AutoTextureOnlyConvertDiffuseMap)
+                        if (MainConfig.GetConfig<bool>("ConvertDiffuseMapOnly"))
                         {
                             if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
                             {
                                 continue;
                             }
                         }
-                        else
-                        {
-                            if (!ddsFilePath.EndsWith(".dds"))
-                            {
+                        else if (!ddsFilePath.EndsWith(".dds"))
+                         {
                                 continue;
-                            }
-                        }
+                         }
 
                         string TextureFormatString = TextureHelper.GetAutoTextureFormat();
                         CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
@@ -331,7 +330,7 @@ namespace DBMT
             {
                 ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
-                if (MainConfig.ConvertDedupedTextures)
+                if (MainConfig.GetConfig<bool>("ConvertDedupedTextures"))
                 {
                     //await MessageHelper.Show("勾选了转换Deduped贴图，开始转换Deduped贴图");
                     ConvertDedupedTexturesToTargetFormat();

@@ -11,20 +11,13 @@ namespace DBMT.Helper
     {
         public static string GetAutoTextureFormat()
         {
-            string TextureFormatString = "jpg";
-            if (MainConfig.AutoTextureFormat == 0)
+            return MainConfig.GetConfig<int>("AutoTextureFormat") switch
             {
-                TextureFormatString = "jpg";
-            }
-            else if (MainConfig.AutoTextureFormat == 1)
-            {
-                TextureFormatString = "tga";
-            }
-            else if (MainConfig.AutoTextureFormat == 2)
-            {
-                TextureFormatString = "png";
-            }
-            return TextureFormatString;
+                0 => "jpg",
+                1 => "tga",
+                2 => "png",
+                _ => "jpg",
+            };
         }
 
 

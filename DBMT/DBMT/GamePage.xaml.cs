@@ -72,7 +72,8 @@ namespace DBMT
                 // 执行你想要的操作，例如获取选中的项并进行处理
                 string selectedGame = comboBox.SelectedItem.ToString();
 
-                MainConfig.SetCurrentGame(selectedGame);
+                //MainConfig.SetCurrentGame(selectedGame);
+                MainConfig.SetConfig("CurrentGameName", selectedGame);
                 //读取d3dx.ini中的设置
                 ReadPathSettingFromD3dxIni();
 
@@ -82,23 +83,23 @@ namespace DBMT
 
         private void SetGameBackGroundImage()
         {
-            string basePath = Directory.GetCurrentDirectory();
+            string basePath = MainConfig.Path_Base;
 
             //设置背景图片
-            //默认为各个游戏用户设置的DIY图片
-            string imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png");
+            // 优先级：DIY > 默认 > 主页背景
+            string[] imagePaths = {
+                Path.Combine(basePath, "Assets", MainConfig.GetConfig<string>("CurrentGameName") + "_DIY.png"),
+                Path.Combine(basePath, "Assets", MainConfig.GetConfig<string>("CurrentGameName") + ".png"),
+                Path.Combine(basePath, "Assets", "HomePageBackGround.png")
+            };
 
-            //如果不存在DIY背景图，则使用默认游戏的背景图
-            if (!File.Exists(imagePath))
+            string imagePath = "";
+            foreach (string path in imagePaths)
             {
-                imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png");
-            }
-
-            //如果默认游戏的背景图还不存在，则使用主页的背景图
-            if (!File.Exists(imagePath))
-            {
-                imagePath = Path.Combine(basePath, "Assets", "HomePageBackGround.png");
-            }
+                if (!File.Exists(path)) { continue; }
+                imagePath = path;
+                break;
+            }   
 
             // 创建 BitmapImage 并设置 ImageSource
             BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
@@ -113,7 +114,7 @@ namespace DBMT
             if (file != null)
             {
                 string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
-                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.CurrentGameName + "_DIY.png");
+                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.GetConfig<string>("CurrentGameName") + "_DIY.png");
                 File.Copy(file.Path, TargetPicturePath, true);
 
                 SetGameBackGroundImage();
@@ -185,19 +186,19 @@ namespace DBMT
 
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {
-            string MigotoLoaderExePath = Path.Combine(MainConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
+            string MigotoLoaderExePath = Path.Combine(MainConfig.GetConfig<string>("Path_LoaderFolder"), "3Dmigoto Loader.exe");
             await CommandHelper.ShellOpenFile(MigotoLoaderExePath);
         }
         private async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
         {
             
-            await CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder);
+            await CommandHelper.ShellOpenFolder(MainConfig.GetConfig<string>("Path_LoaderFolder"));
         }
 
         private async void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
         {
 
-            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.Path_LoaderFolder,"ShaderFixes") );
+            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.GetConfig<string>("Path_LoaderFolder"),"ShaderFixes") );
         }
     }
 }
