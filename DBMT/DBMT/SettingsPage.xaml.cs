@@ -42,16 +42,16 @@ namespace DBMT
                 imagePath = Path.Combine(AssetsFolderPath, "HomePageBackGround.png");
             }
 
-            // ´´½¨ BitmapImage ²¢ÉèÖÃ ImageSource
+            // åˆ›å»º BitmapImage å¹¶è®¾ç½® ImageSource
             BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
             SettingsBGImageBrush.ImageSource = bitmap;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            // Ö´ĞĞÄãÏëÒªÔÚÕâ¸öÒ³Ãæ±»¹Ø±Õ»òµ¼º½Àë¿ªÊ±ÔËĞĞµÄ´úÂë
+            // æ‰§è¡Œä½ æƒ³è¦åœ¨è¿™ä¸ªé¡µé¢è¢«å…³é—­æˆ–å¯¼èˆªç¦»å¼€æ—¶è¿è¡Œçš„ä»£ç 
             SaveSettingsToConfig();
-            // Èç¹ûĞèÒª£¬¿ÉÒÔµ÷ÓÃ»ùÀàµÄ OnNavigatedFrom ·½·¨
+            // å¦‚æœéœ€è¦ï¼Œå¯ä»¥è°ƒç”¨åŸºç±»çš„ OnNavigatedFrom æ–¹æ³•
             base.OnNavigatedFrom(e);
         }
 
@@ -85,7 +85,7 @@ namespace DBMT
 
         public void ReadSettingsFromConfig()
         {
-            //·ÀÖ¹³ÌĞòÆô¶¯Ê±Ã»ÕıÈ·¶ÁÈ¡£¬ÕâÀïÈßÓà¶ÁÈ¡Ò»´Î£¬ºóÃæ¿´Çé¿ö¿ÉÒÔÈ¥µô¡£
+            //é˜²æ­¢ç¨‹åºå¯åŠ¨æ—¶æ²¡æ­£ç¡®è¯»å–ï¼Œè¿™é‡Œå†—ä½™è¯»å–ä¸€æ¬¡ï¼Œåé¢çœ‹æƒ…å†µå¯ä»¥å»æ‰ã€‚
             MainConfig.LoadConfigFromFiles();
 
             ToggleSwitch_AutoCleanLogFile.IsOn = MainConfig.GetConfig<bool>("AutoCleanLogFile");
