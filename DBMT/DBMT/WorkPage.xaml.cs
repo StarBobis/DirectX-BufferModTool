@@ -225,50 +225,56 @@ namespace DBMT
             await MessageHelper.Show("保存成功");
         }
 
-        void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
+        public async void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
         {
-            string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
-            List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
-            foreach (string DrawIB in DrawIBList)
+            try
             {
-                string DrawIBPath = WorkSpacePath + DrawIB + "/";
-                if (!Directory.Exists(DrawIBPath))
+                string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
+                List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
+                foreach (string DrawIB in DrawIBList)
                 {
-                    continue;
-                }
-                //在这里把所有output目录下的dds转为png格式
-                string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
-                foreach (string outputDirectory in subdirectories)
-                {
-                    //MessageBox.Show(Path.GetDirectoryName(outputDirectory));
-
-                    if (!Path.GetFileName(outputDirectory).StartsWith("TYPE_"))
+                    string DrawIBPath = WorkSpacePath + DrawIB + "/";
+                    if (!Directory.Exists(DrawIBPath))
                     {
                         continue;
                     }
-
-
-                    string[] filePathArray = Directory.GetFiles(outputDirectory);
-                    foreach (string ddsFilePath in filePathArray)
+                    //在这里把所有output目录下的dds转为png格式
+                    string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
+                    foreach (string outputDirectory in subdirectories)
                     {
-                        if (MainConfig.GetConfig<bool>("ConvertDiffuseMapOnly"))
+                        //MessageBox.Show(Path.GetDirectoryName(outputDirectory));
+
+                        if (!Path.GetFileName(outputDirectory).StartsWith("TYPE_"))
                         {
-                            if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
+                            continue;
+                        }
+
+
+                        string[] filePathArray = Directory.GetFiles(outputDirectory);
+                        foreach (string ddsFilePath in filePathArray)
+                        {
+                            if (MainConfig.GetConfig<bool>("ConvertDiffuseMapOnly"))
+                            {
+                                if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
+                                {
+                                    continue;
+                                }
+                            }
+                            else if (!ddsFilePath.EndsWith(".dds"))
                             {
                                 continue;
                             }
-                        }
-                        else if (!ddsFilePath.EndsWith(".dds"))
-                         {
-                                continue;
-                         }
 
-                        string TextureFormatString = TextureHelper.GetAutoTextureFormat();
-                        CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
+                            string TextureFormatString = TextureHelper.GetAutoTextureFormat();
+                            CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
+                        }
                     }
                 }
             }
-
+            catch (Exception ex)
+            {
+                await MessageHelper.Show("贴图转换错误: " + ex.ToString());
+            }
         }
 
         async void ConvertDedupedTexturesToTargetFormat()
