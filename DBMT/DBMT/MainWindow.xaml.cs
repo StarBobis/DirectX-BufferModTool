@@ -30,6 +30,9 @@ namespace DBMT
         public MainWindow()
         {
             this.InitializeComponent();
+            Window window = App.m_window;
+            window.ExtendsContentIntoTitleBar = true;
+
             InitializeGUI();
         }
 
