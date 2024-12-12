@@ -70,9 +70,9 @@ namespace DBMT
         private static JObject DefaultConfig_Texure = new JObject
         {
             { "ForbidAutoTexture", false },
-            { "ConvertDedupedTextures", false },
+            { "ConvertDedupedTextures", true },
             { "UseHashTexture", false },
-            { "AutoTextureFormat", 0 },
+            { "AutoTextureFormat", 2 },
             { "AutoTextureOnlyConvertDiffuseMap", true },
             { "ForbidMoveTrianglelistTextures", false },
             { "ForbidMoveDedupedTextures", false },
@@ -85,9 +85,9 @@ namespace DBMT
             { "WindowTopMost", false },
             { "AutoCleanFrameAnalysisFolder", true },
             { "AutoCleanLogFile", true },
-            { "FrameAnalysisFolderReserveNumber", 0 },
-            { "LogFileReserveNumber", 0 },
-            { "ModelFileNameStyle", 0 },
+            { "FrameAnalysisFolderReserveNumber", 1 },
+            { "LogFileReserveNumber", 3 },
+            { "ModelFileNameStyle", 1 },
             { "MoveIBRelatedFiles",false },
             { "DontSplitModelByMatchFirstIndex",false },
             { "GenerateSeperatedMod",false },
@@ -110,7 +110,7 @@ namespace DBMT
             { ConfigFiles.Texture_Setting.ToString(), DefaultConfig_Texure }
         };
 
-        private static Dictionary<string, string> JsonFiles = new Dictionary<string, string>(){
+        private static Dictionary<string, string> ConfigName_FilePath_Dict = new Dictionary<string, string>(){
             { ConfigFiles.Main.ToString(),Path_MainConfig},
             { ConfigFiles.Game_Setting.ToString(),Path_Game_SettingJson},
             { ConfigFiles.Texture_Setting.ToString(),Path_Texture_SettingJson}
@@ -123,15 +123,15 @@ namespace DBMT
         public static void LoadConfigFile(ConfigFiles configFiles)
         {
             string ConfigNameKey = configFiles.ToString();
-
-            if (!File.Exists(Path_MainConfig))
+            string ConfigPath = ConfigName_FilePath_Dict[ConfigNameKey];
+            if (!File.Exists(ConfigPath))
             {
                 //如果文件不存在，就用默认配置，节省读取IO
                 JsonObjects[ConfigNameKey] = DefaultConfigs[ConfigNameKey];
             }
             else
             {
-                string json = File.ReadAllText(Path_MainConfig); // 读取文件内容
+                string json = File.ReadAllText(ConfigPath); // 读取文件内容
                 JObject jsonObject = JObject.Parse(json);
 
                 // 配置文件可能 不完整，缺少一些配置项，所以需要用默认配置来填充
@@ -168,26 +168,6 @@ namespace DBMT
             throw new Exception($"Key [{key}] not found in config file [{configFiles}]");
         }
 
-        /// <summary>
-        /// 从任意文件中获取配置，不推荐使用，如果可能的话，还是建议指定文件
-        /// </summary>
-        /// <typeparam name="T">目标格式</typeparam>
-        /// <param name="key">配置项名称</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        [Obsolete("不推荐使用，如果可能的话，还是建议指定文件,这样可以避免潜在的配置项重复的问题")]
-        public static T GetConfig<T>(string key)
-        {
-            foreach (var file in JsonFiles)
-            {
-                if (JsonObjects.ContainsKey(file.Key) && JsonObjects[file.Key].ContainsKey(key))
-                {
-                    return JsonObjects[file.Key][key].ToObject<T>();
-                }
-            }
-            // 抛出异常
-            throw new Exception($"Key [{key}] not found in config files");
-        }
 
         private static T GetDefaultConfig<T>(ConfigFiles configFiles, string key)
         {
@@ -226,54 +206,23 @@ namespace DBMT
                 return value;
             }
             // 抛出异常
-            throw new Exception($"File [{file}] not found in config files [{JsonFiles}]");
-        }
-
-        /// <summary>
-        /// 将配置文件 [file] 中的配置 [key] 的值设置为 [value]，无需指定类型
-        /// </summary>
-        /// <param name="configFiles"></param>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static dynamic SetConfig(ConfigFiles configFiles, string key, dynamic value)
-        {
-            // 设置配置文件
-            // 将 configFiles 转换为字符串 ，然后调用 SetConfig<T>(string file, string key, T value)
-            string file = configFiles.ToString();
-            if (JsonObjects.ContainsKey(file))
-            {
-                // 因为 这里的 JToken.FromObject(value) 能够自动 转化为对应的类型，所以说在设置的时候可以偷懒不指定类型
-                // 但是 为了 类型安全，还是建议指定类型
-                JsonObjects[file][key] = JToken.FromObject(value);
-                return value;
-            }
-            // 抛出异常
-            throw new Exception("File not found in config files");
+            throw new Exception($"File [{file}] not found in config files [{ConfigName_FilePath_Dict}]");
         }
 
 
-        private static void SaveConfig(string filetype_key)
+        public static void SaveConfig(ConfigFiles configFiles)
         {
-            if (JsonObjects.ContainsKey(filetype_key))
+            string ConfigTypeName = configFiles.ToString();
+            if (JsonObjects.ContainsKey(ConfigTypeName))
             {
-                File.WriteAllText(JsonFiles[filetype_key], JsonObjects[filetype_key].ToString());
+                File.WriteAllText(ConfigName_FilePath_Dict[ConfigTypeName], JsonObjects[ConfigTypeName].ToString());
             }
             else
             {
                 // 抛出异常
-                throw new Exception($"File not found in config file [ {filetype_key} ] ");
+                throw new Exception($"File not found in config file [ {ConfigTypeName} ] ");
             }
         }
-
-        /// <summary>
-        /// 保存配置文件 [file]
-        /// </summary>
-        /// <param name="file"> 需要保存的配置文件 </param>
-        /// <exception cref="Exception"></exception>
-        public static void SaveConfig(ConfigFiles configFiles) => SaveConfig(configFiles.ToString());
-
 
     }
 }

@@ -171,6 +171,8 @@ namespace DBMT
             {
                 SettingsHelper.CleanLogFiles();
             }
+
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
         }
     }
 }
