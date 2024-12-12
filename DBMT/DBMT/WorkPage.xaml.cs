@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-//using DBMT.Helper;
 using DBMT_Core;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Newtonsoft.Json;
-
 using Newtonsoft.Json.Linq;
-using DBMT;
 using Windows.Storage.Pickers;
-
 using Windows.Storage;
-using Windows.Storage.Pickers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -67,7 +62,7 @@ namespace DBMT
             if (File.Exists(Configpath))
             {
 
-                //切换到对应配�?
+                //�л�����Ӧ����
                 string jsonData = File.ReadAllText(Configpath);
                 JObject jobj = JObject.Parse(jsonData);
                 // Access the DrawIBList property and convert it to a List<string>
@@ -81,7 +76,7 @@ namespace DBMT
 
                 if (!string.IsNullOrEmpty(DrawIBListString) && DrawIBListString.Length > 1)
                 {
-                    // 移除最后一个字�?
+                    // �Ƴ����һ���ַ�
                     DrawIBListString = DrawIBListString.Substring(0, DrawIBListString.Length - 1);
                 }
             }
@@ -90,7 +85,7 @@ namespace DBMT
 
         public void InitializeWorkSpace(string WorkSpaceName = "")
         {
-            //如果存储工作空间的output文件夹不存在就创�?
+            //����洢�����ռ��output�ļ��в����ھʹ���
             if (!Directory.Exists(MainConfig.Path_OutputFolder))
             {
                 Directory.CreateDirectory(MainConfig.Path_OutputFolder);
@@ -125,22 +120,22 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("工作空间名称不能为空");
+                await MessageHelper.Show("�����ռ����Ʋ���Ϊ��");
                 return;
             }
 
             if (!ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                ////如果包含了此命名空间，就不创建文件夹，否则就创建
+                ////��������˴������ռ䣬�Ͳ������ļ��У�����ʹ���
                 Directory.CreateDirectory(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text);
 
-                await MessageHelper.Show("工作空间创建成功");
+                await MessageHelper.Show("�����ռ䴴���ɹ�");
 
                 InitializeWorkSpace(ComboBoxWorkSpaceSelection.Text);
             }
             else
             {
-                await MessageHelper.Show("当前工作空间已存�?无法重复创建");
+                await MessageHelper.Show("��ǰ�����ռ��Ѵ���,�޷��ظ�����");
             }
         }
 
@@ -149,7 +144,7 @@ namespace DBMT
             string WorkSpaceFolderPath = MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text;
             Directory.Delete(WorkSpaceFolderPath, true);
             Directory.CreateDirectory(WorkSpaceFolderPath);
-            await MessageHelper.Show("清理成功", "Clean Success");
+            await MessageHelper.Show("�����ɹ�", "Clean Success");
         }
 
         public async void OpenCurrentWorkSpaceFolder(object sender, RoutedEventArgs e)
@@ -163,7 +158,7 @@ namespace DBMT
                 }
                 else
                 {
-                    await MessageHelper.Show("此目录不存在，请检查您的Output文件夹是否设置正�?, "This folder doesn't exists,please check if your OutputFolder is correct.");
+                    await MessageHelper.Show("��Ŀ¼�����ڣ���������Output�ļ����Ƿ�������ȷ", "This folder doesn't exists,please check if your OutputFolder is correct.");
                 }
             }
         }
@@ -191,25 +186,25 @@ namespace DBMT
 
         public async void SaveDrawIBList()
         {
-            //(1) 检查游戏类型是否设�?
+            //(1) �����Ϸ�����Ƿ�����
             if (MainConfig.CurrentGameName == "")
             {
-                await MessageHelper.Show("请先选择游戏类型", "Please select a game before this.");
+                await MessageHelper.Show("����ѡ����Ϸ����", "Please select a game before this.");
                 return;
             }
 
-            //(2) 接下来要把当前的游戏名称+类型保存到MainSetting.json�?
+            //(2) ������Ҫ�ѵ�ǰ����Ϸ����+���ͱ��浽MainSetting.json��
             //MainConfig.SaveCurrentGameNameToMainJson();
             MainConfig.SaveAllConfig();
 
-            //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件�?
+            //(3) �����������е�drawIBList�е�DrawIB���������洢����Ӧ�����ļ���
             List<string> drawIBList = GetDrawIBListFromTextBoxDrawIBList();
 
             JObject jobj = new JObject();
             jobj["DrawIBList"] = new JArray(drawIBList);
             string json_string = jobj.ToString(Formatting.Indented);
 
-            // 将JSON字符串写入文�?
+            // ��JSON�ַ���д���ļ�
             File.WriteAllText(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\Config.Json", json_string);
 
         }
@@ -217,79 +212,53 @@ namespace DBMT
         public async void SaveDrawIBListToConfig(object sender, RoutedEventArgs e)
         {
             SaveDrawIBList();
-            await MessageHelper.Show("保存成功");
+            await MessageHelper.Show("����ɹ�");
         }
 
-        public async void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
+        void ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat()
         {
-            try
+            string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
+            List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
+            foreach (string DrawIB in DrawIBList)
             {
-                string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
-                List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
-                foreach (string DrawIB in DrawIBList)
+                string DrawIBPath = WorkSpacePath + DrawIB + "/";
+                if (!Directory.Exists(DrawIBPath))
                 {
-<<<<<<< HEAD
-                    string DrawIBPath = WorkSpacePath + DrawIB + "/";
-                    if (!Directory.Exists(DrawIBPath))
-=======
                     continue;
                 }
-                //在这里把所有output目录下的dds转为png格式
+                //�����������outputĿ¼�µ�ddsתΪpng��ʽ
                 string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
                 foreach (string outputDirectory in subdirectories)
                 {
                     //MessageBox.Show(Path.GetDirectoryName(outputDirectory));
 
                     if (!Path.GetFileName(outputDirectory).StartsWith("TYPE_"))
->>>>>>> ff7519e48a4ebe2f596883da351af59b246b89b6
                     {
                         continue;
                     }
-                    //�����������outputĿ¼�µ�ddsתΪpng��ʽ
-                    string[] subdirectories = Directory.GetDirectories(WorkSpacePath + DrawIB + "/");
-                    foreach (string outputDirectory in subdirectories)
+
+
+                    string[] filePathArray = Directory.GetFiles(outputDirectory);
+                    foreach (string ddsFilePath in filePathArray)
                     {
-                        //MessageBox.Show(Path.GetDirectoryName(outputDirectory));
-
-                        if (!Path.GetFileName(outputDirectory).StartsWith("TYPE_"))
+                        if (MainConfig.GetConfig<bool>("ConvertDiffuseMapOnly"))
                         {
-                            continue;
-                        }
-
-
-                        string[] filePathArray = Directory.GetFiles(outputDirectory);
-                        foreach (string ddsFilePath in filePathArray)
-                        {
-                            if (MainConfig.GetConfig<bool>("ConvertDiffuseMapOnly"))
-                            {
-                                if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
-                                {
-                                    continue;
-                                }
-                            }
-                            else if (!ddsFilePath.EndsWith(".dds"))
+                            if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
                             {
                                 continue;
                             }
-<<<<<<< HEAD
-=======
                         }
                         else if (!ddsFilePath.EndsWith(".dds"))
                         {
                             continue;
                         }
->>>>>>> ff7519e48a4ebe2f596883da351af59b246b89b6
 
-                            string TextureFormatString = TextureHelper.GetAutoTextureFormat();
-                            CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
-                        }
+                        string TextureFormatString = TextureHelper.GetAutoTextureFormat();
+                        CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                await MessageHelper.Show("��ͼת������: " + ex.ToString());
-            }
+
         }
 
         async void ConvertDedupedTexturesToTargetFormat()
@@ -299,12 +268,12 @@ namespace DBMT
             List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
             foreach (string DrawIB in DrawIBList)
             {
-                //在这里把所有output目录下的dds转为png格式
+                //�����������outputĿ¼�µ�ddsתΪpng��ʽ
                 string DedupedTexturesFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures/";
                 //MessageHelper.Show(DedupedTexturesFolderPath);
                 if (!Directory.Exists(DedupedTexturesFolderPath))
                 {
-                    await MessageHelper.Show("无法找到DedupedTextures文件�? " + DedupedTexturesFolderPath);
+                    await MessageHelper.Show("�޷��ҵ�DedupedTextures�ļ���: " + DedupedTexturesFolderPath);
                     return;
                 }
 
@@ -312,7 +281,7 @@ namespace DBMT
                 string DedupedTexturesConvertFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures_" + TextureFormatString + "/";
                 //MessageHelper.Show(DedupedTexturesConvertFolderPath);
                 TextureHelper.ConvertAllTextureFilesToTargetFolder(DedupedTexturesFolderPath, DedupedTexturesConvertFolderPath);
-                //await MessageHelper.Show("转换成功");
+                //await MessageHelper.Show("ת���ɹ�");
             }
         }
 
@@ -320,13 +289,13 @@ namespace DBMT
         {
             if (TextBoxDrawIBList.Text.Trim() == "")
             {
-                await MessageHelper.Show("在运行之前请填写您的绘制IB的哈希值并进行配置", "Please fill your DrawIB and config it before run.");
+                await MessageHelper.Show("������֮ǰ����д���Ļ���IB�Ĺ�ϣֵ����������", "Please fill your DrawIB and config it before run.");
                 return false;
             }
 
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("请先指定工作空间");
+                await MessageHelper.Show("����ָ�������ռ�");
                 return false;
             }
 
@@ -351,7 +320,7 @@ namespace DBMT
 
                 if (MainConfig.GetConfig<bool>("ConvertDedupedTextures"))
                 {
-                    //await MessageHelper.Show("勾选了转换Deduped贴图，开始转换Deduped贴图");
+                    //await MessageHelper.Show("��ѡ��ת��Deduped��ͼ����ʼת��Deduped��ͼ");
                     ConvertDedupedTexturesToTargetFormat();
                 }
 
@@ -369,7 +338,7 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("请先选择工作空间");
+                await MessageHelper.Show("����ѡ�����ռ�");
                 return;
             }
 
@@ -395,7 +364,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("您还未生成二创模�?, "You have not generate any mod yet");
+                await MessageHelper.Show("����δ���ɶ���ģ��", "You have not generate any mod yet");
             }
         }
 
@@ -408,7 +377,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("此目录不存在，请检查您的Mods文件夹是否设置正�?, "This path didn't exists, please check if your Mods folder is correct");
+                await MessageHelper.Show("��Ŀ¼�����ڣ���������Mods�ļ����Ƿ�������ȷ", "This path didn't exists, please check if your Mods folder is correct");
             }
         }
 
@@ -447,7 +416,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("目标目录没有任何FrameAnalysis文件�?, "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("Ŀ��Ŀ¼û���κ�FrameAnalysis�ļ���", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -465,7 +434,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("没有找到任何FrameAnalysis文件�?, "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("û���ҵ��κ�FrameAnalysis�ļ���", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -478,7 +447,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("目标目录没有任何FrameAnalysis文件�?, "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("Ŀ��Ŀ¼û���κ�FrameAnalysis�ļ���", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -535,8 +504,8 @@ namespace DBMT
 
         public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
         {
-            //这里不需要区分match_first_index,这是因为我们实际测试中不再需要用到match_first_index的过滤了�?
-            //直接分割然后输出即可
+            //���ﲻ��Ҫ����match_first_index,������Ϊ����ʵ�ʲ����в�����Ҫ�õ�match_first_index�Ĺ����ˡ�
+            //ֱ�ӷָ�Ȼ���������
             List<string> DrawIBList = new List<string>();
             if (TextBoxSkipIBList.Text.Contains(","))
             {
@@ -597,8 +566,8 @@ namespace DBMT
 
         public async void ExecuteGenerateVSCheck(object sender, RoutedEventArgs e)
         {
-            //这里不需要区分match_first_index,这是因为我们实际测试中不再需要用到match_first_index的过滤了�?
-            //直接分割然后输出即可
+            //���ﲻ��Ҫ����match_first_index,������Ϊ����ʵ�ʲ����в�����Ҫ�õ�match_first_index�Ĺ����ˡ�
+            //ֱ�ӷָ�Ȼ���������
             List<string> DrawIBList = new List<string>();
             if (TextBoxSkipIBList.Text.Contains(","))
             {
@@ -659,7 +628,7 @@ namespace DBMT
                 return;
             }
 
-            //逆向提取之前要保存DrawIB列表�?
+            //������ȡ֮ǰҪ����DrawIB�б���
             SaveDrawIBList();
 
             bool command_run_result = await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
@@ -676,7 +645,7 @@ namespace DBMT
         {
             if (string.IsNullOrEmpty(MainConfig.CurrentGameName))
             {
-                await MessageHelper.Show("在逆向Mod之前请选择当前要进行格式转换的二创模型的所属游�?, "Please select your current game before reverse.");
+                await MessageHelper.Show("������Mod֮ǰ��ѡ��ǰҪ���и�ʽת���Ķ���ģ�͵�������Ϸ", "Please select your current game before reverse.");
                 return "";
             }
 
@@ -687,11 +656,11 @@ namespace DBMT
                 string filePath = file.Path;
                 if (DBMTStringUtils.ContainsChinese(filePath))
                 {
-                    await MessageHelper.Show("目标Mod的ini文件路径中不能出现中�?, "Target mod ini file path can't contains Chinese.");
+                    await MessageHelper.Show("Ŀ��Mod��ini�ļ�·���в��ܳ�������", "Target mod ini file path can't contains Chinese.");
                     return "";
                 }
 
-                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // 读取文件内容
+                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // ��ȡ�ļ�����
                 JObject runInputJson = JObject.Parse(json);
                 runInputJson["GameName"] = MainConfig.CurrentGameName;
                 runInputJson["ReverseFilePath"] = filePath;
@@ -715,25 +684,25 @@ namespace DBMT
 
         private static void SearchDirectory(string currentDirectory, List<string> result)
         {
-            // 获取当前目录下的所有文�?
+            // ��ȡ��ǰĿ¼�µ������ļ�
             string[] files = Directory.GetFiles(currentDirectory);
 
-            // 检查是否有.dds�?png文件
+            // ����Ƿ���.dds��.png�ļ�
             foreach (string file in files)
             {
                 string extension = Path.GetExtension(file).ToLower();
                 if (extension == ".dds" || extension == ".png")
                 {
-                    // 如果找到了目标文件，将目录加入结果列�?
+                    // ����ҵ���Ŀ���ļ�����Ŀ¼�������б�
                     if (!result.Contains(currentDirectory))
                     {
                         result.Add(currentDirectory);
                     }
-                    break; // 找到了一种类型的文件就不再继续查找当前目录中的其他文�?
+                    break; // �ҵ���һ�����͵��ļ��Ͳ��ټ������ҵ�ǰĿ¼�е������ļ�
                 }
             }
 
-            // 递归搜索子目�?
+            // �ݹ�������Ŀ¼
             string[] subdirectories = Directory.GetDirectories(currentDirectory);
             foreach (string subdirectory in subdirectories)
             {
@@ -800,7 +769,7 @@ namespace DBMT
         {
             if (DBMTStringUtils.ContainsChinese(IniPath))
             {
-                await MessageHelper.Show("目标路径中不能含有中文字�?, "Target Path Can't Contains Chinese.");
+                await MessageHelper.Show("Ŀ��·���в��ܺ��������ַ�", "Target Path Can't Contains Chinese.");
                 return false;
             }
             JObject jsonObject = new JObject();
@@ -817,14 +786,14 @@ namespace DBMT
         public async void Encryption_EncryptAll(object sender, RoutedEventArgs e)
         {
 
-            //混淆并返回新的ini文件的路�?
+            //�����������µ�ini�ļ���·��
             string NewModInIPath = await EncryptionHelper.Obfuscate_ModFileName("Play");
             if (NewModInIPath == "")
             {
                 return;
             }
 
-            //调用加密Buffer并加密ini文件
+            //���ü���Buffer������ini�ļ�
             await DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", NewModInIPath);
         }
 
@@ -851,16 +820,16 @@ namespace DBMT
             {
                 if (DBMTStringUtils.ContainsChinese(selected_folder_path))
                 {
-                    await MessageHelper.Show("目标路径中不能含有中文字�?, "Target Path Can't Contains Chinese.");
+                    await MessageHelper.Show("Ŀ��·���в��ܺ��������ַ�", "Target Path Can't Contains Chinese.");
                     return;
                 }
 
-                //判断目标路径下是否有ini文件
-                // 使用Directory.GetFiles方法，并指定搜索模式�?.ini
+                //�ж�Ŀ��·�����Ƿ���ini�ļ�
+                // ʹ��Directory.GetFiles��������ָ������ģʽΪ*.ini
                 string[] iniFiles = Directory.GetFiles(selected_folder_path, "*.ini");
                 if (iniFiles.Length == 0)
                 {
-                    await MessageHelper.Show("目标路径中无法找到mod的ini文件", "Target Path Can't find ini file.");
+                    await MessageHelper.Show("Ŀ��·�����޷��ҵ�mod��ini�ļ�", "Target Path Can't find ini file.");
                     return;
                 }
 
