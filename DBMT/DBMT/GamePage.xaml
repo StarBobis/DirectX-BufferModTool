@@ -31,7 +31,8 @@ HorizontalAlignment="Right">
         </Border>
 
         <!-- 按钮永远置于右下角，距离下面和右边固定为30px -->
-        <Border Margin="0,0,30,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" CornerRadius="5" >
+        <Border Margin="0,0,30,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                CornerRadius="5" BorderBrush="White" BorderThickness="1">
             <Border.Background>
                 <SolidColorBrush Color="Black" Opacity="0.8"/>
             </Border.Background>
