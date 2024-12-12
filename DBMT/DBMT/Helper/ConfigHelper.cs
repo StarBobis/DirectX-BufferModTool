@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +10,8 @@ namespace DBMT
 {
     public static class MainConfig
     {
-        //// 常量
-        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.0.9.5 "; //程序窗口名称
+        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.0.9.7 "; //程序窗口名称
+
         public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
 
         //// 配置文件路径
