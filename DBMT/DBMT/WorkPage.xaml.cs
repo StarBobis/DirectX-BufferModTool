@@ -223,6 +223,12 @@ namespace DBMT
             return true;
         }
 
+        private async void AutoDetectPointlistDrawIBList_UnityVSPreSkinning(object sender, RoutedEventArgs e)
+        {
+            await CommandHelper.runCommand("DetectPointlistDrawIBList");
+            InitializeWorkSpace();
+        }
+
         public async void ExtractModel(object sender, RoutedEventArgs e)
         {
             bool Prepare = await PreDoBeforeExtract();
