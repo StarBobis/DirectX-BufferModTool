@@ -31,11 +31,11 @@ HorizontalAlignment="Right">
         </Border>
 
         <!-- 按钮永远置于右下角，距离下面和右边固定为30px -->
-        <Border Margin="0,0,20,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" CornerRadius="5" >
+        <Border Margin="0,0,30,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" CornerRadius="5" >
             <Border.Background>
                 <SolidColorBrush Color="Black" Opacity="0.8"/>
             </Border.Background>
-            <Button Content="启动3Dmigoto Loader.exe" Click="Open3DmigotoLoaderExe" />
+            <Button Content="启动3Dmigoto Loader" Click="Open3DmigotoLoaderExe" />
         </Border>
         
 
