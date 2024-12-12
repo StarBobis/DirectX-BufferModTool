@@ -217,9 +217,9 @@ namespace DBMT
         }
 
 
-        public static void SaveConfig(ConfigFiles configFiles)
+        public static void SaveConfig(ConfigFiles configFile)
         {
-            string ConfigTypeName = configFiles.ToString();
+            string ConfigTypeName = configFile.ToString();
             if (JsonObjects.ContainsKey(ConfigTypeName))
             {
                 File.WriteAllText(ConfigName_FilePath_Dict[ConfigTypeName], JsonObjects[ConfigTypeName].ToString());
