@@ -162,6 +162,7 @@ namespace DBMT
                     Console.WriteLine("File not found: " + file.Value);
                     // 如果文件不存在，就用默认配置
                     JsonObjects.Add(file.Key, DefaultConfigs[file.Key]);
+                    SaveConfig(file.Key);
                     continue;
                 }
 
