@@ -118,7 +118,7 @@ namespace DBMT
             if (file != null)
             {
                 string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
-                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.GetConfig<string>(MainConfig.ConfigFiles.Main,"CurrentGameName") + "_DIY.png");
+                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.CurrentGameName + "_DIY.png");
                 File.Copy(file.Path, TargetPicturePath, true);
 
                 SetGameBackGroundImage();
