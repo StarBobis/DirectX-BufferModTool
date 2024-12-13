@@ -4,10 +4,95 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using DBMT;
 
 namespace DBMT
 {
+    public class ConfigLoader<T> where T : BaseConfig
+     {
+        public string SavePath { get; set; }
+        public string LoadPath { get; set; }
+
+        public ConfigLoader(string path)
+        {
+            LoadPath = path;
+            SavePath = path;
+        }
+
+        public ConfigLoader(string loadPath, string savePath)
+        {
+            LoadPath = loadPath;
+            SavePath = savePath;
+        }
+
+        public T Value { get; set; }
+
+        public void LoadConfig()
+        {
+            if (string.IsNullOrEmpty(LoadPath))
+            {
+                throw new Exception("SavePath of" + this.GetType().Name + "is null");
+            }
+            if (!File.Exists(LoadPath))
+            {
+                // 如果文件不存在，创建一个新的配置文件
+                Value = Activator.CreateInstance<T>();
+                SaveConfig();
+                //throw new Exception("Config file not found:" + LoadPath);
+            }
+            string json = File.ReadAllText(LoadPath);
+            // 读取文件内容,并转换为T类型,然后赋值给当前对象
+            Value = JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public void SaveConfig()
+        {
+            if (string.IsNullOrEmpty(SavePath))
+            {
+                throw new Exception("SavePath of" + this.GetType().Name + "is null");
+            }
+            string jsonString = JsonConvert.SerializeObject(Value, Formatting.Indented);
+            File.WriteAllText(SavePath, jsonString);
+        }
+    }
+    public class BaseConfig{}
+
+    public class GameConfig : BaseConfig
+    {
+        public bool WindowTopMost { get; set; } = false;
+        public bool AutoCleanFrameAnalysisFolder { get; set; } = true;
+        public bool AutoCleanLogFile { get; set; } = true;
+        public int FrameAnalysisFolderReserveNumber { get; set; } = 1;
+        public int LogFileReserveNumber { get; set; } = 3;
+        public int ModelFileNameStyle { get; set; } = 1;
+        public bool MoveIBRelatedFiles { get; set; } = false;
+        public bool DontSplitModelByMatchFirstIndex { get; set; } = false;
+        public bool GenerateSeperatedMod { get; set; } = false;
+        public string Author { get; set; } = "";
+        public string AuthorLink { get; set; } = "";
+        public string ModSwitchKey { get; set; } = "\"x\",\"m\",\"k\",\"l\",\"u\",\"i\",\"o\",\"p\",\"[\",\"]\",\"y\"";
+    }
+
+    public class TextureConfig : BaseConfig
+    {
+        public bool ForbidAutoTexture { get; set; } = false;
+        public bool ConvertDedupedTextures { get; set; } = true;
+        public bool UseHashTexture { get; set; } = false;
+        public int AutoTextureFormat { get; set; } = 2;
+        public bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
+        public bool ForbidMoveTrianglelistTextures { get; set; } = false;
+        public bool ForbidMoveDedupedTextures { get; set; } = false;
+        public bool ForbidMoveRenderTextures { get; set; } = false;
+    }
+
+    public class MainSetting : BaseConfig
+    {
+        public string GameName { get; set; } = "HSR";
+        public string WorkSpaceName { get; set; } = string.Empty;
+    }
+
     public static class MainConfig
     {
         public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.1.0.2 "; //程序窗口名称
@@ -15,8 +100,12 @@ namespace DBMT
 
         ////当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
         public static string ApplicationRunPath = AppDomain.CurrentDomain.BaseDirectory.ToString();
-        public static string CurrentGameName => GetConfig<string>(ConfigFiles.Main, "GameName");
-        public static string CurrentWorkSpace => GetConfig<string>(ConfigFiles.Main, "WorkSpaceName");
+
+        //public static string CurrentGameName => GetConfig<string>(ConfigFiles.Main, "GameName");
+        public static string CurrentGameName => MainCfg.Value.GameName;
+
+        //public static string CurrentWorkSpace => GetConfig<string>(ConfigFiles.Main, "WorkSpaceName");
+        public static string CurrentWorkSpace => MainCfg.Value.WorkSpaceName;
 
         public static string CurrentMode = "Dev"; //当前工作模式，分为Dev和Play，默认为Dev
         public static string RunResult = "";
@@ -26,25 +115,22 @@ namespace DBMT
         public static string Path_Base
         {
             get { return Directory.GetCurrentDirectory(); }
-            
-            //不需要设置
-            //set { Path_Base = value; }
         }
         public static string Path_Game_ConfigJson
         {
-            get { return Path.Combine(Path_Base, "Games", MainConfig.GetConfig<string>(ConfigFiles.Main, "GameName"), "Config.json"); }
+            get { return Path.Combine(Path_Base, "Games", MainConfig.MainCfg.Value.GameName, "Config.json"); }
         }
         public static string Path_Game_VSCheck_Json
         {
-            get { return Path.Combine(Path_Base, "Games", MainConfig.GetConfig<string>(ConfigFiles.Main, "GameName"), "VSCheck.json"); }
+            get { return Path.Combine(Path_Base, "Games", MainConfig.MainCfg.Value.GameName, "VSCheck.json"); }
         }
         public static string Path_OutputFolder
         {
-            get { return Path.Combine(Path_Base, "Games", MainConfig.GetConfig<string>(ConfigFiles.Main, "GameName"), "3Dmigoto\\Mods\\output\\"); }
+            get { return Path.Combine(Path_Base, "Games", MainConfig.MainCfg.Value.GameName, "3Dmigoto\\Mods\\output\\"); }
         }
         public static string Path_LoaderFolder
         {
-            get { return Path.Combine(Path_Base, "Games", MainConfig.GetConfig<string>(ConfigFiles.Main, "GameName"), "3Dmigoto\\"); }
+            get { return Path.Combine(Path_Base, "Games", MainConfig.MainCfg.Value.GameName, "3Dmigoto\\"); }
         }
         public static string Path_D3DXINI
         {
@@ -58,7 +144,7 @@ namespace DBMT
 
         public static string Path_GameTypeFolder
         {
-            get { return Path.Combine(Path_ExtractTypesFolder, MainConfig.GetConfig<string>(ConfigFiles.Main, "GameName") + "\\"); }
+            get { return Path.Combine(Path_ExtractTypesFolder, MainConfig.MainCfg.Value.GameName + "\\"); }
         }
 
 
@@ -97,6 +183,11 @@ namespace DBMT
         {
             get { return Path.Combine(Path_Base, "Configs\\ACLFolder.json"); }
         }
+
+
+        public static ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
+        public static ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
+        public static ConfigLoader<TextureConfig> TextureCfg = new ConfigLoader<TextureConfig>(Path_Texture_SettingJson);
 
 
         // 使用枚举而不是魔法值
@@ -158,6 +249,22 @@ namespace DBMT
 
         public static void LoadConfigFile(ConfigFiles configFiles)
         {
+            // test
+            switch (configFiles)
+            {
+                case ConfigFiles.Main:
+                    MainCfg.LoadConfig();
+                    break;
+                case ConfigFiles.Game_Setting:
+                    GameCfg.LoadConfig();
+                    break;
+                case ConfigFiles.Texture_Setting:
+                    TextureCfg.LoadConfig();
+                    break;
+            }
+
+            return;
+
             string ConfigNameKey = configFiles.ToString();
             string ConfigPath = ConfigName_FilePath_Dict[ConfigNameKey];
             if (!File.Exists(ConfigPath))
@@ -184,7 +291,10 @@ namespace DBMT
         }
 
         /// <summary>
-        /// 从指定文件 [file] 中获取配置 [key] 的值 , 并转换为 T 类型
+        /// 从指定文件 [file] 中获取配置 [key] 的值 , 并转换为 T 类型, 此方法已被弃用，请换用新方法：
+        /// <para>MainCfg.Value.Key;</para>
+        ///  <para>GameCfg.Value.Key;</para>
+        ///  <para>TextureCfg.Value.Key;</para>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="configFiles"></param>
@@ -193,6 +303,20 @@ namespace DBMT
         /// <exception cref="Exception"></exception>
         public static T GetConfig<T>(ConfigFiles configFiles, string key)
         {
+            //----- 新旧兼容
+            BaseConfig baseConfig = configFiles switch
+            {
+                ConfigFiles.Main => MainCfg.Value,
+                ConfigFiles.Game_Setting => GameCfg.Value,
+                ConfigFiles.Texture_Setting => TextureCfg.Value,
+                _ => throw new Exception("ConfigFiles not found")
+            };
+
+            // 通过反射获取配置项的值
+            var value = baseConfig.GetType().GetProperty(key).GetValue(baseConfig);
+            return (T)value;
+
+            //----- 下面的方法被弃用
             // 获取配置文件
             // 将 configFiles 转换为字符串 ，然后调用 GetConfig<T>(string file, string key)
             string file = configFiles.ToString();
@@ -204,26 +328,12 @@ namespace DBMT
             throw new Exception($"Key [{key}] not found in config file [{configFiles}]");
         }
 
-
-        private static T GetDefaultConfig<T>(ConfigFiles configFiles, string key)
-        {
-            // 获取默认配置
-            // 将 configFiles 转换为字符串 ，然后调用 GetConfig<T>(string file, string key)
-            string file = configFiles.ToString();
-            if (DefaultConfigs.ContainsKey(file) && DefaultConfigs[file].ContainsKey(key))
-            {
-                JsonObjects[file][key] = DefaultConfigs[file][key];
-                return DefaultConfigs[file][key].ToObject<T>();
-            }
-            else
-            {
-                // 抛出异常
-                throw new Exception($"Key [{key}] not found in default config file [{configFiles}]");
-            }
-        }
-
         /// <summary>
         /// 将配置文件 [file] 中的配置 [key] 的值设置为 [value] ，指定为 T 类型
+        /// 此方法已被弃用，请换用新方法：
+        /// <para>MainCfg.Value.Key = value;</para>
+        /// <para>GameCfg.Value.Key = value;</para>
+        /// <para>TextureCfg.Value.Key = value;</para>
         /// </summary>
         /// <typeparam name="T"> 目标格式 </typeparam>
         /// <param name="configFiles"> 配置文件 </param>
@@ -233,6 +343,20 @@ namespace DBMT
         /// <exception cref="Exception"></exception>
         public static T SetConfig<T>(ConfigFiles configFiles, string key, T value)
         {
+            //----------新旧兼容
+            BaseConfig baseConfig = configFiles switch
+            {
+                ConfigFiles.Main => MainCfg.Value,
+                ConfigFiles.Game_Setting => GameCfg.Value,
+                ConfigFiles.Texture_Setting => TextureCfg.Value,
+                _ => throw new Exception("ConfigFiles not found")
+            };
+
+            // 通过反射设置配置项的值
+            baseConfig.GetType().GetProperty(key).SetValue(baseConfig, value);
+            return value;
+
+            //----------下面的方法被弃用
             // 设置配置文件
             // 将 configFiles 转换为字符串 ，然后调用 SetConfig<T>(string file, string key, T value)
             string file = configFiles.ToString();
@@ -245,9 +369,32 @@ namespace DBMT
             throw new Exception($"File [{file}] not found in config files [{ConfigName_FilePath_Dict}]");
         }
 
-
+        /// <summary>
+        /// 保存配置，建议改为使用新方法：
+        /// <para>MainCfg.SaveConfig();</para>
+        /// <para>GameCfg.SaveConfig();</para>
+        /// <para>TextureCfg.SaveConfig();</para>
+        /// </summary>
+        /// <param name="configFile"></param>
+        /// <exception cref="Exception"></exception>
         public static void SaveConfig(ConfigFiles configFile)
         {
+            //---------- 新旧兼容
+            switch (configFile)
+            {
+                case ConfigFiles.Main:
+                    MainCfg.SaveConfig();
+                    break;
+                case ConfigFiles.Game_Setting:
+                    GameCfg.SaveConfig();
+                    break;
+                case ConfigFiles.Texture_Setting:
+                    TextureCfg.SaveConfig();
+                    break;
+            }
+            return;
+
+            //---------- 下面的方法被弃用
             string ConfigTypeName = configFile.ToString();
             if (JsonObjects.ContainsKey(ConfigTypeName))
             {
