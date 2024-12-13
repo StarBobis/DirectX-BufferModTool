@@ -443,7 +443,7 @@ namespace DBMT
             {
                 TextureHelper.ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
-                await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
+                OpenCurrentWorkSpaceFolder(sender,e);
             }
         }
 
