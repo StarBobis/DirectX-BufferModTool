@@ -12,6 +12,8 @@ using Newtonsoft.Json.Linq;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using Microsoft.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
+using CommunityToolkit.WinUI.UI.Controls;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,6 +25,15 @@ namespace DBMT
     /// </summary>
     public sealed partial class WorkPage : Page
     {
+        // 定义一个简单的数据模型类
+        public class MyItem
+        {
+            public string DrawIB { get; set; }
+            public string Alias { get; set; }
+        }
+
+        private ObservableCollection<MyItem> items = new ObservableCollection<MyItem>();
+
         public WorkPage()
         {
             this.InitializeComponent();
@@ -36,6 +47,14 @@ namespace DBMT
                 WorkBGImageBrush.Opacity = MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
 
                 LoadDirectoryNames();
+
+
+                // 添加一个空白行作为初始数据
+                items.Add(new MyItem { DrawIB = "", Alias = "" });
+
+                // 设置 DataGrid 的数据源
+                myDataGrid.ItemsSource = items;
+
             }
             catch (Exception ex)
             {
@@ -43,6 +62,23 @@ namespace DBMT
             }
             
         }
+
+        private void MyDataGrid_CellEditEnding(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridCellEditEndingEventArgs e)
+        {
+            // 检查是否是最后一行被编辑
+            if (e.EditAction == CommunityToolkit.WinUI.UI.Controls.DataGridEditAction.Commit &&
+                e.Row.GetIndex() == items.Count - 1)
+            {
+                // 如果是最后一行，则添加新的一行
+                AddBlankRow();
+            }
+        }
+
+        private void AddBlankRow()
+        {
+            items.Add(new MyItem { DrawIB = "", Alias = "" });
+        }
+
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
