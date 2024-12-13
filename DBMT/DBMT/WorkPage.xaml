@@ -56,6 +56,9 @@
                 <MenuBarItem Title="文件">
                     <MenuFlyoutItem Text="打开当前工作空间生成Mod的文件夹" Click="OpenWorkSpaceGenerateModFolder"/>
                     <MenuFlyoutItem Text="打开Mods文件夹" Click="OpenModsFolder"/>
+                    <MenuFlyoutItem Text="打开3Dmigoto文件夹" Click="Open3DmigotoFolder"/>
+                    <MenuFlyoutItem Text="打开d3dx.ini" Click="OpenD3dxIniFile"/>
+                    <MenuFlyoutItem Text="打开ShaderFixes文件夹" Click="OpenShaderFixesFolder"/>
                     <MenuFlyoutSeparator />
                     <MenuFlyoutItem Text="打开最新的FrameAnalysis文件夹" Click="OpenLatestFrameAnalysisFolder"/>
                     <MenuFlyoutItem Text="打开最新的FrameAnalysis log.txt" Click="OpenLatestFrameAnalysisLogTxtFile"/>
@@ -87,9 +90,9 @@
                 </MenuBarItem>
 
                 <MenuBarItem Title="运行" >
-                    <MenuFlyoutItem Text="3Dmigoto Loader.exe" />
-                    <MenuFlyoutItem Text="3Dmigoto Loader.py"/>
-                    <MenuFlyoutItem Text="3Dmigoto Loader-ByPassACE.exe"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderEXE" Text="3Dmigoto Loader.exe" Click="Open3DmigotoLoaderEXE"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderPY" Text="3Dmigoto Loader.py" Click="Open3DmigotoLoaderPY"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderByPassACE" Text="3Dmigoto Loader-ByPassACE.exe" Click="Open3DmigotoLoaderByPassACE"/>
                 </MenuBarItem>
             </MenuBar>
 

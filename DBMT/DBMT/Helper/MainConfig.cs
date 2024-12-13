@@ -189,6 +189,23 @@ namespace DBMT
         }
 
 
+        //三种注入器的路径
+        public static string Path_3Dmigoto_Loader_EXE
+        {
+            get { return Path.Combine(Path_LoaderFolder, "3Dmigoto Loader.exe"); }
+        }
+
+        public static string Path_3Dmigoto_Loader_PY
+        {
+            get { return Path.Combine(Path_LoaderFolder, "3Dmigoto Loader.py"); }
+        }
+
+        public static string Path_3Dmigoto_Loader_ByPassACE_EXE
+        {
+            get { return Path.Combine(Path_LoaderFolder, "3Dmigoto Loader-ByPassACE.exe"); }
+        }
+
+
         public static ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
         public static ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
         public static ConfigLoader<TextureConfig> TextureCfg = new ConfigLoader<TextureConfig>(Path_Texture_SettingJson);

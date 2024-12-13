@@ -91,6 +91,21 @@ namespace DBMT
 
                 SetDefaultBackGroundImage();
                 InitializeWorkSpace(MainConfig.CurrentWorkSpace);
+
+                //依次检测并判断是否显示对应启动按钮
+                if (!File.Exists(MainConfig.Path_3Dmigoto_Loader_EXE))
+                {
+                    Menu_Open3DmigotoLoaderEXE.Visibility = Visibility.Collapsed;
+                }
+                if (!File.Exists(MainConfig.Path_3Dmigoto_Loader_PY))
+                {
+                    Menu_Open3DmigotoLoaderPY.Visibility = Visibility.Collapsed;
+                }
+                if (!File.Exists(MainConfig.Path_3Dmigoto_Loader_ByPassACE_EXE))
+                {
+                    Menu_Open3DmigotoLoaderByPassACE.Visibility = Visibility.Collapsed;
+                }
+
             }
         }
 
@@ -611,5 +626,43 @@ namespace DBMT
                 WorkBGImageBrush.Opacity = MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
             }
         }
+
+
+
+        private async void Open3DmigotoLoaderEXE(object sender, RoutedEventArgs e)
+        {
+            await CommandHelper.ShellOpenFile(MainConfig.Path_3Dmigoto_Loader_EXE);
+        }
+
+        private async void Open3DmigotoLoaderPY(object sender, RoutedEventArgs e)
+        {
+            await CommandHelper.ShellOpenFile(MainConfig.Path_3Dmigoto_Loader_PY);
+        }
+
+        private async void Open3DmigotoLoaderByPassACE(object sender, RoutedEventArgs e)
+        {
+            await CommandHelper.ShellOpenFile(MainConfig.Path_3Dmigoto_Loader_ByPassACE_EXE);
+        }
+
+
+
+        private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
+        {
+
+            await CommandHelper.ShellOpenFile(MainConfig.Path_D3DXINI);
+        }
+
+        private async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
+        {
+
+            await CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder);
+        }
+
+        private async void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
+        {
+
+            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.Path_LoaderFolder, "ShaderFixes\\"));
+        }
+
     }
 }

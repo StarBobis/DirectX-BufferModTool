@@ -38,7 +38,7 @@
         <!-- 一键启动按钮置于右上角，距离下面和右边固定为30px -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Margin="0,12,165,0">
             <Button   
-                    Content="一键启动" Click="Open3DmigotoLoaderExe" />
+                    Content="启动3Dmigoto Loader.exe" Click="Open3DmigotoLoaderExe" />
         </StackPanel>
 
 
