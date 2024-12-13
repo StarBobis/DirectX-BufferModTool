@@ -65,6 +65,7 @@ namespace DBMT
 
         public void SaveSettingsToConfig()
         {
+            MainConfig.GameCfg.Value.Language = ToggleSwitch_Language.IsOn;
             MainConfig.GameCfg.Value.StartToWorkPage = ToggleSwitch_StartToWorkPage.IsOn;
 
             MainConfig.GameCfg.Value.AutoCleanLogFile = ToggleSwitch_AutoCleanLogFile.IsOn;
@@ -131,6 +132,7 @@ namespace DBMT
             MainConfig.GameCfg.LoadConfig();
             MainConfig.TextureCfg.LoadConfig();
 
+            ToggleSwitch_Language.IsOn = MainConfig.GameCfg.Value.Language;
             ToggleSwitch_StartToWorkPage.IsOn = MainConfig.GameCfg.Value.StartToWorkPage;
 
             ToggleSwitch_AutoCleanLogFile.IsOn = MainConfig.GameCfg.Value.AutoCleanLogFile;
