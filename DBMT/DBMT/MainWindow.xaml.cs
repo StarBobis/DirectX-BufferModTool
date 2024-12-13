@@ -46,18 +46,24 @@ namespace DBMT
             this.AppWindow.Resize(new SizeInt32(WindowWidth, WindowHeight));
         }
 
-     
+
 
         private async void InitializeGUI()
         {
             // C# code to set AppTitleBar uielement as titlebar
             //Window window = App.m_window;
             //window.ExtendsContentIntoTitleBar = true;  // enable custom titlebar
+
             //window.SetTitleBar(AppTitleBar);      // set user ui element as titlebar
+
+            //读取配置文件
+            MainConfig.MainCfg.LoadConfig();
+            MainConfig.GameCfg.LoadConfig();
+            MainConfig.TextureCfg.LoadConfig();
 
             //设置标题和宽高
             this.Title = MainConfig.DBMT_Title;
-            
+
             //移动窗口到屏幕中心
             MoveWindowToCenterScreen();
 
@@ -84,7 +90,7 @@ namespace DBMT
             //检查DBMT核心是否存在
             if (!File.Exists(MainConfig.ApplicationRunPath + "Plugins\\" + MainConfig.MMT_EXE_FileName))
             {
-                await MessageHelper.Show("未找到" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",请将其放在本程序Plugins目录下，即将退出程序。","Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
+                await MessageHelper.Show("未找到" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",请将其放在本程序Plugins目录下，即将退出程序。", "Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
                 //注意，这里可能会导致空引用异常，App.Current.Exist()不一定会正确的结束程序
                 //App.Current.Exit();
 
@@ -98,11 +104,6 @@ namespace DBMT
             {
                 Directory.CreateDirectory("Logs");
             }
-
-            //读取配置文件
-            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Main);
-            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
-            MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Texture_Setting);
         }
 
         private void MoveWindowToCenterScreen()
@@ -166,7 +167,7 @@ namespace DBMT
                 }
             }
         }
-       
+
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
@@ -178,18 +179,22 @@ namespace DBMT
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
 
-            if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting,"AutoCleanFrameAnalysisFolder"))
+            if (MainConfig.GameCfg.Value.AutoCleanFrameAnalysisFolder)
             {
                 SettingsHelper.CleanFrameAnalysisFiles();
             }
 
-            if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting,"AutoCleanLogFile"))
+            if (MainConfig.GameCfg.Value.AutoCleanLogFile)
             {
-                SettingsHelper.CleanLogFiles();
-            }
+                {
+                    SettingsHelper.CleanLogFiles();
+                }
 
-            MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
-            MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
+                //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+                //MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
+                MainConfig.GameCfg.SaveConfig();
+                MainConfig.MainCfg.SaveConfig();
+            }
         }
     }
 }

@@ -10,10 +10,11 @@ using DBMT;
 
 namespace DBMT
 {
-    public class ConfigLoader<T> where T : BaseConfig
-     {
+    public class ConfigLoader<T> where T : BaseConfig, new()
+    {
         public string SavePath { get; set; }
         public string LoadPath { get; set; }
+        public T Value { get; set; }
 
         public ConfigLoader(string path)
         {
@@ -27,8 +28,6 @@ namespace DBMT
             SavePath = savePath;
         }
 
-        public T Value { get; set; }
-
         public void LoadConfig()
         {
             if (string.IsNullOrEmpty(LoadPath))
@@ -38,7 +37,7 @@ namespace DBMT
             if (!File.Exists(LoadPath))
             {
                 // 如果文件不存在，创建一个新的配置文件
-                Value = Activator.CreateInstance<T>();
+                Value = new T();
                 SaveConfig();
                 //throw new Exception("Config file not found:" + LoadPath);
             }
@@ -208,69 +207,24 @@ namespace DBMT
             get { return Path.Combine(Path_LoaderFolder, "3Dmigoto Loader-ByPassACE.exe"); }
         }
 
-
-        public static ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
-        public static ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
-        public static ConfigLoader<TextureConfig> TextureCfg = new ConfigLoader<TextureConfig>(Path_Texture_SettingJson);
+        // 本地化存储的配置
+        public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
+        public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
+        public static readonly ConfigLoader<TextureConfig> TextureCfg = new ConfigLoader<TextureConfig>(Path_Texture_SettingJson);
 
 
         // 使用枚举而不是魔法值
         public enum ConfigFiles { Main, Game_Setting, Texture_Setting }
 
-        //贴图配置
-        private static JObject DefaultConfig_Texure = new JObject
-        {
-            { "ForbidAutoTexture", false },
-            { "ConvertDedupedTextures", true },
-            { "UseHashTexture", false },
-            { "AutoTextureFormat", 2 },
-            { "AutoTextureOnlyConvertDiffuseMap", true },
-            { "ForbidMoveTrianglelistTextures", false },
-            { "ForbidMoveDedupedTextures", false },
-            { "ForbidMoveRenderTextures", false }
-        };
 
-        //全局配置
-        private static readonly JObject DefaultConfig_Game = new JObject
-        {
-            { "WindowTopMost", false },
-            { "AutoCleanFrameAnalysisFolder", true },
-            { "AutoCleanLogFile", true },
-            { "FrameAnalysisFolderReserveNumber", 1 },
-            { "LogFileReserveNumber", 3 },
-            { "ModelFileNameStyle", 1 },
-            { "MoveIBRelatedFiles",false },
-            { "DontSplitModelByMatchFirstIndex",false },
-            { "GenerateSeperatedMod",false },
-            { "Author","" },
-            { "AuthorLink","" },
-            { "ModSwitchKey","\"x\",\"m\",\"k\",\"l\",\"u\",\"i\",\"o\",\"p\",\"[\",\"]\",\"y\""}
-        };
-
-        //Main.json
-        private static readonly JObject DefaultConfig_Main = new JObject
-        {
-            { "GameName", "HSR" },
-            { "WorkSpaceName", "" }
-        };
-
-        private static readonly Dictionary<string, JObject> DefaultConfigs = new Dictionary<string, JObject>
-        {
-            { ConfigFiles.Main.ToString(), DefaultConfig_Main },
-            { ConfigFiles.Game_Setting.ToString(), DefaultConfig_Game },
-            { ConfigFiles.Texture_Setting.ToString(), DefaultConfig_Texure }
-        };
-
-        private static Dictionary<string, string> ConfigName_FilePath_Dict = new Dictionary<string, string>(){
-            { ConfigFiles.Main.ToString(),Path_MainConfig},
-            { ConfigFiles.Game_Setting.ToString(),Path_Game_SettingJson},
-            { ConfigFiles.Texture_Setting.ToString(),Path_Texture_SettingJson}
-        };
-
-        //动态读取的配置保存在内存中
-        private static Dictionary<string, JObject> JsonObjects = new();
-
-
+        /// <summary>
+        /// 加载配置文件，建议改为使用新方法：
+        /// <para> MainCfg.LoadConfig();</para>
+        /// <para> GameCfg.LoadConfig();</para>
+        /// <para> TextureCfg.LoadConfig();</para>
+        /// </summary>
+        /// <param name="configFiles">Main, Game_Setting, Texture_Setting</param>
+        [Obsolete("此方法已被弃用，请换用新方法：MainCfg.LoadConfig(); GameCfg.LoadConfig(); TextureCfg.LoadConfig();")]
         public static void LoadConfigFile(ConfigFiles configFiles)
         {
             switch (configFiles)
@@ -285,7 +239,6 @@ namespace DBMT
                     TextureCfg.LoadConfig();
                     break;
             }
-
             return;
         }
 
@@ -300,6 +253,7 @@ namespace DBMT
         /// <param name="key"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+        [Obsolete("此方法已被弃用，请换用新方法：MainCfg.Value.Key; GameCfg.Value.Key; TextureCfg.Value.Key;")]
         public static T GetConfig<T>(ConfigFiles configFiles, string key)
         {
             //----- 新旧兼容
@@ -330,6 +284,7 @@ namespace DBMT
         /// <param name="value"> 配置项值 </param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
+        [Obsolete("此方法已被弃用，请换用新方法：MainCfg.Value.Key = value; GameCfg.Value.Key = value; TextureCfg.Value.Key = value;")]
         public static T SetConfig<T>(ConfigFiles configFiles, string key, T value)
         {
             //----------新旧兼容
@@ -354,6 +309,7 @@ namespace DBMT
         /// </summary>
         /// <param name="configFile"></param>
         /// <exception cref="Exception"></exception>
+        [Obsolete("此方法已被弃用，请换用新方法：MainCfg.SaveConfig(); GameCfg.SaveConfig(); TextureCfg.SaveConfig();")]
         public static void SaveConfig(ConfigFiles configFile)
         {
             //---------- 新旧兼容
@@ -370,8 +326,6 @@ namespace DBMT
                     break;
             }
             return;
-
-          
         }
 
     }

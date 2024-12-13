@@ -51,7 +51,7 @@ namespace DBMT
 
             //保存全局设置因为要保存滑条透明度
             MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity = (float)GameBGImageBrush.Opacity;
-            MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
+            MainConfig.GameCfg.SaveConfig();
             // 如果需要，可以调用基类的 OnNavigatedFrom 方法
             base.OnNavigatedFrom(e);
         }
@@ -86,8 +86,11 @@ namespace DBMT
                 string selectedGame = comboBox.SelectedItem.ToString();
 
                 //MainConfig.SetCurrentGame(selectedGame);
-                MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
-                MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+                //MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
+                //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+                MainConfig.MainCfg.Value.GameName = selectedGame;
+                
+
                 //读取d3dx.ini中的设置
                 ReadPathSettingFromD3dxIni();
 
@@ -95,7 +98,7 @@ namespace DBMT
             }
 
             //因为现在每次都从文件中读取，所以必须在这里保存到文件
-            MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+            MainConfig.MainCfg.SaveConfig();
         }
 
         private void SetGameBackGroundImage()
