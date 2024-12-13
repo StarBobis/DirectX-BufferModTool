@@ -256,7 +256,7 @@ namespace DBMT
             }
             catch (Exception exception)
             {
-                await MessageHelper.Show(exception.ToString());
+                await MessageHelper.Show("此功能不支持管理员权限运行，请切换到普通用户打开DBMT。\n" + exception.ToString());
             }
             return "";
         }
@@ -279,7 +279,7 @@ namespace DBMT
             }
             catch (Exception exception)
             {
-                await MessageHelper.Show(exception.ToString());
+                await MessageHelper.Show("此功能不支持管理员权限运行，请切换到普通用户打开DBMT。\n" + exception.ToString());
             }
             return "";
             
