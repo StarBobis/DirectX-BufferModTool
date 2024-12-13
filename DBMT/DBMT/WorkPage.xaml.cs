@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +28,8 @@ namespace DBMT
             this.InitializeComponent();
             try
             {
-                MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
+                //MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
+                MainConfig.GameCfg.LoadConfig();
                 InitializeWorkSpace(MainConfig.CurrentWorkSpace);
                 SetDefaultBackGroundImage();
 
@@ -45,12 +46,14 @@ namespace DBMT
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            // Ö´ĞĞÄãÏëÒªÔÚÕâ¸öÒ³Ãæ±»¹Ø±Õ»òµ¼º½Àë¿ªÊ±ÔËĞĞµÄ´úÂë
+            // æ‰§è¡Œä½ æƒ³è¦åœ¨è¿™ä¸ªé¡µé¢è¢«å…³é—­æˆ–å¯¼èˆªç¦»å¼€æ—¶è¿è¡Œçš„ä»£ç 
 
-            //±£´æÈ«¾ÖÉèÖÃÒòÎªÒª±£´æ»¬ÌõÍ¸Ã÷¶È
+            //ä¿å­˜å…¨å±€è®¾ç½®å› ä¸ºè¦ä¿å­˜æ»‘æ¡é€æ˜åº¦
             MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity = (float)WorkBGImageBrush.Opacity;
-            MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
-            // Èç¹ûĞèÒª£¬¿ÉÒÔµ÷ÓÃ»ùÀàµÄ OnNavigatedFrom ·½·¨
+            //MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
+            MainConfig.GameCfg.SaveConfig();
+
+            // å¦‚æœéœ€è¦ï¼Œå¯ä»¥è°ƒç”¨åŸºç±»çš„ OnNavigatedFrom æ–¹æ³•
             base.OnNavigatedFrom(e);
         }
 
@@ -76,23 +79,25 @@ namespace DBMT
 
         private void WorkGameSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // »ñÈ¡´¥·¢ÊÂ¼şµÄ ComboBox ÊµÀı
+            // è·å–è§¦å‘äº‹ä»¶çš„ ComboBox å®ä¾‹
             var comboBox = sender as ComboBox;
 
-            // ¼ì²éÊÇ·ñÓĞĞÂÑ¡ÖĞµÄÏî
+            // æ£€æŸ¥æ˜¯å¦æœ‰æ–°é€‰ä¸­çš„é¡¹
             if (comboBox != null && comboBox.SelectedItem != null)
             {
-                // Ö´ĞĞÄãÏëÒªµÄ²Ù×÷£¬ÀıÈç»ñÈ¡Ñ¡ÖĞµÄÏî²¢½øĞĞ´¦Àí
+                // æ‰§è¡Œä½ æƒ³è¦çš„æ“ä½œï¼Œä¾‹å¦‚è·å–é€‰ä¸­çš„é¡¹å¹¶è¿›è¡Œå¤„ç†
                 string selectedGame = comboBox.SelectedItem.ToString();
 
                 //MainConfig.SetCurrentGame(selectedGame);
-                MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
-                MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+                //MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
+                //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+                MainConfig.MainCfg.Value.GameName = selectedGame;
+                MainConfig.MainCfg.SaveConfig();
 
                 SetDefaultBackGroundImage();
                 InitializeWorkSpace(MainConfig.CurrentWorkSpace);
 
-                //ÒÀ´Î¼ì²â²¢ÅĞ¶ÏÊÇ·ñÏÔÊ¾¶ÔÓ¦Æô¶¯°´Å¥
+                //ä¾æ¬¡æ£€æµ‹å¹¶åˆ¤æ–­æ˜¯å¦æ˜¾ç¤ºå¯¹åº”å¯åŠ¨æŒ‰é’®
                 if (!File.Exists(MainConfig.Path_3Dmigoto_Loader_EXE))
                 {
                     Menu_Open3DmigotoLoaderEXE.Visibility = Visibility.Collapsed;
@@ -121,8 +126,10 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "WorkSpaceName", ComboBoxWorkSpaceSelection.Text);
-                MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+                //MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "WorkSpaceName", ComboBoxWorkSpaceSelection.Text);
+                //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+                MainConfig.MainCfg.Value.WorkSpaceName = ComboBoxWorkSpaceSelection.Text;
+                MainConfig.MainCfg.SaveConfig();
                 ReadDrawIBListFromWorkSpace();
             }
         }
@@ -134,7 +141,7 @@ namespace DBMT
             if (File.Exists(Configpath))
             {
 
-                //ÇĞ»»µ½¶ÔÓ¦ÅäÖÃ
+                //åˆ‡æ¢åˆ°å¯¹åº”é…ç½®
                 string jsonData = File.ReadAllText(Configpath);
                 JObject jobj = JObject.Parse(jsonData);
                 // Access the DrawIBList property and convert it to a List<string>
@@ -148,7 +155,7 @@ namespace DBMT
 
                 if (!string.IsNullOrEmpty(DrawIBListString) && DrawIBListString.Length > 1)
                 {
-                    // ÒÆ³ı×îºóÒ»¸ö×Ö·û
+                    // ç§»é™¤æœ€åä¸€ä¸ªå­—ç¬¦
                     DrawIBListString = DrawIBListString.Substring(0, DrawIBListString.Length - 1);
                 }
             }
@@ -157,7 +164,7 @@ namespace DBMT
 
         public void InitializeWorkSpace(string WorkSpaceName = "")
         {
-            //Èç¹û´æ´¢¹¤×÷¿Õ¼äµÄoutputÎÄ¼ş¼Ğ²»´æÔÚ¾Í´´½¨
+            //å¦‚æœå­˜å‚¨å·¥ä½œç©ºé—´çš„outputæ–‡ä»¶å¤¹ä¸å­˜åœ¨å°±åˆ›å»º
             if (!Directory.Exists(MainConfig.Path_OutputFolder))
             {
                 Directory.CreateDirectory(MainConfig.Path_OutputFolder);
@@ -192,22 +199,22 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("¹¤×÷¿Õ¼äÃû³Æ²»ÄÜÎª¿Õ");
+                await MessageHelper.Show("å·¥ä½œç©ºé—´åç§°ä¸èƒ½ä¸ºç©º");
                 return;
             }
 
             if (!ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                ////Èç¹û°üº¬ÁË´ËÃüÃû¿Õ¼ä£¬¾Í²»´´½¨ÎÄ¼ş¼Ğ£¬·ñÔò¾Í´´½¨
+                ////å¦‚æœåŒ…å«äº†æ­¤å‘½åç©ºé—´ï¼Œå°±ä¸åˆ›å»ºæ–‡ä»¶å¤¹ï¼Œå¦åˆ™å°±åˆ›å»º
                 Directory.CreateDirectory(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text);
 
-                await MessageHelper.Show("¹¤×÷¿Õ¼ä´´½¨³É¹¦");
+                await MessageHelper.Show("å·¥ä½œç©ºé—´åˆ›å»ºæˆåŠŸ");
 
                 InitializeWorkSpace(ComboBoxWorkSpaceSelection.Text);
             }
             else
             {
-                await MessageHelper.Show("µ±Ç°¹¤×÷¿Õ¼äÒÑ´æÔÚ,ÎŞ·¨ÖØ¸´´´½¨");
+                await MessageHelper.Show("å½“å‰å·¥ä½œç©ºé—´å·²å­˜åœ¨,æ— æ³•é‡å¤åˆ›å»º");
             }
         }
 
@@ -216,7 +223,7 @@ namespace DBMT
             string WorkSpaceFolderPath = MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text;
             Directory.Delete(WorkSpaceFolderPath, true);
             Directory.CreateDirectory(WorkSpaceFolderPath);
-            await MessageHelper.Show("ÇåÀí³É¹¦", "Clean Success");
+            await MessageHelper.Show("æ¸…ç†æˆåŠŸ", "Clean Success");
         }
 
         public async void OpenCurrentWorkSpaceFolder(object sender, RoutedEventArgs e)
@@ -230,7 +237,7 @@ namespace DBMT
                 }
                 else
                 {
-                    await MessageHelper.Show("´ËÄ¿Â¼²»´æÔÚ£¬Çë¼ì²éÄúµÄOutputÎÄ¼ş¼ĞÊÇ·ñÉèÖÃÕıÈ·", "This folder doesn't exists,please check if your OutputFolder is correct.");
+                    await MessageHelper.Show("æ­¤ç›®å½•ä¸å­˜åœ¨ï¼Œè¯·æ£€æŸ¥æ‚¨çš„Outputæ–‡ä»¶å¤¹æ˜¯å¦è®¾ç½®æ­£ç¡®", "This folder doesn't exists,please check if your OutputFolder is correct.");
                 }
             }
         }
@@ -258,24 +265,25 @@ namespace DBMT
 
         public async void SaveDrawIBList()
         {
-            //(1) ¼ì²éÓÎÏ·ÀàĞÍÊÇ·ñÉèÖÃ
+            //(1) æ£€æŸ¥æ¸¸æˆç±»å‹æ˜¯å¦è®¾ç½®
             if (MainConfig.CurrentGameName == "")
             {
-                await MessageHelper.Show("ÇëÏÈÑ¡ÔñÓÎÏ·ÀàĞÍ", "Please select a game before this.");
+                await MessageHelper.Show("è¯·å…ˆé€‰æ‹©æ¸¸æˆç±»å‹", "Please select a game before this.");
                 return;
             }
 
-            //(2) ½ÓÏÂÀ´Òª°Ñµ±Ç°µÄÓÎÏ·Ãû³Æ+ÀàĞÍ±£´æµ½MainSetting.jsonÀï
-            MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+            //(2) æ¥ä¸‹æ¥è¦æŠŠå½“å‰çš„æ¸¸æˆåç§°+ç±»å‹ä¿å­˜åˆ°MainSetting.jsoné‡Œ
+            //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+            MainConfig.MainCfg.SaveConfig();
 
-            //(3) ½ÓÏÂÀ´°ÑËùÓĞµÄdrawIBListÖĞµÄDrawIB±£ÁôÏÂÀ´´æ´¢µ½¶ÔÓ¦ÅäÖÃÎÄ¼ş¡£
+            //(3) æ¥ä¸‹æ¥æŠŠæ‰€æœ‰çš„drawIBListä¸­çš„DrawIBä¿ç•™ä¸‹æ¥å­˜å‚¨åˆ°å¯¹åº”é…ç½®æ–‡ä»¶ã€‚
             List<string> drawIBList = GetDrawIBListFromTextBoxDrawIBList();
 
             JObject jobj = new JObject();
             jobj["DrawIBList"] = new JArray(drawIBList);
             string json_string = jobj.ToString(Formatting.Indented);
 
-            // ½«JSON×Ö·û´®Ğ´ÈëÎÄ¼ş
+            // å°†JSONå­—ç¬¦ä¸²å†™å…¥æ–‡ä»¶
             File.WriteAllText(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\Config.Json", json_string);
 
         }
@@ -283,7 +291,7 @@ namespace DBMT
         public async void SaveDrawIBListToConfig(object sender, RoutedEventArgs e)
         {
             SaveDrawIBList();
-            await MessageHelper.Show("±£´æ³É¹¦");
+            await MessageHelper.Show("ä¿å­˜æˆåŠŸ");
         }
 
 
@@ -291,13 +299,13 @@ namespace DBMT
         {
             if (TextBoxDrawIBList.Text.Trim() == "")
             {
-                await MessageHelper.Show("ÔÚÔËĞĞÖ®Ç°ÇëÌîĞ´ÄúµÄ»æÖÆIBµÄ¹şÏ£Öµ²¢½øĞĞÅäÖÃ", "Please fill your DrawIB and config it before run.");
+                await MessageHelper.Show("åœ¨è¿è¡Œä¹‹å‰è¯·å¡«å†™æ‚¨çš„ç»˜åˆ¶IBçš„å“ˆå¸Œå€¼å¹¶è¿›è¡Œé…ç½®", "Please fill your DrawIB and config it before run.");
                 return false;
             }
 
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("ÇëÏÈÖ¸¶¨¹¤×÷¿Õ¼ä");
+                await MessageHelper.Show("è¯·å…ˆæŒ‡å®šå·¥ä½œç©ºé—´");
                 return false;
             }
 
@@ -326,7 +334,7 @@ namespace DBMT
             {
                 TextureHelper.ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
-                if (MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Texture_Setting, "ConvertDedupedTextures"))
+                if (MainConfig.TextureCfg.Value.ConvertDedupedTextures)
                 {
                     TextureHelper.ConvertDedupedTexturesToTargetFormat();
                 }
@@ -345,7 +353,7 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
             {
-                await MessageHelper.Show("ÇëÏÈÑ¡Ôñ¹¤×÷¿Õ¼ä");
+                await MessageHelper.Show("è¯·å…ˆé€‰æ‹©å·¥ä½œç©ºé—´");
                 return;
             }
 
@@ -372,7 +380,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("Äú»¹Î´Éú³É¶ş´´Ä£ĞÍ", "You have not generate any mod yet");
+                await MessageHelper.Show("æ‚¨è¿˜æœªç”ŸæˆäºŒåˆ›æ¨¡å‹", "You have not generate any mod yet");
             }
         }
 
@@ -385,7 +393,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("´ËÄ¿Â¼²»´æÔÚ£¬Çë¼ì²éÄúµÄModsÎÄ¼ş¼ĞÊÇ·ñÉèÖÃÕıÈ·", "This path didn't exists, please check if your Mods folder is correct");
+                await MessageHelper.Show("æ­¤ç›®å½•ä¸å­˜åœ¨ï¼Œè¯·æ£€æŸ¥æ‚¨çš„Modsæ–‡ä»¶å¤¹æ˜¯å¦è®¾ç½®æ­£ç¡®", "This path didn't exists, please check if your Mods folder is correct");
             }
         }
 
@@ -398,7 +406,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("Ä¿±êÄ¿Â¼Ã»ÓĞÈÎºÎFrameAnalysisÎÄ¼ş¼Ğ", "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("ç›®æ ‡ç›®å½•æ²¡æœ‰ä»»ä½•FrameAnalysisæ–‡ä»¶å¤¹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -416,7 +424,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("Ã»ÓĞÕÒµ½ÈÎºÎFrameAnalysisÎÄ¼ş¼Ğ", "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("æ²¡æœ‰æ‰¾åˆ°ä»»ä½•FrameAnalysisæ–‡ä»¶å¤¹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -429,7 +437,7 @@ namespace DBMT
             }
             else
             {
-                await MessageHelper.Show("Ä¿±êÄ¿Â¼Ã»ÓĞÈÎºÎFrameAnalysisÎÄ¼ş¼Ğ", "Target directory didn't have any FrameAnalysisFolder.");
+                await MessageHelper.Show("ç›®æ ‡ç›®å½•æ²¡æœ‰ä»»ä½•FrameAnalysisæ–‡ä»¶å¤¹", "Target directory didn't have any FrameAnalysisFolder.");
             }
         }
 
@@ -516,7 +524,7 @@ namespace DBMT
                 return;
             }
 
-            //ÄæÏòÌáÈ¡Ö®Ç°Òª±£´æDrawIBÁĞ±í¡£
+            //é€†å‘æå–ä¹‹å‰è¦ä¿å­˜DrawIBåˆ—è¡¨ã€‚
             SaveDrawIBList();
 
             bool command_run_result = await CommandHelper.runCommand("ReverseExtract", "3Dmigoto-Sword-Lv5.vmp.exe");
@@ -549,13 +557,13 @@ namespace DBMT
 
         public async void Encryption_EncryptAll(object sender, RoutedEventArgs e)
         {
-            //»ìÏı²¢·µ»ØĞÂµÄiniÎÄ¼şµÄÂ·¾¶
+            //æ··æ·†å¹¶è¿”å›æ–°çš„iniæ–‡ä»¶çš„è·¯å¾„
             string NewModInIPath = await EncryptionHelper.Obfuscate_ModFileName("Play");
             if (NewModInIPath == "")
             {
                 return;
             }
-            //µ÷ÓÃ¼ÓÃÜBuffer²¢¼ÓÃÜiniÎÄ¼ş
+            //è°ƒç”¨åŠ å¯†Bufferå¹¶åŠ å¯†iniæ–‡ä»¶
             await EncryptionHelper.DBMT_Encryption_RunCommand("encrypt_buffer_ini_v5", NewModInIPath);
         }
 
@@ -582,16 +590,16 @@ namespace DBMT
             {
                 if (DBMTStringUtils.ContainsChinese(selected_folder_path))
                 {
-                    await MessageHelper.Show("Ä¿±êÂ·¾¶ÖĞ²»ÄÜº¬ÓĞÖĞÎÄ×Ö·û", "Target Path Can't Contains Chinese.");
+                    await MessageHelper.Show("ç›®æ ‡è·¯å¾„ä¸­ä¸èƒ½å«æœ‰ä¸­æ–‡å­—ç¬¦", "Target Path Can't Contains Chinese.");
                     return;
                 }
 
-                //ÅĞ¶ÏÄ¿±êÂ·¾¶ÏÂÊÇ·ñÓĞiniÎÄ¼ş
-                // Ê¹ÓÃDirectory.GetFiles·½·¨£¬²¢Ö¸¶¨ËÑË÷Ä£Ê½Îª*.ini
+                //åˆ¤æ–­ç›®æ ‡è·¯å¾„ä¸‹æ˜¯å¦æœ‰iniæ–‡ä»¶
+                // ä½¿ç”¨Directory.GetFilesæ–¹æ³•ï¼Œå¹¶æŒ‡å®šæœç´¢æ¨¡å¼ä¸º*.ini
                 string[] iniFiles = Directory.GetFiles(selected_folder_path, "*.ini");
                 if (iniFiles.Length == 0)
                 {
-                    await MessageHelper.Show("Ä¿±êÂ·¾¶ÖĞÎŞ·¨ÕÒµ½modµÄiniÎÄ¼ş", "Target Path Can't find ini file.");
+                    await MessageHelper.Show("ç›®æ ‡è·¯å¾„ä¸­æ— æ³•æ‰¾åˆ°modçš„iniæ–‡ä»¶", "Target Path Can't find ini file.");
                     return;
                 }
 
