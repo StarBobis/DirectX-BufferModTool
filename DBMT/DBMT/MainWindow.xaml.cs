@@ -41,6 +41,9 @@ namespace DBMT
                 contentFrame.Navigate(typeof(WorkPage));
             }
 
+            int WindowWidth = (int)MainConfig.GameCfg.Value.WindowWidth;
+            int WindowHeight = (int)MainConfig.GameCfg.Value.WindowHeight;
+            this.AppWindow.Resize(new SizeInt32(WindowWidth, WindowHeight));
         }
 
      
@@ -54,8 +57,7 @@ namespace DBMT
 
             //设置标题和宽高
             this.Title = MainConfig.DBMT_Title;
-            this.AppWindow.Resize(new SizeInt32(1000, 600));
-
+            
             //移动窗口到屏幕中心
             MoveWindowToCenterScreen();
 
@@ -168,6 +170,11 @@ namespace DBMT
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
+
+            MainConfig.GameCfg.Value.WindowWidth = App.m_window.Bounds.Width;
+            MainConfig.GameCfg.Value.WindowHeight = App.m_window.Bounds.Height;
+
+
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
 
@@ -182,6 +189,7 @@ namespace DBMT
             }
 
             MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
         }
     }
 }

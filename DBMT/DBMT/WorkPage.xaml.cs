@@ -644,8 +644,6 @@ namespace DBMT
             await CommandHelper.ShellOpenFile(MainConfig.Path_3Dmigoto_Loader_ByPassACE_EXE);
         }
 
-
-
         private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
         {
             await CommandHelper.ShellOpenFile(MainConfig.Path_D3DXINI);
