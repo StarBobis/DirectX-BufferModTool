@@ -12,10 +12,6 @@ namespace DBMT
 
     public class SettingsHelper
     {
-
-
-
-
         public static void CleanFrameAnalysisFiles()
         {
             if (!Directory.Exists(MainConfig.Path_LoaderFolder))
