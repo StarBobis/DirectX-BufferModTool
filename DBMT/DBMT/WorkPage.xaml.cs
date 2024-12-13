@@ -27,8 +27,11 @@ namespace DBMT
             this.InitializeComponent();
             try
             {
+                MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
                 InitializeWorkSpace(MainConfig.CurrentWorkSpace);
                 SetDefaultBackGroundImage();
+
+                WorkBGImageBrush.Opacity = MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
             }
             catch (Exception ex)
             {
@@ -545,11 +548,12 @@ namespace DBMT
         {
             if (WorkBGImageBrush.Opacity != 0)
             {
+                MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity =(float)WorkBGImageBrush.Opacity;
                 WorkBGImageBrush.Opacity = 0;
             }
             else
             {
-                WorkBGImageBrush.Opacity = 1;
+                WorkBGImageBrush.Opacity = MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
             }
         }
     }

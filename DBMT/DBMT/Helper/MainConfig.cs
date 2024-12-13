@@ -61,7 +61,10 @@ namespace DBMT
 
     public class GameConfig : BaseConfig
     {
+        //UI行为设置
+        public float WorkPageBackGroundImageOpacity { get; set; } = 0.3f;
         public bool WindowTopMost { get; set; } = false;
+
         public bool AutoCleanFrameAnalysisFolder { get; set; } = true;
         public bool AutoCleanLogFile { get; set; } = true;
         public int FrameAnalysisFolderReserveNumber { get; set; } = 1;
