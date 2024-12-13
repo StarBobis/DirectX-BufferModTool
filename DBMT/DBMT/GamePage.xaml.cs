@@ -40,7 +40,19 @@ namespace DBMT
         {
             this.InitializeComponent();
             LoadDirectoryNames();
-            
+
+            GameBGImageBrush.Opacity = MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            // 执行你想要在这个页面被关闭或导航离开时运行的代码
+
+            //保存全局设置因为要保存滑条透明度
+            MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity = (float)GameBGImageBrush.Opacity;
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
+            // 如果需要，可以调用基类的 OnNavigatedFrom 方法
+            base.OnNavigatedFrom(e);
         }
 
         private async void ChooseProcessPathButtonClick(object sender, RoutedEventArgs e)

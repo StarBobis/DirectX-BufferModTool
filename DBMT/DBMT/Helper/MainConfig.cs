@@ -62,7 +62,7 @@ namespace DBMT
     public class GameConfig : BaseConfig
     {
         //UI行为设置
-        public float GamePageBackGroundImageOpacity { get; set; } = 1.0f;
+        public float GamePageBackGroundImageOpacity { get; set; } = 0.6f;
         public float WorkPageBackGroundImageOpacity { get; set; } = 0.3f;
         public bool WindowTopMost { get; set; } = false;
 
