@@ -541,5 +541,16 @@ namespace DBMT
             }
         }
 
+        private void LightButtonClick_TurnOnOffBackGroundImageOpacity(object sender, RoutedEventArgs e)
+        {
+            if (WorkBGImageBrush.Opacity != 0)
+            {
+                WorkBGImageBrush.Opacity = 0;
+            }
+            else
+            {
+                WorkBGImageBrush.Opacity = 1;
+            }
+        }
     }
 }

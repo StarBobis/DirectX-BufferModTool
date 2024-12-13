@@ -30,18 +30,11 @@
             <!-- 定义列 -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Row="0" Grid.Column="0"
-    CornerRadius="18"
-    Margin="0,5,5,0"
-    VerticalAlignment="Top"
-    HorizontalAlignment="Right">
-
-                <Button 
-        Width="45" Height="45"
-        BorderThickness="0"
-        Background="Transparent" >
+            <Border Grid.Row="0" Grid.Column="1" CornerRadius="18" Margin="0,5,5,0" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Button Click="LightButtonClick_TurnOnOffBackGroundImageOpacity" Width="45" Height="45" BorderThickness="0" Background="Transparent" >
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE793;"/>
                 </Button>
             </Border>
@@ -80,9 +73,11 @@
                     <MenuFlyoutItem Text="一键加密Buffer文件" Click="Encryption_EncryptBuffer"/>
                     <MenuFlyoutItem Text="一键加密ini文件" Click="Encryption_EncryptIni"/>
                 </MenuBarItem>
+
+                
             </MenuBar>
 
-            <Border Grid.Row="1" Width="auto" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"
 BorderBrush="White" BorderThickness="1" CornerRadius="5" >
                 <Grid>
                     <Grid.RowDefinitions>
@@ -128,7 +123,7 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
             </Border>
             
             <!-- SkipIB相关 -->
-            <Border Grid.Row="2" Width="auto" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"
+            <Border Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"
                 BorderBrush="White" BorderThickness="1" CornerRadius="5" >
                 <Grid>
                     <Grid.RowDefinitions>
