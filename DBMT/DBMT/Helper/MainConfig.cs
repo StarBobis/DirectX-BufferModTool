@@ -252,7 +252,6 @@ namespace DBMT
 
         public static void LoadConfigFile(ConfigFiles configFiles)
         {
-            // test
             switch (configFiles)
             {
                 case ConfigFiles.Main:
@@ -267,30 +266,6 @@ namespace DBMT
             }
 
             return;
-
-            string ConfigNameKey = configFiles.ToString();
-            string ConfigPath = ConfigName_FilePath_Dict[ConfigNameKey];
-            if (!File.Exists(ConfigPath))
-            {
-                //如果文件不存在，就用默认配置，节省读取IO
-                JsonObjects[ConfigNameKey] = DefaultConfigs[ConfigNameKey];
-            }
-            else
-            {
-                string json = File.ReadAllText(ConfigPath); // 读取文件内容
-                JObject jsonObject = JObject.Parse(json);
-
-                // 配置文件可能 不完整，缺少一些配置项，所以需要用默认配置来填充
-                // 使得 DefaultConfigs[file.Key] 中 存在的 配置项 jsonObject 中也存在
-                foreach (var defaultConfig in DefaultConfigs[ConfigNameKey])
-                {
-                    if (!jsonObject.ContainsKey(defaultConfig.Key))
-                    {
-                        jsonObject.Add(defaultConfig.Key, defaultConfig.Value);
-                    }
-                }
-                JsonObjects[ConfigNameKey] = jsonObject;
-            }
         }
 
         /// <summary>
@@ -318,17 +293,7 @@ namespace DBMT
             // 通过反射获取配置项的值
             var value = baseConfig.GetType().GetProperty(key).GetValue(baseConfig);
             return (T)value;
-
-            //----- 下面的方法被弃用
-            // 获取配置文件
-            // 将 configFiles 转换为字符串 ，然后调用 GetConfig<T>(string file, string key)
-            string file = configFiles.ToString();
-            if (JsonObjects.ContainsKey(file) && JsonObjects[file].ContainsKey(key))
-            {
-                return JsonObjects[file][key].ToObject<T>();
-            }
-            // 抛出异常
-            throw new Exception($"Key [{key}] not found in config file [{configFiles}]");
+            
         }
 
         /// <summary>
@@ -358,18 +323,6 @@ namespace DBMT
             // 通过反射设置配置项的值
             baseConfig.GetType().GetProperty(key).SetValue(baseConfig, value);
             return value;
-
-            //----------下面的方法被弃用
-            // 设置配置文件
-            // 将 configFiles 转换为字符串 ，然后调用 SetConfig<T>(string file, string key, T value)
-            string file = configFiles.ToString();
-            if (JsonObjects.ContainsKey(file))
-            {
-                JsonObjects[file][key] = JToken.FromObject(value);
-                return value;
-            }
-            // 抛出异常
-            throw new Exception($"File [{file}] not found in config files [{ConfigName_FilePath_Dict}]");
         }
 
         /// <summary>
@@ -397,17 +350,7 @@ namespace DBMT
             }
             return;
 
-            //---------- 下面的方法被弃用
-            string ConfigTypeName = configFile.ToString();
-            if (JsonObjects.ContainsKey(ConfigTypeName))
-            {
-                File.WriteAllText(ConfigName_FilePath_Dict[ConfigTypeName], JsonObjects[ConfigTypeName].ToString());
-            }
-            else
-            {
-                // 抛出异常
-                throw new Exception($"File not found in config file [ {ConfigTypeName} ] ");
-            }
+          
         }
 
     }
