@@ -10,30 +10,17 @@ namespace DBMT
 {
     public static class MainConfig
     {
-        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.1.0.1 "; //程序窗口名称
+        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.1.0.2 "; //程序窗口名称
         public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
-
-        //// 配置文件路径
-        public const string Path_MainConfig = "Configs\\Main.json";
-        public const string Path_Game_SettingJson = "Configs\\Setting.json";
-        public const string Path_Texture_SettingJson = "Configs\\TextureSetting.json";
-
-        //// 其他文件路径
-        public const string Path_RunResultJson = "Configs\\RunResult.json";
-        public const string Path_RunInputJson = "Configs\\RunInput.json";
-
-        public const string Path_DeviceKeySetting = "Configs\\DeviceKeySetting.json";
-        public const string Path_ACLFolderJson = "Configs\\ACLFolder.json";
-
 
         ////当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
         public static string ApplicationRunPath = AppDomain.CurrentDomain.BaseDirectory.ToString();
         public static string CurrentGameName => GetConfig<string>(ConfigFiles.Main, "GameName");
         public static string CurrentWorkSpace => GetConfig<string>(ConfigFiles.Main, "WorkSpaceName");
+
         public static string CurrentMode = "Dev"; //当前工作模式，分为Dev和Play，默认为Dev
         public static string RunResult = "";
 
-        public const string Path_ExtractTypesFolder = "Configs\\ExtractTypes\\";
 
         ////运行后程序动态生成
         public static string Path_Base
@@ -64,9 +51,51 @@ namespace DBMT
             get { return Path.Combine(Path_LoaderFolder, "d3dx.ini"); }
         }
 
+        public static string Path_ExtractTypesFolder
+        {
+            get { return Path.Combine(Path_Base,"Configs\\ExtractTypes\\"); }
+        }
+
         public static string Path_GameTypeFolder
         {
             get { return Path.Combine(Path_ExtractTypesFolder, MainConfig.GetConfig<string>(ConfigFiles.Main, "GameName") + "\\"); }
+        }
+
+
+        //// 配置文件路径
+        public static string Path_MainConfig 
+        {
+            get { return Path.Combine(Path_Base, "Configs\\Main.json") ; }
+        }
+
+        public static string Path_Game_SettingJson
+        {
+            get { return Path.Combine(Path_Base, "Configs\\Setting.json"); }
+        }
+
+        public static string Path_Texture_SettingJson
+        {
+            get { return Path.Combine(Path_Base, "Configs\\TextureSetting.json"); }
+        }
+
+        public static string Path_RunResultJson
+        {
+            get { return Path.Combine(Path_Base, "Configs\\RunResult.json"); }
+        }
+
+        public static string Path_RunInputJson
+        {
+            get { return Path.Combine(Path_Base, "Configs\\RunInput.json"); }
+        }
+
+        public static string Path_DeviceKeySetting
+        {
+            get { return Path.Combine(Path_Base, "Configs\\DeviceKeySetting.json"); }
+        }
+
+        public static string Path_ACLFolderJson
+        {
+            get { return Path.Combine(Path_Base, "Configs\\ACLFolder.json"); }
         }
 
 
