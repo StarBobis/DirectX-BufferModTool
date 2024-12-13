@@ -32,6 +32,15 @@ namespace DBMT
             this.InitializeComponent();
 
             InitializeGUI();
+
+
+            //如果勾选了直接启动到工作台界面
+
+            if (MainConfig.GameCfg.Value.StartToWorkPage)
+            {
+                contentFrame.Navigate(typeof(WorkPage));
+            }
+
         }
 
      

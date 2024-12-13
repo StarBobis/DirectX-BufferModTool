@@ -45,8 +45,6 @@
                         <TextBlock  Text="保留FraemAnalysis文件数量" Margin="20,0,0,0" VerticalAlignment="Center"/>
                         <NumberBox x:Name="NumberBox_FrameAnalysisFolderReserveNumber" Margin="20,0,0,0"  PlaceholderText="0"  SmallChange="1"  LargeChange="10" />
                     </StackPanel>
-                    
-                    
                     <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_AutoCleanFrameAnalysisFolder"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="一键逆向时生成模型文件的命名风格" VerticalAlignment="Center" Margin="10,0,10,0"  />
@@ -55,6 +53,10 @@
                         <x:String>GIMI</x:String>
                     </ComboBox>
 
+                    <StackPanel  Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Margin="10,0,10,0" Orientation="Horizontal">
+                        <TextBlock  Text="启动DBMT后直接跳转到工作台界面" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_StartToWorkPage"/>
 
                     <!--<TextBlock Grid.Row="3" Grid.Column="0" Text="保持DBMT窗口总是在屏幕最高层级显示，确保一直处于可视状态" VerticalAlignment="Center" Margin="10,0,10,0" />
                     <ToggleSwitch Grid.Column="1"  Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5"/>-->

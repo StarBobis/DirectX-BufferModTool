@@ -648,7 +648,6 @@ namespace DBMT
 
         private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
         {
-
             await CommandHelper.ShellOpenFile(MainConfig.Path_D3DXINI);
         }
 

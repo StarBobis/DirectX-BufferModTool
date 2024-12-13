@@ -64,6 +64,7 @@ namespace DBMT
         //UI行为设置
         public float GamePageBackGroundImageOpacity { get; set; } = 0.6f;
         public float WorkPageBackGroundImageOpacity { get; set; } = 0.3f;
+        public bool StartToWorkPage { get; set; } = false;
         public bool WindowTopMost { get; set; } = false;
 
         public bool AutoCleanFrameAnalysisFolder { get; set; } = true;

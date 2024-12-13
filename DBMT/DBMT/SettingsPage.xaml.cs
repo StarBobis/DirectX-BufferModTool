@@ -65,6 +65,8 @@ namespace DBMT
 
         public void SaveSettingsToConfig()
         {
+            MainConfig.GameCfg.Value.StartToWorkPage = ToggleSwitch_StartToWorkPage.IsOn;
+
             MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "AutoCleanLogFile", ToggleSwitch_AutoCleanLogFile.IsOn);
             MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "LogFileReserveNumber", (int)NumberBox_LogFileReserveNumber.Value);
             MainConfig.SetConfig(MainConfig.ConfigFiles.Game_Setting, "AutoCleanFrameAnalysisFolder", ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn);
@@ -98,6 +100,8 @@ namespace DBMT
             //防止程序启动时没正确读取，这里冗余读取一次，后面看情况可以去掉。
             MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
             MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Texture_Setting);
+
+            ToggleSwitch_StartToWorkPage.IsOn = MainConfig.GameCfg.Value.StartToWorkPage;
 
             ToggleSwitch_AutoCleanLogFile.IsOn = MainConfig.GetConfig<bool>(MainConfig.ConfigFiles.Game_Setting, "AutoCleanLogFile");
             NumberBox_LogFileReserveNumber.Value = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting, "LogFileReserveNumber");
