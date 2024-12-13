@@ -33,6 +33,8 @@ namespace DBMT
                 SetDefaultBackGroundImage();
 
                 WorkBGImageBrush.Opacity = MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
+
+                LoadDirectoryNames();
             }
             catch (Exception ex)
             {
@@ -51,6 +53,47 @@ namespace DBMT
             // 如果需要，可以调用基类的 OnNavigatedFrom 方法
             base.OnNavigatedFrom(e);
         }
+
+
+        private async void LoadDirectoryNames()
+        {
+            WorkGameSelectionComboBox.Items.Clear();
+            List<string> directories = await PathHelper.GetGameDirectoryNameList();
+            foreach (var dirName in directories)
+            {
+                WorkGameSelectionComboBox.Items.Add(dirName);
+            }
+            if (MainConfig.CurrentGameName == "")
+            {
+                WorkGameSelectionComboBox.SelectedIndex = 0;
+            }
+            else
+            {
+                WorkGameSelectionComboBox.SelectedItem = MainConfig.CurrentGameName;
+            }
+        }
+
+
+        private void WorkGameSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // 获取触发事件的 ComboBox 实例
+            var comboBox = sender as ComboBox;
+
+            // 检查是否有新选中的项
+            if (comboBox != null && comboBox.SelectedItem != null)
+            {
+                // 执行你想要的操作，例如获取选中的项并进行处理
+                string selectedGame = comboBox.SelectedItem.ToString();
+
+                //MainConfig.SetCurrentGame(selectedGame);
+                MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
+                MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
+
+                SetDefaultBackGroundImage();
+                InitializeWorkSpace(MainConfig.CurrentWorkSpace);
+            }
+        }
+
 
         private void SetDefaultBackGroundImage()
         {

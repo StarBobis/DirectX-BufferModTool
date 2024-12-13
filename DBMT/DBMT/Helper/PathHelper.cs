@@ -116,5 +116,29 @@ namespace DBMT
 
             return "";
         }
+
+
+
+        public static async Task<List<string>> GetGameDirectoryNameList()
+        {
+            List<string> directories = new List<string>();
+
+            string CurrentDirectory = Directory.GetCurrentDirectory();
+            string GamesPath = Path.Combine(CurrentDirectory, "Games\\");
+
+            if (!Directory.Exists(GamesPath))
+            {
+                await MessageHelper.Show("Can't find Games folder in your run folder, Initialize Failed. : \n" + GamesPath);
+                return directories;
+            }
+
+            // 获取所有子目录名称
+            directories = Directory.EnumerateDirectories(GamesPath)
+                                        .Select(Path.GetFileName)
+                                        .Where(name => !string.IsNullOrEmpty(name))
+                                        .OrderByDescending(name => name).ToList();
+            return directories;
+        }
+
     }
 }

@@ -25,6 +25,7 @@ using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using Windows.UI.Popups;
 using DBMT;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -144,27 +145,12 @@ namespace DBMT
             StarterPathTextBox.Text = "";
         }
 
+        
+
         private async void LoadDirectoryNames()
         {
-            string CurrentDirectory = Directory.GetCurrentDirectory();
-            string GamesPath = Path.Combine(CurrentDirectory, "Games\\");
-
-            if (!Directory.Exists(GamesPath))
-            {
-                await MessageHelper.Show("Can't find Games folder in your run folder, Initialize Failed. : \n" + GamesPath);
-                return;
-            }
-
-            // 获取所有子目录名称
-            var directories = Directory.EnumerateDirectories(GamesPath)
-                                        .Select(Path.GetFileName)
-                                        .Where(name => !string.IsNullOrEmpty(name))
-                                        .OrderByDescending(name => name);
-
-            // 清空 ComboBox 当前项
             GameSelectionComboBox.Items.Clear();
-
-            // 将每个目录名称添加到 ComboBox 中
+            List<string> directories = await PathHelper.GetGameDirectoryNameList();
             foreach (var dirName in directories)
             {
                 GameSelectionComboBox.Items.Add(dirName);
@@ -177,7 +163,6 @@ namespace DBMT
             {
                 GameSelectionComboBox.SelectedItem = MainConfig.CurrentGameName;
             }
-            
         }
 
 

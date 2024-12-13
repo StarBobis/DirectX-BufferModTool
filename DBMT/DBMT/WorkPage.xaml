@@ -34,6 +34,12 @@
             </Grid.ColumnDefinitions>
 
 
+            <!-- 选择游戏 -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,5,165,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <ComboBox x:Name="WorkGameSelectionComboBox" Width="200" SelectionChanged="WorkGameSelectionComboBox_SelectionChanged" >
+                </ComboBox>
+            </StackPanel>
+
             <!-- 添加横向滑条用于控制透明度 -->
             <Slider Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="100" Minimum="0" Maximum="1" 
                     Value="{x:Bind WorkBGImageBrush.Opacity, Mode=TwoWay}" StepFrequency="0.01" Margin="0,5,55,0" />
@@ -46,7 +52,7 @@
             </Border>
 
             <!-- 顶部菜单 -->
-            <MenuBar Grid.Row="0" Grid.Column="0">
+            <MenuBar Grid.Row="0" Grid.Column="0" Margin="10,0,0,0">
                 <MenuBarItem Title="文件">
                     <MenuFlyoutItem Text="打开当前工作空间生成Mod的文件夹" Click="OpenWorkSpaceGenerateModFolder"/>
                     <MenuFlyoutItem Text="打开Mods文件夹" Click="OpenModsFolder"/>
@@ -80,7 +86,11 @@
                     <MenuFlyoutItem Text="一键加密ini文件" Click="Encryption_EncryptIni"/>
                 </MenuBarItem>
 
-                
+                <MenuBarItem Title="运行" >
+                    <MenuFlyoutItem Text="3Dmigoto Loader.exe" />
+                    <MenuFlyoutItem Text="3Dmigoto Loader.py"/>
+                    <MenuFlyoutItem Text="3Dmigoto Loader-ByPassACE.exe"/>
+                </MenuBarItem>
             </MenuBar>
 
             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"
