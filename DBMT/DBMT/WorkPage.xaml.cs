@@ -25,8 +25,16 @@ namespace DBMT
         public WorkPage()
         {
             this.InitializeComponent();
-            InitializeWorkSpace(MainConfig.CurrentWorkSpace);
-            SetDefaultBackGroundImage();
+            try
+            {
+                InitializeWorkSpace(MainConfig.CurrentWorkSpace);
+                SetDefaultBackGroundImage();
+            }
+            catch (Exception ex)
+            {
+                _ = MessageHelper.Show("Error: " + ex.ToString());
+            }
+            
         }
 
         private void SetDefaultBackGroundImage()

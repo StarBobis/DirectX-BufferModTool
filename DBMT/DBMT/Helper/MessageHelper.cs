@@ -10,7 +10,7 @@ namespace DBMT
 {
     public static class MessageHelper
     {
-        public static async Task Show(string ContentChinese,string ContentEnglish="")
+        public static async Task<bool> Show(string ContentChinese,string ContentEnglish="")
         {
             var messageDialog = new MessageDialog(ContentChinese, "Tips");
             //如果遇到这里说App.m_window是空指针引用问题
@@ -19,6 +19,7 @@ namespace DBMT
             nint windowHandle = WindowNative.GetWindowHandle(App.m_window);
             InitializeWithWindow.Initialize(messageDialog, windowHandle);
             await messageDialog.ShowAsync();
+            return true;
         }
     }
 }

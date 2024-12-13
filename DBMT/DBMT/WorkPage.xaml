@@ -32,6 +32,20 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <Border Grid.Row="0" Grid.Column="0"
+    CornerRadius="18"
+    Margin="0,5,5,0"
+    VerticalAlignment="Top"
+    HorizontalAlignment="Right">
+
+                <Button 
+        Width="45" Height="45"
+        BorderThickness="0"
+        Background="Transparent" >
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE793;"/>
+                </Button>
+            </Border>
+
             <!-- 顶部菜单 -->
             <MenuBar Grid.Row="0" Grid.Column="0">
                 <MenuBarItem Title="文件">

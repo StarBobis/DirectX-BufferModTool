@@ -17,7 +17,7 @@
             <ImageBrush x:Name="HomeBGImageBrush" Stretch="UniformToFill" ImageSource="Assets/HomePageBackGround.png" />
         </Grid.Background>
 
-        <!-- 设置主页背景 -->
+        <!-- 设置主页背景按钮 -->
         <Border 
             CornerRadius="18"
             Margin="0,5,5,0"

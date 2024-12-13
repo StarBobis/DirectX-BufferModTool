@@ -29,8 +29,16 @@ namespace DBMT
         {
             this.InitializeComponent();
 
-            ReadSettingsFromConfig();
-            SetDefaultBackGroundImage();
+            try
+            {
+                ReadSettingsFromConfig();
+                SetDefaultBackGroundImage();
+            }
+            catch (Exception ex)
+            {
+                _ = MessageHelper.Show("Error: " + ex.ToString());
+            }
+
         }
 
         private void SetDefaultBackGroundImage()
