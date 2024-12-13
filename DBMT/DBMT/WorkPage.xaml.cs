@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Windows.Storage.Pickers;
 using Windows.Storage;
+using Microsoft.UI.Xaml.Navigation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -38,6 +39,17 @@ namespace DBMT
                 _ = MessageHelper.Show("Error: " + ex.ToString());
             }
             
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            // 执行你想要在这个页面被关闭或导航离开时运行的代码
+
+            //保存全局设置因为要保存滑条透明度
+            MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity = (float)WorkBGImageBrush.Opacity;
+            MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
+            // 如果需要，可以调用基类的 OnNavigatedFrom 方法
+            base.OnNavigatedFrom(e);
         }
 
         private void SetDefaultBackGroundImage()

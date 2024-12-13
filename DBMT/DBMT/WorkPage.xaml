@@ -36,7 +36,7 @@
 
             <!-- 添加横向滑条用于控制透明度 -->
             <Slider Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="100" Minimum="0" Maximum="1" 
-                    Value="{x:Bind WorkBGImageBrush.Opacity, Mode=TwoWay}" StepFrequency="0.01" Margin="0,5,50,0" />
+                    Value="{x:Bind WorkBGImageBrush.Opacity, Mode=TwoWay}" StepFrequency="0.01" Margin="0,5,55,0" />
             
             <!-- 按钮开关背景显示 -->
             <Border Grid.Row="0" Grid.Column="1" CornerRadius="18" Margin="0,5,5,0" VerticalAlignment="Top" HorizontalAlignment="Right">
