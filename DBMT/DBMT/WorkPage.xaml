@@ -126,33 +126,38 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
                         <Button Content="清空当前工作空间内容" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="10,0,10,0" Click="CleanCurrentWorkSpaceFile" />
                     </StackPanel>
 
-                     <!--第二行：DrawIB列表--> 
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,10">
-                        <TextBlock  Text="DrawIB列表:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                        <TextBox x:Name="TextBoxDrawIBList" Width="700"/>
-                    </StackPanel>
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
+                        <!-- DataGrid  DrawIB列表 -->
+                        <!--https://learn.microsoft.com/en-us/windows/communitytoolkit/controls/datagrid_guidance/datagrid_basics-->
+                        <Border Grid.Column="0" Margin="10,10,10,10" BorderBrush="White" BorderThickness="1" CornerRadius="5" 
+                             Height="Auto" Width="400" HorizontalAlignment="Left">
+                            <community:DataGrid AutoGenerateColumns="False"  Height="200"
+                                x:Name="myDataGrid"  HorizontalAlignment="Left" Margin="10,10,10,0"  CellEditEnding="MyDataGrid_CellEditEnding">
+                                <community:DataGrid.Columns>
+                                    <community:DataGridTextColumn Header="DrawIB" Width="100" Binding="{Binding DrawIB}" IsReadOnly="False"/>
+                                    <community:DataGridTextColumn Header="Alias"  Width="280" Binding="{Binding Alias}" IsReadOnly="False"/>
+                                </community:DataGrid.Columns>
+                            </community:DataGrid>
+                        </Border>
 
-                    <!-- 第4行：按钮 -->
-                    <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,10,10,0">
-                        <Button Content="自动检测DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="AutoDetectPointlistDrawIBList_UnityVSPreSkinning"/>
-                        <Button Content="清空DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="CleanDrawIBListTextBox"/>
-                        <Button Content="保存当前DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="SaveDrawIBListToConfig"/>
-
-                        <Button Content="提取模型" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="ExtractModel"/>
-                        <Button Content="生成二创模型" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="GenerateMod"/>
-                    </StackPanel>
-
-
-                   
-                    <!--https://learn.microsoft.com/en-us/windows/communitytoolkit/controls/datagrid_guidance/datagrid_basics-->
-                    <community:DataGrid AutoGenerateColumns="False" Grid.Row="4" Grid.ColumnSpan="3" Height="200"
-                                    x:Name="myDataGrid"  HorizontalAlignment="Left" Margin="10,10,10,0"  CellEditEnding="MyDataGrid_CellEditEnding">
-                        <community:DataGrid.Columns>
-                            <community:DataGridTextColumn Header="DrawIB" Width="100" Binding="{Binding DrawIB}" IsReadOnly="False"/>
-                            <community:DataGridTextColumn Header="Alias"  Width="160" Binding="{Binding Alias}" IsReadOnly="False"/>
-                        </community:DataGrid.Columns>
-                    </community:DataGrid>
+                        <!-- 按钮 -->
+                        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10,10,10,0" HorizontalAlignment="Left">
+                            <Button Content="清空DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="CleanDrawIBList"/>
+                            <Button Content="自动检测DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="AutoDetectPointlistDrawIBList_UnityVSPreSkinning"/>
+                            <Button Content="保存当前DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="SaveDrawIBListToConfig"/>
+                            <Button Content="提取模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="ExtractModel"/>
+                            <Button Content="生成二创模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="GenerateMod"/>
+                        </StackPanel>
+                    </Grid>
+                    
 
                 </Grid>
             </Border>

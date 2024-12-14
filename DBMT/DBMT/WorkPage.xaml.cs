@@ -80,6 +80,8 @@ namespace DBMT
         }
 
 
+
+
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             // 执行你想要在这个页面被关闭或导航离开时运行的代码
@@ -172,30 +174,34 @@ namespace DBMT
 
         void ReadDrawIBListFromWorkSpace()
         {
-            string DrawIBListString = "";
-            string Configpath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "\\Config.json";
-            if (File.Exists(Configpath))
+            if (MainConfig.CurrentWorkSpace != "")
             {
+                items.Clear();
+                
 
-                //切换到对应配置
-                string jsonData = File.ReadAllText(Configpath);
-                JObject jobj = JObject.Parse(jsonData);
-                // Access the DrawIBList property and convert it to a List<string>
-                JArray drawIBList = (JArray)jobj["DrawIBList"];
-                List<string> drawIBListValues = drawIBList.ToObject<List<string>>();
-
-                foreach (string drawib in drawIBListValues)
+                string Configpath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "\\Config.json";
+                if (File.Exists(Configpath))
                 {
-                    DrawIBListString = DrawIBListString + drawib + ",";
+                    //切换到对应配置
+                    string jsonData = File.ReadAllText(Configpath);
+                    JArray DrawIBListJArray = JArray.Parse(jsonData);
+
+                    foreach (JObject jkobj in DrawIBListJArray)
+                    {
+                        MyItem item = new MyItem();
+                        item.DrawIB = (string)jkobj["DrawIB"];
+                        item.Alias = (string)jkobj["Alias"];
+                        items.Add(item);
+                    }
+
                 }
 
-                if (!string.IsNullOrEmpty(DrawIBListString) && DrawIBListString.Length > 1)
+                //保底确保用户可以编辑
+                if (items.Count == 0)
                 {
-                    // 移除最后一个字符
-                    DrawIBListString = DrawIBListString.Substring(0, DrawIBListString.Length - 1);
+                    AddBlankRow();
                 }
             }
-            TextBoxDrawIBList.Text = DrawIBListString;
         }
 
         public void InitializeWorkSpace(string WorkSpaceName = "")
@@ -279,25 +285,8 @@ namespace DBMT
         }
 
 
-        public void CleanDrawIBListTextBox(object sender, RoutedEventArgs e)
-        {
-            TextBoxDrawIBList.Text = "";
-        }
 
-        public List<string> GetDrawIBListFromTextBoxDrawIBList()
-        {
-            List<string> DrawIBList = new List<string>();
-            if (TextBoxDrawIBList.Text.Contains(","))
-            {
-                DrawIBList = TextBoxDrawIBList.Text.Split(',').ToList();
-            }
-            else
-            {
-                DrawIBList.Add(TextBoxDrawIBList.Text);
-            }
 
-            return DrawIBList;
-        }
 
         public async void SaveDrawIBList()
         {
@@ -308,16 +297,29 @@ namespace DBMT
                 return;
             }
 
+            if (MainConfig.CurrentWorkSpace == "")
+            {
+                await MessageHelper.Show("请先选择工作空间", "Please select a workspace before this.");
+                return;
+            }
+
             //(2) 接下来要把当前的游戏名称+类型保存到MainSetting.json里
-            //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
             MainConfig.MainCfg.SaveConfig();
 
             //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件。
-            List<string> drawIBList = GetDrawIBListFromTextBoxDrawIBList();
 
-            JObject jobj = new JObject();
-            jobj["DrawIBList"] = new JArray(drawIBList);
-            string json_string = jobj.ToString(Formatting.Indented);
+            JArray DrawIBJarrayList = new JArray();
+            foreach (MyItem item in items)
+            {
+                if (item.DrawIB.Trim() != "")
+                {
+                    JObject jobj = new JObject();
+                    jobj["DrawIB"] = item.DrawIB;
+                    jobj["Alias"] = item.Alias;
+                    DrawIBJarrayList.Add(jobj);
+                }
+            }
+            string json_string = DrawIBJarrayList.ToString(Formatting.Indented);
 
             // 将JSON字符串写入文件
             File.WriteAllText(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\Config.Json", json_string);
@@ -330,10 +332,26 @@ namespace DBMT
             await MessageHelper.Show("保存成功");
         }
 
+        public void CleanDrawIBList(object sender, RoutedEventArgs e)
+        {
+            items.Clear();
+            AddBlankRow();
+        }
+
 
         public async Task<bool> PreDoBeforeExtract()
         {
-            if (TextBoxDrawIBList.Text.Trim() == "")
+            bool findvalidDrawIB = false;
+            foreach (MyItem item in items)
+            {
+                if (item.DrawIB.Trim() != "")
+                {
+                    findvalidDrawIB = true;
+                    break;
+                }
+            }
+
+            if (findvalidDrawIB)
             {
                 await MessageHelper.Show("在运行之前请填写您的绘制IB的哈希值并进行配置", "Please fill your DrawIB and config it before run.");
                 return false;
