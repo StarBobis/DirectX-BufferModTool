@@ -9,7 +9,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     <Grid>
-
         <!--  背景 Grid  -->
         <Grid
             x:Name="BackgroundGrid"
@@ -218,8 +217,6 @@
             </Border>
 
         </Grid>
-
-
     </Grid>
 
 </Page>

@@ -33,6 +33,19 @@ namespace DBMT
         {
             this.InitializeComponent();
             SetDefaultBackGroundImage();
+            LocalizeLanguage();
+        }
+
+        private void LocalizeLanguage()
+        {
+            if (MainConfig.GameCfg.Value.Language == true)
+            {
+                TextBlock_Description.Text = "Developed By Trailblazers";
+                TextBlock_Documents.Text = "Documents";
+                TextBlock_Github.Text = "Github";
+                TextBlock_TechniqueSupport.Text = "Discord";
+                TextBlock_SubmitIssue.Text = "Issue";
+            }
         }
 
         private void OpenLinkButtonClick(object sender, RoutedEventArgs e)

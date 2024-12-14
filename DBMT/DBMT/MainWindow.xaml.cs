@@ -179,8 +179,8 @@ namespace DBMT
         {
 
             //Width and Height need extra 16px.
-            MainConfig.GameCfg.Value.WindowWidth = App.m_window.AppWindow.Size.Width;
-            MainConfig.GameCfg.Value.WindowHeight = App.m_window.AppWindow.Size.Height;
+            MainConfig.GameCfg.Value.WindowWidth = App.m_window.AppWindow.Size.Width - 15;
+            MainConfig.GameCfg.Value.WindowHeight = App.m_window.AppWindow.Size.Height - 40;
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));

@@ -44,6 +44,26 @@ namespace DBMT
             LoadDirectoryNames();
 
             GameBGImageBrush.Opacity = MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity;
+
+            LocalizeLanguage();
+        }
+
+        private void LocalizeLanguage()
+        {
+            if (MainConfig.GameCfg.Value.Language == true)
+            {
+                Button_Run3DmigotoLoader.Content = "Run 3Dmigoto Loader.exe";
+                TextBlock_ChooseGame.Text = "Current Game:";
+                TextBlock_ChooseProcessFile.Text = "Open";
+                TextBlock_ChooseProcessPath.Text = "Process Path";
+                TextBlock_ChooseStarterFile.Text = "Open";
+                TextBlock_ChooseStarterPath.Text = "Starter Path";
+                Button_InitializePath.Content = "Initialize Config";
+                Button_SaveConfig.Content = "Save Config";
+                Button_OpenD3DXINI.Content = "Open d3dx.ini";
+                Button_Open3DmigotoFolder.Content = "Open 3Dmigoto Folder";
+                Button_OpenShaderFixesFolder.Content = "Open ShaderFixes Folder";
+            }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
