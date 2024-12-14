@@ -39,6 +39,38 @@ namespace DBMT
                 _ = MessageHelper.Show("Error: " + ex.ToString());
             }
 
+            LocalizeLanguage();
+        }
+
+        private void LocalizeLanguage()
+        {
+            if (MainConfig.GameCfg.Value.Language == true)
+            {
+                TextBlock_CleanFrameAnalysisFolderBeforeQuit.Text = "Clean FrameAnalysis Folders Before Exit";
+                TextBlock_FrameAnalysisFolderReserveNumber.Text = "FrameAnalysis Folder Reserve Number:";
+                TextBlock_CleanLogFileBeforeExit.Text = "Clean Log Files Before Exit";
+                TextBlock_SaveLogFileNumber.Text = "Log File Reserve Number:";
+
+                TextBlock_ModelNameStyle.Text = "Model File Styles:";
+                TextBlock_GoToWorkPageAfterRunDBMT.Text = "Jump To WorkPage After Run DBMT";
+
+                TextBlock_MoveDrawIBRelatedFiles.Text = "Move DrawIB RelatedFiles to 'output' Folder";
+                TextBlock_DontSplitModelByMatchFirstIndex.Text = "Don't Split DrawIB By MatchFirstIndex at ModelExtract";
+
+                TextBlock_GenerateSeperateMod.Text = "Generate Mod To Seperate DrawIB Folders";
+                TextBlock_Author.Text = "Author:";
+                TextBlock_AuthorLink.Text = "Sponser Link:";
+                TextBlock_AuthorSwitchKey.Text = "Mod Default Swtich Keys";
+
+                TextBlock_GlobalTextureFormat.Text = "Global Texture Convert Settings";
+                TextBlock_OnlyConvertDiffuseMap.Text = "Only Convert DiffuseMap.dds After ModelExtract";
+                TextBlock_OnlyConvertDedupedTextures.Text = "Convert All DedupedTextures After ModelExtract";
+                TextBlock_ForbidMoveTrianglelistTextures.Text = "Forbid Move TrianglelistTextures After ModelExtract";
+                TextBlock_ForbidMoveDedupedTextures.Text = "Forbid Move DedupedTextures After ModelExtract";
+                TextBlock_ForbidMoveRenderTextures.Text = "Forbid Move RenderTextures After ModelExtract";
+                TextBlock_ForbidAuthTextures.Text = "Forbid Use AutoTextures At GenerateMod";
+                TextBlock_ForbidAuthTextures.Text = "Use Hash Style Textures At GenerateMod";
+            }
         }
 
         private void SetDefaultBackGroundImage()
@@ -128,5 +160,15 @@ namespace DBMT
             ToggleSwitch_UseHashTexture.IsOn = MainConfig.TextureCfg.Value.UseHashTexture;
         }
 
+        private async void ToggleSwitch_Language_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (ToggleSwitch_Language.IsOn != MainConfig.GameCfg.Value.Language)
+            {
+                MainConfig.GameCfg.Value.Language = ToggleSwitch_Language.IsOn;
+                await MessageHelper.Show("将在页面缓存刷新后生效","Settings will effect after you refresh page cache.");
+                SaveSettingsToConfig();
+                ReadSettingsFromConfig();
+            }
+        }
     }
 }
