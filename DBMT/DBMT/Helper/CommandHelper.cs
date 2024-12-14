@@ -193,24 +193,29 @@ namespace DBMT
             process.Start();
             process.WaitForExit();
 
-            string runResultJson = File.ReadAllText(MainConfig.Path_RunResultJson);
-            JObject resultJsonObject = JObject.Parse(runResultJson);
-            string runResult = (string)resultJsonObject["result"];
-
-            MainConfig.RunResult = runResult;
-
-            if (runResult != "success")
+            try
             {
-                await MessageHelper.Show(
-                    "运行结果: " + runResult + ". \n\n很遗憾运行失败了，参考运行结果和运行日志改变策略再试一次吧。\n\n1.请检查您的配置是否正确.\n2.请查看日志获取更多细节信息.\n3.请检查您是否使用的是最新版本，新版本可能已修复此问题\n4.请联系NicoMico寻求帮助或反馈BUG, 别忘了把最新的FrameAnalysis文件夹、提取用的IB、运行的日志文件也打包发送给他.\n\n点击确认为后您打开本次运行日志。",
-                    "Run result: " + runResult + ". \n1.Please check your config.\n2.Please check log for more information.\n3.Please ask NicoMico for help, remember to send him the latest log file.\n4.Ask @Developer in ShaderFreedom for help.\n5.Read the source code of DBMT and try analyse the reason for Error with latest log file.");
-                return false;
-            }else
-            {
-                return true;
+                string runResultJson = File.ReadAllText(MainConfig.Path_RunResultJson);
+                JObject resultJsonObject = JObject.Parse(runResultJson);
+                string runResult = (string)resultJsonObject["result"];
+                MainConfig.RunResult = runResult;
+                if (runResult != "success")
+                {
+                    await MessageHelper.Show(
+                        "运行结果: " + runResult + ". \n\n很遗憾运行失败了，参考运行结果和运行日志改变策略再试一次吧。\n\n1.请检查您的配置是否正确.\n2.请查看日志获取更多细节信息.\n3.请检查您是否使用的是最新版本，新版本可能已修复此问题\n4.请联系NicoMico寻求帮助或反馈BUG, 别忘了把最新的FrameAnalysis文件夹、提取用的IB、运行的日志文件也打包发送给他.\n\n点击确认为后您打开本次运行日志。",
+                        "Run result: " + runResult + ". \n1.Please check your config.\n2.Please check log for more information.\n3.Please ask NicoMico for help, remember to send him the latest log file.\n4.Ask @Developer in ShaderFreedom for help.\n5.Read the source code of DBMT and try analyse the reason for Error with latest log file.");
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
-            
-            
+            catch (Exception ex)
+            {
+                await MessageHelper.Show("执行DBMT核心时发生中断，请查看Log日志获取具体内容","Error when execute DBMT.exe, please see log file for details." + ex.ToString());
+                return false;
+            }
         }
 
 
