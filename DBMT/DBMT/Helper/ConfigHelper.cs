@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static DBMT.WorkPage;
 
 namespace DBMT
 {
@@ -19,10 +20,13 @@ namespace DBMT
             {
                 //切换到对应配置
                 string jsonData = File.ReadAllText(Configpath);
-                JObject jobj = JObject.Parse(jsonData);
-                // Access the DrawIBList property and convert it to a List<string>
-                JArray drawIBList = (JArray)jobj["DrawIBList"];
-                drawIBListValues = drawIBList.ToObject<List<string>>();
+                JArray DrawIBListJArray = JArray.Parse(jsonData);
+
+                foreach (JObject jkobj in DrawIBListJArray)
+                {
+                    string DrawIB = (string)jkobj["DrawIB"];
+                    drawIBListValues.Add(DrawIB);
+                }
             }
 
             return drawIBListValues;

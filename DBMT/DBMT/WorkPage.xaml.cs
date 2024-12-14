@@ -351,7 +351,7 @@ namespace DBMT
                 }
             }
 
-            if (findvalidDrawIB)
+            if (!findvalidDrawIB)
             {
                 await MessageHelper.Show("在运行之前请填写您的绘制IB的哈希值并进行配置", "Please fill your DrawIB and config it before run.");
                 return false;
@@ -556,16 +556,16 @@ namespace DBMT
 
         public async void ExecuteSkipIB(object sender, RoutedEventArgs e)
         {
-            List<string> DrawIBList = GetSkipIBList();
-            DrawIBHelper.GenerateSkipIB(DrawIBList);
+            List<string> SkipIBList = GetSkipIBList();
+            DrawIBHelper.GenerateSkipIB(SkipIBList);
             await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
         }
 
 
         public async void ExecuteGenerateVSCheck(object sender, RoutedEventArgs e)
         {
-            List<string> DrawIBList = GetSkipIBList();
-            DrawIBHelper.GenerateVSCheck(DrawIBList);
+            List<string> SkipIBList = GetSkipIBList();
+            DrawIBHelper.GenerateVSCheck(SkipIBList);
             await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
         }
 
