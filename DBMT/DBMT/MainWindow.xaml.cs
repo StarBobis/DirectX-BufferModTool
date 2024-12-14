@@ -80,7 +80,7 @@ namespace DBMT
                 contentFrame.Navigate(typeof(HomePage));
             }
             //设置图标
-            this.AppWindow.SetIcon("Assets/XiaoMai.ico");
+            this.AppWindow.SetIcon("Assets/Mogu.ico");
 
             //当前路径不能处于中文路径下,否则部分方法无法正确执行
             //检查当前程序是否为位于中文路径下
