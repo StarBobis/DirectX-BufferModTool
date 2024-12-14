@@ -69,7 +69,7 @@ namespace DBMT
                 TextBlock_ForbidMoveDedupedTextures.Text = "Forbid Move DedupedTextures After ModelExtract";
                 TextBlock_ForbidMoveRenderTextures.Text = "Forbid Move RenderTextures After ModelExtract";
                 TextBlock_ForbidAuthTextures.Text = "Forbid Use AutoTextures At GenerateMod";
-                TextBlock_ForbidAuthTextures.Text = "Use Hash Style Textures At GenerateMod";
+                TextBlock_UseHashStyleTexture.Text = "Use Hash Style Textures At GenerateMod";
             }
         }
 
