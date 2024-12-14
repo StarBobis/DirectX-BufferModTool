@@ -29,7 +29,7 @@
 
 
         <!-- 选择游戏 -->
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10,10,0,0">
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10,13,0,0">
             <TextBlock Text="选择游戏:" VerticalAlignment="Center" Margin="10,0,5,5" Foreground="White"/>
             <ComboBox x:Name="GameSelectionComboBox" Width="200" SelectionChanged="GameSelectionComboBox_SelectionChanged">
             </ComboBox>
@@ -57,7 +57,7 @@
 
         <!-- 路径填写界面 -->
         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="680" 
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="15,0,0,10"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,0,0,25"
                 BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
 

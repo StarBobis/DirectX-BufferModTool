@@ -142,8 +142,8 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
                             <community:DataGrid AutoGenerateColumns="False"  Height="200"
                                 x:Name="myDataGrid"  HorizontalAlignment="Left" Margin="10,10,10,0"  CellEditEnding="MyDataGrid_CellEditEnding">
                                 <community:DataGrid.Columns>
-                                    <community:DataGridTextColumn Header="DrawIB" Width="100" Binding="{Binding DrawIB}" IsReadOnly="False"/>
-                                    <community:DataGridTextColumn Header="Alias"  Width="280" Binding="{Binding Alias}" IsReadOnly="False"/>
+                                    <community:DataGridTextColumn Header="DrawIB" Width="120" Binding="{Binding DrawIB}" IsReadOnly="False"/>
+                                    <community:DataGridTextColumn Header="Alias"  Width="260" Binding="{Binding Alias}" IsReadOnly="False"/>
                                 </community:DataGrid.Columns>
                             </community:DataGrid>
                         </Border>
