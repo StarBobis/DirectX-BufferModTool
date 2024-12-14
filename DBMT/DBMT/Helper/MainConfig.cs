@@ -68,6 +68,7 @@ namespace DBMT
         public float WorkPageBackGroundImageOpacity { get; set; } = 0.3f;
         public bool StartToWorkPage { get; set; } = false;
         public bool WindowTopMost { get; set; } = false;
+        public double BackGroundFadeInOutTime {get;set;} = 0;
         //Others
         public bool AutoCleanFrameAnalysisFolder { get; set; } = true;
         public bool AutoCleanLogFile { get; set; } = true;

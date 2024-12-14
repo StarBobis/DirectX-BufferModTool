@@ -26,6 +26,7 @@ using System.Diagnostics;
 using Windows.UI.Popups;
 using DBMT;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Media.Animation;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -101,30 +102,62 @@ namespace DBMT
             MainConfig.MainCfg.SaveConfig();
         }
 
-        private void SetGameBackGroundImage()
+        private async void SetGameBackGroundImage()
         {
-            string basePath = MainConfig.Path_Base;
+            string imagePath = PathHelper.GetCurrentGameBackGroundPicturePath();
 
-            //设置背景图片
-            // 优先级：DIY > 默认 > 主页背景
-            string[] imagePaths = {
-                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png"),
-                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png"),
-                Path.Combine(basePath, "Assets", "HomePageBackGround.png")
+            // 新图片资源
+            BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
+
+            if (MainConfig.GameCfg.Value.BackGroundFadeInOutTime == 0)
+            {
+                GameBGImageBrush.ImageSource = bitmap;
+                return;
+            }
+            // 创建淡出动画
+            var fadeOut = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = new Microsoft.UI.Xaml.Duration(TimeSpan.FromSeconds(MainConfig.GameCfg.Value.BackGroundFadeInOutTime/2)),
             };
 
-            string imagePath = "";
-            foreach (string path in imagePaths)
-            {
-                if (!File.Exists(path)) { continue; }
-                imagePath = path;
-                break;
-            }   
+            // 应用淡出动画
+            Storyboard fadeOutStoryboard = new Storyboard();
+            Storyboard.SetTarget(fadeOut, BackgroundGrid);
+            Storyboard.SetTargetProperty(fadeOut, "Opacity");
+            fadeOutStoryboard.Children.Add(fadeOut);
 
-            // 创建 BitmapImage 并设置 ImageSource
-            BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
-            GameBGImageBrush.ImageSource = bitmap;
+            // 在淡出完成后切换图片并淡入
+            fadeOutStoryboard.Completed += (s, e) =>
+            {
+                // 更新背景图片
+                GameBGImageBrush.ImageSource = bitmap;
+
+                // 强制刷新控件（确保图片立即加载）
+                BackgroundGrid.UpdateLayout();
+
+                // 创建淡入动画
+                var fadeIn = new Microsoft.UI.Xaml.Media.Animation.DoubleAnimation
+                {
+                    From = 0,
+                    To = 1,
+                    Duration = new Microsoft.UI.Xaml.Duration(TimeSpan.FromSeconds(MainConfig.GameCfg.Value.BackGroundFadeInOutTime)),
+                };
+
+                // 应用淡入动画
+                Storyboard fadeInStoryboard = new Storyboard();
+                Storyboard.SetTarget(fadeIn, BackgroundGrid);
+                Storyboard.SetTargetProperty(fadeIn, "Opacity");
+                fadeInStoryboard.Children.Add(fadeIn);
+                fadeInStoryboard.Begin();
+            };
+
+            // 开始淡出动画
+            fadeOutStoryboard.Begin();
         }
+
+
 
 
         private async void SetDIYGameBackGroundImage(object sender, RoutedEventArgs e)

@@ -12,23 +12,24 @@ namespace DBMT
         public static string GetCurrentGameBackGroundPicturePath()
         {
             string basePath = Directory.GetCurrentDirectory();
-
             //设置背景图片
-            //默认为各个游戏用户设置的DIY图片
-            string imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png");
+            // 优先级为：DIY图片 > 游戏图片 > 主页图片
+            string[] imagePaths = [
+                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png"),
+                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png"),
+                Path.Combine(basePath, "Assets", "HomePageBackGround.png")
+                ];
 
-            //如果不存在DIY背景图，则使用默认游戏的背景图
-            if (!File.Exists(imagePath))
+            // 检查图片是否存在
+            foreach (string path in imagePaths)
             {
-                imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png");
+                if (File.Exists(path))
+                {
+                    // 可以直接返回path，不需要再赋值给imagePath
+                    return path;
+                }
             }
-
-            //如果默认游戏的背景图还不存在，则使用主页的背景图
-            if (!File.Exists(imagePath))
-            {
-                imagePath = Path.Combine(basePath, "Assets", "HomePageBackGround.png");
-            }
-            return imagePath;
+            return imagePaths[^1];
         }
 
         public static string GetAssetsFolderPath()
