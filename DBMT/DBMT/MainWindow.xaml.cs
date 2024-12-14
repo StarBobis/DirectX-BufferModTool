@@ -50,7 +50,20 @@ namespace DBMT
 
             // 设置窗口大小
             AppWindow.ResizeClient(new SizeInt32(actualWidth, actualHeight));
+            LocalizeLanguage();
         }
+
+
+        private void LocalizeLanguage()
+        {
+            if (MainConfig.GameCfg.Value.Language == true)
+            {
+                NavigationViewItem_HomePage.Content = "Home";
+                NavigationViewItem_StarterPage.Content = "Starter";
+                NavigationViewItem_WorkPage.Content = "Work";
+            }
+        }
+
 
 
 
