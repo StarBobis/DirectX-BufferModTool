@@ -56,25 +56,25 @@
 
             <!-- 顶部菜单 -->
             <MenuBar Grid.Row="0" Grid.Column="0" Margin="10,0,0,0">
-                <MenuBarItem Title="文件">
-                    <MenuFlyoutItem Text="打开当前工作空间生成Mod的文件夹" Click="OpenWorkSpaceGenerateModFolder"/>
-                    <MenuFlyoutItem Text="打开Mods文件夹" Click="OpenModsFolder"/>
-                    <MenuFlyoutItem Text="打开3Dmigoto文件夹" Click="Open3DmigotoFolder"/>
-                    <MenuFlyoutItem Text="打开d3dx.ini" Click="OpenD3dxIniFile"/>
-                    <MenuFlyoutItem Text="打开ShaderFixes文件夹" Click="OpenShaderFixesFolder"/>
+                <MenuBarItem Title="文件" x:Name="Menu_File">
+                    <MenuFlyoutItem x:Name="Menu_OpenWorkSpaceGeneratedModFolder" Text="打开当前工作空间生成Mod的文件夹" Click="OpenWorkSpaceGenerateModFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenModsFolder" Text="打开Mods文件夹" Click="OpenModsFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoFolder" Text="打开3Dmigoto文件夹" Click="Open3DmigotoFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenD3dxini" Text="打开d3dx.ini" Click="OpenD3dxIniFile"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenShaderFixesFolder" Text="打开ShaderFixes文件夹" Click="OpenShaderFixesFolder"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="打开最新的FrameAnalysis文件夹" Click="OpenLatestFrameAnalysisFolder"/>
-                    <MenuFlyoutItem Text="打开最新的FrameAnalysis log.txt" Click="OpenLatestFrameAnalysisLogTxtFile"/>
-                    <MenuFlyoutItem Text="打开最新的FrameAnalysis文件夹中的deduped文件夹" Click="OpenLatestFrameAnalysisDedupedFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestFrameAnalysisFolder" Text="打开最新的FrameAnalysis文件夹" Click="OpenLatestFrameAnalysisFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestFrameAnalysisLogTxt" Text="打开最新的FrameAnalysis log.txt" Click="OpenLatestFrameAnalysisLogTxtFile"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestFrameAnalysisDedupedFolder" Text="打开最新的FrameAnalysis文件夹中的deduped文件夹" Click="OpenLatestFrameAnalysisDedupedFolder"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="打开ExtractTypes文件夹" Click="OpenExtractTypesFolder"/>
-                    <MenuFlyoutItem Text="打开DBMT所在文件夹" Click="OpenDBMTLocationFolder"/>
-                    <MenuFlyoutItem Text="打开Logs文件夹" Click="OpenLogsFolder"/>
-                    <MenuFlyoutItem Text="打开最新的日志文件" Click="OpenLatestLogFile"/>
-                    <MenuFlyoutItem Text="打开Configs文件夹" Click="OpenConfigsFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenExtractTypesFolder" Text="打开ExtractTypes文件夹" Click="OpenExtractTypesFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenDBMTLocationFolder" Text="打开DBMT所在文件夹" Click="OpenDBMTLocationFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLogsFolder" Text="打开Logs文件夹" Click="OpenLogsFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestLogFile" Text="打开最新的日志文件" Click="OpenLatestLogFile"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenConfigsFolder" Text="打开Configs文件夹" Click="OpenConfigsFolder"/>
                 </MenuBarItem>
 
-                <MenuBarItem Title="Mod逆向">
+                <MenuBarItem Title="Mod逆向" x:Name="Menu_ModReverse">
                     <MenuFlyoutItem Text="从Dump文件中逆向提取" Click="ReverseLv5_ReverseExtract"/>
                     <MenuFlyoutSeparator />
                     <MenuFlyoutItem Text="一键逆向普通单个Mod的ini" Click="ReverseLv5_ReverseSingleIni"/>
@@ -82,7 +82,7 @@
                     <MenuFlyoutItem Text="一键逆向DrawIndexed分支Mod的ini" Click="ReverseLv5_ReverseDrawIndexedSwitchIni"/>
                 </MenuBarItem>
 
-                <MenuBarItem Title="Mod加密">
+                <MenuBarItem Title="Mod加密" x:Name="Menu_ModEncryption">
                     <MenuFlyoutItem Text="一键混淆名称并加密Buffer和ini文件" Click="Encryption_EncryptAll"/>
                     <MenuFlyoutItem Text="一键加密Buffer和ini文件" Click="Encryption_EncryptBufferAndIni"/>
                     <MenuFlyoutSeparator />
@@ -92,7 +92,7 @@
                     <MenuFlyoutItem Text="一键加密ini文件" Click="Encryption_EncryptIni"/>
                 </MenuBarItem>
 
-                <MenuBarItem Title="运行" >
+                <MenuBarItem Title="运行" x:Name="Menu_Run" >
                     <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderEXE" Text="3Dmigoto Loader.exe" Click="Open3DmigotoLoaderEXE"/>
                     <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderPY" Text="3Dmigoto Loader.py" Click="Open3DmigotoLoaderPY"/>
                     <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderByPassACE" Text="3Dmigoto Loader-ByPassACE.exe" Click="Open3DmigotoLoaderByPassACE"/>
@@ -117,13 +117,13 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
                     <!-- 第一行：选择工作空间 -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10">
-                        <TextBlock Text="选择工作空间:" VerticalAlignment="Center" Margin="0,0,0,0" />
+                        <TextBlock x:Name="TextBlock_WorkSpaceName" Text="选择工作空间:" VerticalAlignment="Center" Margin="0,0,0,0" />
                         <ComboBox x:Name="ComboBoxWorkSpaceSelection" Width="200" IsEditable="True" SelectionChanged="ComboBoxWorkSpaceSelection_SelectionChanged">
                         </ComboBox>
 
-                        <Button Content="创建工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,0" Click="CreateWorkSpaceFolder"/>
-                        <Button Content="打开当前工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,0" Click="OpenCurrentWorkSpaceFolder"/>
-                        <Button Content="清空当前工作空间内容" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="10,0,10,0" Click="CleanCurrentWorkSpaceFile" />
+                        <Button x:Name="Button_CreateWorkSpace" Content="创建工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,0" Click="CreateWorkSpaceFolder"/>
+                        <Button x:Name="Button_OpenWorkSpaceFolder" Content="打开当前工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,0" Click="OpenCurrentWorkSpaceFolder"/>
+                        <Button x:Name="Button_CleanWorkSpace" Content="清空当前工作空间内容" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="10,0,10,0" Click="CleanCurrentWorkSpaceFile" />
                     </StackPanel>
 
                     <Grid Grid.Row="2" Grid.Column="0">
@@ -150,11 +150,11 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
                         <!-- 按钮 -->
                         <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10,10,10,0" HorizontalAlignment="Left">
-                            <Button Content="清空DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="CleanDrawIBList"/>
-                            <Button Content="自动检测DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="AutoDetectPointlistDrawIBList_UnityVSPreSkinning"/>
-                            <Button Content="保存当前DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="SaveDrawIBListToConfig"/>
-                            <Button Content="提取模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="ExtractModel"/>
-                            <Button Content="生成二创模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="GenerateMod"/>
+                            <Button x:Name="Button_InitializeDrawIBConfig" Content="清空DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="CleanDrawIBList"/>
+                            <Button x:Name="Button_AutoDetectDrawIBList" Content="自动检测DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="AutoDetectPointlistDrawIBList_UnityVSPreSkinning"/>
+                            <Button x:Name="Button_SaveDrawIBList" Content="保存当前DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="SaveDrawIBListToConfig"/>
+                            <Button x:Name="Button_ExtractModel" Content="提取模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="ExtractModel"/>
+                            <Button x:Name="Button_GenerateMod" Content="生成二创模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="GenerateMod"/>
                         </StackPanel>
                     </Grid>
                     
@@ -176,15 +176,15 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
                     <!-- 第1行：SkipIB列表 -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10">
-                        <TextBlock Text="SkipIB列表:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBlock x:Name="TextBlock_SkipIBList" Text="SkipIB列表:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                         <TextBox x:Name="TextBoxSkipIBList" Width="700"/>
                     </StackPanel>
 
                     <!-- 第2行：按钮 -->
                     <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,0">
-                        <Button Content="清空SkipIB列表" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="CleanSkipIBListTextBox"/>
-                        <Button Content="隐藏IB绘制" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="ExecuteSkipIB"/>
-                        <Button Content="生成VSCheck" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="ExecuteGenerateVSCheck"/>
+                        <Button x:Name="Button_CleanSkipIBList" Content="清空SkipIB列表" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="CleanSkipIBListTextBox"/>
+                        <Button x:Name="Button_SkipIBDraw" Content="隐藏IB绘制" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="ExecuteSkipIB"/>
+                        <Button x:Name="Button_GenerateVSCheck" Content="生成VSCheck" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="ExecuteGenerateVSCheck"/>
                     </StackPanel>
 
                 </Grid>

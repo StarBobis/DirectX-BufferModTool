@@ -48,7 +48,6 @@ namespace DBMT
 
                 LoadDirectoryNames();
 
-
                 // 添加一个空白行作为初始数据
                 items.Add(new MyItem { DrawIB = "", Alias = "" });
 
@@ -60,8 +59,60 @@ namespace DBMT
             {
                 _ = MessageHelper.Show("Error: " + ex.ToString());
             }
-            
+
+            LocalizeLanguage();
+
+            if (!File.Exists(MainConfig.Path_3DmigotoSwordLv5VMPEXE))
+            {
+                Menu_ModReverse.Visibility = Visibility.Collapsed;
+            }
+            if (!File.Exists(MainConfig.Path_EncryptorVMPEXE))
+            {
+                Menu_ModEncryption.Visibility = Visibility.Collapsed;
+            }
         }
+
+
+        private void LocalizeLanguage()
+        {
+            if (MainConfig.GameCfg.Value.Language == true)
+            {
+                //文件菜单
+                Menu_File.Title = "File";
+                Menu_OpenWorkSpaceGeneratedModFolder.Text = "Open WorkSpace's GeneratedMod Folder";
+                Menu_OpenModsFolder.Text = "Open Mods Folder";
+                Menu_Open3DmigotoFolder.Text = "Open 3Dmigoto Folder";
+                Menu_OpenD3dxini.Text = "Open d3dx.ini";
+                Menu_OpenShaderFixesFolder.Text = "Open ShaderFixes Folder";
+                Menu_OpenLatestFrameAnalysisFolder.Text = "Open Latest FrameAnalysis Folder";
+                Menu_OpenLatestFrameAnalysisLogTxt.Text = "Open Latest FrameAnalysis log.txt";
+                Menu_OpenLatestFrameAnalysisDedupedFolder.Text = "Open Latest FrameAnalysis Deduped Folder";
+                Menu_OpenExtractTypesFolder.Text = "Open ExtractTypes Folder";
+                Menu_OpenDBMTLocationFolder.Text = "Open DBMT's Location Folder";
+                Menu_OpenLogsFolder.Text = "Open Logs Folder";
+                Menu_OpenLatestLogFile.Text = "Open Latest Log File";
+                Menu_OpenConfigsFolder.Text = "Open Configs Folder";
+
+                Menu_Run.Title = "Run";
+
+                TextBlock_WorkSpaceName.Text = "WorkSpace: ";
+                Button_CreateWorkSpace.Content = "Create WorkSpace";
+                Button_OpenWorkSpaceFolder.Content = "Open WorkSpace Folder";
+                Button_CleanWorkSpace.Content = "Clean WorkSpace";
+
+                Button_InitializeDrawIBConfig.Content = "Initialize DrawIB List";
+                Button_AutoDetectDrawIBList.Content = "Auto Fill DrawIB List";
+                Button_SaveDrawIBList.Content = "Save DrawIB List";
+                Button_ExtractModel.Content = "Extract Model";
+                Button_GenerateMod.Content = "Generate Mod";
+
+                TextBlock_SkipIBList.Text = "SkipIB List:";
+                Button_CleanSkipIBList.Content = "Initialize SkipIB List";
+                Button_SkipIBDraw.Content = "SkipIB Draw";
+                Button_GenerateVSCheck.Content = "Generate VSCheck";
+            }
+        }
+
 
         private void MyDataGrid_CellEditEnding(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridCellEditEndingEventArgs e)
         {

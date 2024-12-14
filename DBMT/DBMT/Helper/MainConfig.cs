@@ -208,6 +208,21 @@ namespace DBMT
             get { return Path.Combine(Path_LoaderFolder, "3Dmigoto Loader-ByPassACE.exe"); }
         }
 
+        public static string Path_PluginsFolder
+        {
+            get { return Path.Combine(Path_Base, "Plugins\\"); }
+        }
+
+        public static string Path_3DmigotoSwordLv5VMPEXE
+        {
+            get { return Path.Combine(Path_PluginsFolder,"3Dmigoto-Sword-Lv5.vmp.exe"); }
+        }
+
+        public static string Path_EncryptorVMPEXE
+        {
+            get { return Path.Combine(Path_PluginsFolder,"DBMT-Encryptor.vmp.exe"); }
+        }
+
         // 本地化存储的配置
         public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
         public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
