@@ -102,7 +102,7 @@ namespace DBMT
 
     public static class MainConfig
     {
-        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.1.0.5 "; //程序窗口名称
+        public const string DBMT_Title = "DirectX Buffer Mod Tool  当前版本:V1.1.0.6 "; //程序窗口名称
         public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
 
         ////当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
