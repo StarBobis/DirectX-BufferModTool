@@ -16,6 +16,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics;
+using Windows.Graphics.Display;
+using Windows.UI.WindowManagement;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,15 +37,19 @@ namespace DBMT
 
 
             //如果勾选了直接启动到工作台界面
-
             if (MainConfig.GameCfg.Value.StartToWorkPage)
             {
                 contentFrame.Navigate(typeof(WorkPage));
             }
 
-            int WindowWidth = (int)MainConfig.GameCfg.Value.WindowWidth;
-            int WindowHeight = (int)MainConfig.GameCfg.Value.WindowHeight;
-            this.AppWindow.Resize(new SizeInt32(WindowWidth, WindowHeight));
+            double logicalWidth = MainConfig.GameCfg.Value.WindowWidth;
+            double logicalHeight = MainConfig.GameCfg.Value.WindowHeight;
+
+            int actualWidth = (int)(logicalWidth );
+            int actualHeight = (int)(logicalHeight );
+
+            // 设置窗口大小
+            AppWindow.ResizeClient(new SizeInt32(actualWidth, actualHeight));
         }
 
 
@@ -171,9 +177,10 @@ namespace DBMT
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
+
             //Width and Height need extra 16px.
-            MainConfig.GameCfg.Value.WindowWidth = App.m_window.Bounds.Width + 16;
-            MainConfig.GameCfg.Value.WindowHeight = App.m_window.Bounds.Height + 40;
+            MainConfig.GameCfg.Value.WindowWidth = App.m_window.AppWindow.Size.Width;
+            MainConfig.GameCfg.Value.WindowHeight = App.m_window.AppWindow.Size.Height;
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
