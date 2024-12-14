@@ -30,14 +30,14 @@
 
         <!-- 选择游戏 -->
         <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="10,13,0,0">
-            <TextBlock Text="选择游戏:" VerticalAlignment="Center" Margin="10,0,5,5" Foreground="White"/>
+            <TextBlock x:Name="TextBlock_ChooseGame" Text="选择游戏:" VerticalAlignment="Center" Margin="10,0,5,5" Foreground="White"/>
             <ComboBox x:Name="GameSelectionComboBox" Width="200" SelectionChanged="GameSelectionComboBox_SelectionChanged">
             </ComboBox>
         </StackPanel>
 
         <!-- 一键启动按钮置于右上角，距离下面和右边固定为30px -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="0" Grid.Column="1" Margin="0,12,165,0">
-            <Button   
+            <Button   x:Name="Button_Run3DmigotoLoader"
                     Content="启动3Dmigoto Loader.exe" Click="Open3DmigotoLoaderExe" />
         </StackPanel>
 
@@ -56,7 +56,7 @@
 
 
         <!-- 路径填写界面 -->
-        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="680" 
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="Auto" 
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="25,0,0,25"
                 BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
@@ -82,35 +82,35 @@
 
                 <!-- 第二行：进程路径 -->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,10">
-                    <TextBlock Text="进程路径:" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="White"/>
+                    <TextBlock x:Name="TextBlock_ChooseProcessPath" Text="进程路径:" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="White"/>
                     <TextBox x:Name="ProcessPathTextBox" Width="400"/>
                     <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="ChooseProcessPathButtonClick" Margin="10,0,0,0" >
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Symbol="OpenFile" />
-                            <TextBlock Text="选择文件" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TextBlock_ChooseProcessFile" Text="选择文件" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
 
                 <!-- 第三行：启动器路径 -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,0,0,0" >
-                    <TextBlock Text="启动路径:" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="White"/>
+                    <TextBlock x:Name="TextBlock_ChooseStarterPath" Text="启动路径:" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="White"/>
                     <TextBox x:Name="StarterPathTextBox" Width="400" />
                     <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="ChooseStarterPathButtonClick" Margin="10,0,0,0">
                         <StackPanel Orientation="Horizontal">
                             <SymbolIcon Symbol="OpenFile" />
-                            <TextBlock Text="选择文件" VerticalAlignment="Center" />
+                            <TextBlock x:Name="TextBlock_ChooseStarterFile" Text="选择文件" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
 
                 <!-- 第4行：按钮 -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,10,10,0">
-                    <Button Content="初始化配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="InitializePathConfigButtonClieck"/>
-                    <Button Content="保存配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="SavePathSettingsToD3dxIni"/>
-                    <Button Content="打开d3dx.ini" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="OpenD3dxIniFile"/>
-                    <Button Content="打开3Dmigoto文件夹" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="Open3DmigotoFolder"/>
-                    <Button Content="打开ShaderFixes文件夹" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="OpenShaderFixesFolder"/>
+                    <Button x:Name="Button_InitializePath" Content="初始化配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="InitializePathConfigButtonClieck"/>
+                    <Button x:Name="Button_SaveConfig" Content="保存配置" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="SavePathSettingsToD3dxIni"/>
+                    <Button x:Name="Button_OpenD3DXINI" Content="打开d3dx.ini" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="OpenD3dxIniFile"/>
+                    <Button x:Name="Button_Open3DmigotoFolder" Content="打开3Dmigoto文件夹" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="Open3DmigotoFolder"/>
+                    <Button x:Name="Button_OpenShaderFixesFolder" Content="打开ShaderFixes文件夹" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="OpenShaderFixesFolder"/>
                 </StackPanel>
             </Grid>
         </Border>

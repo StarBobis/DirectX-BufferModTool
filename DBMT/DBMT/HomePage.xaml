@@ -34,30 +34,30 @@
 
         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20">
             <TextBlock Text="DirectX Buffer Mod Tool" FontSize="24" FontWeight="Bold" Foreground="White"/>
-            <TextBlock Text="--- 愿此行，终抵群星。" FontSize="12" Margin="0,5,0,15" Foreground="White" />
+            <TextBlock x:Name="TextBlock_Description" Text="--- 愿此行，终抵群星。" FontSize="12" Margin="0,5,0,15" Foreground="White" />
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <Button Click="OpenLinkButtonClick"  Tag="https://www.yuque.com/airde/lx53p6">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Document" Margin="0,0,5,0"/>
-                        <TextBlock Text="DBMT使用文档" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TextBlock_Documents" Text="DBMT使用文档" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Click="OpenLinkButtonClick" Tag="https://github.com/StarBobis/DirectX-BufferModTool">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="View" Margin="0,0,5,0"/>
-                        <TextBlock Text="Github源码" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TextBlock_Github" Text="Github源码" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Click="OpenLinkButtonClick" Tag="https://space.bilibili.com/3546645681670515">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="ContactInfo" Margin="0,0,5,0"/>
-                        <TextBlock Text="技术支持" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TextBlock_TechniqueSupport" Text="技术支持" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Click="OpenLinkButtonClick" Tag="https://github.com/StarBobis/DirectX-BufferModTool/issues">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Add" Margin="0,0,5,0"/>
-                        <TextBlock Text="提交issue" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TextBlock_SubmitIssue" Text="提交issue" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
             </StackPanel>

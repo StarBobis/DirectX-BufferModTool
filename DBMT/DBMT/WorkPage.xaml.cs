@@ -125,10 +125,6 @@ namespace DBMT
             {
                 // 执行你想要的操作，例如获取选中的项并进行处理
                 string selectedGame = comboBox.SelectedItem.ToString();
-
-                //MainConfig.SetCurrentGame(selectedGame);
-                //MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
-                //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
                 MainConfig.MainCfg.Value.GameName = selectedGame;
                 MainConfig.MainCfg.SaveConfig();
 
@@ -164,8 +160,6 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                //MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "WorkSpaceName", ComboBoxWorkSpaceSelection.Text);
-                //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
                 MainConfig.MainCfg.Value.WorkSpaceName = ComboBoxWorkSpaceSelection.Text;
                 MainConfig.MainCfg.SaveConfig();
                 ReadDrawIBListFromWorkSpace();
