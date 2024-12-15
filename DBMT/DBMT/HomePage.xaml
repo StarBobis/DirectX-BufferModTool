@@ -48,10 +48,10 @@
                         <TextBlock x:Name="TextBlock_Github" Text="Github源码" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                <Button Click="OpenLinkButtonClick" Tag="https://space.bilibili.com/3546645681670515">
+                <Button Click="OpenLinkButtonClick" Tag="https://github.com/StarBobis/Catter/">
                     <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="ContactInfo" Margin="0,0,5,0"/>
-                        <TextBlock x:Name="TextBlock_TechniqueSupport" Text="技术支持" VerticalAlignment="Center"/>
+                        <SymbolIcon Symbol="View" Margin="0,0,5,0"/>
+                        <TextBlock x:Name="TextBlock_TechniqueSupport" Text="Catter插件" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Click="OpenLinkButtonClick" Tag="https://github.com/StarBobis/DirectX-BufferModTool/issues">

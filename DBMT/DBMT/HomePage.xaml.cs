@@ -17,7 +17,6 @@ using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage;
-using DBMT;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -43,7 +42,7 @@ namespace DBMT
                 TextBlock_Description.Text = "Developed By Trailblazers";
                 TextBlock_Documents.Text = "Documents";
                 TextBlock_Github.Text = "Github";
-                TextBlock_TechniqueSupport.Text = "Discord";
+                TextBlock_TechniqueSupport.Text = "Catter";
                 TextBlock_SubmitIssue.Text = "Issue";
             }
         }
