@@ -50,7 +50,14 @@ namespace DBMT
 
             // 设置窗口大小
             AppWindow.ResizeClient(new SizeInt32(actualWidth, actualHeight));
+
+            //移动窗口到屏幕中心
+            MoveWindowToCenterScreen();
+
+            // 语言切换
             LocalizeLanguage();
+
+           
         }
 
 
@@ -83,8 +90,7 @@ namespace DBMT
             //设置标题和宽高
             this.Title = MainConfig.DBMT_Title;
 
-            //移动窗口到屏幕中心
-            MoveWindowToCenterScreen();
+            
 
             //默认选中主页界面
             if (nvSample.MenuItems.Count > 0)
