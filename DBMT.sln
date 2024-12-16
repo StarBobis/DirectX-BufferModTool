@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
 		README_EN.md = README_EN.md
-		开发笔记.txt = 开发笔记.txt
+		开发规范.txt = 开发规范.txt
 	EndProjectSection
 EndProject
 Global
