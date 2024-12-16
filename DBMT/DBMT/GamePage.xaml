@@ -80,8 +80,8 @@
                 
 
 
-                <!-- 第二行：进程路径 -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,10">
+                <!-- 进程路径 -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10">
                     <TextBlock x:Name="TextBlock_ChooseProcessPath" Text="进程路径:" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="White"/>
                     <TextBox x:Name="ProcessPathTextBox" Width="400"/>
                     <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="ChooseProcessPathButtonClick" Margin="10,0,0,0" >
@@ -92,8 +92,8 @@
                     </Button>
                 </StackPanel>
 
-                <!-- 第三行：启动器路径 -->
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,0,0,0" >
+                <!-- 启动器路径 -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,0,0" >
                     <TextBlock x:Name="TextBlock_ChooseStarterPath" Text="启动路径:" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="White"/>
                     <TextBox x:Name="StarterPathTextBox" Width="400" />
                     <Button VerticalAlignment="Center" HorizontalAlignment="Right" Click="ChooseStarterPathButtonClick" Margin="10,0,0,0">
@@ -103,6 +103,13 @@
                         </StackPanel>
                     </Button>
                 </StackPanel>
+
+                <!-- 启动参数 -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,10,0,0" >
+                    <TextBlock x:Name="TextBlock_LaunchArgs" Text="启动参数:" VerticalAlignment="Center" Margin="10,0,10,0" Foreground="White"/>
+                    <TextBox x:Name="TextBox_LaunchArgs" Width="400" />
+                </StackPanel>
+
 
                 <!-- 第4行：按钮 -->
                 <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10,10,10,0">

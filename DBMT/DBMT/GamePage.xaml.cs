@@ -40,10 +40,14 @@ namespace DBMT
         public GamePage()
         {
             this.InitializeComponent();
+
+            //加载可能的游戏列表
             LoadDirectoryNames();
 
+            //使用配置文件中保存的透明度来设置背景透明度
             GameBGImageBrush.Opacity = MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity;
 
+            //切换语言
             LocalizeLanguage();
         }
 
@@ -54,9 +58,11 @@ namespace DBMT
                 Button_Run3DmigotoLoader.Content = "Run 3Dmigoto Loader.exe";
                 TextBlock_ChooseGame.Text = "Current Game:";
                 TextBlock_ChooseProcessFile.Text = "Open";
-                TextBlock_ChooseProcessPath.Text = "Process Path";
+                TextBlock_ChooseProcessPath.Text = "Target Path";
                 TextBlock_ChooseStarterFile.Text = "Open";
-                TextBlock_ChooseStarterPath.Text = "Starter Path";
+                TextBlock_ChooseStarterPath.Text = "Launch Path";
+                TextBlock_LaunchArgs.Text = "Launch Args";
+                
                 Button_InitializePath.Content = "Initialize Config";
                 Button_SaveConfig.Content = "Save Config";
                 Button_OpenD3DXINI.Content = "Open d3dx.ini";
@@ -72,6 +78,7 @@ namespace DBMT
             //保存全局设置因为要保存滑条透明度
             MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity = (float)GameBGImageBrush.Opacity;
             MainConfig.GameCfg.SaveConfig();
+
             // 如果需要，可以调用基类的 OnNavigatedFrom 方法
             base.OnNavigatedFrom(e);
         }
@@ -193,6 +200,7 @@ namespace DBMT
         {
             ProcessPathTextBox.Text = ConfigHelper.ReadAttributeFromD3DXIni("target");
             StarterPathTextBox.Text = ConfigHelper.ReadAttributeFromD3DXIni("launch");
+            TextBox_LaunchArgs.Text = ConfigHelper.ReadAttributeFromD3DXIni("launch_args");
         }
 
         private async void SavePathSettingsToD3dxIni(object sender, RoutedEventArgs e)
@@ -201,6 +209,7 @@ namespace DBMT
             {
                 ConfigHelper.SaveAttributeToD3DXIni("[loader]", "target", ProcessPathTextBox.Text);
                 ConfigHelper.SaveAttributeToD3DXIni("[loader]", "launch", StarterPathTextBox.Text);
+                ConfigHelper.SaveAttributeToD3DXIni("[loader]", "launch_args", TextBox_LaunchArgs.Text);
 
                 await MessageHelper.Show("保存成功");
 
@@ -211,6 +220,7 @@ namespace DBMT
             }
             
         }
+
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {
             string MigotoLoaderExePath = Path.Combine(MainConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
