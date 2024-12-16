@@ -112,8 +112,7 @@ namespace DBMT_Core
         public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
 
 
-        ////当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
-        public static string ApplicationRunPath = Directory.GetCurrentDirectory();
+        public static string ApplicationRunPath = Directory.GetCurrentDirectory() + "\\";
         public static string CurrentGameName => MainCfg.Value.GameName;
         public static string CurrentWorkSpace => MainCfg.Value.WorkSpaceName;
 

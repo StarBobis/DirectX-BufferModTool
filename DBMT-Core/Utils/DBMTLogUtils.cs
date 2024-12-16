@@ -68,7 +68,7 @@ namespace DBMT_Core.Utils
             Info($"本次会话总耗时: {duration.TotalSeconds:F3} 秒");
 
             // 创建一个新的日志文件名（例如使用ISO 8601格式的时间戳）
-            string currentLogFileName = Path.Combine(GlobalConfig.Path_DBMTLogFolder, $"{DateTime.Now:yyyyMMddTHHmmssfff}.log");
+            string currentLogFileName = Path.Combine(GlobalConfig.Path_DBMTLogFolder, $"{DateTime.Now:yyyyMMddTHHmmss}.log");
 
             // 将所有日志条目写入文件
             File.WriteAllLines(currentLogFileName, LogLineList);
