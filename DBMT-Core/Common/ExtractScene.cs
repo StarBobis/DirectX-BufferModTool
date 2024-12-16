@@ -21,6 +21,15 @@ namespace DBMT_Core
             LOG.Info("Test2");
             LOG.Info("Test3");
             LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
+            LOG.Info("Test4");
             LOG.SaveFile();
         }
 
