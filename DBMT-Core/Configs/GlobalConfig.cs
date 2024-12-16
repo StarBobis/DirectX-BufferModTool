@@ -107,6 +107,11 @@ namespace DBMT_Core
         public const string DBMT_Title = "DirectX Buffer Mod Tool V1.1.1.2 "; //程序窗口名称
         public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
 
+        // 本地化存储的配置
+        public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
+        public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
+
+
         ////当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
         public static string ApplicationRunPath = AppDomain.CurrentDomain.BaseDirectory.ToString();
         public static string CurrentGameName => MainCfg.Value.GameName;
@@ -216,11 +221,54 @@ namespace DBMT_Core
             get { return Path.Combine(Path_PluginsFolder, "DBMT-Encryptor.vmp.exe"); }
         }
 
-        // 本地化存储的配置
-        public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
-        public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
+        public static string LatestFrameAnalysisFolderName
+        {
+            get
+            {
+                string[] directories = Directory.GetDirectories(GlobalConfig.Path_LoaderFolder);
+                List<string> frameAnalysisFileList = new List<string>();
+                foreach (string directory in directories)
+                {
+                    string directoryName = Path.GetFileName(directory);
+
+                    if (directoryName.StartsWith("FrameAnalysis-"))
+                    {
+                        frameAnalysisFileList.Add(directoryName);
+                    }
+                }
+
+                //
+                if (frameAnalysisFileList.Count > 0)
+                {
+                    return frameAnalysisFileList.Last();
+                }
+
+                return "";
+            }
+        }
+
+        public static string Path_LatestFrameAnalysisFolder
+        {
+            get
+            {
+                return Path.Combine(Path_LoaderFolder,LatestFrameAnalysisFolderName + "\\");
+            }
+        }
+
+        public static string Path_LatestFrameAnalysisDedupedFolder
+        {
+            get
+            {
+                return Path.Combine(Path_LatestFrameAnalysisFolder, "deduped\\");
+            }
+        }
+
+
+
+
+
+
+
 
     }
-
-
 }

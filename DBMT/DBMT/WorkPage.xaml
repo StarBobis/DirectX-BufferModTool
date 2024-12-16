@@ -97,6 +97,10 @@
                     <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderPY" Text="3Dmigoto Loader.py" Click="Open3DmigotoLoaderPY"/>
                     <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderByPassACE" Text="3Dmigoto Loader-ByPassACE.exe" Click="Open3DmigotoLoaderByPassACE"/>
                 </MenuBarItem>
+
+                <MenuBarItem x:Name="Menu_Ripper" Title="特殊提取">
+                    <MenuFlyoutItem x:Name="Menu_ExtractScene" Text="一键提取场景物体" Click="ExtractScene"/>
+                </MenuBarItem>
             </MenuBar>
 
             <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,20,0,0"

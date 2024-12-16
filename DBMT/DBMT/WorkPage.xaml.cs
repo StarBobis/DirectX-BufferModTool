@@ -95,6 +95,9 @@ namespace DBMT
 
                 Menu_Run.Title = "Run";
 
+                Menu_Ripper.Title = "Ripper";
+                Menu_ExtractScene.Text = "Extract Scene";
+
                 TextBlock_WorkSpaceName.Text = "WorkSpace: ";
                 Button_CreateWorkSpace.Content = "Create WorkSpace";
                 Button_OpenWorkSpaceFolder.Content = "Open WorkSpace Folder";
@@ -498,7 +501,7 @@ namespace DBMT
 
         public async void OpenLatestFrameAnalysisFolder(object sender, RoutedEventArgs e)
         {
-            string latestFrameAnalysisFolder = PathHelper.GetLatestFrameAnalysisFolder();
+            string latestFrameAnalysisFolder = GlobalConfig.Path_LatestFrameAnalysisFolder;
             if (!string.IsNullOrEmpty(latestFrameAnalysisFolder))
             {
                 await CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder);
@@ -529,10 +532,10 @@ namespace DBMT
 
         public async void OpenLatestFrameAnalysisDedupedFolder(object sender, RoutedEventArgs e)
         {
-            string latestFrameAnalysisFolder = PathHelper.GetLatestFrameAnalysisFolder();
-            if (!string.IsNullOrEmpty(latestFrameAnalysisFolder))
+            string LatestFrameAnalysisDedupedFolder = GlobalConfig.Path_LatestFrameAnalysisDedupedFolder;
+            if (!string.IsNullOrEmpty(LatestFrameAnalysisDedupedFolder))
             {
-                await CommandHelper.ShellOpenFolder(latestFrameAnalysisFolder + "\\deduped\\");
+                await CommandHelper.ShellOpenFolder(LatestFrameAnalysisDedupedFolder);
             }
             else
             {
@@ -766,6 +769,11 @@ namespace DBMT
         {
 
             await CommandHelper.ShellOpenFolder(Path.Combine(GlobalConfig.Path_LoaderFolder, "ShaderFixes\\"));
+        }
+
+        private void ExtractScene(object sender, RoutedEventArgs e)
+        {
+            CoreFunctions.ExtractScene();
         }
 
     }
