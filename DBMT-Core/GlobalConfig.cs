@@ -81,10 +81,8 @@ namespace DBMT_Core
         public string Author { get; set; } = "";
         public string AuthorLink { get; set; } = "";
         public string ModSwitchKey { get; set; } = "\"x\",\"m\",\"k\",\"l\",\"u\",\"i\",\"o\",\"p\",\"[\",\"]\",\"y\"";
-    }
 
-    public class TextureConfig : BaseConfig
-    {
+
         public bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
         public bool ConvertDedupedTextures { get; set; } = true;
         public int AutoTextureFormat { get; set; } = 2;
@@ -96,6 +94,7 @@ namespace DBMT_Core
         public bool UseHashTexture { get; set; } = false;
 
     }
+
 
     public class MainSetting : BaseConfig
     {
@@ -116,13 +115,11 @@ namespace DBMT_Core
         public static string CurrentMode = "Dev"; //当前工作模式，分为Dev和Play，默认为Dev
         public static string RunResult = "";
 
-
-        ////运行后程序动态生成
-        [Obsolete("在程序启动时读取一次路径就好了，使用这个会导致每次读取都要调用一次，属于额外的开销。")]
         public static string Path_Base
         {
-            get { return Directory.GetCurrentDirectory(); }
+            get { return ApplicationRunPath; }
         }
+
         public static string Path_Game_ConfigJson
         {
             get { return Path.Combine(Path_Base, "Games", GlobalConfig.MainCfg.Value.GameName, "Config.json"); }
@@ -166,10 +163,6 @@ namespace DBMT_Core
             get { return Path.Combine(Path_Base, "Configs\\Setting.json"); }
         }
 
-        public static string Path_Texture_SettingJson
-        {
-            get { return Path.Combine(Path_Base, "Configs\\TextureSetting.json"); }
-        }
 
         public static string Path_RunResultJson
         {
@@ -226,7 +219,6 @@ namespace DBMT_Core
         // 本地化存储的配置
         public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
         public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
-        public static readonly ConfigLoader<TextureConfig> TextureCfg = new ConfigLoader<TextureConfig>(Path_Texture_SettingJson);
 
     }
 

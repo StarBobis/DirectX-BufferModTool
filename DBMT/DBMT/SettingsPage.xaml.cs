@@ -115,25 +115,25 @@ namespace DBMT
             GlobalConfig.GameCfg.Value.AuthorLink = TextBox_AuthorLink.Text;
             GlobalConfig.GameCfg.Value.ModSwitchKey = TextBox_ModSwitchKey.Text;
 
-            GlobalConfig.TextureCfg.Value.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex;
-            GlobalConfig.TextureCfg.Value.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
-            GlobalConfig.TextureCfg.Value.ConvertDedupedTextures = ToggleSwitch_ConvertDedupedTextures.IsOn;
-            GlobalConfig.TextureCfg.Value.ForbidMoveTrianglelistTextures = ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn;
-            GlobalConfig.TextureCfg.Value.ForbidMoveDedupedTextures = ToggleSwitch_ForbidMoveDedupedTextures.IsOn;
-            GlobalConfig.TextureCfg.Value.ForbidMoveRenderTextures = ToggleSwitch_ForbidMoveRenderTextures.IsOn;
-            GlobalConfig.TextureCfg.Value.ForbidAutoTexture = ToggleSwitch_ForbidAutoTexture.IsOn;
-            GlobalConfig.TextureCfg.Value.UseHashTexture = ToggleSwitch_UseHashTexture.IsOn;
+            GlobalConfig.GameCfg.Value.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex;
+            GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
+            GlobalConfig.GameCfg.Value.ConvertDedupedTextures = ToggleSwitch_ConvertDedupedTextures.IsOn;
+            GlobalConfig.GameCfg.Value.ForbidMoveTrianglelistTextures = ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn;
+            GlobalConfig.GameCfg.Value.ForbidMoveDedupedTextures = ToggleSwitch_ForbidMoveDedupedTextures.IsOn;
+            GlobalConfig.GameCfg.Value.ForbidMoveRenderTextures = ToggleSwitch_ForbidMoveRenderTextures.IsOn;
+            GlobalConfig.GameCfg.Value.ForbidAutoTexture = ToggleSwitch_ForbidAutoTexture.IsOn;
+            GlobalConfig.GameCfg.Value.UseHashTexture = ToggleSwitch_UseHashTexture.IsOn;
 
             // 保存配置
             GlobalConfig.GameCfg.SaveConfig();
-            GlobalConfig.TextureCfg.SaveConfig();
+         
         }
 
         public void ReadSettingsFromConfig()
         {
             //防止程序启动时没正确读取，这里冗余读取一次，后面看情况可以去掉
             GlobalConfig.GameCfg.LoadConfig();
-            GlobalConfig.TextureCfg.LoadConfig();
+  
 
             ToggleSwitch_Language.IsOn = GlobalConfig.GameCfg.Value.Language;
             ToggleSwitch_StartToWorkPage.IsOn = GlobalConfig.GameCfg.Value.StartToWorkPage;
@@ -151,14 +151,14 @@ namespace DBMT
             TextBox_AuthorLink.Text = GlobalConfig.GameCfg.Value.AuthorLink;
             TextBox_ModSwitchKey.Text = GlobalConfig.GameCfg.Value.ModSwitchKey;
 
-            ComboBox_AutoTextureFormat.SelectedIndex = GlobalConfig.TextureCfg.Value.AutoTextureFormat;
-            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.TextureCfg.Value.AutoTextureOnlyConvertDiffuseMap;
-            ToggleSwitch_ConvertDedupedTextures.IsOn = GlobalConfig.TextureCfg.Value.ConvertDedupedTextures;
-            ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = GlobalConfig.TextureCfg.Value.ForbidMoveTrianglelistTextures;
-            ToggleSwitch_ForbidMoveDedupedTextures.IsOn = GlobalConfig.TextureCfg.Value.ForbidMoveDedupedTextures;
-            ToggleSwitch_ForbidMoveRenderTextures.IsOn = GlobalConfig.TextureCfg.Value.ForbidMoveRenderTextures;
-            ToggleSwitch_ForbidAutoTexture.IsOn = GlobalConfig.TextureCfg.Value.ForbidAutoTexture;
-            ToggleSwitch_UseHashTexture.IsOn = GlobalConfig.TextureCfg.Value.UseHashTexture;
+            ComboBox_AutoTextureFormat.SelectedIndex = GlobalConfig.GameCfg.Value.AutoTextureFormat;
+            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap;
+            ToggleSwitch_ConvertDedupedTextures.IsOn = GlobalConfig.GameCfg.Value.ConvertDedupedTextures;
+            ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveTrianglelistTextures;
+            ToggleSwitch_ForbidMoveDedupedTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveDedupedTextures;
+            ToggleSwitch_ForbidMoveRenderTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveRenderTextures;
+            ToggleSwitch_ForbidAutoTexture.IsOn = GlobalConfig.GameCfg.Value.ForbidAutoTexture;
+            ToggleSwitch_UseHashTexture.IsOn = GlobalConfig.GameCfg.Value.UseHashTexture;
         }
 
         private async void ToggleSwitch_Language_Toggled(object sender, RoutedEventArgs e)

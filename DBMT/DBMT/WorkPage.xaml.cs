@@ -433,7 +433,7 @@ namespace DBMT
             {
                 TextureHelper.ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
-                if (GlobalConfig.TextureCfg.Value.ConvertDedupedTextures)
+                if (GlobalConfig.GameCfg.Value.ConvertDedupedTextures)
                 {
                     TextureHelper.ConvertDedupedTexturesToTargetFormat();
                 }

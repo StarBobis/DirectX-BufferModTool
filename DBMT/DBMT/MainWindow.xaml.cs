@@ -85,7 +85,7 @@ namespace DBMT
             //读取配置文件
             GlobalConfig.MainCfg.LoadConfig();
             GlobalConfig.GameCfg.LoadConfig();
-            GlobalConfig.TextureCfg.LoadConfig();
+   
 
             //设置标题和宽高
             this.Title = GlobalConfig.DBMT_Title;

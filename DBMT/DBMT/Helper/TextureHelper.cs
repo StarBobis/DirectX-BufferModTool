@@ -12,7 +12,7 @@ namespace DBMT
     {
         public static string GetAutoTextureFormat()
         {
-            return GlobalConfig.TextureCfg.Value.AutoTextureFormat switch
+            return GlobalConfig.GameCfg.Value.AutoTextureFormat switch
             {
                 0 => "jpg",
                 1 => "tga",
@@ -116,7 +116,7 @@ namespace DBMT
                         string[] filePathArray = Directory.GetFiles(outputDirectory);
                         foreach (string ddsFilePath in filePathArray)
                         {
-                            if (GlobalConfig.TextureCfg.Value.AutoTextureOnlyConvertDiffuseMap)
+                            if (GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap)
                             {
                                 if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
                                 {
