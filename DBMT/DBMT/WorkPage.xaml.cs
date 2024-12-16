@@ -40,11 +40,11 @@ namespace DBMT
             try
             {
                 //MainConfig.LoadConfigFile(MainConfig.ConfigFiles.Game_Setting);
-                MainConfig.GameCfg.LoadConfig();
-                InitializeWorkSpace(MainConfig.CurrentWorkSpace);
+                GlobalConfig.GameCfg.LoadConfig();
+                InitializeWorkSpace(GlobalConfig.CurrentWorkSpace);
                 SetDefaultBackGroundImage();
 
-                WorkBGImageBrush.Opacity = MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
+                WorkBGImageBrush.Opacity = GlobalConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
 
                 LoadDirectoryNames();
 
@@ -62,11 +62,11 @@ namespace DBMT
 
             LocalizeLanguage();
 
-            if (!File.Exists(MainConfig.Path_3DmigotoSwordLv5VMPEXE))
+            if (!File.Exists(GlobalConfig.Path_3DmigotoSwordLv5VMPEXE))
             {
                 Menu_ModReverse.Visibility = Visibility.Collapsed;
             }
-            if (!File.Exists(MainConfig.Path_EncryptorVMPEXE))
+            if (!File.Exists(GlobalConfig.Path_EncryptorVMPEXE))
             {
                 Menu_ModEncryption.Visibility = Visibility.Collapsed;
             }
@@ -75,7 +75,7 @@ namespace DBMT
 
         private void LocalizeLanguage()
         {
-            if (MainConfig.GameCfg.Value.Language == true)
+            if (GlobalConfig.GameCfg.Value.Language == true)
             {
                 //文件菜单
                 Menu_File.Title = "File";
@@ -138,9 +138,9 @@ namespace DBMT
             // 执行你想要在这个页面被关闭或导航离开时运行的代码
 
             //保存全局设置因为要保存滑条透明度
-            MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity = (float)WorkBGImageBrush.Opacity;
+            GlobalConfig.GameCfg.Value.WorkPageBackGroundImageOpacity = (float)WorkBGImageBrush.Opacity;
             //MainConfig.SaveConfig(MainConfig.ConfigFiles.Game_Setting);
-            MainConfig.GameCfg.SaveConfig();
+            GlobalConfig.GameCfg.SaveConfig();
 
             // 如果需要，可以调用基类的 OnNavigatedFrom 方法
             base.OnNavigatedFrom(e);
@@ -155,13 +155,13 @@ namespace DBMT
             {
                 WorkGameSelectionComboBox.Items.Add(dirName);
             }
-            if (MainConfig.CurrentGameName == "")
+            if (GlobalConfig.CurrentGameName == "")
             {
                 WorkGameSelectionComboBox.SelectedIndex = 0;
             }
             else
             {
-                WorkGameSelectionComboBox.SelectedItem = MainConfig.CurrentGameName;
+                WorkGameSelectionComboBox.SelectedItem = GlobalConfig.CurrentGameName;
             }
         }
 
@@ -176,22 +176,22 @@ namespace DBMT
             {
                 // 执行你想要的操作，例如获取选中的项并进行处理
                 string selectedGame = comboBox.SelectedItem.ToString();
-                MainConfig.MainCfg.Value.GameName = selectedGame;
-                MainConfig.MainCfg.SaveConfig();
+                GlobalConfig.MainCfg.Value.GameName = selectedGame;
+                GlobalConfig.MainCfg.SaveConfig();
 
                 SetDefaultBackGroundImage();
-                InitializeWorkSpace(MainConfig.CurrentWorkSpace);
+                InitializeWorkSpace(GlobalConfig.CurrentWorkSpace);
 
                 //依次检测并判断是否显示对应启动按钮
-                if (!File.Exists(MainConfig.Path_3Dmigoto_Loader_EXE))
+                if (!File.Exists(GlobalConfig.Path_3Dmigoto_Loader_EXE))
                 {
                     Menu_Open3DmigotoLoaderEXE.Visibility = Visibility.Collapsed;
                 }
-                if (!File.Exists(MainConfig.Path_3Dmigoto_Loader_PY))
+                if (!File.Exists(GlobalConfig.Path_3Dmigoto_Loader_PY))
                 {
                     Menu_Open3DmigotoLoaderPY.Visibility = Visibility.Collapsed;
                 }
-                if (!File.Exists(MainConfig.Path_3Dmigoto_Loader_ByPassACE_EXE))
+                if (!File.Exists(GlobalConfig.Path_3Dmigoto_Loader_ByPassACE_EXE))
                 {
                     Menu_Open3DmigotoLoaderByPassACE.Visibility = Visibility.Collapsed;
                 }
@@ -211,20 +211,20 @@ namespace DBMT
         {
             if (ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
-                MainConfig.MainCfg.Value.WorkSpaceName = ComboBoxWorkSpaceSelection.Text;
-                MainConfig.MainCfg.SaveConfig();
+                GlobalConfig.MainCfg.Value.WorkSpaceName = ComboBoxWorkSpaceSelection.Text;
+                GlobalConfig.MainCfg.SaveConfig();
                 ReadDrawIBListFromWorkSpace();
             }
         }
 
         void ReadDrawIBListFromWorkSpace()
         {
-            if (MainConfig.CurrentWorkSpace != "")
+            if (GlobalConfig.CurrentWorkSpace != "")
             {
                 items.Clear();
                 
 
-                string Configpath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "\\Config.json";
+                string Configpath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "\\Config.json";
                 if (File.Exists(Configpath))
                 {
                     //切换到对应配置
@@ -252,14 +252,14 @@ namespace DBMT
         public void InitializeWorkSpace(string WorkSpaceName = "")
         {
             //如果存储工作空间的output文件夹不存在就创建
-            if (!Directory.Exists(MainConfig.Path_OutputFolder))
+            if (!Directory.Exists(GlobalConfig.Path_OutputFolder))
             {
-                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+                Directory.CreateDirectory(GlobalConfig.Path_OutputFolder);
             }
 
 
             ComboBoxWorkSpaceSelection.Items.Clear();
-            string[] WorkSpaceNameList = DBMTFileUtils.ReadWorkSpaceNameList(MainConfig.Path_OutputFolder);
+            string[] WorkSpaceNameList = DBMTFileUtils.ReadWorkSpaceNameList(GlobalConfig.Path_OutputFolder);
             foreach (string WorkSpaceNameItem in WorkSpaceNameList)
             {
                 ComboBoxWorkSpaceSelection.Items.Add(WorkSpaceNameItem);
@@ -293,7 +293,7 @@ namespace DBMT
             if (!ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.Text))
             {
                 ////如果包含了此命名空间，就不创建文件夹，否则就创建
-                Directory.CreateDirectory(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text);
+                Directory.CreateDirectory(GlobalConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text);
 
                 await MessageHelper.Show("工作空间创建成功");
 
@@ -307,7 +307,7 @@ namespace DBMT
 
         public async void CleanCurrentWorkSpaceFile(object sender, RoutedEventArgs e)
         {
-            string WorkSpaceFolderPath = MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text;
+            string WorkSpaceFolderPath = GlobalConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text;
             Directory.Delete(WorkSpaceFolderPath, true);
             Directory.CreateDirectory(WorkSpaceFolderPath);
             await MessageHelper.Show("清理成功", "Clean Success");
@@ -315,7 +315,7 @@ namespace DBMT
 
         public async void OpenCurrentWorkSpaceFolder(object sender, RoutedEventArgs e)
         {
-            string WorkSpaceOutputFolder = MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\";
+            string WorkSpaceOutputFolder = GlobalConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\";
             if (!string.IsNullOrEmpty(WorkSpaceOutputFolder))
             {
                 if (Directory.Exists(WorkSpaceOutputFolder))
@@ -336,20 +336,20 @@ namespace DBMT
         public async void SaveDrawIBList()
         {
             //(1) 检查游戏类型是否设置
-            if (MainConfig.CurrentGameName == "")
+            if (GlobalConfig.CurrentGameName == "")
             {
                 await MessageHelper.Show("请先选择游戏类型", "Please select a game before this.");
                 return;
             }
 
-            if (MainConfig.CurrentWorkSpace == "")
+            if (GlobalConfig.CurrentWorkSpace == "")
             {
                 await MessageHelper.Show("请先选择工作空间", "Please select a workspace before this.");
                 return;
             }
 
             //(2) 接下来要把当前的游戏名称+类型保存到MainSetting.json里
-            MainConfig.MainCfg.SaveConfig();
+            GlobalConfig.MainCfg.SaveConfig();
 
             //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件。
 
@@ -367,7 +367,7 @@ namespace DBMT
             string json_string = DrawIBJarrayList.ToString(Formatting.Indented);
 
             // 将JSON字符串写入文件
-            File.WriteAllText(MainConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\Config.Json", json_string);
+            File.WriteAllText(GlobalConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text + "\\Config.Json", json_string);
 
         }
 
@@ -433,7 +433,7 @@ namespace DBMT
             {
                 TextureHelper.ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
-                if (MainConfig.TextureCfg.Value.ConvertDedupedTextures)
+                if (GlobalConfig.TextureCfg.Value.ConvertDedupedTextures)
                 {
                     TextureHelper.ConvertDedupedTexturesToTargetFormat();
                 }
@@ -471,7 +471,7 @@ namespace DBMT
         public async void OpenWorkSpaceGenerateModFolder(object sender, RoutedEventArgs e)
         {
 
-            string GeneratedModFolderPath = MainConfig.Path_OutputFolder + "/" + MainConfig.CurrentWorkSpace + "/GeneratedMod/";
+            string GeneratedModFolderPath = GlobalConfig.Path_OutputFolder + "/" + GlobalConfig.CurrentWorkSpace + "/GeneratedMod/";
 
             if (Directory.Exists(GeneratedModFolderPath))
             {
@@ -485,7 +485,7 @@ namespace DBMT
 
         public async void OpenModsFolder(object sender, RoutedEventArgs e)
         {
-            string modsFolder = MainConfig.Path_LoaderFolder + "Mods/";
+            string modsFolder = GlobalConfig.Path_LoaderFolder + "Mods/";
             if (Directory.Exists(modsFolder))
             {
                 await CommandHelper.ShellOpenFolder(modsFolder);
@@ -542,13 +542,13 @@ namespace DBMT
 
         public async void OpenExtractTypesFolder(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(MainConfig.Path_GameTypeFolder))
+            if (Directory.Exists(GlobalConfig.Path_GameTypeFolder))
             {
-                await CommandHelper.ShellOpenFolder(MainConfig.Path_GameTypeFolder);
+                await CommandHelper.ShellOpenFolder(GlobalConfig.Path_GameTypeFolder);
             }
             else
             {
-                await CommandHelper.ShellOpenFolder(MainConfig.Path_ExtractTypesFolder);
+                await CommandHelper.ShellOpenFolder(GlobalConfig.Path_ExtractTypesFolder);
             }
         }
 
@@ -603,7 +603,7 @@ namespace DBMT
         {
             List<string> SkipIBList = GetSkipIBList();
             DrawIBHelper.GenerateSkipIB(SkipIBList);
-            await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
+            await CommandHelper.ShellOpenFolder(GlobalConfig.Path_OutputFolder);
         }
 
 
@@ -611,7 +611,7 @@ namespace DBMT
         {
             List<string> SkipIBList = GetSkipIBList();
             DrawIBHelper.GenerateVSCheck(SkipIBList);
-            await CommandHelper.ShellOpenFolder(MainConfig.Path_OutputFolder);
+            await CommandHelper.ShellOpenFolder(GlobalConfig.Path_OutputFolder);
         }
 
 
@@ -725,12 +725,12 @@ namespace DBMT
         {
             if (WorkBGImageBrush.Opacity != 0)
             {
-                MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity =(float)WorkBGImageBrush.Opacity;
+                GlobalConfig.GameCfg.Value.WorkPageBackGroundImageOpacity =(float)WorkBGImageBrush.Opacity;
                 WorkBGImageBrush.Opacity = 0;
             }
             else
             {
-                WorkBGImageBrush.Opacity = MainConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
+                WorkBGImageBrush.Opacity = GlobalConfig.GameCfg.Value.WorkPageBackGroundImageOpacity;
             }
         }
 
@@ -738,34 +738,34 @@ namespace DBMT
 
         private async void Open3DmigotoLoaderEXE(object sender, RoutedEventArgs e)
         {
-            await CommandHelper.ShellOpenFile(MainConfig.Path_3Dmigoto_Loader_EXE);
+            await CommandHelper.ShellOpenFile(GlobalConfig.Path_3Dmigoto_Loader_EXE);
         }
 
         private async void Open3DmigotoLoaderPY(object sender, RoutedEventArgs e)
         {
-            await CommandHelper.ShellOpenFile(MainConfig.Path_3Dmigoto_Loader_PY);
+            await CommandHelper.ShellOpenFile(GlobalConfig.Path_3Dmigoto_Loader_PY);
         }
 
         private async void Open3DmigotoLoaderByPassACE(object sender, RoutedEventArgs e)
         {
-            await CommandHelper.ShellOpenFile(MainConfig.Path_3Dmigoto_Loader_ByPassACE_EXE);
+            await CommandHelper.ShellOpenFile(GlobalConfig.Path_3Dmigoto_Loader_ByPassACE_EXE);
         }
 
         private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
         {
-            await CommandHelper.ShellOpenFile(MainConfig.Path_D3DXINI);
+            await CommandHelper.ShellOpenFile(GlobalConfig.Path_D3DXINI);
         }
 
         private async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
         {
 
-            await CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder);
+            await CommandHelper.ShellOpenFolder(GlobalConfig.Path_LoaderFolder);
         }
 
         private async void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
         {
 
-            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.Path_LoaderFolder, "ShaderFixes\\"));
+            await CommandHelper.ShellOpenFolder(Path.Combine(GlobalConfig.Path_LoaderFolder, "ShaderFixes\\"));
         }
 
     }

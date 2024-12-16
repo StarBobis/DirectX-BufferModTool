@@ -105,7 +105,7 @@ namespace DBMT
             TargetOutputDirectory = TargetOutputDirectory.Replace("\\", "/");
 
             string arugmentsstr = " \"" + SourceTextureFilePath + "\" -ft \"" + TextureFormatString + "\" -o \"" + TargetOutputDirectory + "\"";
-            string texconv_filepath = MainConfig.ApplicationRunPath + "Plugins\\texconv.exe";
+            string texconv_filepath = GlobalConfig.ApplicationRunPath + "Plugins\\texconv.exe";
             if (!File.Exists(texconv_filepath))
             {
                 await MessageHelper.Show("当前要执行的路径不存在: " + texconv_filepath, "Current run path didn't exsits: " + texconv_filepath);
@@ -128,18 +128,18 @@ namespace DBMT
         public static void InitializeRunInputJson(string arguments)
         {
             //把当前运行的命令保存到RunInput.json
-            string json = File.ReadAllText(MainConfig.Path_RunInputJson); // 读取文件内容
+            string json = File.ReadAllText(GlobalConfig.Path_RunInputJson); // 读取文件内容
             JObject runInputJson = JObject.Parse(json);
             runInputJson["RunCommand"] = arguments;
             string runInputJsonStr = runInputJson.ToString(Formatting.Indented);
-            File.WriteAllText(MainConfig.Path_RunInputJson, runInputJsonStr);
+            File.WriteAllText(GlobalConfig.Path_RunInputJson, runInputJsonStr);
         }
 
         public static void InitializeRunResultJson()
         {
             JObject jsonObject = new JObject();
             jsonObject["result"] = "Unknown Error!";
-            File.WriteAllText(MainConfig.Path_RunResultJson, jsonObject.ToString());
+            File.WriteAllText(GlobalConfig.Path_RunResultJson, jsonObject.ToString());
         }
 
 
@@ -151,11 +151,11 @@ namespace DBMT
             Process process = new Process();
             if (targetExe == "")
             {
-                if (MainConfig.CurrentGameName == "Game001" || MainConfig.CurrentGameName == "Mecha" || MainConfig.CurrentGameName == "LiarsBar")
+                if (GlobalConfig.CurrentGameName == "Game001" || GlobalConfig.CurrentGameName == "Mecha" || GlobalConfig.CurrentGameName == "LiarsBar")
                 {
 
-                    string ProVMPPath = MainConfig.ApplicationRunPath + "Plugins\\" + "DBMT-Pro.vmp.exe";
-                    string ProPath = MainConfig.ApplicationRunPath + "Plugins\\" + "DBMT-Pro.exe";
+                    string ProVMPPath = GlobalConfig.ApplicationRunPath + "Plugins\\" + "DBMT-Pro.vmp.exe";
+                    string ProPath = GlobalConfig.ApplicationRunPath + "Plugins\\" + "DBMT-Pro.exe";
                     if (File.Exists(ProPath))
                     {
                         process.StartInfo.FileName = ProPath;
@@ -167,12 +167,12 @@ namespace DBMT
                 }
                 else
                 {
-                    process.StartInfo.FileName = MainConfig.ApplicationRunPath + "Plugins\\" + MainConfig.MMT_EXE_FileName;
+                    process.StartInfo.FileName = GlobalConfig.ApplicationRunPath + "Plugins\\" + GlobalConfig.MMT_EXE_FileName;
                 }
             }
             else
             {
-                process.StartInfo.FileName = MainConfig.ApplicationRunPath + "Plugins\\" + targetExe;
+                process.StartInfo.FileName = GlobalConfig.ApplicationRunPath + "Plugins\\" + targetExe;
             }
             //运行前必须检查路径
             if (!File.Exists(process.StartInfo.FileName))
@@ -195,10 +195,10 @@ namespace DBMT
 
             try
             {
-                string runResultJson = File.ReadAllText(MainConfig.Path_RunResultJson);
+                string runResultJson = File.ReadAllText(GlobalConfig.Path_RunResultJson);
                 JObject resultJsonObject = JObject.Parse(runResultJson);
                 string runResult = (string)resultJsonObject["result"];
-                MainConfig.RunResult = runResult;
+                GlobalConfig.RunResult = runResult;
                 if (runResult != "success")
                 {
                     await MessageHelper.Show(
@@ -292,7 +292,7 @@ namespace DBMT
 
         public static async Task<string> RunReverseIniCommand(string commandStr)
         {
-            if (string.IsNullOrEmpty(MainConfig.CurrentGameName))
+            if (string.IsNullOrEmpty(GlobalConfig.CurrentGameName))
             {
                 await MessageHelper.Show("在逆向Mod之前请选择当前要进行格式转换的二创模型的所属游戏", "Please select your current game before reverse.");
                 return "";
@@ -309,11 +309,11 @@ namespace DBMT
                     return "";
                 }
 
-                string json = File.ReadAllText(MainConfig.Path_RunInputJson); // 读取文件内容
+                string json = File.ReadAllText(GlobalConfig.Path_RunInputJson); // 读取文件内容
                 JObject runInputJson = JObject.Parse(json);
-                runInputJson["GameName"] = MainConfig.CurrentGameName;
+                runInputJson["GameName"] = GlobalConfig.CurrentGameName;
                 runInputJson["ReverseFilePath"] = filePath;
-                File.WriteAllText(MainConfig.Path_RunInputJson, runInputJson.ToString());
+                File.WriteAllText(GlobalConfig.Path_RunInputJson, runInputJson.ToString());
 
                 bool RunResult = await CommandHelper.runCommand(commandStr, "3Dmigoto-Sword-Lv5.vmp.exe");
                 if (RunResult)

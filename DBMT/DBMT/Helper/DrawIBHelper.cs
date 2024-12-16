@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBMT_Core;
 
 namespace DBMT
 {
@@ -13,7 +14,7 @@ namespace DBMT
         public static async Task<Dictionary<string, List<string>>> GetBuffHash_VSShaderHashValues_Dict()
         {
             string frameAnalyseFolder = "";
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder.Replace("/", "\\")); ;
+            string[] directories = Directory.GetDirectories(GlobalConfig.Path_LoaderFolder.Replace("/", "\\")); ;
             List<string> frameAnalysisFileList = new List<string>();
             foreach (string directory in directories)
             {
@@ -42,7 +43,7 @@ namespace DBMT
                 await MessageHelper.Show("当前指定的FrameAnalysisFolder不存在，请重新设置", "Current specified FrameAnalysisFolder didn't exists, please check your setting");
             }
 
-            string frameAnalysisFolderPath = MainConfig.Path_LoaderFolder + frameAnalyseFolder;
+            string frameAnalysisFolderPath = GlobalConfig.Path_LoaderFolder + frameAnalyseFolder;
 
             Dictionary<string, List<string>> buffHash_vsShaderHashValues_Dict = new Dictionary<string, List<string>>();
 
@@ -110,12 +111,12 @@ namespace DBMT
 
             }
 
-            if (!File.Exists(MainConfig.Path_OutputFolder))
+            if (!File.Exists(GlobalConfig.Path_OutputFolder))
             {
-                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+                Directory.CreateDirectory(GlobalConfig.Path_OutputFolder);
             }
 
-            string outputPath = MainConfig.Path_OutputFolder + "VertexShaderCheck.ini";
+            string outputPath = GlobalConfig.Path_OutputFolder + "VertexShaderCheck.ini";
             File.WriteAllText(outputPath, outputContent);
         }
 
@@ -137,7 +138,7 @@ namespace DBMT
                 outputContent = outputContent + "handling = skip\r\n";
                 outputContent = outputContent + "\r\n";
 
-                if (MainConfig.CurrentGameName == "Game001" || MainConfig.CurrentGameName == "LiarsBar")
+                if (GlobalConfig.CurrentGameName == "Game001" || GlobalConfig.CurrentGameName == "LiarsBar")
                 {
                     if (buffHash_vsShaderHashValues_Dict.ContainsKey(DrawIB))
                     {
@@ -160,12 +161,12 @@ namespace DBMT
 
             }
 
-            if (!File.Exists(MainConfig.Path_OutputFolder))
+            if (!File.Exists(GlobalConfig.Path_OutputFolder))
             {
-                Directory.CreateDirectory(MainConfig.Path_OutputFolder);
+                Directory.CreateDirectory(GlobalConfig.Path_OutputFolder);
             }
 
-            string outputPath = MainConfig.Path_OutputFolder + "IBSkip.ini";
+            string outputPath = GlobalConfig.Path_OutputFolder + "IBSkip.ini";
             File.WriteAllText(outputPath, outputContent);
         }
 

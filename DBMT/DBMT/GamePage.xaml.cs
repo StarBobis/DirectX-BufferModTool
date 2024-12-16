@@ -45,7 +45,7 @@ namespace DBMT
             LoadDirectoryNames();
 
             //使用配置文件中保存的透明度来设置背景透明度
-            GameBGImageBrush.Opacity = MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity;
+            GameBGImageBrush.Opacity = GlobalConfig.GameCfg.Value.GamePageBackGroundImageOpacity;
 
             //切换语言
             LocalizeLanguage();
@@ -53,7 +53,7 @@ namespace DBMT
 
         private void LocalizeLanguage()
         {
-            if (MainConfig.GameCfg.Value.Language == true)
+            if (GlobalConfig.GameCfg.Value.Language == true)
             {
                 Button_Run3DmigotoLoader.Content = "Run 3Dmigoto Loader.exe";
                 TextBlock_ChooseGame.Text = "Current Game:";
@@ -76,8 +76,8 @@ namespace DBMT
             // 执行你想要在这个页面被关闭或导航离开时运行的代码
 
             //保存全局设置因为要保存滑条透明度
-            MainConfig.GameCfg.Value.GamePageBackGroundImageOpacity = (float)GameBGImageBrush.Opacity;
-            MainConfig.GameCfg.SaveConfig();
+            GlobalConfig.GameCfg.Value.GamePageBackGroundImageOpacity = (float)GameBGImageBrush.Opacity;
+            GlobalConfig.GameCfg.SaveConfig();
 
             // 如果需要，可以调用基类的 OnNavigatedFrom 方法
             base.OnNavigatedFrom(e);
@@ -115,7 +115,7 @@ namespace DBMT
                 //MainConfig.SetCurrentGame(selectedGame);
                 //MainConfig.SetConfig(MainConfig.ConfigFiles.Main, "GameName", selectedGame);
                 //MainConfig.SaveConfig(MainConfig.ConfigFiles.Main);
-                MainConfig.MainCfg.Value.GameName = selectedGame;
+                GlobalConfig.MainCfg.Value.GameName = selectedGame;
                 
 
                 //读取d3dx.ini中的设置
@@ -125,18 +125,18 @@ namespace DBMT
             }
 
             //因为现在每次都从文件中读取，所以必须在这里保存到文件
-            MainConfig.MainCfg.SaveConfig();
+            GlobalConfig.MainCfg.SaveConfig();
         }
 
         private void SetGameBackGroundImage()
         {
-            string basePath = MainConfig.Path_Base;
+            string basePath = GlobalConfig.Path_Base;
 
             //设置背景图片
             // 优先级：DIY > 默认 > 主页背景
             string[] imagePaths = {
-                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png"),
-                Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png"),
+                Path.Combine(basePath, "Assets", GlobalConfig.CurrentGameName + "_DIY.png"),
+                Path.Combine(basePath, "Assets", GlobalConfig.CurrentGameName + ".png"),
                 Path.Combine(basePath, "Assets", "HomePageBackGround.png")
             };
 
@@ -161,7 +161,7 @@ namespace DBMT
             if (file != null)
             {
                 string AssetsFolderPath = PathHelper.GetAssetsFolderPath();
-                string TargetPicturePath = Path.Combine(AssetsFolderPath, MainConfig.CurrentGameName + "_DIY.png");
+                string TargetPicturePath = Path.Combine(AssetsFolderPath, GlobalConfig.CurrentGameName + "_DIY.png");
                 File.Copy(file.Path, TargetPicturePath, true);
 
                 SetGameBackGroundImage();
@@ -185,13 +185,13 @@ namespace DBMT
             {
                 GameSelectionComboBox.Items.Add(dirName);
             }
-            if (MainConfig.CurrentGameName == "")
+            if (GlobalConfig.CurrentGameName == "")
             {
                 GameSelectionComboBox.SelectedIndex = 0;
             }
             else
             {
-                GameSelectionComboBox.SelectedItem = MainConfig.CurrentGameName;
+                GameSelectionComboBox.SelectedItem = GlobalConfig.CurrentGameName;
             }
         }
 
@@ -223,26 +223,26 @@ namespace DBMT
 
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {
-            string MigotoLoaderExePath = Path.Combine(MainConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
+            string MigotoLoaderExePath = Path.Combine(GlobalConfig.Path_LoaderFolder, "3Dmigoto Loader.exe");
             await CommandHelper.ShellOpenFile(MigotoLoaderExePath);
         }
 
         private async void OpenD3dxIniFile(object sender, RoutedEventArgs e)
         {
            
-            await CommandHelper.ShellOpenFile(MainConfig.Path_D3DXINI);
+            await CommandHelper.ShellOpenFile(GlobalConfig.Path_D3DXINI);
         }
       
         private async void Open3DmigotoFolder(object sender, RoutedEventArgs e)
         {
             
-            await CommandHelper.ShellOpenFolder(MainConfig.Path_LoaderFolder);
+            await CommandHelper.ShellOpenFolder(GlobalConfig.Path_LoaderFolder);
         }
 
         private async void OpenShaderFixesFolder(object sender, RoutedEventArgs e)
         {
 
-            await CommandHelper.ShellOpenFolder(Path.Combine(MainConfig.Path_LoaderFolder, "ShaderFixes\\") );
+            await CommandHelper.ShellOpenFolder(Path.Combine(GlobalConfig.Path_LoaderFolder, "ShaderFixes\\") );
         }
     }
 }

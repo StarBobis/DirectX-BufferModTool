@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DBMT.WorkPage;
+using DBMT_Core;
 
 namespace DBMT
 {
@@ -15,7 +16,7 @@ namespace DBMT
         {
             List<string> drawIBListValues = new List<string>();
 
-            string Configpath = MainConfig.Path_OutputFolder + WorkSpaceName + "\\Config.json";
+            string Configpath = GlobalConfig.Path_OutputFolder + WorkSpaceName + "\\Config.json";
             if (File.Exists(Configpath))
             {
                 //切换到对应配置
@@ -38,14 +39,14 @@ namespace DBMT
             //D3DXIniPath = Path.Combine(MainConfig.Path_LoaderFolder, "d3dx.ini");
             //return D3DXIniPath;
 
-            return MainConfig.Path_D3DXINI;
+            return GlobalConfig.Path_D3DXINI;
         }
 
 
         public static string ReadAttributeFromD3DXIni(string AttributeName)
         {
             //string d3dxini_path = ConfigHelper.GetD3DXIniPath();
-            string d3dxini_path = MainConfig.Path_D3DXINI;
+            string d3dxini_path = GlobalConfig.Path_D3DXINI;
             if (File.Exists(d3dxini_path))
             {
                 string[] lines = File.ReadAllLines(d3dxini_path);
@@ -74,7 +75,7 @@ namespace DBMT
         public static void SaveAttributeToD3DXIni(string SectionName,string AttributeName,string AttributeValue)
         {
             //string d3dxini_path = ConfigHelper.GetD3DXIniPath();
-            string d3dxini_path = MainConfig.Path_D3DXINI;
+            string d3dxini_path = GlobalConfig.Path_D3DXINI;
 
             if (File.Exists(d3dxini_path))
             {

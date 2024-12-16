@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBMT_Core;
 
 namespace DBMT
 {
@@ -15,12 +16,12 @@ namespace DBMT
 
             //设置背景图片
             //默认为各个游戏用户设置的DIY图片
-            string imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + "_DIY.png");
+            string imagePath = Path.Combine(basePath, "Assets", GlobalConfig.CurrentGameName + "_DIY.png");
 
             //如果不存在DIY背景图，则使用默认游戏的背景图
             if (!File.Exists(imagePath))
             {
-                imagePath = Path.Combine(basePath, "Assets", MainConfig.CurrentGameName + ".png");
+                imagePath = Path.Combine(basePath, "Assets", GlobalConfig.CurrentGameName + ".png");
             }
 
             //如果默认游戏的背景图还不存在，则使用主页的背景图
@@ -39,7 +40,7 @@ namespace DBMT
 
         public static string GetLatestLogFilePath()
         {
-            string logsPath = MainConfig.ApplicationRunPath + "Logs";
+            string logsPath = GlobalConfig.ApplicationRunPath + "Logs";
             if (!Directory.Exists(logsPath))
             {
                 return "";
@@ -63,7 +64,7 @@ namespace DBMT
 
         public static string GetLatestFrameAnalysisFolderLogFilePath()
         {
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder);
+            string[] directories = Directory.GetDirectories(GlobalConfig.Path_LoaderFolder);
             List<string> frameAnalysisFileList = new List<string>();
             foreach (string directory in directories)
             {
@@ -80,7 +81,7 @@ namespace DBMT
             {
                 frameAnalysisFileList.Sort();
 
-                string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
+                string latestFrameAnalysisFolder = GlobalConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
                 string latestLogFile = latestFrameAnalysisFolder + "\\log.txt";
                 return latestLogFile;
             }
@@ -93,7 +94,7 @@ namespace DBMT
 
         public static string GetLatestFrameAnalysisFolder()
         {
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder);
+            string[] directories = Directory.GetDirectories(GlobalConfig.Path_LoaderFolder);
             List<string> frameAnalysisFileList = new List<string>();
             foreach (string directory in directories)
             {
@@ -110,7 +111,7 @@ namespace DBMT
             {
                 frameAnalysisFileList.Sort();
 
-                string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
+                string latestFrameAnalysisFolder = GlobalConfig.Path_LoaderFolder.Replace("/", "\\") + frameAnalysisFileList.Last();
                 return latestFrameAnalysisFolder;
             }
 

@@ -37,13 +37,13 @@ namespace DBMT
 
 
             //如果勾选了直接启动到工作台界面
-            if (MainConfig.GameCfg.Value.StartToWorkPage)
+            if (GlobalConfig.GameCfg.Value.StartToWorkPage)
             {
                 contentFrame.Navigate(typeof(WorkPage));
             }
 
-            double logicalWidth = MainConfig.GameCfg.Value.WindowWidth;
-            double logicalHeight = MainConfig.GameCfg.Value.WindowHeight;
+            double logicalWidth = GlobalConfig.GameCfg.Value.WindowWidth;
+            double logicalHeight = GlobalConfig.GameCfg.Value.WindowHeight;
 
             int actualWidth = (int)(logicalWidth );
             int actualHeight = (int)(logicalHeight );
@@ -63,7 +63,7 @@ namespace DBMT
 
         private void LocalizeLanguage()
         {
-            if (MainConfig.GameCfg.Value.Language == true)
+            if (GlobalConfig.GameCfg.Value.Language == true)
             {
                 NavigationViewItem_HomePage.Content = "Home";
                 NavigationViewItem_StarterPage.Content = "Starter";
@@ -83,12 +83,12 @@ namespace DBMT
             //window.SetTitleBar(AppTitleBar);      // set user ui element as titlebar
 
             //读取配置文件
-            MainConfig.MainCfg.LoadConfig();
-            MainConfig.GameCfg.LoadConfig();
-            MainConfig.TextureCfg.LoadConfig();
+            GlobalConfig.MainCfg.LoadConfig();
+            GlobalConfig.GameCfg.LoadConfig();
+            GlobalConfig.TextureCfg.LoadConfig();
 
             //设置标题和宽高
-            this.Title = MainConfig.DBMT_Title;
+            this.Title = GlobalConfig.DBMT_Title;
 
             
 
@@ -103,7 +103,7 @@ namespace DBMT
 
             //当前路径不能处于中文路径下,否则部分方法无法正确执行
             //检查当前程序是否为位于中文路径下
-            if (DBMTStringUtils.ContainsChinese(MainConfig.ApplicationRunPath))
+            if (DBMTStringUtils.ContainsChinese(GlobalConfig.ApplicationRunPath))
             {
                 await MessageHelper.Show("DBMT所在路径不能含有中文，请重新将DBMT放置到纯英文路径.", "DBMT can't be put in a path that contains Chinese, please put DBMT in pure english path!");
                 //注意，这里可能会导致空引用异常，App.Current.Exist()不一定会正确的结束程序
@@ -113,9 +113,9 @@ namespace DBMT
             }
 
             //检查DBMT核心是否存在
-            if (!File.Exists(MainConfig.ApplicationRunPath + "Plugins\\" + MainConfig.MMT_EXE_FileName))
+            if (!File.Exists(GlobalConfig.ApplicationRunPath + "Plugins\\" + GlobalConfig.MMT_EXE_FileName))
             {
-                await MessageHelper.Show("未找到" + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",请将其放在本程序Plugins目录下，即将退出程序。", "Can't find " + MainConfig.ApplicationRunPath + MainConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
+                await MessageHelper.Show("未找到" + GlobalConfig.ApplicationRunPath + GlobalConfig.MMT_EXE_FileName + ",请将其放在本程序Plugins目录下，即将退出程序。", "Can't find " + GlobalConfig.ApplicationRunPath + GlobalConfig.MMT_EXE_FileName + ",please put it under this program's Plugins folder.");
                 //注意，这里可能会导致空引用异常，App.Current.Exist()不一定会正确的结束程序
                 //App.Current.Exit();
 
@@ -198,25 +198,25 @@ namespace DBMT
         {
 
             //Width and Height need extra 16px.
-            MainConfig.GameCfg.Value.WindowWidth = App.m_window.AppWindow.Size.Width - 15;
-            MainConfig.GameCfg.Value.WindowHeight = App.m_window.AppWindow.Size.Height - 40;
+            GlobalConfig.GameCfg.Value.WindowWidth = App.m_window.AppWindow.Size.Width - 15;
+            GlobalConfig.GameCfg.Value.WindowHeight = App.m_window.AppWindow.Size.Height - 40;
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
 
-            if (MainConfig.GameCfg.Value.AutoCleanFrameAnalysisFolder)
+            if (GlobalConfig.GameCfg.Value.AutoCleanFrameAnalysisFolder)
             {
                 SettingsHelper.CleanFrameAnalysisFiles();
             }
 
-            if (MainConfig.GameCfg.Value.AutoCleanLogFile)
+            if (GlobalConfig.GameCfg.Value.AutoCleanLogFile)
             {
                 {
                     SettingsHelper.CleanLogFiles();
                 }
 
-                MainConfig.GameCfg.SaveConfig();
-                MainConfig.MainCfg.SaveConfig();
+                GlobalConfig.GameCfg.SaveConfig();
+                GlobalConfig.MainCfg.SaveConfig();
             }
         }
     }

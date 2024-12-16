@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using WinRT.Interop;
+using DBMT_Core;
 
 namespace DBMT
 {
@@ -14,7 +15,7 @@ namespace DBMT
         {
             var messageDialog = new MessageDialog(ContentChinese, "提示");
 
-            if (MainConfig.GameCfg.Value.Language && ContentEnglish != "")
+            if (GlobalConfig.GameCfg.Value.Language && ContentEnglish != "")
             {
                 messageDialog = new MessageDialog(ContentEnglish, "Tips");
             }

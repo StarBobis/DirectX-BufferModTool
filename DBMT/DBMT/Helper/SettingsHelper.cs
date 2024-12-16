@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBMT_Core;
 
 namespace DBMT
 {
@@ -14,12 +15,12 @@ namespace DBMT
     {
         public static void CleanFrameAnalysisFiles()
         {
-            if (!Directory.Exists(MainConfig.Path_LoaderFolder))
+            if (!Directory.Exists(GlobalConfig.Path_LoaderFolder))
             {
                 return;
             }
 
-            string[] directories = Directory.GetDirectories(MainConfig.Path_LoaderFolder);
+            string[] directories = Directory.GetDirectories(GlobalConfig.Path_LoaderFolder);
 
             List<string> frameAnalysisFileList = new List<string>();
             foreach (string directory in directories)
@@ -42,7 +43,7 @@ namespace DBMT
 
             //int n = MainConfig.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
             //int n = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting, "FrameAnalysisFolderReserveNumber"); // 你想移除的元素数量
-            int n = MainConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
+            int n = GlobalConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
 
             if (n > 0 && frameAnalysisFileList.Count > n)
             {
@@ -58,7 +59,7 @@ namespace DBMT
             {
                 foreach (string directoryName in frameAnalysisFileList)
                 {
-                    string latestFrameAnalysisFolder = MainConfig.Path_LoaderFolder.Replace("/", "\\") + directoryName;
+                    string latestFrameAnalysisFolder = GlobalConfig.Path_LoaderFolder.Replace("/", "\\") + directoryName;
                     //FileSystem.DeleteDirectory(latestFrameAnalysisFolder, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
                     Directory.Delete(latestFrameAnalysisFolder, true);
                 }
@@ -69,7 +70,7 @@ namespace DBMT
 
         public static void CleanLogFiles()
         {
-            string logsPath = MainConfig.ApplicationRunPath + "Logs";
+            string logsPath = GlobalConfig.ApplicationRunPath + "Logs";
 
             if (!Directory.Exists(logsPath))
             {
@@ -95,7 +96,7 @@ namespace DBMT
 
             logFileList.Sort();
             //int n = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting,"FrameAnalysisFolderReserveNumber"); // 你想移除的元素数量
-            int n = MainConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
+            int n = GlobalConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
             if (n > 0 && logFileList.Count > n)
             {
                 logFileList.RemoveRange(logFileList.Count - n, n);

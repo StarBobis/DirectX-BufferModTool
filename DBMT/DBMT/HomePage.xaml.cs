@@ -17,7 +17,7 @@ using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.Storage.Pickers;
 using Windows.Storage;
-
+using DBMT_Core;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -37,7 +37,7 @@ namespace DBMT
 
         private void LocalizeLanguage()
         {
-            if (MainConfig.GameCfg.Value.Language == true)
+            if (GlobalConfig.GameCfg.Value.Language == true)
             {
                 TextBlock_Description.Text = "Developed By Trailblazers";
                 TextBlock_Documents.Text = "Documents";

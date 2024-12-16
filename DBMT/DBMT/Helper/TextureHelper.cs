@@ -12,7 +12,7 @@ namespace DBMT
     {
         public static string GetAutoTextureFormat()
         {
-            return MainConfig.TextureCfg.Value.AutoTextureFormat switch
+            return GlobalConfig.TextureCfg.Value.AutoTextureFormat switch
             {
                 0 => "jpg",
                 1 => "tga",
@@ -69,8 +69,8 @@ namespace DBMT
         public static async void ConvertDedupedTexturesToTargetFormat()
         {
 
-            string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
-            List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
+            string WorkSpacePath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "/";
+            List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
             foreach (string DrawIB in DrawIBList)
             {
                 //在这里把所有output目录下的dds转为png格式
@@ -92,8 +92,8 @@ namespace DBMT
         {
             try
             {
-                string WorkSpacePath = MainConfig.Path_OutputFolder + MainConfig.CurrentWorkSpace + "/";
-                List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(MainConfig.CurrentWorkSpace);
+                string WorkSpacePath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "/";
+                List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
                 foreach (string DrawIB in DrawIBList)
                 {
                     string DrawIBPath = WorkSpacePath + DrawIB + "/";
@@ -116,7 +116,7 @@ namespace DBMT
                         string[] filePathArray = Directory.GetFiles(outputDirectory);
                         foreach (string ddsFilePath in filePathArray)
                         {
-                            if (MainConfig.TextureCfg.Value.AutoTextureOnlyConvertDiffuseMap)
+                            if (GlobalConfig.TextureCfg.Value.AutoTextureOnlyConvertDiffuseMap)
                             {
                                 if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
                                 {
