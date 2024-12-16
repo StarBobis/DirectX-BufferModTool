@@ -70,7 +70,7 @@ namespace DBMT
         {
 
             string WorkSpacePath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "/";
-            List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
+            List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
             foreach (string DrawIB in DrawIBList)
             {
                 //在这里把所有output目录下的dds转为png格式
@@ -93,7 +93,7 @@ namespace DBMT
             try
             {
                 string WorkSpacePath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "/";
-                List<string> DrawIBList = ConfigHelper.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
+                List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
                 foreach (string DrawIB in DrawIBList)
                 {
                     string DrawIBPath = WorkSpacePath + DrawIB + "/";

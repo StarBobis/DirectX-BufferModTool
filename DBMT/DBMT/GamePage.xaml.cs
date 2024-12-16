@@ -198,18 +198,18 @@ namespace DBMT
 
         private void ReadPathSettingFromD3dxIni()
         {
-            ProcessPathTextBox.Text = ConfigHelper.ReadAttributeFromD3DXIni("target");
-            StarterPathTextBox.Text = ConfigHelper.ReadAttributeFromD3DXIni("launch");
-            TextBox_LaunchArgs.Text = ConfigHelper.ReadAttributeFromD3DXIni("launch_args");
+            ProcessPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni("target");
+            StarterPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni("launch");
+            TextBox_LaunchArgs.Text = D3dxIniConfig.ReadAttributeFromD3DXIni("launch_args");
         }
 
         private async void SavePathSettingsToD3dxIni(object sender, RoutedEventArgs e)
         {
             try
             {
-                ConfigHelper.SaveAttributeToD3DXIni("[loader]", "target", ProcessPathTextBox.Text);
-                ConfigHelper.SaveAttributeToD3DXIni("[loader]", "launch", StarterPathTextBox.Text);
-                ConfigHelper.SaveAttributeToD3DXIni("[loader]", "launch_args", TextBox_LaunchArgs.Text);
+                D3dxIniConfig.SaveAttributeToD3DXIni("[loader]", "target", ProcessPathTextBox.Text);
+                D3dxIniConfig.SaveAttributeToD3DXIni("[loader]", "launch", StarterPathTextBox.Text);
+                D3dxIniConfig.SaveAttributeToD3DXIni("[loader]", "launch_args", TextBox_LaunchArgs.Text);
 
                 await MessageHelper.Show("保存成功");
 

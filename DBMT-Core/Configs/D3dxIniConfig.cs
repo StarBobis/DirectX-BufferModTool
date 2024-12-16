@@ -1,46 +1,14 @@
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static DBMT.WorkPage;
-using DBMT_Core;
 
-namespace DBMT
+namespace DBMT_Core
 {
-    public static class ConfigHelper
+    public class D3dxIniConfig
     {
-        public static List<string> GetDrawIBListFromConfig(string WorkSpaceName)
-        {
-            List<string> drawIBListValues = new List<string>();
-
-            string Configpath = GlobalConfig.Path_OutputFolder + WorkSpaceName + "\\Config.json";
-            if (File.Exists(Configpath))
-            {
-                //切换到对应配置
-                string jsonData = File.ReadAllText(Configpath);
-                JArray DrawIBListJArray = JArray.Parse(jsonData);
-
-                foreach (JObject jkobj in DrawIBListJArray)
-                {
-                    string DrawIB = (string)jkobj["DrawIB"];
-                    drawIBListValues.Add(DrawIB);
-                }
-            }
-
-            return drawIBListValues;
-        }
-
-        public static string GetD3DXIniPath()
-        {
-            //string D3DXIniPath = "";
-            //D3DXIniPath = Path.Combine(MainConfig.Path_LoaderFolder, "d3dx.ini");
-            //return D3DXIniPath;
-
-            return GlobalConfig.Path_D3DXINI;
-        }
 
 
         public static string ReadAttributeFromD3DXIni(string AttributeName)
@@ -66,13 +34,13 @@ namespace DBMT
                         string target_path = splits[1];
                         return target_path;
                     }
-                    
+
                 }
             }
             return "";
         }
 
-        public static void SaveAttributeToD3DXIni(string SectionName,string AttributeName,string AttributeValue)
+        public static void SaveAttributeToD3DXIni(string SectionName, string AttributeName, string AttributeValue)
         {
             //string d3dxini_path = ConfigHelper.GetD3DXIniPath();
             string d3dxini_path = GlobalConfig.Path_D3DXINI;
@@ -81,7 +49,7 @@ namespace DBMT
             {
                 string OriginalAttributeValue = ReadAttributeFromD3DXIni(AttributeName);
                 //只有存在此属性时，写入才有意义，否则等于白写一遍原内容
-                if(OriginalAttributeValue.Trim() != "")
+                if (OriginalAttributeValue.Trim() != "")
                 {
                     List<string> newLines = new List<string>();
                     string[] lines = File.ReadAllLines(d3dxini_path);
@@ -108,7 +76,8 @@ namespace DBMT
                     foreach (string line in lines)
                     {
                         string trim_lower_line = line.Trim().ToLower();
-                        if (trim_lower_line.StartsWith(SectionName)){
+                        if (trim_lower_line.StartsWith(SectionName))
+                        {
                             newLines.Add(line);
                             string TargetPath = AttributeName + " = " + AttributeValue;
                             newLines.Add(TargetPath);
@@ -122,9 +91,5 @@ namespace DBMT
                 }
             }
         }
-
-
     }
-
-
 }
