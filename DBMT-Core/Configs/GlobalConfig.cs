@@ -113,7 +113,7 @@ namespace DBMT_Core
 
 
         ////当前程序运行所在位置的路径,注意这里已经包含了结尾的\\
-        public static string ApplicationRunPath = AppDomain.CurrentDomain.BaseDirectory.ToString();
+        public static string ApplicationRunPath = Directory.GetCurrentDirectory();
         public static string CurrentGameName => MainCfg.Value.GameName;
         public static string CurrentWorkSpace => MainCfg.Value.WorkSpaceName;
 
@@ -122,7 +122,7 @@ namespace DBMT_Core
 
         public static string Path_Base
         {
-            get { return ApplicationRunPath; }
+            get { return Directory.GetCurrentDirectory(); }
         }
 
         public static string Path_Game_ConfigJson
@@ -263,7 +263,10 @@ namespace DBMT_Core
             }
         }
 
-
+        public static string Path_DBMTLogFolder
+        {
+            get { return Path.Combine(Path_Base,"Logs\\"); }
+        }
 
 
 

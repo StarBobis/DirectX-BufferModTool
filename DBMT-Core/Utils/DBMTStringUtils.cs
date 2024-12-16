@@ -20,5 +20,22 @@ namespace DBMT_Core
             return regex.IsMatch(input);
         }
 
+        public static bool IsHashValue(string HashValue)
+        {
+            //3Dmigoto的Hash都是8位或16位
+            if (HashValue.Length  != 8 && HashValue.Length != 16)
+            {
+                return false;
+            }
+
+            //Hash肯定没中文
+            if (ContainsChinese(HashValue))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

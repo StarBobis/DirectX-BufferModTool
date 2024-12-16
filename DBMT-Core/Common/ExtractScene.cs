@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DBMT_Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DBMT_Core
 {
-    public class CoreFunctions
+    public partial class CoreFunctions
     {
 
         /// <summary>
@@ -14,8 +15,13 @@ namespace DBMT_Core
         /// </summary>
         public static void ExtractScene()
         {
+            LOG.Initialize();
 
-
+            LOG.Info("Test");
+            LOG.Info("Test2");
+            LOG.Info("Test3");
+            LOG.Info("Test4");
+            LOG.SaveFile();
         }
 
     }
