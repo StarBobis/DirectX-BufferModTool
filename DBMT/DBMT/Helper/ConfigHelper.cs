@@ -55,6 +55,13 @@ namespace DBMT
                     if (trim_lower_line.StartsWith(AttributeName) && trim_lower_line.Contains('='))
                     {
                         string[] splits = line.Split('=');
+
+                        string arg_name = splits[0].Trim();
+                        if (arg_name != AttributeName)
+                        {
+                            continue;
+                        }
+
                         string target_path = splits[1];
                         return target_path;
                     }
