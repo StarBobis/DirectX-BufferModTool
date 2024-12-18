@@ -26,6 +26,9 @@ namespace DBMT
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
+
+        bool ReadOver = false;
+
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -131,6 +134,7 @@ namespace DBMT
 
         public void ReadSettingsFromConfig()
         {
+            ReadOver = false;
             //防止程序启动时没正确读取，这里冗余读取一次，后面看情况可以去掉
             GlobalConfig.GameCfg.LoadConfig();
   
@@ -159,6 +163,8 @@ namespace DBMT
             ToggleSwitch_ForbidMoveRenderTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveRenderTextures;
             ToggleSwitch_ForbidAutoTexture.IsOn = GlobalConfig.GameCfg.Value.ForbidAutoTexture;
             ToggleSwitch_UseHashTexture.IsOn = GlobalConfig.GameCfg.Value.UseHashTexture;
+
+            ReadOver = true;
         }
 
         private async void ToggleSwitch_Language_Toggled(object sender, RoutedEventArgs e)
@@ -168,8 +174,68 @@ namespace DBMT
                 GlobalConfig.GameCfg.Value.Language = ToggleSwitch_Language.IsOn;
                 await MessageHelper.Show("将在页面缓存刷新后生效","Settings will effect after you refresh page cache.");
                 SaveSettingsToConfig();
-                ReadSettingsFromConfig();
             }
+        }
+
+        private void RefreshSettings(object sender, RoutedEventArgs e)
+        {
+            if (ReadOver)
+            {
+                SaveSettingsToConfig();
+            }
+            //ReadSettingsFromConfig();
+        }
+
+ 
+
+        private void TextBox_ModSwitchKey_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //失去焦点后检查内容如果和默认不一致就刷新
+            if (TextBox_ModSwitchKey.Text != GlobalConfig.GameCfg.Value.ModSwitchKey)
+            {
+                if (ReadOver)
+                {
+                    SaveSettingsToConfig();
+                }
+                    
+                //ReadSettingsFromConfig();
+            }
+        }
+
+        private void TextBox_AuthorLink_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (TextBox_AuthorLink.Text != GlobalConfig.GameCfg.Value.AuthorLink)
+            {
+                if (ReadOver)
+                {
+                    SaveSettingsToConfig();
+
+                }
+                //ReadSettingsFromConfig();
+            }
+        }
+
+        private void TextBox_Author_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (TextBox_Author.Text != GlobalConfig.GameCfg.Value.Author)
+            {
+                if (ReadOver)
+                {
+                    SaveSettingsToConfig();
+
+                }
+                //ReadSettingsFromConfig();
+            }
+        }
+
+        private void ComboBox_ModelFileNameStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ReadOver)
+            {
+                SaveSettingsToConfig();
+
+            }
+            //ReadSettingsFromConfig();
         }
     }
 }

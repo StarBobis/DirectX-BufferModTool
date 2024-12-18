@@ -313,6 +313,7 @@ namespace DBMT
             string WorkSpaceFolderPath = GlobalConfig.Path_OutputFolder + ComboBoxWorkSpaceSelection.Text;
             Directory.Delete(WorkSpaceFolderPath, true);
             Directory.CreateDirectory(WorkSpaceFolderPath);
+            InitializeWorkSpace();
             await MessageHelper.Show("清理成功", "Clean Success");
         }
 

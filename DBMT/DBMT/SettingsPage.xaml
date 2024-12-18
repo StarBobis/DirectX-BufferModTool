@@ -49,7 +49,7 @@
                     <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_AutoCleanFrameAnalysisFolder"  OnContent="" OffContent=""/>
 
                     <TextBlock x:Name="TextBlock_ModelNameStyle" Grid.Row="2" Grid.Column="0" Text="一键逆向时生成模型文件的命名风格" VerticalAlignment="Center" Margin="10,0,10,0"  />
-                    <ComboBox  x:Name="ComboBox_ModelFileNameStyle" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="" VerticalAlignment="Center" Margin="5,5,5,5">
+                    <ComboBox  x:Name="ComboBox_ModelFileNameStyle" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="" VerticalAlignment="Center" Margin="5,5,5,5" SelectionChanged="ComboBox_ModelFileNameStyle_SelectionChanged">
                         <x:String>Number</x:String>
                         <x:String>GIMI</x:String>
                     </ComboBox>
@@ -83,10 +83,10 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock x:Name="TextBlock_MoveDrawIBRelatedFiles" Grid.Column="0" Grid.Row="0" Text="移动DrawIB相关文件到output文件夹的IBRelatedFiles文件夹中" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_MoveIBRelatedFiles" OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_MoveIBRelatedFiles" OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     <TextBlock x:Name="TextBlock_DontSplitModelByMatchFirstIndex" Grid.Column="0" Grid.Row="1" Text="禁止根据IB的MatchFirstIndex来分割模型文件为不同部位" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_DontSplitModelByMatchFirstIndex"  OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_DontSplitModelByMatchFirstIndex"  OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     
                 </Grid>
@@ -108,22 +108,22 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock x:Name="TextBlock_GenerateSeperateMod" Grid.Column="0" Grid.Row="0" Text="生成Mod时，让每个Mod分开生成到对应DrawIB文件夹中" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_GenerateSeperatedMod"  OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_GenerateSeperatedMod"  OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,0,10,0">
                         <TextBlock x:Name="TextBlock_Author" Text="作者名称" VerticalAlignment="Center" Margin="0,0,10,0" />
-                        <TextBox  HorizontalAlignment="Stretch" Width="750" VerticalAlignment="Center" Margin="10,5,5,5" x:Name="TextBox_Author"/>
+                        <TextBox  HorizontalAlignment="Stretch" Width="750" VerticalAlignment="Center" Margin="10,5,5,5" x:Name="TextBox_Author" LostFocus="TextBox_Author_LostFocus"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Margin="10,0,10,0">
                         <TextBlock x:Name="TextBlock_AuthorLink" Text="赞助链接" VerticalAlignment="Center" Margin="0,0,10,0" />
-                        <TextBox HorizontalAlignment="Stretch" Width="750" VerticalAlignment="Center" Margin="10,5,5,5" x:Name="TextBox_AuthorLink"/>
+                        <TextBox HorizontalAlignment="Stretch" Width="750" VerticalAlignment="Center" Margin="10,5,5,5" x:Name="TextBox_AuthorLink" LostFocus="TextBox_AuthorLink_LostFocus"/>
                     </StackPanel>
                     
 
                     <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="10,0,10,0">
                         <TextBlock x:Name="TextBlock_AuthorSwitchKey"  Text="Mod分支默认切换按键" VerticalAlignment="Center" Margin="0,10,0,10" />
-                        <TextBox Height="100" AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,5,0,10" x:Name="TextBox_ModSwitchKey"/>
+                        <TextBox Height="100" AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,5,0,10" x:Name="TextBox_ModSwitchKey" LostFocus="TextBox_ModSwitchKey_LostFocus"/>
                     </StackPanel>
                    
                 </Grid>
@@ -149,7 +149,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock x:Name="TextBlock_GlobalTextureFormat" Grid.Row="0" Grid.Column="0" Text="全局贴图转换格式设置" VerticalAlignment="Center" Margin="10,0,10,0"  />
-                    <ComboBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ComboBox_AutoTextureFormat">
+                    <ComboBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ComboBox_AutoTextureFormat" >
                         <x:String>.jpg</x:String>
                         <x:String>.tga</x:String>
                         <x:String>.png</x:String>
@@ -162,19 +162,19 @@
                     <ToggleSwitch Grid.Column="1"  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ConvertDedupedTextures" OnContent="" OffContent=""/>
 
                     <TextBlock x:Name="TextBlock_ForbidMoveTrianglelistTextures" Grid.Column="0" Grid.Row="3" Text="提取模型时禁止移动TrianglelistTextures" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidMoveTrianglelistTextures" OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidMoveTrianglelistTextures" OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     <TextBlock x:Name="TextBlock_ForbidMoveDedupedTextures" Grid.Column="0" Grid.Row="4" Text="提取模型时禁止移动DedupedTextures" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidMoveDedupedTextures" OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidMoveDedupedTextures" OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     <TextBlock x:Name="TextBlock_ForbidMoveRenderTextures" Grid.Column="0" Grid.Row="5" Text="提取模型时禁止移动RenderTextures" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidMoveRenderTextures" OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidMoveRenderTextures" OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     <TextBlock x:Name="TextBlock_ForbidAuthTextures" Grid.Column="0" Grid.Row="6" Text="Mod生成时禁止使用自动ini贴图流程功能" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidAutoTexture" OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidAutoTexture" OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     <TextBlock x:Name="TextBlock_UseHashStyleTexture" Grid.Column="0" Grid.Row="7" Text="Mod生成时使用基于Hash值的全局贴图替换" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_UseHashTexture" OnContent="" OffContent=""/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_UseHashTexture" OnContent="" OffContent=""  Toggled="RefreshSettings"/>
 
                 </Grid>
             </Border>
