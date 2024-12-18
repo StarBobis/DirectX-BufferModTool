@@ -6,10 +6,10 @@ Home Page
 Fast Start Page
 ![image](https://github.com/user-attachments/assets/4c2dba43-0edf-4208-b3ac-44f69b14044f)
 
-Workbench
+Work Page
 ![image](https://github.com/user-attachments/assets/d02923fb-c626-4748-9ce7-6d4924f50cbe)
 
-Settings
+Settings Page
 ![image](https://github.com/user-attachments/assets/9eff3dc9-5cd1-4dda-bfac-2153c65d40c5)
 
 # Test & Development & FeedBack.
