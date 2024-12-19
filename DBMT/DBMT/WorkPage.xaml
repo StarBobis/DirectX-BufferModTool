@@ -162,7 +162,7 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
                             <Button x:Name="Button_AutoDetectDrawIBList" Content="自动检测DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="AutoDetectPointlistDrawIBList_UnityVSPreSkinning"/>
                             <Button x:Name="Button_SaveDrawIBList" Content="保存当前DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="SaveDrawIBListToConfig"/>
                             <Button x:Name="Button_ExtractModel" Content="提取模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="ExtractModel"/>
-                            <Button x:Name="Button_GenerateMod" Content="生成二创模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="GenerateMod"/>
+                            <!--<Button x:Name="Button_GenerateMod" Content="生成二创模型" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="GenerateMod"/>-->
                         </StackPanel>
                     </Grid>
                     

@@ -107,7 +107,7 @@ namespace DBMT
                 Button_AutoDetectDrawIBList.Content = "Auto Fill DrawIB List";
                 Button_SaveDrawIBList.Content = "Save DrawIB List";
                 Button_ExtractModel.Content = "Extract Model";
-                Button_GenerateMod.Content = "Generate Mod";
+                //Button_GenerateMod.Content = "Generate Mod";
 
                 TextBlock_SkipIBList.Text = "SkipIB List:";
                 Button_CleanSkipIBList.Content = "Initialize SkipIB List";
@@ -452,24 +452,24 @@ namespace DBMT
         }
 
 
-        public async void GenerateMod(object sender, RoutedEventArgs e)
-        {
-            if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
-            {
-                await MessageHelper.Show("请先选择工作空间");
-                return;
-            }
+        //public async void GenerateMod(object sender, RoutedEventArgs e)
+        //{
+        //    if (ComboBoxWorkSpaceSelection.Text.Trim() == "")
+        //    {
+        //        await MessageHelper.Show("请先选择工作空间");
+        //        return;
+        //    }
 
-            bool RunResult = await CommandHelper.runCommand("split");
-            if (RunResult)
-            {
-                OpenWorkSpaceGenerateModFolder(sender, e);
-            }
-            else
-            {
-                OpenLatestLogFile(sender, e);
-            }
-        }
+        //    bool RunResult = await CommandHelper.runCommand("split");
+        //    if (RunResult)
+        //    {
+        //        OpenWorkSpaceGenerateModFolder(sender, e);
+        //    }
+        //    else
+        //    {
+        //        OpenLatestLogFile(sender, e);
+        //    }
+        //}
 
 
         public async void OpenWorkSpaceGenerateModFolder(object sender, RoutedEventArgs e)
