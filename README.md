@@ -30,3 +30,18 @@ QQ交流群: 894808210 或者直接提issue
 与MOD制作相关的技术文档：[MOD技术文档](https://www.yuque.com/zelbert/egu6ei)
 
 
+# 第三方程序
+
+> 在使用从我们GitHub发布页面下载的DBMT发行包之前，您应当了解并注意以下一些第三方程序。
+DBMT包含一个插件文件夹，默认情况下其中包含了两个闭源的第三方程序。
+这些程序对于DBMT的正常运行是必要的，请自行承担使用风险。
+
+> DBMT.exe (核心数据提取逻辑采用C++编写以达到最高速度，开发者：NicoMico。)
+
+> texconv.exe ([https://github.com/microsoft/DirectXTex/wiki/Texconv](https://github.com/microsoft/DirectXTex/wiki/Texconv))
+
+# 免责声明
+
+本工具按“原样”提供，不提供任何形式的保证，无论是明示还是暗示，包括但不限于适销性、特定用途适用性和非侵权的保证。
+在任何情况下，作者或版权持有者不对任何索赔、损害或其他责任负责，无论该责任是否因合同行为、侵权行为或其他原因引起，
+也无论是否与软件有关或因使用软件或其他交易而产生。

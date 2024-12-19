@@ -25,8 +25,18 @@ DBMT's tutorial document [DBMT Document](https://www.yuque.com/airde/lx53p6)
 MOD production related [MOD Technical documentation](https://www.yuque.com/zelbert/egu6ei)
 
 # Third Party Program
-> **Warning** You should notice before use DBMT, DBMT contains a Plugins folder,it default contains two closed source program:
+> Here are some third party programs you should know and notice before use DBMT release package download from our github release page, 
+DBMT contains a Plugins folder,it default contains two close source third party program,
+It's necessary to have them so DBMT can work properly, so take your own risk.
 
-> DBMT.exe (Core Data Extract Logic Write By NicoMico with C++.)
+> DBMT.exe (Core data extract logic write with C++ for maximum speed,Developed By NicoMico.)
 
 > texconv.exe (https://github.com/microsoft/DirectXTex/wiki/Texconv)
+
+# Disclaimer
+THIS TOOL IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
