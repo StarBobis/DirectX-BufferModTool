@@ -53,9 +53,17 @@
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE793;"/>
                 </Button>
             </Border>
+            <MenuBar Grid.Row="0" Grid.Column="1" Margin="0,5,370,0" HorizontalAlignment="Right">
+                <MenuBarItem Title="运行" x:Name="Menu_Run" >
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderEXE" Text="3Dmigoto Loader.exe" Click="Open3DmigotoLoaderEXE"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderPY" Text="3Dmigoto Loader.py" Click="Open3DmigotoLoaderPY"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderByPassACE" Text="3Dmigoto Loader-ByPassACE.exe" Click="Open3DmigotoLoaderByPassACE"/>
+                </MenuBarItem>
+
+            </MenuBar>
 
             <!-- 顶部菜单 -->
-            <MenuBar Grid.Row="0" Grid.Column="0" Margin="10,0,0,0">
+            <MenuBar Grid.Row="0" Grid.Column="0" Margin="10,5,0,0">
                 <MenuBarItem Title="文件" x:Name="Menu_File">
                     <MenuFlyoutItem x:Name="Menu_OpenWorkSpaceGeneratedModFolder" Text="打开当前工作空间生成Mod的文件夹" Click="OpenWorkSpaceGenerateModFolder"/>
                     <MenuFlyoutItem x:Name="Menu_OpenModsFolder" Text="打开Mods文件夹" Click="OpenModsFolder"/>
@@ -92,11 +100,7 @@
                     <MenuFlyoutItem Text="一键加密ini文件" Click="Encryption_EncryptIni"/>
                 </MenuBarItem>
 
-                <MenuBarItem Title="运行" x:Name="Menu_Run" >
-                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderEXE" Text="3Dmigoto Loader.exe" Click="Open3DmigotoLoaderEXE"/>
-                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderPY" Text="3Dmigoto Loader.py" Click="Open3DmigotoLoaderPY"/>
-                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderByPassACE" Text="3Dmigoto Loader-ByPassACE.exe" Click="Open3DmigotoLoaderByPassACE"/>
-                </MenuBarItem>
+            
 
                 <MenuBarItem x:Name="Menu_Ripper" Title="特殊提取">
                     <MenuFlyoutItem x:Name="Menu_ExtractScene" Text="一键提取场景物体" Click="ExtractScene"/>

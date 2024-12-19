@@ -196,10 +196,16 @@ namespace DBMT
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
-
-            //Width and Height need extra 16px.
-            GlobalConfig.GameCfg.Value.WindowWidth = App.m_window.AppWindow.Size.Width - 15;
-            GlobalConfig.GameCfg.Value.WindowHeight = App.m_window.AppWindow.Size.Height - 40;
+            int WindowWidth = App.m_window.AppWindow.Size.Width - 16;
+            int WindowHeight = App.m_window.AppWindow.Size.Height - 40;
+            
+            //只有窗口高度大于0时才会记忆
+            if (GlobalConfig.GameCfg.Value.WindowHeight > 0)
+            {
+                GlobalConfig.GameCfg.Value.WindowWidth = WindowWidth;
+                GlobalConfig.GameCfg.Value.WindowHeight = WindowHeight;
+            }
+          
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
