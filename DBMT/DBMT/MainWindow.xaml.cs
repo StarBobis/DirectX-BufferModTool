@@ -48,6 +48,15 @@ namespace DBMT
             int actualWidth = (int)(logicalWidth );
             int actualHeight = (int)(logicalHeight );
 
+            if (actualHeight < 600)
+            {
+                actualHeight = 600;
+            }
+            if(actualWidth < 1000)
+            {
+                actualWidth = 1000;
+            }
+
             // 设置窗口大小
             AppWindow.ResizeClient(new SizeInt32(actualWidth, actualHeight));
 
@@ -199,12 +208,9 @@ namespace DBMT
             int WindowWidth = App.m_window.AppWindow.Size.Width - 16;
             int WindowHeight = App.m_window.AppWindow.Size.Height - 40;
             
-            //只有窗口高度大于0时才会记忆
-            if (GlobalConfig.GameCfg.Value.WindowHeight > 0)
-            {
-                GlobalConfig.GameCfg.Value.WindowWidth = WindowWidth;
-                GlobalConfig.GameCfg.Value.WindowHeight = WindowHeight;
-            }
+            
+            GlobalConfig.GameCfg.Value.WindowWidth = WindowWidth;
+            GlobalConfig.GameCfg.Value.WindowHeight = WindowHeight;
           
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
