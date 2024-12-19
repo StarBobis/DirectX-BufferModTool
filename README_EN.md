@@ -24,3 +24,5 @@ DBMT's tutorial document£º[DBMT Document](https://www.yuque.com/airde/lx53p6)
 
 MOD production related£º[MOD Technical documentation](https://www.yuque.com/zelbert/egu6ei)
 
+# Third Party Program
+> **Warning** You should know before use。
