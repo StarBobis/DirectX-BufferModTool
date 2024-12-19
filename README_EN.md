@@ -15,7 +15,7 @@ Settings Page
 # Test & Development & FeedBack.
 QQ Group: 894808210
 
-# MOD Correlation
+# Documents
 DBMT's Blender Plugin.[Catter](https://github.com/StarBobis/Catter)
 
 Great Mod Manager [XXMM](https://github.com/XiaoLinXiaoZhu/XX-Mod-Manager)
