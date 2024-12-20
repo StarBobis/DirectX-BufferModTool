@@ -107,7 +107,7 @@ namespace DBMT
                 Button_AutoDetectDrawIBList.Content = "Auto Fill DrawIB List";
                 Button_SaveDrawIBList.Content = "Save DrawIB List";
                 Button_ExtractModel.Content = "Extract Model";
-                Button_GenerateMod.Content = "Generate Mod";
+                //Button_GenerateMod.Content = "Generate Mod";
 
                 TextBlock_SkipIBList.Text = "SkipIB List:";
                 Button_CleanSkipIBList.Content = "Initialize SkipIB List";
@@ -198,14 +198,14 @@ namespace DBMT
                 {
                     Menu_Open3DmigotoLoaderByPassACE.Visibility = Visibility.Collapsed;
                 }
-                if (File.Exists(GlobalConfig.Path_PluginsFolder + "DBMT-Pro.exe") || File.Exists(GlobalConfig.Path_PluginsFolder + "DBMT-Pro.vmp.exe"))
-                {
-                    Button_GenerateMod.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    Button_GenerateMod.Visibility = Visibility.Collapsed;
-                }
+                //if (File.Exists(GlobalConfig.Path_PluginsFolder + "DBMT-Pro.exe") || File.Exists(GlobalConfig.Path_PluginsFolder + "DBMT-Pro.vmp.exe"))
+                //{
+                //    Button_GenerateMod.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    Button_GenerateMod.Visibility = Visibility.Collapsed;
+                //}
 
             }
         }
