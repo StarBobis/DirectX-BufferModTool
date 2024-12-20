@@ -93,7 +93,7 @@
             </Border>
 
 
-            <!-- 其它配置项 -->
+            <!-- 其它配置项 --><!--
             <Border Margin="0,3" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Height="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -127,7 +127,7 @@
                     </StackPanel>
                    
                 </Grid>
-            </Border>
+            </Border>-->
 
 
             <!-- 贴图配置项 -->
@@ -170,11 +170,11 @@
                     <TextBlock x:Name="TextBlock_ForbidMoveRenderTextures" Grid.Column="0" Grid.Row="5" Text="提取模型时禁止移动RenderTextures" VerticalAlignment="Center" Margin="10,0,10,0" />
                     <ToggleSwitch Grid.Column="1"  Grid.Row="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidMoveRenderTextures" OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
-                    <TextBlock x:Name="TextBlock_ForbidAuthTextures" Grid.Column="0" Grid.Row="6" Text="Mod生成时禁止使用自动ini贴图流程功能" VerticalAlignment="Center" Margin="10,0,10,0" />
+                    <!--<TextBlock x:Name="TextBlock_ForbidAuthTextures" Grid.Column="0" Grid.Row="6" Text="Mod生成时禁止使用自动ini贴图流程功能" VerticalAlignment="Center" Margin="10,0,10,0" />
                     <ToggleSwitch Grid.Column="1"  Grid.Row="6" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_ForbidAutoTexture" OnContent="" OffContent="" Toggled="RefreshSettings"/>
 
                     <TextBlock x:Name="TextBlock_UseHashStyleTexture" Grid.Column="0" Grid.Row="7" Text="Mod生成时使用基于Hash值的全局贴图替换" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_UseHashTexture" OnContent="" OffContent=""  Toggled="RefreshSettings"/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="7" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_UseHashTexture" OnContent="" OffContent=""  Toggled="RefreshSettings"/>-->
 
                 </Grid>
             </Border>

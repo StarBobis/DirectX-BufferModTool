@@ -61,10 +61,10 @@ namespace DBMT
                 TextBlock_MoveDrawIBRelatedFiles.Text = "Move DrawIB RelatedFiles to 'output' Folder";
                 TextBlock_DontSplitModelByMatchFirstIndex.Text = "Don't Split DrawIB By MatchFirstIndex at ModelExtract";
 
-                TextBlock_GenerateSeperateMod.Text = "Generate Mod To Seperate DrawIB Folders";
-                TextBlock_Author.Text = "Author:";
-                TextBlock_AuthorLink.Text = "Sponser Link:";
-                TextBlock_AuthorSwitchKey.Text = "Mod Default Swtich Keys";
+                //TextBlock_GenerateSeperateMod.Text = "Generate Mod To Seperate DrawIB Folders";
+                //TextBlock_Author.Text = "Author:";
+                //TextBlock_AuthorLink.Text = "Sponser Link:";
+                //TextBlock_AuthorSwitchKey.Text = "Mod Default Swtich Keys";
 
                 TextBlock_GlobalTextureFormat.Text = "Global Texture Convert Settings";
                 TextBlock_OnlyConvertDiffuseMap.Text = "Only Convert DiffuseMap.dds After ModelExtract";
@@ -72,8 +72,8 @@ namespace DBMT
                 TextBlock_ForbidMoveTrianglelistTextures.Text = "Forbid Move TrianglelistTextures After ModelExtract";
                 TextBlock_ForbidMoveDedupedTextures.Text = "Forbid Move DedupedTextures After ModelExtract";
                 TextBlock_ForbidMoveRenderTextures.Text = "Forbid Move RenderTextures After ModelExtract";
-                TextBlock_ForbidAuthTextures.Text = "Forbid Use AutoTextures At GenerateMod";
-                TextBlock_UseHashStyleTexture.Text = "Use Hash Style Textures At GenerateMod";
+                //TextBlock_ForbidAuthTextures.Text = "Forbid Use AutoTextures At GenerateMod";
+                //TextBlock_UseHashStyleTexture.Text = "Use Hash Style Textures At GenerateMod";
             }
         }
 
@@ -113,10 +113,10 @@ namespace DBMT
             GlobalConfig.GameCfg.Value.MoveIBRelatedFiles = ToggleSwitch_MoveIBRelatedFiles.IsOn;
             GlobalConfig.GameCfg.Value.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
 
-            GlobalConfig.GameCfg.Value.GenerateSeperatedMod = ToggleSwitch_GenerateSeperatedMod.IsOn;
-            GlobalConfig.GameCfg.Value.Author = TextBox_Author.Text;
-            GlobalConfig.GameCfg.Value.AuthorLink = TextBox_AuthorLink.Text;
-            GlobalConfig.GameCfg.Value.ModSwitchKey = TextBox_ModSwitchKey.Text;
+            //GlobalConfig.GameCfg.Value.GenerateSeperatedMod = ToggleSwitch_GenerateSeperatedMod.IsOn;
+            //GlobalConfig.GameCfg.Value.Author = TextBox_Author.Text;
+            //GlobalConfig.GameCfg.Value.AuthorLink = TextBox_AuthorLink.Text;
+            //GlobalConfig.GameCfg.Value.ModSwitchKey = TextBox_ModSwitchKey.Text;
 
             GlobalConfig.GameCfg.Value.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex;
             GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
@@ -124,8 +124,8 @@ namespace DBMT
             GlobalConfig.GameCfg.Value.ForbidMoveTrianglelistTextures = ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn;
             GlobalConfig.GameCfg.Value.ForbidMoveDedupedTextures = ToggleSwitch_ForbidMoveDedupedTextures.IsOn;
             GlobalConfig.GameCfg.Value.ForbidMoveRenderTextures = ToggleSwitch_ForbidMoveRenderTextures.IsOn;
-            GlobalConfig.GameCfg.Value.ForbidAutoTexture = ToggleSwitch_ForbidAutoTexture.IsOn;
-            GlobalConfig.GameCfg.Value.UseHashTexture = ToggleSwitch_UseHashTexture.IsOn;
+            //GlobalConfig.GameCfg.Value.ForbidAutoTexture = ToggleSwitch_ForbidAutoTexture.IsOn;
+            //GlobalConfig.GameCfg.Value.UseHashTexture = ToggleSwitch_UseHashTexture.IsOn;
 
             // 保存配置
             GlobalConfig.GameCfg.SaveConfig();
@@ -150,10 +150,10 @@ namespace DBMT
             ToggleSwitch_MoveIBRelatedFiles.IsOn = GlobalConfig.GameCfg.Value.MoveIBRelatedFiles;
             ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.GameCfg.Value.DontSplitModelByMatchFirstIndex;
 
-            ToggleSwitch_GenerateSeperatedMod.IsOn = GlobalConfig.GameCfg.Value.GenerateSeperatedMod;
-            TextBox_Author.Text = GlobalConfig.GameCfg.Value.Author;
-            TextBox_AuthorLink.Text = GlobalConfig.GameCfg.Value.AuthorLink;
-            TextBox_ModSwitchKey.Text = GlobalConfig.GameCfg.Value.ModSwitchKey;
+            //ToggleSwitch_GenerateSeperatedMod.IsOn = GlobalConfig.GameCfg.Value.GenerateSeperatedMod;
+            //TextBox_Author.Text = GlobalConfig.GameCfg.Value.Author;
+            //TextBox_AuthorLink.Text = GlobalConfig.GameCfg.Value.AuthorLink;
+            //TextBox_ModSwitchKey.Text = GlobalConfig.GameCfg.Value.ModSwitchKey;
 
             ComboBox_AutoTextureFormat.SelectedIndex = GlobalConfig.GameCfg.Value.AutoTextureFormat;
             ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap;
@@ -161,8 +161,8 @@ namespace DBMT
             ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveTrianglelistTextures;
             ToggleSwitch_ForbidMoveDedupedTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveDedupedTextures;
             ToggleSwitch_ForbidMoveRenderTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveRenderTextures;
-            ToggleSwitch_ForbidAutoTexture.IsOn = GlobalConfig.GameCfg.Value.ForbidAutoTexture;
-            ToggleSwitch_UseHashTexture.IsOn = GlobalConfig.GameCfg.Value.UseHashTexture;
+            //ToggleSwitch_ForbidAutoTexture.IsOn = GlobalConfig.GameCfg.Value.ForbidAutoTexture;
+            //ToggleSwitch_UseHashTexture.IsOn = GlobalConfig.GameCfg.Value.UseHashTexture;
 
             ReadOver = true;
         }
@@ -188,45 +188,45 @@ namespace DBMT
 
  
 
-        private void TextBox_ModSwitchKey_LostFocus(object sender, RoutedEventArgs e)
-        {
-            //失去焦点后检查内容如果和默认不一致就刷新
-            if (TextBox_ModSwitchKey.Text != GlobalConfig.GameCfg.Value.ModSwitchKey)
-            {
-                if (ReadOver)
-                {
-                    SaveSettingsToConfig();
-                }
+        //private void TextBox_ModSwitchKey_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    //失去焦点后检查内容如果和默认不一致就刷新
+        //    if (TextBox_ModSwitchKey.Text != GlobalConfig.GameCfg.Value.ModSwitchKey)
+        //    {
+        //        if (ReadOver)
+        //        {
+        //            SaveSettingsToConfig();
+        //        }
                     
-                //ReadSettingsFromConfig();
-            }
-        }
+        //        //ReadSettingsFromConfig();
+        //    }
+        //}
 
-        private void TextBox_AuthorLink_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (TextBox_AuthorLink.Text != GlobalConfig.GameCfg.Value.AuthorLink)
-            {
-                if (ReadOver)
-                {
-                    SaveSettingsToConfig();
+        //private void TextBox_AuthorLink_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (TextBox_AuthorLink.Text != GlobalConfig.GameCfg.Value.AuthorLink)
+        //    {
+        //        if (ReadOver)
+        //        {
+        //            SaveSettingsToConfig();
 
-                }
-                //ReadSettingsFromConfig();
-            }
-        }
+        //        }
+        //        //ReadSettingsFromConfig();
+        //    }
+        //}
 
-        private void TextBox_Author_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (TextBox_Author.Text != GlobalConfig.GameCfg.Value.Author)
-            {
-                if (ReadOver)
-                {
-                    SaveSettingsToConfig();
+        //private void TextBox_Author_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    if (TextBox_Author.Text != GlobalConfig.GameCfg.Value.Author)
+        //    {
+        //        if (ReadOver)
+        //        {
+        //            SaveSettingsToConfig();
 
-                }
-                //ReadSettingsFromConfig();
-            }
-        }
+        //        }
+        //        //ReadSettingsFromConfig();
+        //    }
+        //}
 
         private void ComboBox_ModelFileNameStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
