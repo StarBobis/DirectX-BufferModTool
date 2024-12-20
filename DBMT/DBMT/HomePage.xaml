@@ -37,23 +37,51 @@
             <TextBlock x:Name="TextBlock_Description" Text="--- 愿此行，终抵群星。" FontSize="12" Margin="0,5,0,15" Foreground="White" />
             <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
                 <Button Click="OpenLinkButtonClick"  Tag="https://www.yuque.com/airde/lx53p6">
+                    <!--<Button.Background>
+                        <AcrylicBrush TintColor="LightBlue" 
+          TintOpacity="0.0" 
+          FallbackColor="Transparent"/>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <ThemeShadow />
+                    </Button.Shadow>-->
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Document" Margin="0,0,5,0"/>
                         <TextBlock x:Name="TextBlock_Documents" Text="DBMT使用文档" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
                 <Button Click="OpenLinkButtonClick" Tag="https://github.com/StarBobis/DirectX-BufferModTool">
+                    <!--<Button.Background>
+                        <AcrylicBrush TintColor="LightBlue" 
+          TintOpacity="0.0" 
+          FallbackColor="Transparent"/>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <ThemeShadow />
+                    </Button.Shadow>-->
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="View" Margin="0,0,5,0"/>
                         <TextBlock x:Name="TextBlock_Github" Text="Github源码" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+
+           
                 <Button Click="OpenLinkButtonClick" Tag="https://github.com/StarBobis/Catter/">
+                    <!--<Button.Background>
+                        <AcrylicBrush TintColor="LightBlue" 
+                              TintOpacity="0.0" 
+                              FallbackColor="Transparent"/>
+                    </Button.Background>
+                    <Button.Shadow>
+                        <ThemeShadow />
+                    </Button.Shadow>-->
+                    
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="View" Margin="0,0,5,0"/>
                         <TextBlock x:Name="TextBlock_TechniqueSupport" Text="Catter插件" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
+                
                 <Button Click="OpenLinkButtonClick" Tag="https://github.com/StarBobis/DirectX-BufferModTool/issues">
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Add" Margin="0,0,5,0"/>
