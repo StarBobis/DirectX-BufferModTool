@@ -43,7 +43,7 @@
 
                     <StackPanel  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10,0,10,0" Orientation="Horizontal">
                         <TextBlock x:Name="TextBlock_CleanFrameAnalysisFolderBeforeQuit" Text="退出DBMT之前自动清理Dump生成的FrameAnalysis文件夹" VerticalAlignment="Center" />
-                        <TextBlock x:Name="TextBlock_FrameAnalysisFolderReserveNumber"  Text="保留FraemAnalysis文件数量" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TextBlock_FrameAnalysisFolderReserveNumber"  Text="保留FraemAnalysis文件夹数量" Margin="20,0,0,0" VerticalAlignment="Center"/>
                         <NumberBox x:Name="NumberBox_FrameAnalysisFolderReserveNumber" Margin="20,0,0,0"  PlaceholderText="0"  SmallChange="1"  LargeChange="10" />
                     </StackPanel>
                     <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_AutoCleanFrameAnalysisFolder"  OnContent="" OffContent=""/>
