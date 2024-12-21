@@ -2,6 +2,8 @@
 
 DBMT全新GUI界面，基于C# & WinUI3。
 
+DBMT所有功能全部由用户设计，可以在issue中留下你的改进建议。
+
 # DirectX Buffer Mod Tool
 
 主页
