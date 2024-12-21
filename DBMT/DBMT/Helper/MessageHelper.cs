@@ -9,8 +9,10 @@ using DBMT_Core;
 
 namespace DBMT
 {
+    
     public static class MessageHelper
     {
+        //TODO 使用MessageDialog的方式弹出对话框有BUG！如果启动了3Dmigoto Loader.exe的话再弹出对话框就全是白屏了，原因未知
         public static async Task<bool> Show(string ContentChinese,string ContentEnglish="")
         {
             var messageDialog = new MessageDialog(ContentChinese, "提示");

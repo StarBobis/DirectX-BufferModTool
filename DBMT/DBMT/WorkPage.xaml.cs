@@ -322,7 +322,7 @@ namespace DBMT
             Directory.Delete(WorkSpaceFolderPath, true);
             Directory.CreateDirectory(WorkSpaceFolderPath);
             InitializeWorkSpace();
-            await MessageHelper.Show("清理成功", "Clean Success");
+            _ = await MessageHelper.Show("清理成功", "Clean Success");
         }
 
         public async void OpenCurrentWorkSpaceFolder(object sender, RoutedEventArgs e)
