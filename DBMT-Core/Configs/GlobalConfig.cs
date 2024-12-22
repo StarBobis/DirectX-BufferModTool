@@ -65,6 +65,9 @@ namespace DBMT_Core
         public bool Language { get; set; } = true;
         public double WindowWidth { get; set; } = 1000;
         public double WindowHeight { get; set; } = 600;
+        public int WindowPositionX { get; set; } = -1;
+        public int WindowPositionY { get; set; } = -1;
+
         public float GamePageBackGroundImageOpacity { get; set; } = 0.6f;
         public float WorkPageBackGroundImageOpacity { get; set; } = 0.3f;
         public bool StartToWorkPage { get; set; } = false;

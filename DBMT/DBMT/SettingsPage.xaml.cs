@@ -113,10 +113,6 @@ namespace DBMT
             GlobalConfig.GameCfg.Value.MoveIBRelatedFiles = ToggleSwitch_MoveIBRelatedFiles.IsOn;
             GlobalConfig.GameCfg.Value.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
 
-            //GlobalConfig.GameCfg.Value.GenerateSeperatedMod = ToggleSwitch_GenerateSeperatedMod.IsOn;
-            //GlobalConfig.GameCfg.Value.Author = TextBox_Author.Text;
-            //GlobalConfig.GameCfg.Value.AuthorLink = TextBox_AuthorLink.Text;
-            //GlobalConfig.GameCfg.Value.ModSwitchKey = TextBox_ModSwitchKey.Text;
 
             GlobalConfig.GameCfg.Value.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex;
             GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
@@ -124,8 +120,7 @@ namespace DBMT
             GlobalConfig.GameCfg.Value.ForbidMoveTrianglelistTextures = ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn;
             GlobalConfig.GameCfg.Value.ForbidMoveDedupedTextures = ToggleSwitch_ForbidMoveDedupedTextures.IsOn;
             GlobalConfig.GameCfg.Value.ForbidMoveRenderTextures = ToggleSwitch_ForbidMoveRenderTextures.IsOn;
-            //GlobalConfig.GameCfg.Value.ForbidAutoTexture = ToggleSwitch_ForbidAutoTexture.IsOn;
-            //GlobalConfig.GameCfg.Value.UseHashTexture = ToggleSwitch_UseHashTexture.IsOn;
+   
 
             // 保存配置
             GlobalConfig.GameCfg.SaveConfig();
@@ -150,19 +145,12 @@ namespace DBMT
             ToggleSwitch_MoveIBRelatedFiles.IsOn = GlobalConfig.GameCfg.Value.MoveIBRelatedFiles;
             ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.GameCfg.Value.DontSplitModelByMatchFirstIndex;
 
-            //ToggleSwitch_GenerateSeperatedMod.IsOn = GlobalConfig.GameCfg.Value.GenerateSeperatedMod;
-            //TextBox_Author.Text = GlobalConfig.GameCfg.Value.Author;
-            //TextBox_AuthorLink.Text = GlobalConfig.GameCfg.Value.AuthorLink;
-            //TextBox_ModSwitchKey.Text = GlobalConfig.GameCfg.Value.ModSwitchKey;
-
             ComboBox_AutoTextureFormat.SelectedIndex = GlobalConfig.GameCfg.Value.AutoTextureFormat;
             ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap;
             ToggleSwitch_ConvertDedupedTextures.IsOn = GlobalConfig.GameCfg.Value.ConvertDedupedTextures;
             ToggleSwitch_ForbidMoveTrianglelistTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveTrianglelistTextures;
             ToggleSwitch_ForbidMoveDedupedTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveDedupedTextures;
             ToggleSwitch_ForbidMoveRenderTextures.IsOn = GlobalConfig.GameCfg.Value.ForbidMoveRenderTextures;
-            //ToggleSwitch_ForbidAutoTexture.IsOn = GlobalConfig.GameCfg.Value.ForbidAutoTexture;
-            //ToggleSwitch_UseHashTexture.IsOn = GlobalConfig.GameCfg.Value.UseHashTexture;
 
             ReadOver = true;
         }

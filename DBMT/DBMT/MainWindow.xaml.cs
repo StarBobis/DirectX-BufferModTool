@@ -140,7 +140,7 @@ namespace DBMT
             }
         }
 
-        private void MoveWindowToCenterScreen()
+        private void MoveWindowToCenterScreenOld()
         {
             if (this.AppWindow != null)
             {
@@ -156,6 +156,36 @@ namespace DBMT
 
                 // 设置窗口位置
                 this.AppWindow.Move(new PointInt32 { X = x, Y = y });
+            }
+        }
+
+        private void MoveWindowToCenterScreen()
+        {
+            if (this.AppWindow != null)
+            {
+                // 获取与窗口关联的DisplayArea
+                var displayArea = DisplayArea.GetFromWindowId(this.AppWindow.Id, DisplayAreaFallback.Nearest);
+
+                // 确保我们获取的是正确的显示器信息
+                if (displayArea != null)
+                {
+                    // 获取窗口当前的尺寸
+                    var windowSize = this.AppWindow.Size;
+
+                    // 计算窗口居中所需的左上角坐标，考虑显示器的实际工作区（排除任务栏等）
+                    int x = (int)(displayArea.WorkArea.X + (displayArea.WorkArea.Width - windowSize.Width) / 2);
+                    int y = (int)(displayArea.WorkArea.Y + (displayArea.WorkArea.Height - windowSize.Height) / 2);
+
+                    // 设置窗口位置
+                    this.AppWindow.Move(new PointInt32 { X = x, Y = y });
+                }
+            }
+
+            int window_pos_x = GlobalConfig.GameCfg.Value.WindowPositionX;
+            int window_pos_y = GlobalConfig.GameCfg.Value.WindowPositionY;
+            if (window_pos_x != -1 && window_pos_y != -1)
+            {
+                this.AppWindow.Move(new PointInt32(window_pos_x, window_pos_y));
             }
         }
 
@@ -205,13 +235,26 @@ namespace DBMT
 
         private void Window_Closed(object sender, WindowEventArgs args)
         {
+            //保存窗口大小
             int WindowWidth = App.m_window.AppWindow.Size.Width - 16;
             int WindowHeight = App.m_window.AppWindow.Size.Height - 40;
-            
-            
             GlobalConfig.GameCfg.Value.WindowWidth = WindowWidth;
             GlobalConfig.GameCfg.Value.WindowHeight = WindowHeight;
-          
+
+            //保存窗口位置
+            if (this.AppWindow != null)
+            {
+                // 获取窗口当前位置
+                PointInt32 position = this.AppWindow.Position;
+
+                // position.X 和 position.Y 分别是窗口左上角的X和Y坐标
+                int x = position.X;
+                int y = position.Y;
+
+                GlobalConfig.GameCfg.Value.WindowPositionX = x;
+                GlobalConfig.GameCfg.Value.WindowPositionY = y;
+            }
+
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
