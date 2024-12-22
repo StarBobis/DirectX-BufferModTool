@@ -59,6 +59,10 @@ namespace DBMT_Core
                         if (trim_lower_line.StartsWith(AttributeName) && trim_lower_line.Contains('='))
                         {
                             string TargetPath = AttributeName + " = " + AttributeValue;
+                            if(AttributeValue.Trim() == "")
+                            {
+                                TargetPath = "; " + TargetPath;
+                            }
                             newLines.Add(TargetPath);
                         }
                         else
@@ -80,6 +84,10 @@ namespace DBMT_Core
                         {
                             newLines.Add(line);
                             string TargetPath = AttributeName + " = " + AttributeValue;
+                            if (AttributeValue.Trim() == "")
+                            {
+                                TargetPath = "; " + TargetPath;
+                            }
                             newLines.Add(TargetPath);
                         }
                         else
