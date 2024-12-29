@@ -429,6 +429,8 @@ namespace DBMT
             InitializeWorkSpace();
         }
 
+
+
         public async void ExtractModel(object sender, RoutedEventArgs e)
         {
             bool Prepare = await PreDoBeforeExtract();
@@ -456,6 +458,8 @@ namespace DBMT
             {
                 OpenLatestLogFile(sender, e);
             }
+
+            CoreFunctions.PostDoAfterExtract();
 
         }
 
@@ -524,7 +528,7 @@ namespace DBMT
 
         public async void OpenLatestFrameAnalysisLogTxtFile(object sender, RoutedEventArgs e)
         {
-            string LatestFrameAnalysisFolderLogTxtFilePath = PathHelper.GetLatestFrameAnalysisFolderLogFilePath();
+            string LatestFrameAnalysisFolderLogTxtFilePath = GlobalConfig.Path_LatestFrameAnalysisLogTxt;
 
             if (LatestFrameAnalysisFolderLogTxtFilePath != "")
             {
@@ -554,9 +558,9 @@ namespace DBMT
 
         public async void OpenExtractTypesFolder(object sender, RoutedEventArgs e)
         {
-            if (Directory.Exists(GlobalConfig.Path_GameTypeFolder))
+            if (Directory.Exists(GlobalConfig.Path_GameExtractTypeFolder))
             {
-                await CommandHelper.ShellOpenFolder(GlobalConfig.Path_GameTypeFolder);
+                await CommandHelper.ShellOpenFolder(GlobalConfig.Path_GameExtractTypeFolder);
             }
             else
             {
@@ -578,7 +582,7 @@ namespace DBMT
 
         public async void OpenLatestLogFile(object sender, RoutedEventArgs e)
         {
-            string LogFilePath = PathHelper.GetLatestLogFilePath();
+            string LogFilePath = GlobalConfig.Path_LatestDBMTLogFile;
             if (File.Exists(LogFilePath))
             {
                 await CommandHelper.ShellOpenFile(LogFilePath);
@@ -645,6 +649,8 @@ namespace DBMT
 
                 OpenCurrentWorkSpaceFolder(sender,e);
             }
+
+            CoreFunctions.PostDoAfterExtract();
         }
 
 

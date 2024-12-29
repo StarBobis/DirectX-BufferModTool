@@ -21,10 +21,13 @@ namespace DBMT_Core.Utils
         public static void Initialize()
         {
             // 清空现有日志条目
-            LogLineList.Clear();
+            //LogLineList.Clear();
 
             // 记录开始时间
-            StartTime = DateTime.Now;
+            if (StartTime == null)
+            {
+                StartTime = DateTime.Now;
+            }
 
             // 重置初始化状态
             Initialized = true;
@@ -44,6 +47,19 @@ namespace DBMT_Core.Utils
 
             LogLineList.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} [INFO] {message}");
         }
+
+        public static void NewLine(string message="")
+        {
+            if (message == "")
+            {
+                LogLineList.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} [INFO] -------------------------------------------------------------------");
+            }
+            else
+            {
+                LogLineList.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} [INFO] {message}");
+            }
+        }
+
 
         // 将内存中的日志条目写出到带有ISO 8601格式时间戳的新文件
         public static void SaveFile()

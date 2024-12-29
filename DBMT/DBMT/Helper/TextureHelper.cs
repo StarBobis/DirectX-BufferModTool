@@ -1,6 +1,7 @@
 ﻿using DBMT_Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,20 +11,12 @@ namespace DBMT
 {
     class TextureHelper
     {
-        public static string GetAutoTextureFormat()
-        {
-            return GlobalConfig.GameCfg.Value.AutoTextureFormat switch
-            {
-                0 => "jpg",
-                1 => "tga",
-                2 => "png",
-                _ => "jpg",
-            };
-        }
+
 
 
         public static void ConvertAllTextureFilesToTargetFolder(string SourceFolderPath, string TargetFolderPath)
         {
+            Debug.Write("ConvertAllTextureFilesToTargetFolder::");
             if (!Directory.Exists(TargetFolderPath))
             {
                 Directory.CreateDirectory(TargetFolderPath);
@@ -33,13 +26,17 @@ namespace DBMT
             foreach (string ddsFilePath in filePathArray)
             {
                 //只转换dds格式和png格式贴图
-                if (!ddsFilePath.EndsWith(".dds") && !ddsFilePath.EndsWith(".jpg") && !ddsFilePath.EndsWith(".png"))
+                if (ddsFilePath.EndsWith(".dds"))
                 {
-                    continue;
+                    string TextureFormatString = GlobalConfig.AutoTextureFormatSuffix;
+                    CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, TargetFolderPath);
+                }
+                else if (ddsFilePath.EndsWith(".jpg") || ddsFilePath.EndsWith(".png"))
+                {
+                    Debug.Write("Copy: " + ddsFilePath + " To: " + TargetFolderPath);
+                    File.Copy(ddsFilePath, Path.Combine(TargetFolderPath, Path.GetFileName(ddsFilePath)), true);
                 }
 
-                string TextureFormatString = GetAutoTextureFormat();
-                CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, TargetFolderPath);
             }
         }
 
@@ -66,11 +63,19 @@ namespace DBMT
             }
         }
 
+        public static string GetConvertedTexturesFolderPath(string DrawIB)
+        {
+            string WorkSpacePath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "\\";
+            string TextureFormatString = GlobalConfig.AutoTextureFormatSuffix;
+            string DedupedTexturesConvertFolderPath = WorkSpacePath + DrawIB + "\\DedupedTextures_" + TextureFormatString + "\\";
+            return DedupedTexturesConvertFolderPath;
+        }
+
         public static async void ConvertDedupedTexturesToTargetFormat()
         {
 
             string WorkSpacePath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "/";
-            List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
+            List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
             foreach (string DrawIB in DrawIBList)
             {
                 //在这里把所有output目录下的dds转为png格式
@@ -81,8 +86,7 @@ namespace DBMT
                     return;
                 }
 
-                string TextureFormatString = TextureHelper.GetAutoTextureFormat();
-                string DedupedTexturesConvertFolderPath = WorkSpacePath + DrawIB + "/DedupedTextures_" + TextureFormatString + "/";
+                string DedupedTexturesConvertFolderPath = GetConvertedTexturesFolderPath(DrawIB);
                 TextureHelper.ConvertAllTextureFilesToTargetFolder(DedupedTexturesFolderPath, DedupedTexturesConvertFolderPath);
             }
         }
@@ -93,7 +97,7 @@ namespace DBMT
             try
             {
                 string WorkSpacePath = GlobalConfig.Path_OutputFolder + GlobalConfig.CurrentWorkSpace + "/";
-                List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig(GlobalConfig.CurrentWorkSpace);
+                List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
                 foreach (string DrawIB in DrawIBList)
                 {
                     string DrawIBPath = WorkSpacePath + DrawIB + "/";
@@ -128,7 +132,7 @@ namespace DBMT
                                 continue;
                             }
 
-                            string TextureFormatString = TextureHelper.GetAutoTextureFormat();
+                            string TextureFormatString = GlobalConfig.AutoTextureFormatSuffix;
                             CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
                         }
                     }
@@ -141,6 +145,9 @@ namespace DBMT
 
 
         }
+
+
+
 
     }
 }

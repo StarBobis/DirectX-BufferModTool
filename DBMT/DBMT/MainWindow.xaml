@@ -20,6 +20,8 @@
             <NavigationViewItem x:Name="NavigationViewItem_HomePage" Icon="Home" Content="主页" Tag="HomePage" />
             <NavigationViewItem x:Name="NavigationViewItem_StarterPage" Icon="Play" Content="快速启动" Tag="GamePage" />
             <NavigationViewItem x:Name="NavigationViewItem_WorkPage" Icon="Edit" Content="工作台" Tag="WorkPage" />
+            <NavigationViewItem x:Name="NavigationViewItem_TexturePage" Icon="Pictures" Content="贴图" Tag="TexturePage" />
+            <NavigationViewItem x:Name="NavigationViewItem_PluginPage" Icon="ProtectedDocument" Content="DBMT-Protect" Tag="PluginPage" />
         </NavigationView.MenuItems>
 
         <Frame x:Name="contentFrame"/>

@@ -70,6 +70,8 @@ namespace DBMT_Core
 
         public float GamePageBackGroundImageOpacity { get; set; } = 0.6f;
         public float WorkPageBackGroundImageOpacity { get; set; } = 0.3f;
+
+        public float TexturePageBackGroundImageOpacity { get; set; } = 0.3f;
         public bool StartToWorkPage { get; set; } = false;
         public bool WindowTopMost { get; set; } = false;
         //Others
@@ -107,8 +109,9 @@ namespace DBMT_Core
 
     public static class GlobalConfig
     {
-        public const string DBMT_Title = "DirectX Buffer Mod Tool V1.1.2.2 "; //程序窗口名称
+        public const string DBMT_Title = "DirectX Buffer Mod Tool V1.0.2.3"; //程序窗口名称
         public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
+        public const string DBMT_Protect_Exe_FileName = "DBMT-Protect.vmp.exe";
 
         // 本地化存储的配置
         public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
@@ -153,7 +156,17 @@ namespace DBMT_Core
             get { return Path.Combine(Path_Base, "Configs\\ExtractTypes\\"); }
         }
 
-        public static string Path_GameTypeFolder
+        public static string Path_TextureConfigsFolder
+        {
+            get { return Path.Combine(Path_Base, "Configs\\TextureConfigs\\"); }
+        }
+
+        public static string Path_GameTextureConfigFolder
+        {
+            get { return Path.Combine(Path_TextureConfigsFolder, GlobalConfig.MainCfg.Value.GameName + "\\"); }
+        }
+
+        public static string Path_GameExtractTypeFolder
         {
             get { return Path.Combine(Path_ExtractTypesFolder, GlobalConfig.MainCfg.Value.GameName + "\\"); }
         }
@@ -249,11 +262,30 @@ namespace DBMT_Core
             }
         }
 
+        /// <summary>
+        /// 最新的FrameAnalysis文件夹
+        /// </summary>
         public static string Path_LatestFrameAnalysisFolder
         {
             get
             {
                 return Path.Combine(Path_LoaderFolder,LatestFrameAnalysisFolderName + "\\");
+            }
+        }
+
+        public static string Path_LatestFrameAnalysisLogTxt
+        {
+            get
+            {
+                return Path.Combine(Path_LatestFrameAnalysisFolder, "log.txt");
+            }
+        }
+
+        public static string WorkFolder
+        {
+            get
+            {
+                return Path_LatestFrameAnalysisFolder;
             }
         }
 
@@ -271,9 +303,54 @@ namespace DBMT_Core
         }
 
 
+        public static string Path_LatestDBMTLogFile
+        {
+            get
+            {
+                string logsPath = GlobalConfig.ApplicationRunPath + "Logs";
+                if (!Directory.Exists(logsPath))
+                {
+                    return "";
+                }
+                string[] logFiles = Directory.GetFiles(logsPath); ;
+                List<string> logFileList = new List<string>();
+                foreach (string logFile in logFiles)
+                {
+                    string logfileName = Path.GetFileName(logFile);
+                    if (logfileName.EndsWith(".log") && logfileName.Length > 15)
+                    {
+                        logFileList.Add(logfileName);
+                    }
+                }
 
+                logFileList.Sort();
+                string LogFilePath = logsPath + "\\" + logFileList[^1];
+                return LogFilePath;
+            }
+        }
 
+        public static string AutoTextureFormatSuffix
+        {
+            get
+            {
+                return GameCfg.Value.AutoTextureFormat switch
+                {
+                    0 => "jpg",
+                    1 => "tga",
+                    2 => "png",
+                    _ => "jpg"
+                };
+            }
+        }
 
+        public static string Path_CurrentWorkSpaceFolder
+        {
+            get{
+                return Path.Combine(GlobalConfig.Path_OutputFolder,GlobalConfig.CurrentWorkSpace + "\\");
+            }
+        }
+
+        
 
     }
 }

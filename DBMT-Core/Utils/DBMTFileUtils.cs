@@ -10,6 +10,18 @@ namespace DBMT_Core
     public class DBMTFileUtils
     {
 
+        public static bool IsDBMTProtectExists()
+        {
+            if (File.Exists(GlobalConfig.ApplicationRunPath + "Plugins\\" + GlobalConfig.DBMT_Protect_Exe_FileName))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static string[] ReadWorkSpaceNameList(string WorkSpaceFolderPath)
         {
             List<string> WorkSpaceNameList = new List<string>();
@@ -70,6 +82,16 @@ namespace DBMT_Core
             return directoriesWithImages;
         }
 
+        public static List<string> GetFileNameListInFolder(string rootDirectory) {
+
+            List<string> FileNameList = new List<string>();
+            string[] FrameAnalysisFileNameArray = Directory.GetFiles(rootDirectory);
+            foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
+            {
+                FileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
+            }
+            return FileNameList;
+        }
 
     }
 }

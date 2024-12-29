@@ -132,6 +132,12 @@ namespace DBMT
                 Environment.Exit(0);
             }
 
+            //检查DBMT-Protect是否存在 ，仅在最终发布时启用
+            //if (!DBMTFileUtils.IsDBMTProtectExists())
+            //{
+            //    NavigationViewItem_PluginPage.Visibility = Visibility.Collapsed;
+            //}
+
             //如果DBMT存在，则开始正常初始化。
             //初始化Logs目录
             if (!Directory.Exists("Logs"))
@@ -161,28 +167,36 @@ namespace DBMT
 
         private void MoveWindowToCenterScreen()
         {
-            if (this.AppWindow != null)
+            
+            // 获取与窗口关联的DisplayArea
+            var displayArea = DisplayArea.GetFromWindowId(this.AppWindow.Id, DisplayAreaFallback.Nearest);
+            // 获取窗口当前的尺寸
+            var windowSize = this.AppWindow.Size;
+
+            // 确保我们获取的是正确的显示器信息
+            if (displayArea != null)
             {
-                // 获取与窗口关联的DisplayArea
-                var displayArea = DisplayArea.GetFromWindowId(this.AppWindow.Id, DisplayAreaFallback.Nearest);
+                // 计算窗口居中所需的左上角坐标，考虑显示器的实际工作区（排除任务栏等）
+                int x = (int)(displayArea.WorkArea.X + (displayArea.WorkArea.Width - windowSize.Width) / 2);
+                int y = (int)(displayArea.WorkArea.Y + (displayArea.WorkArea.Height - windowSize.Height) / 2);
 
-                // 确保我们获取的是正确的显示器信息
-                if (displayArea != null)
-                {
-                    // 获取窗口当前的尺寸
-                    var windowSize = this.AppWindow.Size;
-
-                    // 计算窗口居中所需的左上角坐标，考虑显示器的实际工作区（排除任务栏等）
-                    int x = (int)(displayArea.WorkArea.X + (displayArea.WorkArea.Width - windowSize.Width) / 2);
-                    int y = (int)(displayArea.WorkArea.Y + (displayArea.WorkArea.Height - windowSize.Height) / 2);
-
-                    // 设置窗口位置
-                    this.AppWindow.Move(new PointInt32 { X = x, Y = y });
-                }
+                // 设置窗口位置
+                this.AppWindow.Move(new PointInt32 { X = x, Y = y });
             }
 
             int window_pos_x = GlobalConfig.GameCfg.Value.WindowPositionX;
             int window_pos_y = GlobalConfig.GameCfg.Value.WindowPositionY;
+
+
+            if (window_pos_x <= 0)
+            {
+                window_pos_x = (int)(displayArea.WorkArea.X + (displayArea.WorkArea.Width - windowSize.Width) / 2);
+            }
+            if (window_pos_y <= 0)
+            {
+                window_pos_y = (int)(displayArea.WorkArea.Y + (displayArea.WorkArea.Height - windowSize.Height) / 2);
+            }
+
             if (window_pos_x != -1 && window_pos_y != -1)
             {
                 this.AppWindow.Move(new PointInt32(window_pos_x, window_pos_y));
@@ -220,8 +234,11 @@ namespace DBMT
                     case "WorkPage":
                         pageType = typeof(WorkPage);
                         break;
-                    case "SamplePage4":
-                        //pageType = typeof(SamplePage4);
+                    case "PluginPage":
+                        pageType = typeof(PluginPage);
+                        break;
+                    case "TexturePage":
+                        pageType = typeof(TexturePage);
                         break;
                 }
 
