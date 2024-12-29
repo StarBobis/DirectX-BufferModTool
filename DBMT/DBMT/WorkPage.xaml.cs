@@ -253,10 +253,13 @@ namespace DBMT
                 }
 
                 //保底确保用户可以编辑
-                if (items.Count == 0)
-                {
-                    AddBlankRow();
-                }
+                //if (items.Count == 0)
+                //{
+                //    AddBlankRow();
+                //}
+
+                //确保永远有一个新的空行可供编辑
+                AddBlankRow();
             }
         }
 

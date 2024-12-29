@@ -109,7 +109,7 @@ namespace DBMT_Core
 
     public static class GlobalConfig
     {
-        public const string DBMT_Title = "DirectX Buffer Mod Tool V1.0.2.4"; //程序窗口名称
+        public const string DBMT_Title = "DirectX Buffer Mod Tool V1.1.2.6"; //程序窗口名称
         public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
         public const string DBMT_Protect_Exe_FileName = "DBMT-Protect.vmp.exe";
 

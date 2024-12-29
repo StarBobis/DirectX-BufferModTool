@@ -12,36 +12,32 @@ namespace DBMT_Core
 {
     public static class FrameAnalysisData
     {
-        /// <summary>
-        /// TODO 这个并不可靠，创建工作空间后就无法正常读取到文件了。
-        /// </summary>
-        public static List<string> FileNameList = [];
+        public static Dictionary<string, List<string>> FrameAnalysisFolder_FileNameList_Dict = [];
 
 
-        /// <summary>
-        /// 这个会在类被全局初始化一次时调用，所以作为初始化方法读取FrameAnalysis文件列表
-        /// 这样可以确保只读取一次。
-        /// </summary>
-        static FrameAnalysisData()
+        public static List<string> GetFrameAnalysisFileNameList()
         {
-            InitializeFileNameList();
-        }
-
-        public static void InitializeFileNameList()
-        {
-            FileNameList = new List<string>();
-            string[] FrameAnalysisFileNameArray = Directory.GetFiles(GlobalConfig.WorkFolder);
-            foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
+            if (!FrameAnalysisFolder_FileNameList_Dict.ContainsKey(GlobalConfig.LatestFrameAnalysisFolderName))
             {
-                FileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
+
+                List<string> TmpFileNameList = new List<string>();
+                string[] FrameAnalysisFileNameArray = Directory.GetFiles(GlobalConfig.WorkFolder);
+                foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
+                {
+                    TmpFileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
+                }
+
+                FrameAnalysisFolder_FileNameList_Dict[GlobalConfig.LatestFrameAnalysisFolderName] = TmpFileNameList;
             }
-    
+
+            List<string> FileNameList = FrameAnalysisFolder_FileNameList_Dict[GlobalConfig.LatestFrameAnalysisFolderName];
+            return FileNameList;
         }
 
 
         public static List<string> FilterFrameAnalysisFile(string Content, string Suffix)
         {
-            InitializeFileNameList();
+            List<string> FileNameList = GetFrameAnalysisFileNameList();
 
             List<string> FilterFileNameList = new List<string>();
 
@@ -59,7 +55,7 @@ namespace DBMT_Core
 
         public static List<string> FilterFile(string SearchFolderPath,string Content, string Suffix)
         {
-            InitializeFileNameList();
+
             List<string> SearchFileNameList = new List<string>();
             string[] FrameAnalysisFileNameArray = Directory.GetFiles(SearchFolderPath);
             foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
@@ -81,7 +77,7 @@ namespace DBMT_Core
 
         public static string FilterFirstFile(string SearchFolderPath, string Content, string Suffix)
         {
-            InitializeFileNameList();
+            List<string> FileNameList = GetFrameAnalysisFileNameList();
             List<string> SearchFileNameList = new List<string>();
 
             if (SearchFolderPath == GlobalConfig.WorkFolder)
@@ -119,11 +115,19 @@ namespace DBMT_Core
 
         public static List<string> FilterTextureFileNameList(string FilterFolder, string Content)
         {
-            FileNameList = new List<string>();
-            string[] FrameAnalysisFileNameArray = Directory.GetFiles(FilterFolder);
-            foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
+
+            List<string> FileNameList = new List<string>();
+            if(FilterFolder == GlobalConfig.WorkFolder)
             {
-                FileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
+                FileNameList = GetFrameAnalysisFileNameList();
+            }
+            else
+            {
+                string[] FrameAnalysisFileNameArray = Directory.GetFiles(FilterFolder);
+                foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
+                {
+                    FileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
+                }
             }
             Debug.WriteLine("FileNameList Size:" + FileNameList.Count.ToString());
 
