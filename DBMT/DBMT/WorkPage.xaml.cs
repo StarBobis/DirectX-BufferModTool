@@ -647,6 +647,11 @@ namespace DBMT
             {
                 TextureHelper.ConvertAutoExtractedTexturesInDrawIBFolderToTargetFormat();
 
+                if (GlobalConfig.GameCfg.Value.ConvertDedupedTextures)
+                {
+                    TextureHelper.ConvertDedupedTexturesToTargetFormat();
+                }
+
                 OpenCurrentWorkSpaceFolder(sender,e);
             }
 
