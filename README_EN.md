@@ -15,8 +15,23 @@ Work Page
 Settings Page
 ![image](https://github.com/user-attachments/assets/9eff3dc9-5cd1-4dda-bfac-2153c65d40c5)
 
+# Switch To English
+
+
+# Third Party Warning
+
+- DBMT have some close source program like:
+- Plugins/DBMT.exe (Planing to move all code from C++ close source(https://github.com/StarBobis/DBMT-CPP) to DBMT-Core open source,it will need some time, maybe 3-6 months)
+- Plugins/texconv.exe (I can't stop to use it,it's useful in texture batch convert, see: https://github.com/microsoft/DirectXTex/wiki/Texconv)
+- 3Dmigoto Loader.exe, 3Dmigoto Loader-ByPassACE.exe, CreateSuspendedProcess.exe (they come from old open source DBMT repository: https://github.com/StarBobis/DBMT-CPP)
+- d3d11.dll (comes from https://github.com/StarBobis/3Dmigoto-GameMod-Fork)
+
+- take your own risk to use them, all exe/dll can be manually replace with GIMI/XXMI's exe/dll if you think DBMT's dll/exe is in great dangers.
+- DBMT will finally fully open source with C# to let community maintain it easily.
+
+
 # Test & Development & FeedBack.
-QQ Group: 894808210
+Discord: https://discord.gg/sMdsGAptss
 
 # Documents
 DBMT's Blender Plugin.[Catter](https://github.com/StarBobis/Catter)
