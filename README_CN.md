@@ -13,6 +13,8 @@ DBMT所有功能全部由用户设计，可以在issue中留下你的改进建�
 - 使用这些程序需自行承担风险。如果您认为DBMT的dll/exe存在重大风险，您可以手动将其替换为GIMI/XXMI的相应exe/dll。
 - 最终，DBMT将以C#完全开源，以便社区能够轻松地维护它。
 
+由于DBMT过去是由C++编写的屎山，所以正在进行重大重构中，完全开源的DBMT将在未来出现。
+
 # DirectX Buffer Mod Tool
 
 主页

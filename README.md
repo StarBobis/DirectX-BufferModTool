@@ -30,6 +30,7 @@ Settings Page
 - take your own risk to use them, all exe/dll can be manually replace with GIMI/XXMI's exe/dll if you think DBMT's dll/exe is in great dangers.
 - DBMT will finally fully open source with C# to let community maintain it easily.
 
+(DBMT is in heavily reconstructor and redevelopment due to bad C++ shit code,the fully open source version will be later.)
 
 # Test & Development & FeedBack.
 Discord: https://discord.gg/sMdsGAptss
