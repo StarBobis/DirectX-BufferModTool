@@ -655,7 +655,7 @@ namespace DBMT
                 OpenCurrentWorkSpaceFolder(sender,e);
             }
 
-            CoreFunctions.PostDoAfterExtract();
+            CoreFunctions.PostDoAfterExtract(true);
         }
 
 

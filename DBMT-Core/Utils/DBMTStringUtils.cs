@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -72,6 +73,20 @@ namespace DBMT_Core
             int start_pos = TextureFileName.IndexOf("-");
             int end_pos = TextureFileName.IndexOf("=");
             string PixelSlot = TextureFileName.Substring(start_pos + 1,end_pos - start_pos - 1);
+
+            //ps-t3-vs=
+            if (PixelSlot.Contains("-vs"))
+            {
+                Debug.WriteLine(PixelSlot);
+
+                PixelSlot = PixelSlot.Substring(0,PixelSlot.LastIndexOf("-"));
+                Debug.WriteLine(PixelSlot);
+            }
+            else
+            {
+                Debug.WriteLine(PixelSlot);
+            }
+
             return PixelSlot;
         }
 

@@ -15,7 +15,7 @@ namespace DBMT_Core
         /// <summary>
         /// 在正向提取和逆向提取后都需要做的事情
         /// </summary>
-        public static void PostDoAfterExtract()
+        public static void PostDoAfterExtract(bool ReverseExtract=false)
         {
             List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
 
@@ -28,13 +28,22 @@ namespace DBMT_Core
                     continue;
                 }
 
-                Dictionary<string, ulong> ComponentName_MatchFirstIndex_Dict = DrawIBConfig.Read_ComponentName_MatchFirstIndex_Dict(DrawIB);
+                Dictionary<string, UInt64> ComponentName_MatchFirstIndex_Dict = DrawIBConfig.Read_ComponentName_MatchFirstIndex_Dict(DrawIB);
 
                 JObject jObject = DBMTJsonUtils.CreateJObject();
 
                 foreach (var item in ComponentName_MatchFirstIndex_Dict)
                 {
-                    List<string> DrawCallIndexList = FrameAnalysisData.Read_DrawCallIndexList(DrawIB,item.Key);
+                    List<string> DrawCallIndexList = new List<string>();
+
+                    if (ReverseExtract)
+                    {
+                        DrawCallIndexList = FrameAnalysisLog.Read_DrawCallIndexListByMatchFirstIndex(DrawIB,item.Value);
+                    }
+                    else
+                    {
+                        DrawCallIndexList = FrameAnalysisData.Read_DrawCallIndexList(DrawIB, item.Key);
+                    }
 
                     jObject[item.Key] = new JArray(DrawCallIndexList);
                 }
