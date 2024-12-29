@@ -17,6 +17,7 @@ Settings Page
 
 # Switch To English
 
+![image](https://github.com/user-attachments/assets/2754f1f1-9153-4949-afca-f8ba1dac1706)
 
 # Third Party Warning
 
