@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBMT-Core", "DBMT-Core\DBMT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{18248E14-C8B4-4318-925E-EF912D853E99}"
 	ProjectSection(SolutionItems) = preProject
-		README_EN.md = README_EN.md
-		README.md = README.md
 		开发规范.txt = 开发规范.txt
+		README.md = README.md
+		README_CN.md = README_CN.md
 	EndProjectSection
 EndProject
 Global
