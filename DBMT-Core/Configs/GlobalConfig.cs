@@ -80,14 +80,10 @@ namespace DBMT_Core
         public int FrameAnalysisFolderReserveNumber { get; set; } = 1;
         public int LogFileReserveNumber { get; set; } = 3;
         public int ModelFileNameStyle { get; set; } = 1;
+        //Extract Options
         public bool MoveIBRelatedFiles { get; set; } = false;
         public bool DontSplitModelByMatchFirstIndex { get; set; } = false;
-        public bool GenerateSeperatedMod { get; set; } = false;
-        public string Author { get; set; } = "";
-        public string AuthorLink { get; set; } = "";
-        public string ModSwitchKey { get; set; } = "\"x\",\"m\",\"k\",\"l\",\"u\",\"i\",\"o\",\"p\",\"[\",\"]\",\"y\"";
-
-
+        //Texture Options
         public bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
         public bool ConvertDedupedTextures { get; set; } = true;
         public int AutoTextureFormat { get; set; } = 2;
@@ -95,9 +91,6 @@ namespace DBMT_Core
         public bool ForbidMoveTrianglelistTextures { get; set; } = false;
         public bool ForbidMoveDedupedTextures { get; set; } = false;
         public bool ForbidMoveRenderTextures { get; set; } = false;
-        public bool ForbidAutoTexture { get; set; } = false;
-        public bool UseHashTexture { get; set; } = false;
-
     }
 
 
@@ -110,8 +103,11 @@ namespace DBMT_Core
     public static class GlobalConfig
     {
         public const string DBMT_Title = "DirectX Buffer Mod Tool V1.1.2.6"; //程序窗口名称
-        public const string MMT_EXE_FileName = "DBMT.exe"; //由C++开发的核心算法进程
+        public const string MMT_EXE_FileName = "DBMT.exe"; //C++ Core (will remove this in later version)
+
         public const string DBMT_Protect_Exe_FileName = "DBMT-Protect.vmp.exe";
+        public const string DBMT_Encryption_Exe_FileName = "DBMT-Encryption.vmp.exe";
+        public const string DBMT_Reverse_Exe_FileName = "3Dmigoto-Sword-Lv5.vmp.exe";
 
         // 本地化存储的配置
         public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
