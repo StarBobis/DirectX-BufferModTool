@@ -111,7 +111,7 @@
 
                     
                     <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10,0,10">
-                        <TextBlock Text="当前自动贴图配置" VerticalAlignment="Center" Margin="10,0,10,0" />
+                        <TextBlock x:Name="TextBlock_TextureConfigName" Text="当前自动贴图配置" VerticalAlignment="Center" Margin="10,0,10,0" />
                         <ComboBox x:Name="ComboBox_TextureConfigName" IsEditable="True" Width="200" Margin="10,0,10,0" SelectionChanged="ComboBox_TextureConfigName_SelectionChanged">
                             
                         </ComboBox>
@@ -121,7 +121,7 @@
                     </StackPanel>
                     
                     <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="10,10,0,10">
-                        <TextBlock Text="标记名称:" VerticalAlignment="Center" Margin="10,0,10,0" />
+                        <TextBlock x:Name="TextBlock_MarkName" Text="标记名称:" VerticalAlignment="Center" Margin="10,0,10,0" />
                         <ComboBox x:Name="ComboBox_MarkName" IsEditable="True" Width="200" Margin="10,0,10,0" >
                             <ComboBoxItem Content="DiffuseMap"></ComboBoxItem>
                             <ComboBoxItem Content="NormalMap"></ComboBoxItem>

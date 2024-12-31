@@ -45,6 +45,8 @@ namespace DBMT
 
             //使用配置文件中保存的透明度来设置背景透明度
             TextureBGImageBrush.Opacity = GlobalConfig.GameCfg.Value.TexturePageBackGroundImageOpacity;
+
+            LocalizeLanguage();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -57,6 +59,21 @@ namespace DBMT
 
             // 如果需要，可以调用基类的 OnNavigatedFrom 方法
             base.OnNavigatedFrom(e);
+        }
+
+        private void LocalizeLanguage()
+        {
+            if (GlobalConfig.GameCfg.Value.Language == true)
+            {
+                TextBlock_TextureConfigName.Text = "Texture Config: ";
+                Button_SaveTextureConfig.Content = "Save Config";
+                Button_CleanTextureConfig.Content = "Delete Config";
+                Button_ApplyToAutoTexture.Content = "Apply To AutoTexture";
+
+                TextBlock_MarkName.Text = "Mark Name: ";
+                Button_MarkTexture.Content = "Mark Texture";
+                Button_CancelMarkTexture.Content = "Cancel Mark";
+            }
         }
 
         public void ReadDrawIBList()
