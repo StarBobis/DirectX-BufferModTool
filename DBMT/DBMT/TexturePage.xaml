@@ -43,7 +43,7 @@
 
             <!-- 顶部菜单 -->
             <MenuBar Grid.Row="0" Grid.Column="0" Margin="10,5,0,0">
-                <MenuBarItem Title="文件" x:Name="Menu_File">
+                <MenuBarItem x:Name="Menu_File" Title="文件">
                     <MenuFlyoutItem x:Name="Menu_OpenGameTextureConfigsFolder" Text="打开当前贴图配置文件夹" Click="Menu_OpenGameTextureConfigsFolder_Click"/>
                     <MenuFlyoutSeparator />
                     <MenuFlyoutItem x:Name="Menu_OpenCurrentWorkSpaceFolder" Text="打开当前工作空间文件夹" Click="Menu_OpenCurrentWorkSpaceFolder_Click"/>

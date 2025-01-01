@@ -232,6 +232,11 @@ namespace DBMT_Core
             get { return Path.Combine(Path_PluginsFolder, "DBMT-Encryptor.vmp.exe"); }
         }
 
+        public static string Path_ProtectVMPEXE
+        {
+            get { return Path.Combine(Path_PluginsFolder, "DBMT-Protect.vmp.exe"); }
+        }
+
         public static string LatestFrameAnalysisFolderName
         {
             get

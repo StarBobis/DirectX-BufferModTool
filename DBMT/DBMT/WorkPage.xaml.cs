@@ -107,12 +107,27 @@ namespace DBMT
                 Button_AutoDetectDrawIBList.Content = "Auto Fill DrawIB List";
                 Button_SaveDrawIBList.Content = "Save DrawIB List";
                 Button_ExtractModel.Content = "Extract Model";
-                //Button_GenerateMod.Content = "Generate Mod";
 
                 TextBlock_SkipIBList.Text = "SkipIB List:";
                 Button_CleanSkipIBList.Content = "Initialize SkipIB List";
                 Button_SkipIBDraw.Content = "SkipIB Draw";
                 Button_GenerateVSCheck.Content = "Generate VSCheck";
+
+
+                //Mod Reverse
+                Menu_ModReverse.Title = "Mod Reverse";
+                Menu_ReverseExtract.Text = "Reverse Extract Mod Model";
+                Menu_ReverseSingleIni.Text = "Reverse Single Mod's ini";
+                Menu_ReverseToggleIni.Text = "Reverse Key Toggle Mod's ini";
+                Menu_ReverseDrawIndexedIni.Text = "Reverse DrawIndexed Mod's ini";
+
+                //Mod Encryption
+                Menu_ModEncryption.Title = "Mod Encryption";
+                Menu_ObfuscateAndEncryptBufferAndIni.Text = "Obfuscate And Encrypt Buffer And ini Files";
+                Menu_EncryptBufferAndIni.Text = "Encrypt Buffer And ini Files";
+                Menu_Obfuscate.Text = "Obfuscate";
+                Menu_EncryptBuffer.Text = "Encrypt Mod's Buffer Files";
+                Menu_EncryptIni.Text = "Encrypt Mod's ini File";
             }
         }
 

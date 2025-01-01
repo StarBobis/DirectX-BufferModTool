@@ -82,22 +82,22 @@
                     <MenuFlyoutItem x:Name="Menu_OpenConfigsFolder" Text="打开Configs文件夹" Click="OpenConfigsFolder"/>
                 </MenuBarItem>
 
-                <MenuBarItem Title="Mod逆向" x:Name="Menu_ModReverse">
-                    <MenuFlyoutItem Text="从Dump文件中逆向提取" Click="ReverseLv5_ReverseExtract"/>
+                <MenuBarItem x:Name="Menu_ModReverse" Title="Mod逆向" >
+                    <MenuFlyoutItem x:Name="Menu_ReverseExtract" Text="从Dump文件中逆向提取" Click="ReverseLv5_ReverseExtract"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="一键逆向普通单个Mod的ini" Click="ReverseLv5_ReverseSingleIni"/>
-                    <MenuFlyoutItem Text="一键逆向Toggle按键切换Mod的ini" Click="ReverseLv5_ReverseToggleSwitchIni"/>
-                    <MenuFlyoutItem Text="一键逆向DrawIndexed分支Mod的ini" Click="ReverseLv5_ReverseDrawIndexedSwitchIni"/>
+                    <MenuFlyoutItem x:Name="Menu_ReverseSingleIni" Text="一键逆向普通单个Mod的ini" Click="ReverseLv5_ReverseSingleIni"/>
+                    <MenuFlyoutItem x:Name="Menu_ReverseToggleIni" Text="一键逆向Toggle按键切换Mod的ini" Click="ReverseLv5_ReverseToggleSwitchIni"/>
+                    <MenuFlyoutItem x:Name="Menu_ReverseDrawIndexedIni" Text="一键逆向DrawIndexed分支Mod的ini" Click="ReverseLv5_ReverseDrawIndexedSwitchIni"/>
                 </MenuBarItem>
 
-                <MenuBarItem Title="Mod加密" x:Name="Menu_ModEncryption">
-                    <MenuFlyoutItem Text="一键混淆名称并加密Buffer和ini文件" Click="Encryption_EncryptAll"/>
-                    <MenuFlyoutItem Text="一键加密Buffer和ini文件" Click="Encryption_EncryptBufferAndIni"/>
+                <MenuBarItem x:Name="Menu_ModEncryption" Title="Mod加密" >
+                    <MenuFlyoutItem x:Name="Menu_ObfuscateAndEncryptBufferAndIni" Text="一键混淆名称并加密Buffer和ini文件" Click="Encryption_EncryptAll"/>
+                    <MenuFlyoutItem x:Name="Menu_EncryptBufferAndIni" Text="一键加密Buffer和ini文件" Click="Encryption_EncryptBufferAndIni"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="一键混淆Mod中的资源名称" Click="Encryption_Obfuscate"/>
+                    <MenuFlyoutItem x:Name="Menu_Obfuscate" Text="一键混淆Mod中的资源名称" Click="Encryption_Obfuscate"/>
                     <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Text="一键加密Buffer文件" Click="Encryption_EncryptBuffer"/>
-                    <MenuFlyoutItem Text="一键加密ini文件" Click="Encryption_EncryptIni"/>
+                    <MenuFlyoutItem x:Name="Menu_EncryptBuffer" Text="一键加密Buffer文件" Click="Encryption_EncryptBuffer"/>
+                    <MenuFlyoutItem x:Name="Menu_EncryptIni" Text="一键加密ini文件" Click="Encryption_EncryptIni"/>
                 </MenuBarItem>
 
             

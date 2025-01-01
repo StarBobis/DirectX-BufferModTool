@@ -133,10 +133,10 @@ namespace DBMT
             }
 
             //检查DBMT-Protect是否存在 ，仅在最终发布时启用
-            //if (!DBMTFileUtils.IsDBMTProtectExists())
-            //{
-            //    NavigationViewItem_PluginPage.Visibility = Visibility.Collapsed;
-            //}
+            if (!DBMTFileUtils.IsDBMTProtectExists())
+            {
+                NavigationViewItem_PluginPage.Visibility = Visibility.Collapsed;
+            }
 
             //如果DBMT存在，则开始正常初始化。
             //初始化Logs目录

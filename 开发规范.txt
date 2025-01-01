@@ -3,10 +3,20 @@
 1.增加开发工作量
 2.增加双语支持工作量
 3.会用的人会用，不会用的人不会用，即使有一个小提示也并不能让一个不会的人自己顿悟学会，所以不要添加类似功能，除非是无法绕过的需求。
+
 - 不提供窗口始终置顶功能
 1.引入额外的WindowsAPI调用
 2.引入其它BUG
 3.使用需求很少
+
+- 不内置各游戏背景图
+1.避免侵权问题
+2.减少包体大小
+获取原始背景图：
+https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getGames?launcher_id=jGHBHlcOq1
+获取启动器背景图：
+https://hyp-api.mihoyo.com/hyp/hyp-connect/api/getAllGameBasicInfo?launcher_id=jGHBHlcOq1
+
 
 开发规范:
 - 各游戏的3Dmigoto文件直接放进去而不是用程序自动初始化,否则引入更多复杂度,还会由于文件占用导致初始化不成功,以及其它问题.

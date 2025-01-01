@@ -65,6 +65,11 @@ namespace DBMT
         {
             if (GlobalConfig.GameCfg.Value.Language == true)
             {
+                //Menu
+                Menu_File.Title = "File";
+                Menu_OpenGameTextureConfigsFolder.Text = "Open CurrentGame's TextureConfigs Folder";
+                Menu_OpenCurrentWorkSpaceFolder.Text = "Open CurrentWorkSpace Folder";
+
                 TextBlock_TextureConfigName.Text = "Texture Config: ";
                 Button_SaveTextureConfig.Content = "Save Config";
                 Button_CleanTextureConfig.Content = "Delete Config";
