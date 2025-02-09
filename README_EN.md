@@ -18,3 +18,5 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 HEREBY, THE USER SHALL BEAR ALL RESPONSIBILITIES THAT MAY ARISE FROM THE USE BY THE USER.
+# Where is source code?
+DBMT is under reconstruction to a completely C# project, it will need somedays and it will be fully open source and much easier to compile.
