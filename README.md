@@ -1,7 +1,7 @@
 # DBMT
 
 DBMT所有功能全部由用户设计，可以在issue中留下你的改进建议。
-![image](https://github.com/user-attachments/assets/f5440ed2-613e-4049-8afb-525a5fd5ed70)
+![image](https://github.com/user-attachments/assets/f0584235-d827-4469-87e9-f77064dd0f25)
 
 # 开发测试与反馈
 QQ交流群: 894808210 或者直接提issue
