@@ -1,7 +1,7 @@
 # DirectX Buffer Mod Tool
 
 All function in DBMT is designed by DBMT user group, leave a issue in Issue page to make DBMT better.
-![image](https://github.com/user-attachments/assets/2f5a3824-699a-4b31-a357-7b8066a32c0c)
+![image](https://github.com/user-attachments/assets/ac1dd1f5-8947-4332-8483-56c7bb354fa6)
 
 # Test & Development & FeedBack.
 Discord: [https://discord.gg/sMdsGAptss](https://discord.gg/sMdsGAptss)
