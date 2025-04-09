@@ -1,6 +1,11 @@
 # DBMT
 
-基于3Dmigoto项目的专业模型提取和Mod生成的一站式解决方案，由NicoMico基于兴趣随缘开发，95%以上的功能由社区中的Mod作者设计。
+基于3Dmigoto项目的模型提取工具，由NicoMico基于兴趣随缘开发，95%以上的功能由社区中的Mod作者设计。
+
+
+DBMT只负责模型提取，如需生成Mod功能，可以配合Catter使用：[https://github.com/StarBobis/Catter](https://github.com/StarBobis/Catter)
+
+
 ![image](https://github.com/user-attachments/assets/fa7f260f-ba94-479b-83f2-6f55b30978c5)
 
 
@@ -24,7 +29,3 @@
 - 数据类型管理功能，兼顾模型提取与Mod模型逆向。
 - 手动Mod逆向功能。
 
-# 基于兴趣的工具
-- DBMT本体永久免费发布在Github，但核心与插件均不会开源。
-- 提交建议与BUG反馈请去issue界面。
-- DBMT不提供英文支持，未来也不会提供。
