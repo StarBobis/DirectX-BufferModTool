@@ -1,6 +1,6 @@
 # DBMT
 
-基于3Dmigoto项目的模型提取工具，由NicoMico基于兴趣随缘开发，95%以上的功能由社区中的Mod作者设计。
+基于3Dmigoto项目的模型提取综合工具箱，由NicoMico基于兴趣随缘开发，95%以上的功能由社区中的Mod作者设计。
 
 
 DBMT只负责模型提取，如需生成Mod功能，可以配合Catter使用：[https://github.com/StarBobis/Catter](https://github.com/StarBobis/Catter)
