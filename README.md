@@ -1,9 +1,11 @@
 # DBMT
 
-基于3Dmigoto项目的模型提取综合工具箱，由NicoMico基于兴趣随缘开发，95%以上的功能由社区中的Mod作者设计。
+基于3Dmigoto项目的模型提取综合工具箱。
 
 
-DBMT只负责模型提取，如需生成Mod功能，可以配合Catter使用：[https://github.com/StarBobis/Catter](https://github.com/StarBobis/Catter)
+DBMT只负责模型提取，如需生成Mod功能，可以配合Herta-Blender插件使用：[https://github.com/StarBobis/HertaBlender](https://github.com/StarBobis/HertaBlender) 
+
+(Herta-Blender也就是新版的Catter，DBMT正在经历又一次完全的架构变更，Herta就是新版本的DBMT，在Herta开发完成之前，你仍然可以在这个仓库下载到最新版本的DBMT来使用)
 
 
 ![image](https://github.com/user-attachments/assets/fa7f260f-ba94-479b-83f2-6f55b30978c5)
@@ -15,11 +17,6 @@ DBMT只负责模型提取，如需生成Mod功能，可以配合Catter使用：[
 - 崩坏：星穹铁道
 - 绝区零
 - 鸣潮
-- 第五人格
-- 少女前线2
-- 永劫无间
-- 解限机
-
 
 以及其它隐藏的游戏，不在DBMT主页中显示。
 
