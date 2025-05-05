@@ -28,3 +28,8 @@ DBMT只负责模型提取，如需生成Mod功能，可以配合Herta-Blender插
 目前作者正在忙其它项目，DBMT的维护工作将交给社区进行。
 欢迎大家提交PR，或者在issue中反馈bug和建议。
 
+# 开发交流
+
+Discord: https://discord.gg/sMdsGAptss
+
+QQ群: 211063061
