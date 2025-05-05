@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="DBMT.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DBMT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="Transparent"
+    >
+
+
+
+    
+    <!-- 支持滑条，不然显示不完全 -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer.Background>
+            <AcrylicBrush 
+            TintColor="Black" 
+            TintOpacity="0.6" 
+            FallbackColor="LightBlue" 
+            />
+        </ScrollViewer.Background>
+        <StackPanel Orientation="Vertical" Margin="20,35,20,20">
+            <!-- 基础设置 -->
+            <Border Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto" >
+
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel  
+                        Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Margin="10,0,10,0" Orientation="Horizontal"
+                        ToolTipService.ToolTip="推荐开启并设为1到3之间的值，因为关闭后FrameAnalysis文件夹会囤积的越来越多，除非不嫌麻烦每次都手动清理。">
+                        <TextBlock x:Name="TextBlock_CleanFrameAnalysisFolderBeforeQuit" Text="退出DBMT之前自动清理Dump生成的FrameAnalysis文件夹" VerticalAlignment="Center" />
+                        <TextBlock x:Name="TextBlock_FrameAnalysisFolderReserveNumber"  Text="保留FraemAnalysis文件夹数量" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                        <NumberBox x:Name="NumberBox_FrameAnalysisFolderReserveNumber" Margin="20,0,0,0"  PlaceholderText="0"  SmallChange="1"  LargeChange="10" />
+                    </StackPanel>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_AutoCleanFrameAnalysisFolder"  OnContent="" OffContent="" Toggled="RefreshSettings"/>
+
+
+     
+                </Grid>
+            </Border>
+            
+            <!-- 提取模型配置项 -->
+            <Border Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto"
+                    ToolTipService.ToolTip="一般只有CPU-PreSkinning游戏会用到，其它游戏不建议勾选">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="TextBlock_DontSplitModelByMatchFirstIndex" Grid.Column="0" Grid.Row="0" Text="禁止根据IB的MatchFirstIndex来分割模型文件为不同部位(CPU-PreSkinning)" VerticalAlignment="Center" Margin="10,0,10,0" />
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_DontSplitModelByMatchFirstIndex"  OnContent="" OffContent="" Toggled="RefreshSettings"/>
+
+                    
+                </Grid>
+            </Border>
+
+
+             <!--其它配置项-->
+            <Border 
+                Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto"
+                >
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="10,0,10,0">
+                        <TextBlock x:Name="TextBlock_AuthorSwitchKey"  Text="Mod分支默认切换按键" VerticalAlignment="Center" Margin="0,10,0,10" 
+                                   ToolTipService.ToolTip="Catter自带的集合架构中分支和按键开关Mod的默认按键，一般用双引号包裹起来，多个按键之间用英文逗号连接，只要是3Dmigoto源码中定义的按键都可以，因为是写到生成的ini中的"/>
+                        <TextBox Height="100" TextWrapping="Wrap" FontSize="20" AcceptsReturn="True" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,5,0,10" x:Name="TextBox_ModSwitchKey" LostFocus="TextBox_ModSwitchKey_LostFocus"/>
+                    </StackPanel>
+                   
+                </Grid>
+            </Border>
+
+
+            <!-- 贴图配置项 -->
+            <Border Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock 
+                        x:Name="TextBlock_GlobalTextureFormat" 
+                        Grid.Row="0" Grid.Column="0" Text="全局贴图转换格式设置" VerticalAlignment="Center" Margin="10,0,10,0"
+                        ToolTipService.ToolTip="新手建议使用jpg格式和png格式，tga格式无法在贴图设置页面中标记贴图"/>
+                    <ComboBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ComboBox_AutoTextureFormat" SelectionChanged="RefreshSettings" >
+                        <x:String>.jpg</x:String>
+                        <x:String>.tga</x:String>
+                        <x:String>.png</x:String>
+                    </ComboBox>
+
+                    <TextBlock 
+                        x:Name="TextBlock_OnlyConvertDiffuseMap" Grid.Column="0" Grid.Row="1" 
+                        Text="提取模型时自动贴图仅转换DiffuseMap.dds" VerticalAlignment="Center" Margin="10,0,10,0"
+                        ToolTipService.ToolTip="只转换DiffuseMap.dds一般够用了，部分高级玩家可能不勾选此项的同时还会转换所有贴图到tga格式方便在Blender和其它建模中使用"/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"   Margin="5,5,5,5" x:Name="ToggleSwitch_AutoTextureOnlyConvertDiffuseMap" OnContent="" OffContent="" Toggled="RefreshSettings"/>
+
+                    <TextBlock 
+                        x:Name="TextBlock_AutoDetectAndMarkTexture" Grid.Column="0" Grid.Row="2" Text="自动检测贴图配置并标记贴图" 
+                        VerticalAlignment="Center" Margin="10,0,10,0" 
+                        ToolTipService.ToolTip="勾选后每次只要你标记完贴图，下一次就会自动识别你的贴图配置中的内容并且在提取模型后自动标记并应用，新手建议开启"/>
+                    <ToggleSwitch Grid.Column="1"  Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_AutoDetectAndMarkTexture" OnContent="" OffContent="" Toggled="RefreshSettings"/>
+ 
+                </Grid>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

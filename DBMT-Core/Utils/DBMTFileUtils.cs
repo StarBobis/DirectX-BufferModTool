@@ -1,0 +1,195 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.Principal;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DBMT_Core
+{
+    public class DBMTFileUtils
+    {
+        /// <summary>
+        /// 检查当前应用程序是否以管理员权限运行。
+        /// </summary>
+        /// <returns>如果是管理员权限，则返回true；否则返回false。</returns>
+        public static bool IsRunAsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+
+        public static long GetFileSize(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("文件未找到。", filePath);
+            }
+            return new FileInfo(filePath).Length;
+        }
+
+
+        public static string[] ReadWorkSpaceNameList(string WorkSpaceFolderPath)
+        {
+            List<string> WorkSpaceNameList = new List<string>();
+
+            if (Directory.Exists(WorkSpaceFolderPath))
+            {
+                string[] WorkSpaceList = Directory.GetDirectories(WorkSpaceFolderPath);
+                foreach (string WorkSpacePath in WorkSpaceList)
+                {
+                    string WorkSpaceName = Path.GetFileName(WorkSpacePath);
+                    WorkSpaceNameList.Add(WorkSpaceName);
+                }
+            }
+
+            return WorkSpaceNameList.ToArray();
+        }
+
+
+        private static void SearchDirectory(string currentDirectory, List<string> result)
+        {
+            // 获取当前目录下的所有文件
+            string[] files = Directory.GetFiles(currentDirectory);
+
+            // 检查是否有.dds或.png文件
+            foreach (string file in files)
+            {
+                string extension = Path.GetExtension(file).ToLower();
+                if (extension == ".dds" || extension == ".png")
+                {
+                    // 如果找到了目标文件，将目录加入结果列表
+                    if (!result.Contains(currentDirectory))
+                    {
+                        result.Add(currentDirectory);
+                    }
+                    break; // 找到了一种类型的文件就不再继续查找当前目录中的其他文件
+                }
+            }
+
+            // 递归搜索子目录
+            string[] subdirectories = Directory.GetDirectories(currentDirectory);
+            foreach (string subdirectory in subdirectories)
+            {
+                SearchDirectory(subdirectory, result);
+            }
+
+        }
+
+
+        public static List<string> FindDirectoriesWithImages(string rootDirectory)
+        {
+            if (string.IsNullOrEmpty(rootDirectory) || !Directory.Exists(rootDirectory))
+            {
+                throw new ArgumentException("The specified directory does not exist or is invalid.", nameof(rootDirectory));
+            }
+
+            var directoriesWithImages = new List<string>();
+            SearchDirectory(rootDirectory, directoriesWithImages);
+            return directoriesWithImages;
+        }
+
+        public static List<string> GetFileNameListInFolder(string rootDirectory)
+        {
+
+            List<string> FileNameList = new List<string>();
+            string[] FrameAnalysisFileNameArray = Directory.GetFiles(rootDirectory);
+            foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
+            {
+                FileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
+            }
+            return FileNameList;
+        }
+
+        public static bool CopyDirectory(string sourceDirName, string destDirName, bool copySubDirs = true)
+        {
+            // 检查源目录是否存在
+            if (!Directory.Exists(sourceDirName))
+            {
+                return false;
+            }
+
+            // 如果目标目录不存在，则创建它
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
+            // 获取源目录中的所有文件并复制它们
+            var files = Directory.GetFiles(sourceDirName);
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileName(file);
+                var destFile = Path.Combine(destDirName, fileName);
+                File.Copy(file, destFile, true); // 第三个参数为true表示覆盖已存在的文件
+            }
+
+            // 如果需要复制子目录，则递归处理
+            if (copySubDirs)
+            {
+                var directories = Directory.GetDirectories(sourceDirName);
+                foreach (var subdir in directories)
+                {
+                    var dirName = Path.GetFileName(subdir);
+                    var destSubDir = Path.Combine(destDirName, dirName);
+                    CopyDirectory(subdir, destSubDir, copySubDirs);
+                }
+            }
+
+            return true;
+        }
+
+
+
+        /// <summary>
+        /// Finds the value of a specified attribute in a .ini file.
+        /// </summary>
+        /// <param name="filePath">The path to the .ini file.</param>
+        /// <param name="attributeName">The name of the attribute to find.</param>
+        /// <returns>The value of the attribute if found, otherwise an empty string.</returns>
+        public static string FindMigotoIniAttributeInFile(string filePath, string attributeName)
+        {
+            string attributeValue = "";
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(filePath))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        // Trim leading and trailing whitespace
+                        line = line.Trim();
+
+                        // Check if the line contains the attribute name followed by a colon
+                        if (line.StartsWith(attributeName + ":", StringComparison.OrdinalIgnoreCase))
+                        {
+                            int pos = line.IndexOf(':');
+                            if (pos >= 0)
+                            {
+                                // Extract the substring after the colon and trim it
+                                string var = line.Substring(pos + 1).Trim();
+                                attributeValue = var;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions such as file not found or I/O errors
+                Console.WriteLine($"Error reading file: {ex.Message}");
+                throw;
+            }
+
+            return attributeValue;
+        }
+
+
+   
+    }
+}

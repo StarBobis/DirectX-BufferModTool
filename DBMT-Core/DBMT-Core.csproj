@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RootNamespace>DBMT_Core</RootNamespace>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <UseWinUI>true</UseWinUI>
+    <SupportedOSPlatformVersion>10.0.22621.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
+      <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="System.Management" Version="9.0.3" />
+  </ItemGroup>
+
+	<!--移除额外生成的多语言支持文件夹 -->
+	<Target Name="RemoveFoldersWithMuiFiles" Condition="'$(WindowsPackageType)' == 'None'" AfterTargets="Build">
+		<ItemGroup>
+			<RemovingFiles Include="$(OutDir)*\*.mui" Exclude="$(OutDir)en-us\*.mui" />
+			<RemovingFolders Include="@(RemovingFiles->'%(RootDir)%(Directory)')" />
+			<RemovingCS Include="$(OutDir)cs" />
+			<RemovingDE Include="$(OutDir)de" />
+			<RemovingES Include="$(OutDir)es" />
+			<RemovingFR Include="$(OutDir)fr" />
+			<RemovingIT Include="$(OutDir)it" />
+			<RemovingJA Include="$(OutDir)ja" />
+			<RemovingKO Include="$(OutDir)ko" />
+			<RemovingPL Include="$(OutDir)pl" />
+			<RemovingRU Include="$(OutDir)ru" />
+			<RemovingTR Include="$(OutDir)tr" />
+			<!--<RemovingZHS Include="$(OutDir)zh-Hans" />
+			<RemovingZHT Include="$(OutDir)zh-Hant" />-->
+		</ItemGroup>
+		<RemoveDir Directories="@(RemovingFolders)" />
+		<RemoveDir Directories="@(RemovingCS)" />
+		<RemoveDir Directories="@(RemovingDE)" />
+		<RemoveDir Directories="@(RemovingES)" />
+		<RemoveDir Directories="@(RemovingFR)" />
+		<RemoveDir Directories="@(RemovingIT)" />
+		<RemoveDir Directories="@(RemovingJA)" />
+		<RemoveDir Directories="@(RemovingKO)" />
+		<RemoveDir Directories="@(RemovingPL)" />
+		<RemoveDir Directories="@(RemovingRU)" />
+		<RemoveDir Directories="@(RemovingTR)" />
+		<!--<RemoveDir Directories="@(RemovingZHS)" />
+		<RemoveDir Directories="@(RemovingZHT)" />-->
+	</Target>
+
+</Project>

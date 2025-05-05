@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="DBMT.GameTypePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DBMT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:community="using:CommunityToolkit.WinUI.UI.Controls"
+    Background="Transparent"
+    NavigationCacheMode="Enabled"
+    >
+
+
+
+    <!-- 支持滑条，不然显示不完全 -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer.Background>
+            <AcrylicBrush 
+            TintColor="Black" 
+            TintOpacity="0.6" 
+            FallbackColor="LightBlue" 
+            />
+        </ScrollViewer.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 选择数据类型分类 -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,5,165,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <TextBlock Text="所属类型:" VerticalAlignment="Center"></TextBlock>
+                <ComboBox x:Name="ComboBox_GameTypeCategory" Width="200" Margin="20,0,0,0" VerticalAlignment="Center">
+                </ComboBox>
+            </StackPanel>
+
+            <!-- 顶部菜单 -->
+            <MenuBar Grid.Row="0" Grid.Column="0" Margin="10,5,0,0">
+
+                <MenuBarItem Title="文件" x:Name="Menu_File">
+                    <MenuFlyoutItem x:Name="Menu_ClearD3D11ElementList" Text="清空D3D11Element列表" Click="Menu_ClearD3D11ElementList_Click"/>
+                    <MenuFlyoutItem x:Name="Menu_SaveD3D11ElementList" Text="保存当前数据类型" Click="Menu_SaveD3D11ElementList_Click"/>
+                    <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                    <MenuFlyoutItem x:Name="Menu_OpenGameTypeFolder" Text="打开数据类型文件夹" Click="Menu_OpenGameTypeFolder_Click"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenGameTypeFile" Text="打开指定数据类型文件" Click="Menu_OpenGameTypeFile_Click"/>
+                </MenuBarItem>
+
+
+            </MenuBar>
+
+            <Border 
+                Grid.Column="0"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Margin="20,5,20,20"  
+                BorderBrush="White"  
+                BorderThickness="1" 
+                CornerRadius="5" 
+                Height="Auto" 
+                HorizontalAlignment="Center" >
+                <community:DataGrid 
+                    AutoGenerateColumns="False"  
+                    Height="350" 
+                    Width="Auto"
+                    x:Name="DataGrid_GameType"  
+                    CellEditEnding="DataGrid_GameType_CellEditEnding"
+                    >
+
+                    <community:DataGrid.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem x:Name="Menu_DeleteD3D11ElementLine" Text="删除选中行" Click="Menu_DeleteD3D11ElementLine_Click"></MenuFlyoutItem>
+                        </MenuFlyout>
+                    </community:DataGrid.ContextFlyout>
+      
+                    
+                    <community:DataGrid.Columns>
+                        <community:DataGridTextColumn Header="SemanticName" Width="Auto" Binding="{Binding SemanticName}" IsReadOnly="False"/>
+                        <community:DataGridTextColumn Header="Format"  Width="Auto" Binding="{Binding Format}" IsReadOnly="False"/>
+
+                        <!--<community:DataGridTextColumn Header="ByteWdith"  Width="100" Binding="{Binding ByteWdith}" IsReadOnly="False"/>-->
+
+                        <community:DataGridTextColumn Header="ExtractSlot"  Width="Auto" Binding="{Binding ExtractSlot}" IsReadOnly="False"/>
+                        <community:DataGridTextColumn Header="ExtractTechnique"  Width="Auto" Binding="{Binding ExtractTechnique}" IsReadOnly="False"/>
+                        <community:DataGridTextColumn Header="Category"  Width="Auto" Binding="{Binding Category}" IsReadOnly="False"/>
+                        <community:DataGridTextColumn Header="DrawCategory"  Width="Auto" Binding="{Binding DrawCategory}" IsReadOnly="False"/>
+
+                        <!--<community:DataGridTextColumn Header="InputSlot"  Width="100" Binding="{Binding InputSlot}" IsReadOnly="False"/>
+        <community:DataGridTextColumn Header="InputSlotClass"  Width="100" Binding="{Binding InputSlotClass}" IsReadOnly="False"/>
+        <community:DataGridTextColumn Header="InstanceDataStepRate"  Width="100" Binding="{Binding InstanceDataStepRate}" IsReadOnly="False"/>-->
+
+                    </community:DataGrid.Columns>
+                </community:DataGrid>
+            </Border>
+
+
+
+            <Border 
+                Grid.Column="0"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="20,5,20,20"  
+                BorderBrush="White"  
+                BorderThickness="1" 
+                CornerRadius="5" 
+                Height="Auto" 
+                HorizontalAlignment="Center" >
+
+                <StackPanel  Orientation="Vertical" Margin="20,20,20,20">
+
+                    <StackPanel  Orientation="Horizontal" Margin="0,20,0,0">
+                        <TextBlock Text="SemanticName:" VerticalAlignment="Center"></TextBlock>
+                        <ComboBox x:Name="ComboBox_SemanticName" Width="200" Margin="20,0,0,0" IsEditable="True">
+                            <ComboBoxItem>POSITION</ComboBoxItem>
+                            <ComboBoxItem>NORMAL</ComboBoxItem>
+                            <ComboBoxItem>TANGENT</ComboBoxItem>
+                            <ComboBoxItem>BINORMAL</ComboBoxItem>
+                            <ComboBoxItem>COLOR</ComboBoxItem>
+                            <ComboBoxItem>TEXCOORD</ComboBoxItem>
+                            <ComboBoxItem>BLENDWEIGHTS</ComboBoxItem>
+                            <ComboBoxItem>BLENDINDICES</ComboBoxItem>
+                        </ComboBox>
+                        
+                        <!--Format的内容要根据当前选择的SemanticName来加载所有预制的可能结果-->
+                        <TextBlock Text="Format:" VerticalAlignment="Center" Margin="20,0,0,0"></TextBlock>
+                        <ComboBox x:Name="ComboBox_Format" Width="200" Margin="20,0,0,0" IsEditable="True">
+                            <ComboBoxItem>R32G32B32A32_FLOAT</ComboBoxItem>
+                            <ComboBoxItem>R16G16B16A16_FLOAT</ComboBoxItem>
+                            <ComboBoxItem>R16G16B16A16_SNORM</ComboBoxItem>
+                            <!--这里注意！一般是UINT，很少有游戏用到SINT-->
+                            <ComboBoxItem>R32G32B32A32_UINT</ComboBoxItem>
+                            <ComboBoxItem>R32G32B32A32_SINT</ComboBoxItem>
+                            <ComboBoxItem>R32G32B32_FLOAT</ComboBoxItem>
+                            <ComboBoxItem>R32G32_FLOAT</ComboBoxItem>
+                            <ComboBoxItem>R32G32_UINT</ComboBoxItem>
+                            <ComboBoxItem>R16G16_FLOAT</ComboBoxItem>
+                            <ComboBoxItem>R16G16_UINT</ComboBoxItem>
+                            <ComboBoxItem>R32_FLOAT</ComboBoxItem>
+                            <ComboBoxItem>R32_UINT</ComboBoxItem>
+                            <ComboBoxItem>R8G8B8A8_UNORM</ComboBoxItem>
+                            <ComboBoxItem>R8G8B8A8_SNORM</ComboBoxItem>
+                            <ComboBoxItem>R8G8B8A8_UINT</ComboBoxItem>
+                        </ComboBox>
+
+                        <TextBlock Text="ExtractSlot:" VerticalAlignment="Center" Margin="20,0,0,0"></TextBlock>
+                        <ComboBox x:Name="ComboBox_ExtractSlot" Width="200" Margin="20,0,0,0" IsEditable="True">
+                            <ComboBoxItem>vb0</ComboBoxItem>
+                            <ComboBoxItem>vb1</ComboBoxItem>
+                            <ComboBoxItem>vb2</ComboBoxItem>
+                            <ComboBoxItem>vb3</ComboBoxItem>
+                            <ComboBoxItem>vb4</ComboBoxItem>
+                            <ComboBoxItem>vb5</ComboBoxItem>
+                            <ComboBoxItem>vb6</ComboBoxItem>
+                        </ComboBox>
+
+                    </StackPanel>
+                    
+                    
+
+                    <StackPanel  Orientation="Horizontal" Margin="0,20,0,0">
+                        <TextBlock Text="ExtractTechnique:" VerticalAlignment="Center" Margin="0,0,0,0"></TextBlock>
+                        <ComboBox x:Name="ComboBox_ExtractTechnique" Width="200" Margin="20,0,0,0" IsEditable="True">
+                            <ComboBoxItem>pointlist</ComboBoxItem>
+                            <ComboBoxItem>trianglelist</ComboBoxItem>
+                        </ComboBox>
+
+                        <TextBlock Text="Category:" VerticalAlignment="Center" Margin="20,0,0,0"></TextBlock>
+                        <ComboBox x:Name="ComboBox_Category" Width="200" Margin="20,0,0,0" IsEditable="True">
+                            <ComboBoxItem>Position</ComboBoxItem>
+                            <ComboBoxItem>Texcoord</ComboBoxItem>
+                            <ComboBoxItem>Blend</ComboBoxItem>
+                        </ComboBox>
+
+                        <TextBlock Text="DrawCategory:" VerticalAlignment="Center" Margin="20,0,0,0"></TextBlock>
+                        <ComboBox x:Name="ComboBox_DrawCategory" Width="200" Margin="20,0,0,0" IsEditable="True">
+                            <ComboBoxItem>Position</ComboBoxItem>
+                            <ComboBoxItem>Texcoord</ComboBoxItem>
+                            <ComboBoxItem>Blend</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+
+
+              
+
+                    <StackPanel  Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Center">
+                        <Button x:Name="Button_AddNewD3D11ElementLine" Click="Button_AddNewD3D11ElementLine_Click" Content="新增数据类型行" ></Button>
+                    </StackPanel>
+                </StackPanel>
+            
+            </Border>
+
+            <!--<Border 
+                Grid.Column="0"
+                Grid.Row="3"
+                Margin="20,20,20,20"  
+                BorderBrush="White"  
+                BorderThickness="1" 
+                CornerRadius="5" 
+                Height="Auto" 
+                HorizontalAlignment="Center" >
+
+
+                <StackPanel  Orientation="Horizontal" Margin="20,20,20,20">
+                    <TextBlock Text="所属类型:" VerticalAlignment="Center"></TextBlock>
+                    <ComboBox x:Name="ComboBox_GameTypeCategory" Width="200" Margin="20,0,0,0" VerticalAlignment="Center">
+                    </ComboBox>
+                </StackPanel>
+
+            </Border>-->
+
+
+        </Grid>
+
+    </ScrollViewer>
+</Page>

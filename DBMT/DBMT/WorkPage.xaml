@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="DBMT.WorkPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DBMT"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:community="using:CommunityToolkit.WinUI.UI.Controls"
+    Background="Transparent"
+    >
+
+
+    <!-- CommunityToolkit DataGrid Support -->
+    
+    <!-- 支持滑条，不然显示不完全 -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto" >
+        <ScrollViewer.Background>
+            <AcrylicBrush 
+            TintColor="Black" 
+            TintOpacity="0.6" 
+            FallbackColor="LightBlue" 
+            />
+        </ScrollViewer.Background>
+        
+        <Grid>
+            <!-- 定义行 -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- 定义列 -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <!-- 选择游戏 -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,5,165,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <ComboBox x:Name="WorkGameSelectionComboBox" Width="200" SelectionChanged="WorkGameSelectionComboBox_SelectionChanged" >
+                </ComboBox>
+            </StackPanel>
+
+ 
+            <MenuBar Grid.Row="0" Grid.Column="1" Margin="0,5,370,0" HorizontalAlignment="Right">
+                <MenuBarItem Title="运行" x:Name="Menu_Run" >
+            
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderEXE" Text="3Dmigoto Loader.exe" Click="Open3DmigotoLoaderEXE"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderPY" Text="3Dmigoto Loader.py" Click="Open3DmigotoLoaderPY"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoLoaderByPassACE" Text="3Dmigoto Loader-ByPassACE.exe" Click="Open3DmigotoLoaderByPassACE"/>
+                </MenuBarItem>
+            </MenuBar>
+
+            <!-- 顶部菜单 -->
+            <MenuBar Grid.Row="0" Grid.Column="0" Margin="10,5,0,0">
+                
+                <MenuBarItem Title="文件" x:Name="Menu_File">
+                  
+                    <MenuFlyoutItem x:Name="Menu_OpenWorkSpaceGeneratedModFolder" Text="打开当前工作空间生成Mod的文件夹" Click="OpenWorkSpaceGenerateModFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenModsFolder" Text="打开Mods文件夹" Click="OpenModsFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_Open3DmigotoFolder" Text="打开3Dmigoto文件夹" Click="Open3DmigotoFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenD3dxini" Text="打开d3dx.ini" Click="OpenD3dxIniFile"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenShaderFixesFolder" Text="打开ShaderFixes文件夹" Click="OpenShaderFixesFolder"/>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestFrameAnalysisFolder" Text="打开最新的FrameAnalysis文件夹" Click="OpenLatestFrameAnalysisFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestFrameAnalysisLogTxt" Text="打开最新的FrameAnalysis log.txt" Click="OpenLatestFrameAnalysisLogTxtFile"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestFrameAnalysisDedupedFolder" Text="打开最新的FrameAnalysis文件夹中的deduped文件夹" Click="OpenLatestFrameAnalysisDedupedFolder"/>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="Menu_OpenDBMTLocationFolder" Text="打开DBMT所在文件夹" Click="OpenDBMTLocationFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLogsFolder" Text="打开Logs文件夹" Click="OpenLogsFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenLatestLogFile" Text="打开最新的日志文件" Click="OpenLatestLogFile"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenConfigsFolder" Text="打开Configs文件夹" Click="OpenConfigsFolder"/>
+                    <MenuFlyoutItem x:Name="Menu_OpenPluginsFolder" Text="打开Plugins文件夹"  Click="Menu_OpenPluginsFolder_Click"/>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="Menu_GameTypeFolder" Text="打开数据类型文件夹"  Click="Menu_GameTypeFolder_Click"/>
+
+                </MenuBarItem>
+
+
+
+                <MenuBarItem x:Name="Menu_ToolBox" Title="工具箱">
+              
+                    <MenuFlyoutItem x:Name="Menu_AutoDetect_UnityVS_GPUPreSkinning_DrawIBList" Text="自动检测UnityVS_GPU-PreSkinning的DrawIB列表" Click="AutoDetectPointlistDrawIBList_UnityVSPreSkinning"/>
+                    <MenuFlyoutItem x:Name="Menu_AutoDetect_CPUPreSkinning_DrawIBList" Text="自动检测CPU-PreSkinning的DrawIB列表" Click="Menu_AutoDetect_CPUPreSkinning_DrawIBList_Click"/>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="Menu_MoveDrawIBRelatedFiles" Text="提取DrawIB相关文件" Click="Menu_MoveDrawIBRelatedFiles_Click" />
+                </MenuBarItem>
+
+                <MenuBarItem x:Name="Menu_Texture" Title="贴图">
+                    <MenuFlyoutItem x:Name="Menu_ConvertDDSToTargetFormat" Text="批量转换指定文件夹中的dds文件到目标格式" Click="Menu_ConvertDDSToTargetFormat_Click"  />
+                    <MenuFlyoutItem x:Name="Menu_ExtractTextureFiles" Text="提取所有类型贴图文件"  Click="Menu_ExtractTextureFiles_Click"/>
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem x:Name="Menu_ExtractDedupedTextures" Text="提取DedupedTextures"  Click="Menu_ExtractDedupedTextures_Click"/>
+                    <MenuFlyoutItem x:Name="Menu_ExtractTrianglelistTextures" Text="提取TrianglelistTextures" Click="Menu_ExtractTrianglelistTextures_Click" />
+                    <MenuFlyoutItem x:Name="Menu_ExtractRenderTextures" Text="提取RenderTextures" Click="Menu_ExtractRenderTextures_Click" />
+                </MenuBarItem>
+
+
+            </MenuBar>
+
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,20,20,0"
+BorderBrush="White" BorderThickness="1" CornerRadius="5" >
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 第一行：选择工作空间 -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10">
+                        <TextBlock x:Name="TextBlock_WorkSpaceName" Text="选择工作空间:" VerticalAlignment="Center" Margin="0,0,0,0" />
+                        <ComboBox x:Name="ComboBoxWorkSpaceSelection" Width="200" IsEditable="True" SelectionChanged="ComboBoxWorkSpaceSelection_SelectionChanged">
+                        </ComboBox>
+                        <Button x:Name="Button_CreateWorkSpace" Content="创建工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,0" Click="CreateWorkSpaceFolder"/>
+                        <Button x:Name="Button_OpenWorkSpaceFolder" Content="打开当前工作空间" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="20,0,10,0" Click="OpenCurrentWorkSpaceFolder"/>
+                        <Button x:Name="Button_CleanWorkSpace" Content="清空当前工作空间内容" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="10,0,10,0" Click="CleanCurrentWorkSpaceFile" />
+                    </StackPanel>
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- DataGrid  DrawIB列表 -->
+                        <!--https://learn.microsoft.com/en-us/windows/communitytoolkit/controls/datagrid_guidance/datagrid_basics-->
+                        <Border Grid.Column="0" Margin="10,10,10,10" BorderBrush="White" BorderThickness="1" CornerRadius="5" 
+                             Height="Auto" Width="400" HorizontalAlignment="Left">
+                            <community:DataGrid AutoGenerateColumns="False"  Height="200"
+                                x:Name="myDataGrid"  HorizontalAlignment="Left" Margin="10,10,10,0"  CellEditEnding="MyDataGrid_CellEditEnding" CurrentCellChanged="myDataGrid_CurrentCellChanged" >
+                                <community:DataGrid.Columns>
+                                    <community:DataGridTextColumn Header="DrawIB" Width="120" Binding="{Binding DrawIB}" IsReadOnly="False"/>
+                                    <community:DataGridTextColumn Header="Alias"  Width="260" Binding="{Binding Alias}" IsReadOnly="False"/>
+                                </community:DataGrid.Columns>
+                            </community:DataGrid>
+                        </Border>
+
+                        <!-- 按钮 -->
+                        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10,10,10,0" HorizontalAlignment="Left">
+                            <Button x:Name="Button_InitializeDrawIBConfig" Content="清空DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="CleanDrawIBList"/>
+                            <Button x:Name="Button_SaveDrawIBList" Content="保存当前DrawIB列表" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="Button_SaveDrawIBList_Click"/>
+                            <Button 
+                                x:Name="Button_ExtractModel" 
+                                Content="提取模型" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Left"  
+                                Margin="0,0,10,10" 
+                                Click="ExtractModel"/>
+                            <Button x:Name="Button_GenerateVSCheckDrawIBList" Content="生成VSCheck" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="Button_GenerateVSCheckDrawIBList_Click"/>
+                        </StackPanel>
+                    </Grid>
+                    
+
+                </Grid>
+            </Border>
+            
+            <!-- SkipIB相关 -->
+            <Border Grid.Row="2"  Grid.Column="0" Grid.ColumnSpan="2" Width="auto" Height="auto" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="20,20,20,0"
+                BorderBrush="White" BorderThickness="1" CornerRadius="5" >
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 第1行：SkipIB列表 -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10,10,10,10">
+                        <TextBlock x:Name="TextBlock_SkipIBList" Text="SkipIB列表:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox x:Name="TextBoxSkipIBList" Width="700"/>
+                    </StackPanel>
+
+                    <!-- 第2行：按钮 -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,10,10,0">
+                        <Button x:Name="Button_CleanSkipIBList" Content="清空SkipIB列表" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="CleanSkipIBListTextBox"/>
+                        <Button x:Name="Button_SkipIBDraw" Content="隐藏IB绘制" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="ExecuteSkipIB"/>
+                        <Button x:Name="Button_GenerateVSCheck" Content="生成VSCheck" VerticalAlignment="Center" HorizontalAlignment="Right"  Margin="0,0,10,10" Click="ExecuteGenerateVSCheck"/>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+            
+            
+
+        </Grid>
+    </ScrollViewer>
+</Page>
