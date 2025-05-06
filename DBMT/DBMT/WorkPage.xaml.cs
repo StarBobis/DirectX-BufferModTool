@@ -530,26 +530,7 @@ namespace DBMT
 
             bool RunResult = false;
 
-            if (GlobalConfig.MainCfg.Value.GameName == "HI3"
-                || GlobalConfig.MainCfg.Value.GameName == "GI"
-                || GlobalConfig.MainCfg.Value.GameName == "ZZZ"
-                || GlobalConfig.MainCfg.Value.GameName == "GF2"
-                || GlobalConfig.MainCfg.Value.GameName == "IdentityV"
-                )
-            {
-                LOG.Initialize();
-                try
-                {
-                    RunResult = CoreFunctions.ExtractUnityVS(DrawIBItemList);
-                }
-                catch (Exception ex)
-                {
-                    LOG.Error(ex.ToString());
-                    RunResult = false;
-                }
-                LOG.SaveFile();
-            }
-            else if (GlobalConfig.MainCfg.Value.GameName == "HSR")
+            if (GlobalConfig.MainCfg.Value.GameName == "HSR")
             {
                 LOG.Initialize();
                 try
@@ -579,31 +560,12 @@ namespace DBMT
                 }
                 LOG.SaveFile();
             }
-            else if (GlobalConfig.MainCfg.Value.GameName == "AILIMIT")
+            else if (GlobalConfig.CurrentGameName == "YYSLS")
             {
-
-                
-                    LOG.Initialize();
-                    try
-                    {
-
-                        RunResult = CoreFunctions.ExtractUnityVS(DrawIBItemList);
-                    }
-                    catch (Exception ex)
-                    {
-                        LOG.Error(ex.ToString());
-                        RunResult = false;
-                    }
-                    LOG.SaveFile();
-               
-            }
-            else if (GlobalConfig.MainCfg.Value.GameName == "Naraka" )
-            {
-                LOG.Initialize();
                 try
                 {
-                        
-                    RunResult = CoreFunctions.ExtractUnityVS(DrawIBItemList);
+                    LOG.Initialize();
+                    RunResult = CoreFunctions.ExtractYYSLS(DrawIBItemList);
                 }
                 catch (Exception ex)
                 {
@@ -611,14 +573,13 @@ namespace DBMT
                     RunResult = false;
                 }
                 LOG.SaveFile();
-               
             }
-            else if (GlobalConfig.CurrentGameName == "YYSLS")
+            else
             {
+                LOG.Initialize();
                 try
                 {
-                    LOG.Initialize();
-                    RunResult = CoreFunctions.ExtractYYSLS(DrawIBItemList);
+                    RunResult = CoreFunctions.ExtractUnityVS(DrawIBItemList);
                 }
                 catch (Exception ex)
                 {

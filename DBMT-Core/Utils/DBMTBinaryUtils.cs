@@ -56,32 +56,6 @@ namespace DBMT_Core
         }
 
 
-        [Obsolete("已过时，因为PatchBLENDWEIGHTS这个设计是过时且错误的，已经集成到Catter中仅用10行不到的代码就实现了兼容。",true)]
-        public static Dictionary<int, byte[]> PatchBlendBuf_BLENDWEIGHT_1000(Dictionary<int, byte[]> blendBufMap)
-        {
-            var patchedFileBuf = new Dictionary<int, byte[]>();
-
-            foreach (var pair in blendBufMap)
-            {
-                // 1,0,0,0 的二进制表示
-                var patchValue = new byte[]
-                {
-                0x00, 0x00, 0x80, 0x3f,
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00
-                };
-
-                // 将patchValue与pair的值合并
-                var combinedArray = new byte[patchValue.Length + pair.Value.Length];
-                Buffer.BlockCopy(patchValue, 0, combinedArray, 0, patchValue.Length);
-                Buffer.BlockCopy(pair.Value, 0, combinedArray, patchValue.Length, pair.Value.Length);
-
-                patchedFileBuf[pair.Key] = combinedArray;
-            }
-
-            return patchedFileBuf;
-        }
 
         public static byte[] AppendByteArray(byte[] first, byte[] second)
         {

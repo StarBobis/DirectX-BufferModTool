@@ -11,7 +11,6 @@ namespace DBMT_Core.Utils
 
     //自制简易LOG类，别老想着用什么日志框架，简单能解决问题就行。
     //不要过度设计！
-    //在任何情况下，都不能暴露运行日志给用户。
     public static class LOG
     {
         private static List<string> LogLineList = new List<string>();
