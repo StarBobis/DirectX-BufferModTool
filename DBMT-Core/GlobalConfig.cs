@@ -350,6 +350,11 @@ namespace DBMT_Core
             get { return Path.Combine(Path_Base,"Logs\\"); }
         }
 
+        public static string Path_AssetsFolder
+        {
+            get { return Path.Combine(Path_Base, "Assets\\"); }
+        }
+
 
         public static string Path_LatestDBMTLogFile
         {

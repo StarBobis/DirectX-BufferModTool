@@ -222,7 +222,7 @@ namespace DBMT
 
             if (GlobalConfig.GameCfg.Value.AutoCleanFrameAnalysisFolder)
             {
-                SettingsHelper.CleanFrameAnalysisFiles();
+                DBMTFileUtils.CleanFrameAnalysisFiles();
             }
         }
     }
