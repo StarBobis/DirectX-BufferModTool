@@ -195,6 +195,7 @@ namespace DBMT
             if (filepath != "")
             {
                 ProcessPathTextBox.Text = filepath;
+                SaveTargetPath();
             }
         }
 
@@ -204,6 +205,7 @@ namespace DBMT
             if (filepath != "")
             {
                 StarterPathTextBox.Text = filepath;
+                SaveLaunchPath();
             }
         }
 
@@ -370,11 +372,14 @@ namespace DBMT
                 TextBox_3DmigotoPath.Text = folderPath;
                 GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = TextBox_3DmigotoPath.Text;
                 GlobalConfig.MainCfg.SaveConfig();
+
+
             }
             else
             {
                 return;
             }
+
             Verify3DmigotoFolderPath();
 
           
