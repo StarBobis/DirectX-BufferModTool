@@ -2,6 +2,7 @@
 
 基于3Dmigoto项目的模型提取综合工具箱。
 
+第一次使用需下载DBMT-Package: [https://github.com/StarBobis/DBMT-Package](https://github.com/StarBobis/DBMT-Package)
 
 DBMT只负责模型提取，如需生成Mod功能，可以配合Herta-Blender插件使用：[https://github.com/StarBobis/HertaBlender](https://github.com/StarBobis/HertaBlender) 
 
