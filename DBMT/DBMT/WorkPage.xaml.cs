@@ -552,12 +552,12 @@ namespace DBMT
                 }
                 LOG.SaveFile();
             }
-            else if (GlobalConfig.CurrentGameName == "YYSLS")
+            else if (GlobalConfig.CurrentGameName == "YYSLS" || GlobalConfig.CurrentGameName == "IdentityV")
             {
                 try
                 {
                     LOG.Initialize();
-                    RunResult = CoreFunctions.ExtractYYSLS(DrawIBItemList);
+                    RunResult = CoreFunctions.ExtractCTX(DrawIBItemList);
                 }
                 catch (Exception ex)
                 {

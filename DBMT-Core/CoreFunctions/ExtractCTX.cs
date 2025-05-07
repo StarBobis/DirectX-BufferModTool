@@ -13,7 +13,7 @@ namespace DBMT_Core
     {
 
 
-        public static bool ExtractYYSLS(List<DrawIBItem> DrawIBItemList)
+        public static bool ExtractCTX(List<DrawIBItem> DrawIBItemList)
         {
             D3D11GameTypeLv2 d3D11GameTypeLv2 = new D3D11GameTypeLv2(GlobalConfig.CurrentGameName);
 
