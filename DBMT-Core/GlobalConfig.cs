@@ -104,7 +104,6 @@ namespace DBMT_Core
         public int FrameAnalysisFolderReserveNumber { get; set; } = 1;
 
         // 生成Mod设置
-
         public string ModSwitchKey { get; set; } = "\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\"";
 
 
@@ -121,7 +120,7 @@ namespace DBMT_Core
 
     public class MainSetting : BaseConfig
     {
-        public string GameName { get; set; } = "HSR";
+        public string GameName { get; set; } = "ZZZ";
         public string WorkSpaceName { get; set; } = string.Empty;
 
         //DBMT位置
