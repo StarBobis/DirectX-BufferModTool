@@ -36,32 +36,32 @@ namespace DBMT_Core.Utils
 
             List<GameIconItem> gameIconItems = [];
 
-            if (!Directory.Exists(GlobalConfig.Path_3DmigotoLoaderFolder))
+            if (!Directory.Exists(GlobalConfig.Path_AssetsGamesFolder))
             {
                 return gameIconItems;
             }
 
-            string[] MigotoLoaderFolders = Directory.GetDirectories(GlobalConfig.Path_3DmigotoLoaderFolder);
+            string[] GamesFolderList = Directory.GetDirectories(GlobalConfig.Path_AssetsGamesFolder);
 
-            foreach (string MigotoLoaderPath in MigotoLoaderFolders)
+            foreach (string GameFolderPath in GamesFolderList)
             {
-                LOG.Info("MigotoLoaderPath: " + MigotoLoaderPath);
-                if (Directory.Exists(MigotoLoaderPath))
+                LOG.Info("GameFolder: " + GameFolderPath);
+                if (Directory.Exists(GameFolderPath))
                 {
-                    string GameName = Path.GetFileName(MigotoLoaderPath);
+                    string GameName = Path.GetFileName(GameFolderPath);
                     LOG.Info(GameName);
 
-                    string GameIconImage = Path.Combine(GlobalConfig.Path_Base, "Assets\\GameIcon\\", GameName + ".png");
+                    string GameIconImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder,GameName + "\\Icon.png");
                     if (!File.Exists(GameIconImage))
                     {
-                        GameIconImage = Path.Combine(GlobalConfig.Path_Base, "Assets\\GameIcon\\Default.png");
+                        GameIconImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, "DefaultIcon.png");
                     }
                     LOG.Info(GameIconImage);
 
-                    string GameBackGroundImage = Path.Combine(GlobalConfig.Path_Base, "Assets\\GameBackground\\", GameName + ".png");
+                    string GameBackGroundImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, GameName + "\\Background.png");
                     if (!File.Exists(GameBackGroundImage))
                     {
-                        GameBackGroundImage = Path.Combine(GlobalConfig.Path_Base, "Assets\\GameBackground\\Default.png");
+                        GameBackGroundImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, "DefaultBackground.png");
                     }
                     LOG.Info(GameBackGroundImage);
 

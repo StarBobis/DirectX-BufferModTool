@@ -372,8 +372,6 @@ namespace DBMT
                 TextBox_3DmigotoPath.Text = folderPath;
                 GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = TextBox_3DmigotoPath.Text;
                 GlobalConfig.MainCfg.SaveConfig();
-
-
             }
             else
             {

@@ -23,10 +23,31 @@
             />
         </ScrollViewer.Background>
         <StackPanel Orientation="Vertical" Margin="20,35,20,20">
+
+            <Border Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto" >
+                <StackPanel Orientation="Horizontal" Margin="20,10,20,10" HorizontalAlignment="Center">
+                    <TextBlock 
+                        x:Name="TextBlock_DBMTWorkFolder" Text="DBMT工作文件夹: "
+                        VerticalAlignment="Center">
+                    </TextBlock>
+                    <TextBox 
+                        LostFocus="TextBox_DBMTWorkFolder_LostFocus"
+                        x:Name="TextBox_DBMTWorkFolder" 
+                        Width="600" 
+                        Margin="20,0,0,0">
+                        
+                    </TextBox>
+                    <Button 
+                        Click="Button_ChooseDBMTWorkFolder_Click"
+                        x:Name="Button_ChooseDBMTWorkFolder" 
+                        Content="选择文件夹"
+                        Margin="20,0,0,0">
+                    </Button>
+                </StackPanel>
+            </Border>
+            
             <!-- 基础设置 -->
             <Border Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto" >
-
-                
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

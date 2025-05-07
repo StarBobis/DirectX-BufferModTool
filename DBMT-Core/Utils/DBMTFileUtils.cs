@@ -191,7 +191,7 @@ namespace DBMT_Core
 
         public static void CleanLogFiles()
         {
-            string logsPath = GlobalConfig.ApplicationRunPath + "Logs";
+            string logsPath = GlobalConfig.Path_LogsFolder;
 
             if (!Directory.Exists(logsPath))
             {

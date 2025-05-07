@@ -73,14 +73,23 @@ namespace DBMT_Core
 
             if (SavePath.EndsWith("Main.json"))
             {
-                File.WriteAllText(GlobalConfig.Path_MainConfig_ConfigFolder, jsonString);
-            }else if (SavePath.EndsWith("Setting.json"))
+                if (Directory.Exists(GlobalConfig.Path_ConfigsFolder))
+                {
+                    File.WriteAllText(GlobalConfig.Path_MainConfig_ConfigFolder, jsonString);
+                }
+            }
+            else if (SavePath.EndsWith("Setting.json"))
             {
-                File.WriteAllText(GlobalConfig.Path_Game_SettingJson_ConfigFolder, jsonString);
+                if (Directory.Exists(GlobalConfig.Path_ConfigsFolder))
+                {
+                    File.WriteAllText(GlobalConfig.Path_Game_SettingJson_ConfigFolder, jsonString);
+                }
             }
         }
     }
-    public class BaseConfig { }
+    public class BaseConfig { 
+    
+    }
 
     public class GameConfig : BaseConfig
     {
@@ -106,10 +115,6 @@ namespace DBMT_Core
         public bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
         public int AutoTextureFormat { get; set; } = 0;
         public bool AutoDetectAndMarkTexture { get; set; } = true;
-
-        public string DBMT_Protect_ACLFolderPath { get; set; } = "";
-
-        public string DBMT_Protect_TargetModPath { get; set; } = "";
         
     }
 
@@ -124,21 +129,23 @@ namespace DBMT_Core
 
         //当前游戏的3Dmigoto目录
         public string CurrentGameMigotoFolder { get; set; } = "";
+
+        //当前DBMT的工作目录
+        public string DBMTWorkFolder { get; set; } = "";
+
     }
 
     public static class GlobalConfig
     {
-        public const string DBMT_Title = "DBMT V1.1.7.5"; //程序窗口名称
+        public const string DBMT_Title = "DBMT V1.1.7.6"; //程序窗口名称
         
         // 本地化存储的配置
         public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
         public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
 
 
-        public static string ApplicationRunPath = Directory.GetCurrentDirectory() + "\\";
         public static string CurrentGameName => MainCfg.Value.GameName;
         public static string CurrentWorkSpace => MainCfg.Value.WorkSpaceName;
-
 
         public static string Path_Base
         {
@@ -152,6 +159,11 @@ namespace DBMT_Core
         public static string Path_3DmigotoLoaderFolder
         {
             get { return Path.Combine(Path_Base, "3Dmigoto\\"); }
+        }
+
+        public static string Path_AssetsGamesFolder
+        {
+            get { return Path.Combine(GlobalConfig.MainCfg.Value.DBMTWorkFolder, "Games\\"); }
         }
 
 
@@ -226,21 +238,7 @@ namespace DBMT_Core
         {
             get { return Path.Combine(Path_ConfigsFolder, "RunInput.json"); }
         }
-
-        public static string Path_DeviceKeySetting
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "DeviceKeySetting.json"); }
-        }
-
-        public static string Path_ACLFolderJson
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "ACLFolder.json"); }
-        }
-
-        public static string Path_GeneratedAESKeyFolder
-        {
-            get { return Path.Combine(Path_Base, "GeneratedAESKey\\"); }
-        }
+      
 
 
         //三种注入器的路径
@@ -264,25 +262,6 @@ namespace DBMT_Core
             get { return Path.Combine(Path_Base, "Plugins\\"); }
         }
 
-        public static string Path_3DmigotoSwordLv5VMPEXE
-        {
-            get { return Path.Combine(Path_PluginsFolder, "3Dmigoto-Sword-Lv5.vmp.exe"); }
-        }
-
-        public static string Path_EncryptorVMPEXE
-        {
-            get { return Path.Combine(Path_PluginsFolder, "DBMT-Encryptor.vmp.exe"); }
-        }
-
-        public static string Path_ProtectVMPEXE
-        {
-            get { return Path.Combine(Path_PluginsFolder, "DBMT-Protect.vmp.exe"); }
-        }
-
-        public static string Path_ACLSettingJson
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "ACLSetting.json"); }
-        }
 
         public static string LatestFrameAnalysisFolderName
         {
@@ -328,7 +307,9 @@ namespace DBMT_Core
                 return Path.Combine(Path_LatestFrameAnalysisFolder, "log.txt");
             }
         }
+        
 
+        //起别名方便使用
         public static string WorkFolder
         {
             get
@@ -345,7 +326,7 @@ namespace DBMT_Core
             }
         }
 
-        public static string Path_DBMTLogFolder
+        public static string Path_LogsFolder
         {
             get { return Path.Combine(Path_Base,"Logs\\"); }
         }
@@ -360,7 +341,7 @@ namespace DBMT_Core
         {
             get
             {
-                string logsPath = GlobalConfig.ApplicationRunPath + "Logs";
+                string logsPath = GlobalConfig.Path_LogsFolder;
                 if (!Directory.Exists(logsPath))
                 {
                     return "";
@@ -428,6 +409,7 @@ namespace DBMT_Core
                 return localAppDataPath;
             }
         }
+
         public static string Path_ConfigsFolder
         {
             get { return Path.Combine(Path_Base, "Configs\\"); }

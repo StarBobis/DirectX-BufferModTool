@@ -118,7 +118,7 @@ namespace DBMT
 
 
             string arugmentsstr = " \"" + SourceTextureFilePath + "\" -ft \"" + TextureFormatString + "\" "+ channels + " -o \"" + TargetOutputDirectory + "\"";
-            string texconv_filepath = GlobalConfig.ApplicationRunPath + "Plugins\\texconv.exe";
+            string texconv_filepath = Path.Combine(GlobalConfig.Path_PluginsFolder,"texconv.exe");
             if (!File.Exists(texconv_filepath))
             {
                 await MessageHelper.Show("当前要执行的路径不存在: " + texconv_filepath, "Current run path didn't exsits: " + texconv_filepath);
@@ -171,7 +171,7 @@ namespace DBMT
             Process process = new Process();
             if (targetExe != "")
             {
-                process.StartInfo.FileName = GlobalConfig.ApplicationRunPath + "Plugins\\" + targetExe;
+                process.StartInfo.FileName = GlobalConfig.Path_PluginsFolder + targetExe;
             }
             //运行前必须检查路径
             if (!File.Exists(process.StartInfo.FileName))

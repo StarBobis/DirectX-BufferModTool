@@ -75,6 +75,8 @@ namespace DBMT
             ToggleSwitch_AutoDetectAndMarkTexture.IsOn = GlobalConfig.GameCfg.Value.AutoDetectAndMarkTexture;
             TextBox_ModSwitchKey.Text = GlobalConfig.GameCfg.Value.ModSwitchKey;
 
+            TextBox_DBMTWorkFolder.Text = GlobalConfig.MainCfg.Value.DBMTWorkFolder;
+
             ReadOver = true;
         }
 
@@ -104,6 +106,31 @@ namespace DBMT
                 SaveSettingsToConfig();
             }
         }
-        
+
+        private async void Button_ChooseDBMTWorkFolder_Click(object sender, RoutedEventArgs e)
+        {
+            string FolderPath = await CommandHelper.ChooseFolderAndGetPath();
+
+            if (FolderPath == "")
+            {
+                return;
+            }
+
+            if (Directory.Exists(FolderPath))
+            {
+                TextBox_DBMTWorkFolder.Text = FolderPath;
+                GlobalConfig.MainCfg.Value.DBMTWorkFolder = FolderPath;
+                GlobalConfig.MainCfg.SaveConfig();
+            }
+        }
+
+        private void TextBox_DBMTWorkFolder_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (Directory.Exists(TextBox_DBMTWorkFolder.Text))
+            {
+                GlobalConfig.MainCfg.Value.DBMTWorkFolder = TextBox_DBMTWorkFolder.Text;
+                GlobalConfig.MainCfg.SaveConfig();
+            }
+        }
     }
 }

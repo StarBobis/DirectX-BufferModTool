@@ -73,8 +73,6 @@ namespace DBMT
         }
 
 
-
-
         private void InitializeGUI()
         {
             GlobalConfig.MainCfg.LoadConfig();
@@ -101,18 +99,25 @@ namespace DBMT
             //设置图标
             this.AppWindow.SetIcon("Assets/XiaoMai.ico");
 
-            //如果DBMT存在，则开始正常初始化。
-            //初始化Logs目录
-            if (!Directory.Exists("Logs"))
-            {
-                Directory.CreateDirectory("Logs");
-            }
+            InitializeWorkFolder();
+        }
 
-            if (!Directory.Exists("WorkSpace"))
+        private void InitializeWorkFolder()
+        {
+            if (Directory.Exists(GlobalConfig.MainCfg.Value.DBMTWorkFolder) && GlobalConfig.MainCfg.Value.DBMTWorkFolder != "")
             {
-                Directory.CreateDirectory("WorkSpace");
+                if (!Directory.Exists(GlobalConfig.Path_LogsFolder))
+                {
+                    Directory.CreateDirectory(GlobalConfig.Path_LogsFolder);
+                }
+
+                if (!Directory.Exists(GlobalConfig.Path_TotalWorkSpaceFolder))
+                {
+                    Directory.CreateDirectory(GlobalConfig.Path_TotalWorkSpaceFolder);
+                }
             }
         }
+
 
         private void MoveWindowToCenterScreen()
         {
