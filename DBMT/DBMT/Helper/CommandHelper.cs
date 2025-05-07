@@ -137,24 +137,6 @@ namespace DBMT
             process.WaitForExit();
         }
 
-
-        public static void InitializeRunInputJson(string arguments)
-        {
-            //把当前运行的命令保存到RunInput.json
-            string json = File.ReadAllText(GlobalConfig.Path_RunInputJson); // 读取文件内容
-            JObject runInputJson = JObject.Parse(json);
-            runInputJson["RunCommand"] = arguments;
-            string runInputJsonStr = runInputJson.ToString(Formatting.Indented);
-            File.WriteAllText(GlobalConfig.Path_RunInputJson, runInputJsonStr);
-        }
-
-        public static void InitializeRunResultJson()
-        {
-            JObject jsonObject = new JObject();
-            jsonObject["result"] = "Unknown Error!";
-            File.WriteAllText(GlobalConfig.Path_RunResultJson, jsonObject.ToString());
-        }
-
         public static void OpenWebLink(string Url)
         {
             if (Uri.IsWellFormedUriString(Url, UriKind.Absolute))
@@ -166,8 +148,6 @@ namespace DBMT
         public static async Task<bool> runCommand(string arguments, string targetExe)
         {
 
-            InitializeRunInputJson(arguments);
-            InitializeRunResultJson();
             Process process = new Process();
             if (targetExe != "")
             {
