@@ -417,7 +417,7 @@ namespace DBMT_Core
 
         public static string Path_CurrentGameMainConfigJsonFile
         {
-            get { return Path.Combine(Path_ConfigsFolder, GlobalConfig.MainCfg.Value.GameName + "\\MainConfig.json"); }
+            get { return Path.Combine(Path_AssetsGamesFolder, GlobalConfig.MainCfg.Value.GameName + "\\MainConfig.json"); }
         }
 
     }

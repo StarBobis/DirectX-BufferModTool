@@ -336,6 +336,7 @@ namespace DBMT
             {
                 //读取配置
                 ReadPathSettingFromD3dxIni(d3dxini_path);
+
                 //把当前游戏的配置保存到Configs文件夹下
                 GameIconItem gameIconItem = GetCurrentSelectedGameIconItem();
                 gameIconItem.MigotoFolder = folderPath;
