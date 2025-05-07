@@ -146,6 +146,7 @@ namespace DBMT_Core
 
         public static string CurrentGameName => MainCfg.Value.GameName;
         public static string CurrentWorkSpace => MainCfg.Value.WorkSpaceName;
+        public static string Path_DBMTWorkFolder => GlobalConfig.MainCfg.Value.DBMTWorkFolder;
 
         public static string Path_Base
         {
@@ -153,13 +154,7 @@ namespace DBMT_Core
         }
 
 
-        /// <summary>
-        /// 此路径下面分为多个目录，每个目录由文件名英文大写字母缩写组成，每个目录里存放对应游戏的3Dmigoto
-        /// </summary>
-        public static string Path_3DmigotoLoaderFolder
-        {
-            get { return Path.Combine(Path_Base, "3Dmigoto\\"); }
-        }
+
 
         public static string Path_AssetsGamesFolder
         {
@@ -190,7 +185,7 @@ namespace DBMT_Core
 
         public static string Path_3DmigotoGameModForkFolder
         {
-            get { return Path.Combine(Path_Base, "3Dmigoto-GameMod-Fork\\"); }
+            get { return Path.Combine(Path_DBMTWorkFolder, "3Dmigoto-GameMod-Fork\\"); }
         }
 
         public static string Path_TextureConfigsFolder
@@ -259,7 +254,7 @@ namespace DBMT_Core
 
         public static string Path_PluginsFolder
         {
-            get { return Path.Combine(Path_Base, "Plugins\\"); }
+            get { return Path.Combine(Path_DBMTWorkFolder, "Plugins\\"); }
         }
 
 
@@ -328,12 +323,7 @@ namespace DBMT_Core
 
         public static string Path_LogsFolder
         {
-            get { return Path.Combine(Path_Base,"Logs\\"); }
-        }
-
-        public static string Path_AssetsFolder
-        {
-            get { return Path.Combine(Path_Base, "Assets\\"); }
+            get { return Path.Combine(Path_DBMTWorkFolder,"Logs\\"); }
         }
 
 
@@ -381,7 +371,7 @@ namespace DBMT_Core
         {
             get
             {
-                return Path.Combine(GlobalConfig.Path_Base, "WorkSpace\\");
+                return Path.Combine(GlobalConfig.Path_DBMTWorkFolder, "WorkSpace\\");
             }
         }
 
@@ -412,7 +402,7 @@ namespace DBMT_Core
 
         public static string Path_ConfigsFolder
         {
-            get { return Path.Combine(Path_Base, "Configs\\"); }
+            get { return Path.Combine(Path_DBMTWorkFolder, "Configs\\"); }
         }
 
         public static string Path_CurrentGameMainConfigJsonFile

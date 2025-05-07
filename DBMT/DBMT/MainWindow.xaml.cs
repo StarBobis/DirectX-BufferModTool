@@ -48,7 +48,7 @@ namespace DBMT
             InitializeGUI();
 
             //DBMT路径设为默认的
-            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_Base;
+            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_DBMTWorkFolder;
 
             double logicalWidth = GlobalConfig.GameCfg.Value.WindowWidth;
             double logicalHeight = GlobalConfig.GameCfg.Value.WindowHeight;

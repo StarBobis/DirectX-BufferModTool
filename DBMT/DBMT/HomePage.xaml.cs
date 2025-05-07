@@ -60,7 +60,7 @@ namespace DBMT
 
             //这里也要读取一次配置，让用户第一次打开就会生成Main.json
             //如果DBMT路径为空，那么设为默认的
-            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_Base;
+            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_DBMTWorkFolder;
             GlobalConfig.MainCfg.SaveConfig();
 
             GameIconGridView.ItemsSource = GameIconItemList;
@@ -151,7 +151,7 @@ namespace DBMT
             GlobalConfig.MainCfg.Value.GameName = gameIconItem.GameName;
 
             // 背景图切换到当前游戏的背景图
-            string BackgroundPath = Path.Combine(GlobalConfig.Path_Base, "Assets/GameBackground/" + gameIconItem.GameName + ".png");
+            string BackgroundPath = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, gameIconItem.GameName + "\\Background.png");
             CreateScaleAnimation();
             CreateFadeAnimation();
             MainWindow.CurrentWindow.mainWindowImageBrush.Source = gameIconItem.GameBackGroundImage;

@@ -36,7 +36,7 @@ namespace DBMT
             this.InitializeComponent();
 
             //用于兼容Catter
-            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_Base;
+            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_DBMTWorkFolder;
 
             try
             {
@@ -70,14 +70,6 @@ namespace DBMT
             {
                 _ = MessageHelper.Show("Error: " + ex.ToString());
             }
-
-            //当前路径不能处于中文路径下,否则部分方法无法正确执行
-            //检查当前程序是否为位于中文路径下
-            if (DBMTStringUtils.ContainsChinese(GlobalConfig.Path_Base))
-            {
-                Task<bool> result = MessageHelper.Show("DBMT所在路径不能含有中文，请重新将DBMT放置到纯英文路径，否则所有插件功能都无法正常工作.", "DBMT can't be put in a path that contains Chinese, please put DBMT in pure english path!");
-            }
-
         }
 
         private void MyDataGrid_CellEditEnding(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridCellEditEndingEventArgs e)
@@ -151,10 +143,10 @@ namespace DBMT
                 GlobalConfig.MainCfg.Value.GameName = selectedGame;
 
                 // 背景图切换到当前游戏的背景图
-                string BackgroundPath = Path.Combine(GlobalConfig.Path_Base, "Assets\\GameBackground\\" + selectedGame + ".png");
+                string BackgroundPath = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, selectedGame + "\\Background.png");
                 if (!File.Exists(BackgroundPath))
                 {
-                    BackgroundPath = Path.Combine(GlobalConfig.Path_Base,"Assets\\GameBackground\\Default.png");
+                    BackgroundPath = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, "DefaultBackground.png");
                 }
                 MainWindow.CurrentWindow.mainWindowImageBrush.Source = new BitmapImage(new Uri(BackgroundPath));
 
