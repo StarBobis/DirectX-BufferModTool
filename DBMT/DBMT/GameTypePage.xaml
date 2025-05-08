@@ -136,6 +136,7 @@
                         <ComboBox x:Name="ComboBox_Format" Width="200" Margin="20,0,0,0" IsEditable="True">
                             <ComboBoxItem>R32G32B32A32_FLOAT</ComboBoxItem>
                             <ComboBoxItem>R16G16B16A16_FLOAT</ComboBoxItem>
+                            <ComboBoxItem>R16G16B16A16_UINT</ComboBoxItem>
                             <ComboBoxItem>R16G16B16A16_SNORM</ComboBoxItem>
                             <!--这里注意！一般是UINT，很少有游戏用到SINT-->
                             <ComboBoxItem>R32G32B32A32_UINT</ComboBoxItem>
