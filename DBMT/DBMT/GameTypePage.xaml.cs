@@ -208,6 +208,10 @@ namespace DBMT
                 {
                     GameTypeName = GameTypeName + "TA";
                 }
+                else if (element.SemanticName == "BINORMAL")
+                {
+                    GameTypeName = GameTypeName + "BN";
+                }
                 else if (element.SemanticName == "COLOR")
                 {
                     GameTypeName = GameTypeName + "C";
