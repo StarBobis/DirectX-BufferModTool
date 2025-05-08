@@ -74,6 +74,7 @@
                     Height="350" 
                     Width="Auto"
                     x:Name="DataGrid_GameType"  
+                    CellEditEnded="DataGrid_GameType_CellEditEnded"
                     CellEditEnding="DataGrid_GameType_CellEditEnding"
                     >
 
@@ -118,6 +119,18 @@
                 HorizontalAlignment="Center" >
 
                 <StackPanel  Orientation="Vertical" Margin="20,20,20,20">
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Center">
+                        <TextBlock Text="当前总步长: " HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                        <TextBlock x:Name="TextBlock_TotalStride" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+
+                        <Button 
+                            Click="Button_RecalculateTotalStride_Click"
+                            x:Name="Button_RecalculateTotalStride" 
+                            Content="重新计算步长" 
+                            VerticalAlignment="Center" 
+                            Margin="20,0,0,0"></Button>
+                    </StackPanel>
 
                     <StackPanel  Orientation="Horizontal" Margin="0,20,0,0">
                         <TextBlock Text="SemanticName:" VerticalAlignment="Center"></TextBlock>

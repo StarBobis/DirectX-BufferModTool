@@ -17,6 +17,7 @@ using DBMT_Core;
 using DBMT_Core.Utils;
 using CommunityToolkit.WinUI.UI.Controls;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -82,8 +83,30 @@ namespace DBMT
 
         private void DataGrid_GameType_CellEditEnding(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridCellEditEndingEventArgs e)
         {
-            AddBlankD3D11ElementLine();
+            if (D3D11ElementList.Last().SemanticName != "")
+            {
+                AddBlankD3D11ElementLine();
+            }
+
+            CalculateAndShowTotalStride();
+
+         
         }
+
+        private void CalculateAndShowTotalStride()
+        {
+            int TotalStride = 0;
+
+            foreach (D3D11Element d3D11Element in D3D11ElementList)
+            {
+                d3D11Element.ByteWidth = DBMTFormatUtils.GetByteWidthFromFormat(d3D11Element.Format);
+                
+                TotalStride += d3D11Element.ByteWidth;
+            }
+
+            TextBlock_TotalStride.Text = TotalStride.ToString();
+        }
+
 
         private void Menu_ClearD3D11ElementList_Click(object sender, RoutedEventArgs e)
         {
@@ -111,6 +134,9 @@ namespace DBMT
             d3D11Element.ByteWidth = DBMTFormatUtils.GetByteWidthFromFormat(d3D11Element.Format);
 
             D3D11ElementList.Add(d3D11Element);
+
+
+            CalculateAndShowTotalStride();
         }
 
         private void Button_AddNewD3D11ElementLine_Click(object sender, RoutedEventArgs e)
@@ -237,6 +263,21 @@ namespace DBMT
             {
                 D3D11ElementList.Add(d3D11Element);
             }
+        }
+
+        private void Button_RecalculateTotalStride_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateAndShowTotalStride();
+        }
+
+        private void DataGrid_GameType_CellEditEnded(object sender, DataGridCellEditEndedEventArgs e)
+        {
+            //强制刷新
+            int Index = DataGrid_GameType.SelectedIndex;
+
+            D3D11ElementList[Index].ByteWidth = DBMTFormatUtils.GetByteWidthFromFormat(D3D11ElementList[Index].Format);
+
+            Debug.WriteLine("更新：" + D3D11ElementList[Index].ByteWidth.ToString());
         }
     }
 }
