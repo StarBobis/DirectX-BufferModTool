@@ -918,8 +918,29 @@ namespace DBMT
             await CommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
         }
 
+        private void Button_CleanLastExtract_Click(object sender, RoutedEventArgs e)
+        {
+            List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
+            try
+            {
+                foreach (string DrawIB in DrawIBList)
+                {
+                
+                        string DrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                        if (Directory.Exists(DrawIBOutputFolder))
+                        {
+                            Directory.Delete(DrawIBOutputFolder,true);
+                        }
 
+               
+                }
 
-
+                _ = MessageHelper.Show("清理完成");
+            }
+            catch (Exception ex)
+            {
+                _ = MessageHelper.Show("清理失败，文件可能被进程占用: " + ex.ToString());
+            }
+        }
     }
 }

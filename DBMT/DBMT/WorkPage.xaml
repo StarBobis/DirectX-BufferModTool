@@ -164,6 +164,15 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
                                 Margin="0,0,10,10" 
                                 Click="ExtractModel"/>
                             <Button x:Name="Button_GenerateVSCheckDrawIBList" Content="生成VSCheck" VerticalAlignment="Center" HorizontalAlignment="Left"  Margin="0,0,10,10" Click="Button_GenerateVSCheckDrawIBList_Click"/>
+                            <Button 
+                                ToolTipService.ToolTip="清除上一次提取的DrawIB文件夹，方便新填写的DrawIB提取不会和上一次的内容混淆，偷懒不创建新工作空间测试不同DrawIB提取时常用"
+                                x:Name="Button_CleanLastExtract" 
+                                Content="清除提取内容" 
+                                VerticalAlignment="Center" 
+                                HorizontalAlignment="Left" 
+                                Margin="0,0,10,10"
+                                Click="Button_CleanLastExtract_Click"
+                                ></Button>
                         </StackPanel>
                     </Grid>
                     
