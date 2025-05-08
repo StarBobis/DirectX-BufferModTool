@@ -107,6 +107,9 @@ namespace DBMT
             d3D11Element.ExtractTechnique = ComboBox_ExtractTechnique.Text;
             d3D11Element.Category = ComboBox_Category.Text;
             d3D11Element.DrawCategory = ComboBox_DrawCategory.Text;
+
+            d3D11Element.ByteWidth = DBMTFormatUtils.GetByteWidthFromFormat(d3D11Element.Format);
+
             D3D11ElementList.Add(d3D11Element);
         }
 

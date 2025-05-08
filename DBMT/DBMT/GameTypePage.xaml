@@ -94,6 +94,7 @@
                         <community:DataGridTextColumn Header="ExtractTechnique"  Width="Auto" Binding="{Binding ExtractTechnique}" IsReadOnly="False"/>
                         <community:DataGridTextColumn Header="Category"  Width="Auto" Binding="{Binding Category}" IsReadOnly="False"/>
                         <community:DataGridTextColumn Header="DrawCategory"  Width="Auto" Binding="{Binding DrawCategory}" IsReadOnly="False"/>
+                        <community:DataGridTextColumn Header="ByteWidth"  Width="Auto" Binding="{Binding ByteWidth}" IsReadOnly="False"/>
 
                         <!--<community:DataGridTextColumn Header="InputSlot"  Width="100" Binding="{Binding InputSlot}" IsReadOnly="False"/>
         <community:DataGridTextColumn Header="InputSlotClass"  Width="100" Binding="{Binding InputSlotClass}" IsReadOnly="False"/>
