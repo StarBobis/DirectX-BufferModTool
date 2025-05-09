@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +69,10 @@ namespace DBMT_Core
             jObject["MatchFirstIndex"] = JToken.FromObject(MatchFirstIndexList);
             jObject["PartNameList"] = JToken.FromObject(PartNameList);
             jObject["ImportModelList"] = JToken.FromObject(ImportModelList);
+
+
+            //这里要写出所有用到的VS，写出一个VertexShaderHashList
+
 
 
             //WorkGameType
@@ -250,6 +255,28 @@ namespace DBMT_Core
             jObject["PartNameList"] = JToken.FromObject(PartNameList);
             jObject["ImportModelList"] = JToken.FromObject(ImportModelList);
 
+
+            //VSList
+            // 获取当前目录下的所有文件
+            List<string> IBTxtFileList = FrameAnalysisDataUtils.FilterFile(GlobalConfig.WorkFolder, "-ib=" + DrawIB, ".txt");
+            HashSet<string> VSHashSet = new HashSet<string>();
+            foreach (string IBTxtFileName in IBTxtFileList)
+            {
+                int vsIndex = IBTxtFileName.IndexOf("-vs=");
+                if (vsIndex != -1)
+                {
+                    string vsShaderHash = IBTxtFileName.Substring(vsIndex + 4, 16);
+                    VSHashSet.Add(vsShaderHash);
+                }
+            }
+            List<string> VSHashList = [];
+            foreach (string VSHash in VSHashSet)
+            {
+                LOG.Info("VSHash: " + VSHash);
+                VSHashList.Add(VSHash);
+            }
+
+            jObject["VSHashList"] = JToken.FromObject(VSHashList);
 
             //WorkGameType
             jObject["WorkGameType"] = this.d3D11GameType.GameTypeName;
