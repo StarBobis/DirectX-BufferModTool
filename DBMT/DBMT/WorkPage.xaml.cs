@@ -902,21 +902,7 @@ namespace DBMT
             await MessageHelper.Show("保存成功");
         }
 
-        private async void Button_GenerateVSCheckDrawIBList_Click(object sender, RoutedEventArgs e)
-        {
-            List<string> DrawIBList = [];
 
-            foreach (DrawIBItem item in DrawIBItems)
-            {
-                if (item.DrawIB.Trim() != "")
-                {
-                    JObject jobj = new JObject();
-                    DrawIBList.Add(item.DrawIB);
-                }
-            }
-            DrawIBHelper.GenerateVSCheck(DrawIBList,"DrawIB_VSCheck");
-            await CommandHelper.ShellOpenFolder(GlobalConfig.Path_CurrentWorkSpaceGeneratedModFolder);
-        }
 
         private void Button_CleanLastExtract_Click(object sender, RoutedEventArgs e)
         {
