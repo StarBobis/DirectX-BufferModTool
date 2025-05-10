@@ -252,10 +252,6 @@ namespace DBMT_Core
             get { return Path.Combine(Path_TextureConfigsFolder, GlobalConfig.CurrentGameName + "\\"); }
         }
 
-        public static string Path_RunResultJson
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "RunResult.json"); }
-        }
 
         //三种注入器的路径
         public static string Path_3Dmigoto_Loader_EXE
