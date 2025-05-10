@@ -173,22 +173,25 @@ namespace DBMT_Core
                         Debug.WriteLine("未找到任何匹配的贴图");
                         continue;
                     }
+
+                    Debug.WriteLine("找到了匹配的贴图配置: " + MatchTextureConfigName);
                     //根据MatchTextureConfigName读取MarkName
 
                     string TextureConfigSavePath = GlobalConfig.Path_GameTextureConfigFolder + MatchTextureConfigName + ".json";
                     Debug.WriteLine("TextureConfigSavePath: " + TextureConfigSavePath);
                     if (File.Exists(TextureConfigSavePath))
                     {
-                        Dictionary<string, string> PixeSlot_MarkName_Dict = TextureConfig.Read_PixeSlot_MarkName_Dict(TextureConfigSavePath);
+                        Dictionary<string, SlotObject> PixeSlot_SlotObject_Dict = TextureConfig.Read_PixelSlot_SlotObject_Dict(TextureConfigSavePath);
 
                         Debug.WriteLine("Count: " + MatchImageList.Count.ToString());
                         for (int i = 0; i < MatchImageList.Count; i++)
                         {
                             ImageItem imageItem = MatchImageList[i];
-
-                            string MarkName = PixeSlot_MarkName_Dict[imageItem.PixelSlot];
+                            SlotObject sobj = PixeSlot_SlotObject_Dict[imageItem.PixelSlot];
+                            string MarkName = sobj.MarkName;
+                            
                             imageItem.MarkName = MarkName;
-
+                            imageItem.MarkStyle = sobj.MarkStyle;
 
                             MatchImageList[i] = imageItem;
 

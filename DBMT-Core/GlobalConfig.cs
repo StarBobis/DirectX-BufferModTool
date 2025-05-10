@@ -137,7 +137,7 @@ namespace DBMT_Core
     public static class GlobalConfig
     {
         //程序窗口名称
-        public const string DBMT_Title = "DBMT V1.1.7.9"; 
+        public const string DBMT_Title = "DBMT V1.1.8.0"; 
         
         // 本地化存储的配置
         public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
