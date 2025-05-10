@@ -50,30 +50,30 @@ namespace DBMT
         {
             Debug.WriteLine("离开设置页面，保存配置");
 
-            GlobalConfig.GameCfg.Value.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
-            GlobalConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
-            GlobalConfig.GameCfg.Value.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
-            GlobalConfig.GameCfg.Value.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex;
-            GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
-            GlobalConfig.GameCfg.Value.AutoDetectAndMarkTexture = ToggleSwitch_AutoDetectAndMarkTexture.IsOn;
-            GlobalConfig.GameCfg.Value.ModSwitchKey = TextBox_ModSwitchKey.Text;
+            GlobalConfig.MainCfg.Value.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
+            GlobalConfig.MainCfg.Value.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
+            GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
+            GlobalConfig.MainCfg.Value.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex;
+            GlobalConfig.MainCfg.Value.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
+            GlobalConfig.MainCfg.Value.AutoDetectAndMarkTexture = ToggleSwitch_AutoDetectAndMarkTexture.IsOn;
+            GlobalConfig.MainCfg.Value.ModSwitchKey = TextBox_ModSwitchKey.Text;
 
-            GlobalConfig.GameCfg.SaveConfig();
+            GlobalConfig.MainCfg.SaveConfig();
         }
 
         public void ReadSettingsFromConfig()
         {
             ReadOver = false;
             //防止程序启动时没正确读取，这里冗余读取一次，后面看情况可以去掉
-            GlobalConfig.GameCfg.LoadConfig();
+            GlobalConfig.MainCfg.LoadConfig();
 
-            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = GlobalConfig.GameCfg.Value.AutoCleanFrameAnalysisFolder;
-            NumberBox_FrameAnalysisFolderReserveNumber.Value = GlobalConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber;
-            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.GameCfg.Value.DontSplitModelByMatchFirstIndex;
-            ComboBox_AutoTextureFormat.SelectedIndex = GlobalConfig.GameCfg.Value.AutoTextureFormat;
-            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap;
-            ToggleSwitch_AutoDetectAndMarkTexture.IsOn = GlobalConfig.GameCfg.Value.AutoDetectAndMarkTexture;
-            TextBox_ModSwitchKey.Text = GlobalConfig.GameCfg.Value.ModSwitchKey;
+            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = GlobalConfig.MainCfg.Value.AutoCleanFrameAnalysisFolder;
+            NumberBox_FrameAnalysisFolderReserveNumber.Value = GlobalConfig.MainCfg.Value.FrameAnalysisFolderReserveNumber;
+            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex;
+            ComboBox_AutoTextureFormat.SelectedIndex = GlobalConfig.MainCfg.Value.AutoTextureFormat;
+            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.MainCfg.Value.AutoTextureOnlyConvertDiffuseMap;
+            ToggleSwitch_AutoDetectAndMarkTexture.IsOn = GlobalConfig.MainCfg.Value.AutoDetectAndMarkTexture;
+            TextBox_ModSwitchKey.Text = GlobalConfig.MainCfg.Value.ModSwitchKey;
 
             TextBox_DBMTWorkFolder.Text = GlobalConfig.MainCfg.Value.DBMTWorkFolder;
 

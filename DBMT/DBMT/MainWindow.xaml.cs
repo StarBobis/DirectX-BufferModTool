@@ -50,8 +50,8 @@ namespace DBMT
             //DBMT路径设为默认的
             GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_DBMTWorkFolder;
 
-            double logicalWidth = GlobalConfig.GameCfg.Value.WindowWidth;
-            double logicalHeight = GlobalConfig.GameCfg.Value.WindowHeight;
+            double logicalWidth = GlobalConfig.MainCfg.Value.WindowWidth;
+            double logicalHeight = GlobalConfig.MainCfg.Value.WindowHeight;
 
             int actualWidth = (int)(logicalWidth );
             int actualHeight = (int)(logicalHeight );
@@ -76,7 +76,7 @@ namespace DBMT
         private void InitializeGUI()
         {
             GlobalConfig.MainCfg.LoadConfig();
-            GlobalConfig.GameCfg.LoadConfig();
+  
 
             //设置标题和宽高
             this.Title = GlobalConfig.DBMT_Title;
@@ -138,8 +138,8 @@ namespace DBMT
                 this.AppWindow.Move(new PointInt32 { X = x, Y = y });
             }
 
-            int window_pos_x = GlobalConfig.GameCfg.Value.WindowPositionX;
-            int window_pos_y = GlobalConfig.GameCfg.Value.WindowPositionY;
+            int window_pos_x = GlobalConfig.MainCfg.Value.WindowPositionX;
+            int window_pos_y = GlobalConfig.MainCfg.Value.WindowPositionY;
 
 
             if (window_pos_x <= 0)
@@ -201,8 +201,8 @@ namespace DBMT
             //保存窗口大小
             int WindowWidth = App.m_window.AppWindow.Size.Width - 16;
             int WindowHeight = App.m_window.AppWindow.Size.Height - 40;
-            GlobalConfig.GameCfg.Value.WindowWidth = WindowWidth;
-            GlobalConfig.GameCfg.Value.WindowHeight = WindowHeight;
+            GlobalConfig.MainCfg.Value.WindowWidth = WindowWidth;
+            GlobalConfig.MainCfg.Value.WindowHeight = WindowHeight;
 
             //保存窗口位置
             if (this.AppWindow != null)
@@ -214,18 +214,18 @@ namespace DBMT
                 int x = position.X;
                 int y = position.Y;
 
-                GlobalConfig.GameCfg.Value.WindowPositionX = x;
-                GlobalConfig.GameCfg.Value.WindowPositionY = y;
+                GlobalConfig.MainCfg.Value.WindowPositionX = x;
+                GlobalConfig.MainCfg.Value.WindowPositionY = y;
             }
 
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
 
-            GlobalConfig.GameCfg.SaveConfig();
             GlobalConfig.MainCfg.SaveConfig();
 
-            if (GlobalConfig.GameCfg.Value.AutoCleanFrameAnalysisFolder)
+
+            if (GlobalConfig.MainCfg.Value.AutoCleanFrameAnalysisFolder)
             {
                 DBMTFileUtils.CleanFrameAnalysisFiles();
             }

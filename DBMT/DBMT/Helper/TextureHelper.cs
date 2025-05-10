@@ -116,7 +116,7 @@ namespace DBMT
                         string[] filePathArray = Directory.GetFiles(outputDirectory);
                         foreach (string ddsFilePath in filePathArray)
                         {
-                            if (GlobalConfig.GameCfg.Value.AutoTextureOnlyConvertDiffuseMap)
+                            if (GlobalConfig.MainCfg.Value.AutoTextureOnlyConvertDiffuseMap)
                             {
                                 if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
                                 {

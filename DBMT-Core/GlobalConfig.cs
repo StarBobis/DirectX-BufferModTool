@@ -10,7 +10,6 @@ using Newtonsoft.Json.Linq;
 
 namespace DBMT_Core
 {
-
     public class ConfigLoader<T> where T : BaseConfig, new()
     {
         public string SavePath { get; set; }
@@ -78,43 +77,10 @@ namespace DBMT_Core
                     File.WriteAllText(GlobalConfig.Path_MainConfig_ConfigFolder, jsonString);
                 }
             }
-            else if (SavePath.EndsWith("Setting.json"))
-            {
-                if (Directory.Exists(GlobalConfig.Path_ConfigsFolder))
-                {
-                    File.WriteAllText(GlobalConfig.Path_Game_SettingJson_ConfigFolder, jsonString);
-                }
-            }
         }
     }
     public class BaseConfig { 
     
-    }
-
-    public class GameConfig : BaseConfig
-    {
-        public double WindowWidth { get; set; } = 1280;
-        public double WindowHeight { get; set; } = 720;
-        public int WindowPositionX { get; set; } = -1;
-        public int WindowPositionY { get; set; } = -1;
-
-        //Others
-        public bool AutoCleanFrameAnalysisFolder { get; set; } = true;
-    
-        public int FrameAnalysisFolderReserveNumber { get; set; } = 1;
-
-        // 生成Mod设置
-        public string ModSwitchKey { get; set; } = "\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\"";
-
-
-        //Extract Options
-        public bool DontSplitModelByMatchFirstIndex { get; set; } = false;
-
-        //Texture Options
-        public bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
-        public int AutoTextureFormat { get; set; } = 0;
-        public bool AutoDetectAndMarkTexture { get; set; } = true;
-        
     }
 
 
@@ -132,7 +98,28 @@ namespace DBMT_Core
         //当前DBMT的工作目录
         public string DBMTWorkFolder { get; set; } = "";
 
+        public double WindowWidth { get; set; } = 1280;
+        public double WindowHeight { get; set; } = 720;
+        public int WindowPositionX { get; set; } = -1;
+        public int WindowPositionY { get; set; } = -1;
+
+        //Others
+        public bool AutoCleanFrameAnalysisFolder { get; set; } = true;
+
+        public int FrameAnalysisFolderReserveNumber { get; set; } = 1;
+
+        // 生成Mod设置
+        public string ModSwitchKey { get; set; } = "\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\"";
+
+        //Extract Options
+        public bool DontSplitModelByMatchFirstIndex { get; set; } = false;
+
+        //Texture Options
+        public bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
+        public int AutoTextureFormat { get; set; } = 0;
+        public bool AutoDetectAndMarkTexture { get; set; } = true;
     }
+
 
     public static class GlobalConfig
     {
@@ -141,7 +128,6 @@ namespace DBMT_Core
         
         // 本地化存储的配置
         public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
-        public static readonly ConfigLoader<GameConfig> GameCfg = new ConfigLoader<GameConfig>(Path_Game_SettingJson);
 
 
         public static string CurrentGameName => MainCfg.Value.GameName;
@@ -153,14 +139,10 @@ namespace DBMT_Core
             get { return Directory.GetCurrentDirectory(); }
         }
 
-
-
-
         public static string Path_AssetsGamesFolder
         {
             get { return Path.Combine(GlobalConfig.MainCfg.Value.DBMTWorkFolder, "Games\\"); }
         }
-
 
         public static string Path_ModsFolder
         {
@@ -208,21 +190,23 @@ namespace DBMT_Core
         {
             get { return Path.Combine(Path_AppDataLocal, "DBMT-Main.json"); }
         }
-
-        public static string Path_MainConfig_ConfigFolder
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "Main.json"); }
-        }
-
         public static string Path_Game_SettingJson
         {
             get { return Path.Combine(Path_AppDataLocal, "DBMT-Setting.json"); }
         }
 
+        public static string Path_MainConfig_ConfigFolder
+        {
+            get { return Path.Combine(Path_ConfigsFolder, "Main.json"); }
+        }
         public static string Path_Game_SettingJson_ConfigFolder
         {
             get { return Path.Combine(Path_ConfigsFolder, "Setting.json"); }
         }
+
+       
+
+     
 
         public static string Path_RunResultJson
         {
@@ -357,7 +341,7 @@ namespace DBMT_Core
         {
             get
             {
-                return GameCfg.Value.AutoTextureFormat switch
+                return MainCfg.Value.AutoTextureFormat switch
                 {
                     0 => "jpg",
                     1 => "tga",

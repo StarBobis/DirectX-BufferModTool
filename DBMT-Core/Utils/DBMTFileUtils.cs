@@ -217,7 +217,7 @@ namespace DBMT_Core
 
             logFileList.Sort();
             //int n = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting,"FrameAnalysisFolderReserveNumber"); // 你想移除的元素数量
-            int n = GlobalConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
+            int n = GlobalConfig.MainCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
             if (n > 0 && logFileList.Count > n)
             {
                 logFileList.RemoveRange(logFileList.Count - n, n);
@@ -272,7 +272,7 @@ namespace DBMT_Core
 
             //int n = MainConfig.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
             //int n = MainConfig.GetConfig<int>(MainConfig.ConfigFiles.Game_Setting, "FrameAnalysisFolderReserveNumber"); // 你想移除的元素数量
-            int n = GlobalConfig.GameCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
+            int n = GlobalConfig.MainCfg.Value.FrameAnalysisFolderReserveNumber; // 你想移除的元素数量
 
             if (n > 0 && frameAnalysisFileList.Count > n)
             {

@@ -129,7 +129,7 @@ namespace DBMT_Core
                 }
                 //(3) 开始自动贴图识别流程，自动识别满足条件的第一个贴图配置，并将其应用到自动贴图。
                 //如果设置中没勾选，就直接continue
-                if (!GlobalConfig.GameCfg.Value.AutoDetectAndMarkTexture)
+                if (!GlobalConfig.MainCfg.Value.AutoDetectAndMarkTexture)
                 {
                     continue;
                 }

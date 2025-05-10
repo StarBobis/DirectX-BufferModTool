@@ -278,7 +278,7 @@ namespace DBMT_Core
                             //写出IBBufFile
                             IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBTxtFile.Format);
 
-                            if (GlobalConfig.GameCfg.Value.DontSplitModelByMatchFirstIndex)
+                            if (GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex)
                             {
                                 IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, 0);
 

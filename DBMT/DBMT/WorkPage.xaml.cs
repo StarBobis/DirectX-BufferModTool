@@ -40,14 +40,11 @@ namespace DBMT
 
             try
             {
-                GlobalConfig.GameCfg.LoadConfig();
                 GlobalConfig.MainCfg.LoadConfig();
+           
 
-                //如果此时没有Main.json或者没有Setting.json就保存配置
-                if (Path.Exists(GlobalConfig.Path_Game_SettingJson_ConfigFolder))
-                {
-                    GlobalConfig.GameCfg.SaveConfig();
-                }
+                //如果此时没有Main.json就保存配置
+  
                 if (Path.Exists(GlobalConfig.Path_MainConfig_ConfigFolder))
                 {
                     GlobalConfig.MainCfg.SaveConfig();
