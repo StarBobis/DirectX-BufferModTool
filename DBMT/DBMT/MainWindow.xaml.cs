@@ -47,11 +47,9 @@ namespace DBMT
             
             InitializeGUI();
 
-            //DBMT路径设为默认的
-            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_DBMTWorkFolder;
 
-            double logicalWidth = GlobalConfig.MainCfg.Value.WindowWidth;
-            double logicalHeight = GlobalConfig.MainCfg.Value.WindowHeight;
+            double logicalWidth = GlobalConfig.WindowWidth;
+            double logicalHeight = GlobalConfig.WindowHeight;
 
             int actualWidth = (int)(logicalWidth );
             int actualHeight = (int)(logicalHeight );
@@ -75,7 +73,7 @@ namespace DBMT
 
         private void InitializeGUI()
         {
-            GlobalConfig.MainCfg.LoadConfig();
+            GlobalConfig.ReadConfig();
   
 
             //设置标题和宽高
@@ -84,7 +82,7 @@ namespace DBMT
             //默认选中主页界面
             if (nvSample.MenuItems.Count > 0)
             {
-                if (GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder != "" && Directory.Exists(GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder))
+                if (GlobalConfig.CurrentGameMigotoFolder != "" && Directory.Exists(GlobalConfig.CurrentGameMigotoFolder))
                 {
                     nvSample.SelectedItem = nvSample.MenuItems[1];
                     contentFrame.Navigate(typeof(WorkPage));
@@ -104,7 +102,7 @@ namespace DBMT
 
         private void InitializeWorkFolder()
         {
-            if (Directory.Exists(GlobalConfig.MainCfg.Value.DBMTWorkFolder) && GlobalConfig.MainCfg.Value.DBMTWorkFolder != "")
+            if (Directory.Exists(GlobalConfig.DBMTWorkFolder) && GlobalConfig.DBMTWorkFolder != "")
             {
                 if (!Directory.Exists(GlobalConfig.Path_LogsFolder))
                 {
@@ -138,8 +136,8 @@ namespace DBMT
                 this.AppWindow.Move(new PointInt32 { X = x, Y = y });
             }
 
-            int window_pos_x = GlobalConfig.MainCfg.Value.WindowPositionX;
-            int window_pos_y = GlobalConfig.MainCfg.Value.WindowPositionY;
+            int window_pos_x = GlobalConfig.WindowPositionX;
+            int window_pos_y = GlobalConfig.WindowPositionY;
 
 
             if (window_pos_x <= 0)
@@ -201,8 +199,8 @@ namespace DBMT
             //保存窗口大小
             int WindowWidth = App.m_window.AppWindow.Size.Width - 16;
             int WindowHeight = App.m_window.AppWindow.Size.Height - 40;
-            GlobalConfig.MainCfg.Value.WindowWidth = WindowWidth;
-            GlobalConfig.MainCfg.Value.WindowHeight = WindowHeight;
+            GlobalConfig.WindowWidth = WindowWidth;
+            GlobalConfig.WindowHeight = WindowHeight;
 
             //保存窗口位置
             if (this.AppWindow != null)
@@ -214,18 +212,18 @@ namespace DBMT
                 int x = position.X;
                 int y = position.Y;
 
-                GlobalConfig.MainCfg.Value.WindowPositionX = x;
-                GlobalConfig.MainCfg.Value.WindowPositionY = y;
+                GlobalConfig.WindowPositionX = x;
+                GlobalConfig.WindowPositionY = y;
             }
 
 
             //关闭之前跳转到主页，触发Setting界面的界面切换方法从而保存设置中的内容。
             contentFrame.Navigate(typeof(HomePage));
 
-            GlobalConfig.MainCfg.SaveConfig();
+            GlobalConfig.SaveConfig();
 
 
-            if (GlobalConfig.MainCfg.Value.AutoCleanFrameAnalysisFolder)
+            if (GlobalConfig.AutoCleanFrameAnalysisFolder)
             {
                 DBMTFileUtils.CleanFrameAnalysisFiles();
             }

@@ -51,7 +51,7 @@ namespace DBMT
             ImageListView.ItemsSource = imageCollection;
 
 
-            if (GlobalConfig.MainCfg.Value.AutoTextureFormat == 1)
+            if (GlobalConfig.AutoTextureFormat == "tga")
             {
                 _ = MessageHelper.Show("贴图设置暂不支持tga格式，请在设置中把全局贴图转换格式调整为.jpg或.png格式，并重新提取模型", "Texture settings currently do not support the TGA format. Please adjust the GlobalTextureConvertSetting in the settings to .jpg or .png, and do Extract Model again.");
             }
@@ -59,17 +59,6 @@ namespace DBMT
            
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            // 执行你想要在这个页面被关闭或导航离开时运行的代码
-
-            //保存全局设置因为要保存滑条透明度
-            //GlobalConfig.GameCfg.Value.TexturePageBackGroundImageOpacity = (float)TextureBGImageBrush.Opacity;
-            GlobalConfig.MainCfg.SaveConfig();
-
-            // 如果需要，可以调用基类的 OnNavigatedFrom 方法
-            base.OnNavigatedFrom(e);
-        }
         public void ReadDrawIBList()
         {
             ComboBoxDrawIB.Items.Clear();

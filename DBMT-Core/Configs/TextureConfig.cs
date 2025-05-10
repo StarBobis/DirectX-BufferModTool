@@ -282,7 +282,7 @@ namespace DBMT_Core
         //TODO 优化到GLobalConfig里
         public static string GetConvertedTexturesFolderPath(string DrawIB)
         {
-            string TextureFormatString = GlobalConfig.AutoTextureFormatSuffix;
+            string TextureFormatString = GlobalConfig.AutoTextureFormat;
             string DedupedTexturesConvertFolderPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\DedupedTextures_" + TextureFormatString + "\\");
             return DedupedTexturesConvertFolderPath;
         }
@@ -344,7 +344,7 @@ namespace DBMT_Core
                 string ConvertedTextureFileName = "";
                 if (DedupedTextureFileName.EndsWith(".dds"))
                 {
-                    string AutoTextureFormat = GlobalConfig.AutoTextureFormatSuffix;
+                    string AutoTextureFormat = GlobalConfig.AutoTextureFormat;
                     ConvertedTextureFileName = Path.GetFileNameWithoutExtension(DedupedTextureFileName) + "." + AutoTextureFormat;
                 }
                 else

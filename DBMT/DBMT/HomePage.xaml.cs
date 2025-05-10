@@ -57,11 +57,8 @@ namespace DBMT
             // 获取Compositor实例
             compositor = imageVisual.Compositor;
 
-
             //这里也要读取一次配置，让用户第一次打开就会生成Main.json
-            //如果DBMT路径为空，那么设为默认的
-            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_DBMTWorkFolder;
-            GlobalConfig.MainCfg.SaveConfig();
+            GlobalConfig.SaveConfig();
 
             GameIconGridView.ItemsSource = GameIconItemList;
 
@@ -71,7 +68,7 @@ namespace DBMT
             int index = 0;
             foreach (GameIconItem gameIconItem in GameIconItemList)
             {
-                if (gameIconItem.GameName == GlobalConfig.MainCfg.Value.GameName)
+                if (gameIconItem.GameName == GlobalConfig.CurrentGameName)
                 {
                     GameIconGridView.SelectedIndex = index;
                     break;
@@ -148,7 +145,7 @@ namespace DBMT
             }
             
             //设置当前游戏并且保存
-            GlobalConfig.MainCfg.Value.GameName = gameIconItem.GameName;
+            GlobalConfig.CurrentGameName = gameIconItem.GameName;
 
             // 背景图切换到当前游戏的背景图
             string BackgroundPath = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, gameIconItem.GameName + "\\Background.png");
@@ -162,7 +159,7 @@ namespace DBMT
                 JObject jObject = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
                 string MigotoFolder = (string)jObject["MigotoFolder"];
                 TextBox_3DmigotoPath.Text = MigotoFolder;
-                GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = MigotoFolder;
+                GlobalConfig.CurrentGameMigotoFolder = MigotoFolder;
 
                 //读取d3dx.ini中的配置
                 ReadPathSettingFromD3dxIni(Path.Combine(MigotoFolder, "d3dx.ini"));
@@ -176,11 +173,11 @@ namespace DBMT
                 StarterPathTextBox.Text = "";
                 TextBox_LaunchArgs.Text = "";
 
-                GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = "";
+                GlobalConfig.CurrentGameMigotoFolder = "";
             }
 
             //必须保存配置，因为在其它页面中可能会重新读取配置，导致当前状态的配置丢失。
-            GlobalConfig.MainCfg.SaveConfig();
+            GlobalConfig.SaveConfig();
 
             //切换游戏时，需要保存填写好的进程路径、启动路径、启动参数
             SaveLaunchArgs();
@@ -243,7 +240,7 @@ namespace DBMT
 
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {
-            string MigotoLoaderExePath = Path.Combine(GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder, "3Dmigoto Loader.exe");
+            string MigotoLoaderExePath = Path.Combine(GlobalConfig.CurrentGameMigotoFolder, "3Dmigoto Loader.exe");
             await CommandHelper.ShellOpenFile(MigotoLoaderExePath);
         }
 
@@ -343,7 +340,7 @@ namespace DBMT
 
                 gameIconItem.SaveToJson(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
 
-                GlobalConfig.MainCfg.SaveConfig();
+                GlobalConfig.SaveConfig();
 
 
                 //设置symlink特性
@@ -371,8 +368,8 @@ namespace DBMT
             if (folderPath != "")
             {
                 TextBox_3DmigotoPath.Text = folderPath;
-                GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = TextBox_3DmigotoPath.Text;
-                GlobalConfig.MainCfg.SaveConfig();
+                GlobalConfig.CurrentGameMigotoFolder = TextBox_3DmigotoPath.Text;
+                GlobalConfig.SaveConfig();
             }
             else
             {
@@ -439,8 +436,8 @@ namespace DBMT
         {
             if (TextBox_3DmigotoPath.Text.Trim() != "")
             {
-                GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = TextBox_3DmigotoPath.Text;
-                GlobalConfig.MainCfg.SaveConfig();
+                GlobalConfig.CurrentGameMigotoFolder = TextBox_3DmigotoPath.Text;
+                GlobalConfig.SaveConfig();
                 Verify3DmigotoFolderPath();
             }
         }

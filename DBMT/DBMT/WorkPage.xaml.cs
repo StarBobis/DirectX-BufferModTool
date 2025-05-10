@@ -35,19 +35,15 @@ namespace DBMT
         {
             this.InitializeComponent();
 
-            //用于兼容Catter
-            GlobalConfig.MainCfg.Value.DBMTLocation = GlobalConfig.Path_DBMTWorkFolder;
-
             try
             {
-                GlobalConfig.MainCfg.LoadConfig();
+                GlobalConfig.ReadConfig();
            
 
                 //如果此时没有Main.json就保存配置
-  
-                if (Path.Exists(GlobalConfig.Path_MainConfig_ConfigFolder))
+                if (Path.Exists(GlobalConfig.Path_MainConfig))
                 {
-                    GlobalConfig.MainCfg.SaveConfig();
+                    GlobalConfig.SaveConfig();
                 }
 
                 //初始化游戏列表，会触发工作空间改变
@@ -137,7 +133,7 @@ namespace DBMT
             {
                 // 执行你想要的操作，例如获取选中的项并进行处理
                 string selectedGame = comboBox.SelectedItem.ToString();
-                GlobalConfig.MainCfg.Value.GameName = selectedGame;
+                GlobalConfig.CurrentGameName = selectedGame;
 
                 // 背景图切换到当前游戏的背景图
                 string BackgroundPath = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, selectedGame + "\\Background.png");
@@ -152,11 +148,11 @@ namespace DBMT
                 {
                     JObject jObject = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
                     string MigotoFolder = (string)jObject["MigotoFolder"];
-                    GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = MigotoFolder;
+                    GlobalConfig.CurrentGameMigotoFolder = MigotoFolder;
                 }
                 else
                 {
-                    GlobalConfig.MainCfg.Value.CurrentGameMigotoFolder = "";
+                    GlobalConfig.CurrentGameMigotoFolder = "";
                     await MessageHelper.Show("您当前选中的游戏尚未设置3Dmigoto文件夹，请到主页进行设置。");
 
                     if (MainWindow.CurrentWindow.navigationView.MenuItems.Count > 0)
@@ -167,7 +163,7 @@ namespace DBMT
                 }
 
 
-                GlobalConfig.MainCfg.SaveConfig();
+                GlobalConfig.SaveConfig();
 
 
                 //切换游戏后，要读取当前游戏的配置，来确定当前选择的是哪个工作空间
@@ -214,8 +210,8 @@ namespace DBMT
             if (ComboBoxWorkSpaceSelection.Items.Contains(ComboBoxWorkSpaceSelection.SelectedItem))
             {
                 //切换游戏前，保存当前的工作空间
-                GlobalConfig.MainCfg.Value.WorkSpaceName = (string)ComboBoxWorkSpaceSelection.SelectedItem;
-                GlobalConfig.MainCfg.SaveConfig();
+                GlobalConfig.CurrentWorkSpace = (string)ComboBoxWorkSpaceSelection.SelectedItem;
+                GlobalConfig.SaveConfig();
 
                 //并且要把当前工作空间保存到当前游戏的配置里
                 if (File.Exists(GlobalConfig.Path_CurrentGameMainConfigJsonFile))
@@ -270,7 +266,7 @@ namespace DBMT
         {
             Debug.WriteLine("初始化工作空间::Start");
             Debug.WriteLine("工作空间名称: " + WorkSpaceName);
-            GlobalConfig.MainCfg.Value.WorkSpaceName = WorkSpaceName;
+            GlobalConfig.CurrentWorkSpace = WorkSpaceName;
 
             if (!Directory.Exists(GlobalConfig.Path_CurrentWorkSpaceFolder))
             {
@@ -293,9 +289,9 @@ namespace DBMT
                     ComboBoxWorkSpaceSelection.SelectedItem = WorkSpaceName;
                 }
                 //判断当前WorkSpace是否在Items里，如果在的话就设为当前工作空间
-                else if (ComboBoxWorkSpaceSelection.Items.Contains(GlobalConfig.MainCfg.Value.WorkSpaceName))
+                else if (ComboBoxWorkSpaceSelection.Items.Contains(GlobalConfig.CurrentWorkSpace))
                 {
-                    ComboBoxWorkSpaceSelection.SelectedItem = GlobalConfig.MainCfg.Value.WorkSpaceName;
+                    ComboBoxWorkSpaceSelection.SelectedItem = GlobalConfig.CurrentWorkSpace;
                 }
                 else
                 {
@@ -437,7 +433,7 @@ namespace DBMT
             Debug.WriteLine("当前工作空间: " + GlobalConfig.CurrentWorkSpace);
 
             //(2) 接下来要把当前的游戏名称+类型保存到MainSetting.json里
-            GlobalConfig.MainCfg.SaveConfig();
+            GlobalConfig.SaveConfig();
 
             //(3) 接下来把所有的drawIBList中的DrawIB保留下来存储到对应配置文件。
             SaveDrawIBListConfigToFolder(GlobalConfig.Path_CurrentWorkSpaceFolder);
@@ -519,7 +515,7 @@ namespace DBMT
 
             bool RunResult = false;
 
-            if (GlobalConfig.MainCfg.Value.GameName == "HSR")
+            if (GlobalConfig.CurrentGameName == "HSR")
             {
                 LOG.Initialize();
                 try
@@ -533,7 +529,7 @@ namespace DBMT
                 }
                 LOG.SaveFile();
             }
-            else if (GlobalConfig.MainCfg.Value.GameName == "WWMI")
+            else if (GlobalConfig.CurrentGameName == "WWMI")
             {
                 LOG.Initialize();
                 try

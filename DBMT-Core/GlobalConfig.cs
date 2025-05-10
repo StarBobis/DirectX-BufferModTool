@@ -7,141 +7,208 @@ using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Windows.Globalization;
 
 namespace DBMT_Core
 {
-    public class ConfigLoader<T> where T : BaseConfig, new()
-    {
-        public string SavePath { get; set; }
-        public string LoadPath { get; set; }
-        public T Value { get; set; }
-
-        public ConfigLoader(string path)
-        {
-            LoadPath = path;
-            SavePath = path;
-        }
-
-        public ConfigLoader(string loadPath, string savePath)
-        {
-            LoadPath = loadPath;
-            SavePath = savePath;
-        }
-
-        public void LoadConfig()
-        {
-            if (string.IsNullOrEmpty(LoadPath))
-            {
-                throw new Exception("SavePath of" + this.GetType().Name + "is null");
-            }
-            if (!File.Exists(LoadPath))
-            {
-                // 如果文件不存在，创建一个新的配置文件
-                Value = new T();
-                SaveConfig();
-                //throw new Exception("Config file not found:" + LoadPath);
-            }
-            try
-            {
-                string json = File.ReadAllText(LoadPath);
-                // 读取文件内容,并转换为T类型,然后赋值给当前对象
-                Value = JsonConvert.DeserializeObject<T>(json);
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-                //如果用户因为系统卡死导致DBMT配置文件损坏，我们就覆盖配置文件
-                Value = new T();
-                SaveConfig();
-                //覆盖后再重新读取
-                string json = File.ReadAllText(LoadPath);
-                // 读取文件内容,并转换为T类型,然后赋值给当前对象
-                Value = JsonConvert.DeserializeObject<T>(json);
-            }
-            
-        }
-
-        public void SaveConfig(string SpecialSavePath = "")
-        {
-            if (string.IsNullOrEmpty(SavePath))
-            {
-                throw new Exception("SavePath of" + this.GetType().Name + "is null");
-            }
-            string jsonString = JsonConvert.SerializeObject(Value, Newtonsoft.Json.Formatting.Indented);
-            File.WriteAllText(SavePath, jsonString);
-
-            if (SavePath.EndsWith("Main.json"))
-            {
-                if (Directory.Exists(GlobalConfig.Path_ConfigsFolder))
-                {
-                    File.WriteAllText(GlobalConfig.Path_MainConfig_ConfigFolder, jsonString);
-                }
-            }
-        }
-    }
-    public class BaseConfig { 
     
-    }
-
-
-    public class MainSetting : BaseConfig
-    {
-        public string GameName { get; set; } = "ZZZ";
-        public string WorkSpaceName { get; set; } = string.Empty;
-
-        //DBMT位置
-        public string DBMTLocation { get; set; } = "";
-
-        //当前游戏的3Dmigoto目录
-        public string CurrentGameMigotoFolder { get; set; } = "";
-
-        //当前DBMT的工作目录
-        public string DBMTWorkFolder { get; set; } = "";
-
-        public double WindowWidth { get; set; } = 1280;
-        public double WindowHeight { get; set; } = 720;
-        public int WindowPositionX { get; set; } = -1;
-        public int WindowPositionY { get; set; } = -1;
-
-        //Others
-        public bool AutoCleanFrameAnalysisFolder { get; set; } = true;
-
-        public int FrameAnalysisFolderReserveNumber { get; set; } = 1;
-
-        // 生成Mod设置
-        public string ModSwitchKey { get; set; } = "\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\"";
-
-        //Extract Options
-        public bool DontSplitModelByMatchFirstIndex { get; set; } = false;
-
-        //Texture Options
-        public bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
-        public int AutoTextureFormat { get; set; } = 0;
-        public bool AutoDetectAndMarkTexture { get; set; } = true;
-    }
-
-
     public static class GlobalConfig
     {
         //程序窗口名称
-        public const string DBMT_Title = "DBMT V1.1.8.0"; 
-        
-        // 本地化存储的配置
-        public static readonly ConfigLoader<MainSetting> MainCfg = new ConfigLoader<MainSetting>(Path_MainConfig);
+        public const string DBMT_Title = "DBMT V1.1.8.0";
 
 
-        public static string CurrentGameName => MainCfg.Value.GameName;
-        public static string CurrentWorkSpace => MainCfg.Value.WorkSpaceName;
-        public static string Path_DBMTWorkFolder => GlobalConfig.MainCfg.Value.DBMTWorkFolder;
+        public static string CurrentGameName { get; set; } = "ZZZ";
+        public static string CurrentWorkSpace { get; set; } = "";
+        public static string CurrentGameMigotoFolder { get; set; } = "";
+        public static string DBMTWorkFolder { get; set; } = "";
 
-        public static string Path_Base
+        //窗口大小
+        public static double WindowWidth { get; set; } = 1280;
+        public static double WindowHeight { get; set; } = 720;
+        public static int WindowPositionX { get; set; } = -1;
+        public static int WindowPositionY { get; set; } = -1;
+
+        //Others
+        public static bool AutoCleanFrameAnalysisFolder { get; set; } = true;
+        public static int FrameAnalysisFolderReserveNumber { get; set; } = 1;
+        // 生成Mod设置
+        public static string ModSwitchKey { get; set; } = "\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\"";
+        //Extract Options
+        public static bool DontSplitModelByMatchFirstIndex { get; set; } = false;
+        //Texture Options
+        public static bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
+        public static string AutoTextureFormat { get; set; } = "jpg";
+        public static bool AutoDetectAndMarkTexture { get; set; } = true;
+
+
+        //// 配置文件路径
+        public static string Path_MainConfig
         {
-            get { return Directory.GetCurrentDirectory(); }
+            get { return Path.Combine(Path_ConfigsFolder, "DBMT-Config.json"); }
         }
+
+        public static string Path_MainConfig_Global
+        {
+            get { return Path.Combine(Path_AppDataLocal, "DBMT-Config.json"); }
+        }
+
+        public static void ReadConfig()
+        {
+            try
+            {
+                //读取配置时优先读取全局的
+                JObject SettingsJsonObject = DBMTJsonUtils.CreateJObject();
+                try
+                {
+                    if (File.Exists(GlobalConfig.Path_MainConfig_Global))
+                    {
+                        string json = File.ReadAllText(GlobalConfig.Path_MainConfig_Global);
+                        SettingsJsonObject = JObject.Parse(json);
+                    }
+                }
+                catch (Exception ex) {
+                    ex.ToString();
+                    //如果全局配置文件被蓝屏破坏等原因读取不到，或者Linux Wine模拟不存在时，读取工作空间下的配置文件
+                    if (File.Exists(GlobalConfig.Path_MainConfig))
+                    {
+                        string json = File.ReadAllText(GlobalConfig.Path_MainConfig); // 读取文件内容
+                        SettingsJsonObject = JObject.Parse(json);
+                    }
+                }
+                
+                //古法读取
+                if (SettingsJsonObject.ContainsKey("CurrentGameName"))
+                {
+                    CurrentGameName = (string)SettingsJsonObject["CurrentGameName"];
+                }
+
+                if (SettingsJsonObject.ContainsKey("CurrentWorkSpace"))
+                {
+                    CurrentWorkSpace = (string)SettingsJsonObject["CurrentWorkSpace"];
+                }
+
+                if (SettingsJsonObject.ContainsKey("CurrentGameMigotoFolder"))
+                {
+                    CurrentGameMigotoFolder = (string)SettingsJsonObject["CurrentGameMigotoFolder"];
+                }
+
+                if (SettingsJsonObject.ContainsKey("DBMTWorkFolder"))
+                {
+                    DBMTWorkFolder = (string)SettingsJsonObject["DBMTWorkFolder"];
+                }
+
+                //WindowWidth
+                if (SettingsJsonObject.ContainsKey("WindowWidth"))
+                {
+                    WindowWidth = (double)SettingsJsonObject["WindowWidth"];
+                }
+
+                //WindowHeight
+                if (SettingsJsonObject.ContainsKey("WindowHeight"))
+                {
+                    WindowHeight = (double)SettingsJsonObject["WindowHeight"];
+                }
+
+                //WindowPositionX
+                if (SettingsJsonObject.ContainsKey("WindowPositionX"))
+                {
+                    WindowPositionX = (int)SettingsJsonObject["WindowPositionX"];
+                }
+
+                //WindowPositionY
+                if (SettingsJsonObject.ContainsKey("WindowPositionY"))
+                {
+                    WindowPositionY = (int)SettingsJsonObject["WindowPositionY"];
+                }
+
+                //AutoCleanFrameAnalysisFolder
+                if (SettingsJsonObject.ContainsKey("AutoCleanFrameAnalysisFolder"))
+                {
+                    AutoCleanFrameAnalysisFolder = (bool)SettingsJsonObject["AutoCleanFrameAnalysisFolder"];
+                }
+
+                //FrameAnalysisFolderReserveNumber
+                if (SettingsJsonObject.ContainsKey("FrameAnalysisFolderReserveNumber"))
+                {
+                    FrameAnalysisFolderReserveNumber = (int)SettingsJsonObject["FrameAnalysisFolderReserveNumber"];
+                }
+
+                //ModSwitchKey
+                if (SettingsJsonObject.ContainsKey("ModSwitchKey"))
+                {
+                    ModSwitchKey = (string)SettingsJsonObject["ModSwitchKey"];
+                }
+
+                //DontSplitModelByMatchFirstIndex
+                if (SettingsJsonObject.ContainsKey("DontSplitModelByMatchFirstIndex"))
+                {
+                    DontSplitModelByMatchFirstIndex = (bool)SettingsJsonObject["DontSplitModelByMatchFirstIndex"];
+                }
+
+                //AutoTextureOnlyConvertDiffuseMap
+                if (SettingsJsonObject.ContainsKey("AutoTextureOnlyConvertDiffuseMap"))
+                {
+                    AutoTextureOnlyConvertDiffuseMap = (bool)SettingsJsonObject["AutoTextureOnlyConvertDiffuseMap"];
+                }
+
+                //AutoTextureFormat
+                if (SettingsJsonObject.ContainsKey("AutoTextureFormat"))
+                {
+                    AutoTextureFormat = (string)SettingsJsonObject["AutoTextureFormat"];
+                }
+
+                //AutoDetectAndMarkTexture
+                if (SettingsJsonObject.ContainsKey("AutoDetectAndMarkTexture"))
+                {
+                    AutoDetectAndMarkTexture = (bool)SettingsJsonObject["AutoDetectAndMarkTexture"];
+                }
+
+
+            }
+            catch (Exception ex) {
+                ex.ToString();
+            }
+        }
+
+        public static void SaveConfig()
+        {
+            //古法保存
+            JObject SettingsJsonObject = new JObject();
+
+            SettingsJsonObject["CurrentGameName"] = CurrentGameName;
+            SettingsJsonObject["CurrentWorkSpace"] = CurrentWorkSpace;
+            SettingsJsonObject["CurrentGameMigotoFolder"] = CurrentGameMigotoFolder;
+            SettingsJsonObject["DBMTWorkFolder"] = DBMTWorkFolder;
+            SettingsJsonObject["WindowWidth"] = WindowWidth;
+            SettingsJsonObject["WindowHeight"] = WindowHeight;
+            SettingsJsonObject["WindowPositionX"] = WindowPositionX;
+            SettingsJsonObject["WindowPositionY"] = WindowPositionY;
+            SettingsJsonObject["AutoCleanFrameAnalysisFolder"] = AutoCleanFrameAnalysisFolder;
+            SettingsJsonObject["FrameAnalysisFolderReserveNumber"] = FrameAnalysisFolderReserveNumber;
+            SettingsJsonObject["ModSwitchKey"] = ModSwitchKey;
+            SettingsJsonObject["DontSplitModelByMatchFirstIndex"] = DontSplitModelByMatchFirstIndex;
+            SettingsJsonObject["AutoTextureOnlyConvertDiffuseMap"] = AutoTextureOnlyConvertDiffuseMap;
+            SettingsJsonObject["AutoTextureFormat"] = AutoTextureFormat;
+            SettingsJsonObject["AutoDetectAndMarkTexture"] = AutoDetectAndMarkTexture;
+
+            //写出内容
+            string WirteStirng = SettingsJsonObject.ToString();
+
+            //保存到DBMT的工作空间文件夹下面
+            if (Directory.Exists(GlobalConfig.Path_ConfigsFolder))
+            {
+                File.WriteAllText(Path_MainConfig, WirteStirng);
+            }
+
+            //保存配置时，全局配置也顺便保存一份
+            File.WriteAllText(Path_MainConfig_Global, WirteStirng);
+        }
+
 
         public static string Path_AssetsGamesFolder
         {
-            get { return Path.Combine(GlobalConfig.MainCfg.Value.DBMTWorkFolder, "Games\\"); }
+            get { return Path.Combine(GlobalConfig.DBMTWorkFolder, "Games\\"); }
         }
 
         public static string Path_ModsFolder
@@ -157,17 +224,17 @@ namespace DBMT_Core
 
         public static string Path_LoaderFolder
         {
-            get { return MainCfg.Value.CurrentGameMigotoFolder; }
+            get { return GlobalConfig.CurrentGameMigotoFolder; }
         }
 
         public static string Path_D3DXINI
         {
-            get { return Path.Combine(MainCfg.Value.CurrentGameMigotoFolder, "d3dx.ini"); }
+            get { return Path.Combine(GlobalConfig.CurrentGameMigotoFolder, "d3dx.ini"); }
         }
 
         public static string Path_3DmigotoGameModForkFolder
         {
-            get { return Path.Combine(Path_DBMTWorkFolder, "3Dmigoto-GameMod-Fork\\"); }
+            get { return Path.Combine(GlobalConfig.DBMTWorkFolder, "3Dmigoto-GameMod-Fork\\"); }
         }
 
         public static string Path_TextureConfigsFolder
@@ -182,43 +249,13 @@ namespace DBMT_Core
 
         public static string Path_GameTextureConfigFolder
         {
-            get { return Path.Combine(Path_TextureConfigsFolder, GlobalConfig.MainCfg.Value.GameName + "\\"); }
+            get { return Path.Combine(Path_TextureConfigsFolder, GlobalConfig.CurrentGameName + "\\"); }
         }
-
-        //// 配置文件路径
-        public static string Path_MainConfig
-        {
-            get { return Path.Combine(Path_AppDataLocal, "DBMT-Main.json"); }
-        }
-        public static string Path_Game_SettingJson
-        {
-            get { return Path.Combine(Path_AppDataLocal, "DBMT-Setting.json"); }
-        }
-
-        public static string Path_MainConfig_ConfigFolder
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "Main.json"); }
-        }
-        public static string Path_Game_SettingJson_ConfigFolder
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "Setting.json"); }
-        }
-
-       
-
-     
 
         public static string Path_RunResultJson
         {
             get { return Path.Combine(Path_ConfigsFolder, "RunResult.json"); }
         }
-
-        public static string Path_RunInputJson
-        {
-            get { return Path.Combine(Path_ConfigsFolder, "RunInput.json"); }
-        }
-      
-
 
         //三种注入器的路径
         public static string Path_3Dmigoto_Loader_EXE
@@ -238,7 +275,7 @@ namespace DBMT_Core
 
         public static string Path_PluginsFolder
         {
-            get { return Path.Combine(Path_DBMTWorkFolder, "Plugins\\"); }
+            get { return Path.Combine(GlobalConfig.DBMTWorkFolder, "Plugins\\"); }
         }
 
 
@@ -307,7 +344,7 @@ namespace DBMT_Core
 
         public static string Path_LogsFolder
         {
-            get { return Path.Combine(Path_DBMTWorkFolder,"Logs\\"); }
+            get { return Path.Combine(GlobalConfig.DBMTWorkFolder,"Logs\\"); }
         }
 
 
@@ -337,25 +374,12 @@ namespace DBMT_Core
             }
         }
 
-        public static string AutoTextureFormatSuffix
-        {
-            get
-            {
-                return MainCfg.Value.AutoTextureFormat switch
-                {
-                    0 => "jpg",
-                    1 => "tga",
-                    2 => "png",
-                    _ => "jpg"
-                };
-            }
-        }
 
         public static string Path_TotalWorkSpaceFolder
         {
             get
             {
-                return Path.Combine(GlobalConfig.Path_DBMTWorkFolder, "WorkSpace\\");
+                return Path.Combine(GlobalConfig.DBMTWorkFolder, "WorkSpace\\");
             }
         }
 
@@ -386,12 +410,12 @@ namespace DBMT_Core
 
         public static string Path_ConfigsFolder
         {
-            get { return Path.Combine(Path_DBMTWorkFolder, "Configs\\"); }
+            get { return Path.Combine(GlobalConfig.DBMTWorkFolder, "Configs\\"); }
         }
 
         public static string Path_CurrentGameMainConfigJsonFile
         {
-            get { return Path.Combine(Path_AssetsGamesFolder, GlobalConfig.MainCfg.Value.GameName + "\\MainConfig.json"); }
+            get { return Path.Combine(Path_AssetsGamesFolder, GlobalConfig.CurrentGameName + "\\MainConfig.json"); }
         }
 
     }

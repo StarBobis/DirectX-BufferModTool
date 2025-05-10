@@ -145,58 +145,6 @@ namespace DBMT
             }
         }
 
-        public static async Task<bool> runCommand(string arguments, string targetExe)
-        {
-
-            Process process = new Process();
-            if (targetExe != "")
-            {
-                process.StartInfo.FileName = GlobalConfig.Path_PluginsFolder + targetExe;
-            }
-            //运行前必须检查路径
-            if (!File.Exists(process.StartInfo.FileName))
-            {
-                await MessageHelper.Show("Current run path didn't exsits: " + process.StartInfo.FileName, "当前要执行的插件不存在: " + process.StartInfo.FileName + "\n请联系NicoMico赞助获取此插件。");
-                return false;
-            }
-
-            process.StartInfo.Arguments = arguments;  // 可选，如果该程序接受命令行参数
-            //MessageBox.Show("当前运行参数： " + arguments);
-
-            // 配置进程启动信息
-            process.StartInfo.UseShellExecute = false;  // 不使用操作系统的shell启动程序
-            process.StartInfo.RedirectStandardOutput = false;  // 重定向标准输出
-            process.StartInfo.RedirectStandardError = false;   // 重定向标准错误输出
-            process.StartInfo.CreateNoWindow = true;  // 不创建新窗口
-            // 启动程序
-            process.Start();
-            process.WaitForExit();
-
-            try
-            {
-                string runResultJson = File.ReadAllText(GlobalConfig.Path_RunResultJson);
-                JObject resultJsonObject = JObject.Parse(runResultJson);
-                string runResult = (string)resultJsonObject["result"];
-                if (runResult != "success")
-                {
-                    await MessageHelper.Show(
-                        "运行结果: " + runResult + ". \n\n很遗憾运行失败了，参考运行结果和运行日志改变策略再试一次吧。\n\n1.请检查您的配置是否正确.\n2.请查看日志获取更多细节信息.\n3.请检查您是否使用的是最新版本，新版本可能已修复此问题\n4.请联系NicoMico寻求帮助或在Github上提交issue: https://github.com/StarBobis/DirectX-BufferModTool.\n\n点击确认为后您打开本次运行日志。",
-                        "Run result: " + runResult + ". \n1.Please check your config.\n2.Please check log for more information.\n3.Please ask NicoMico for help, remember to send him the latest log file.\n4.Ask @Developer in ShaderFreedom for help.\n5.Read the source code of DBMT and try analyse the reason for Error with latest log file.");
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                await MessageHelper.Show("执行DBMT核心时发生中断，请查看Log日志获取具体内容","Error when execute DBMT.exe, please see log file for details." + ex.ToString());
-                return false;
-            }
-        }
-
-
         public static FileOpenPicker Get_FileOpenPicker(string Suffix,string StartLocation= "")
         {
             FileOpenPicker picker = new FileOpenPicker();

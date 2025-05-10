@@ -28,7 +28,7 @@ namespace DBMT
                 //只转换dds格式和png格式贴图
                 if (ddsFilePath.EndsWith(".dds"))
                 {
-                    string TextureFormatString = GlobalConfig.AutoTextureFormatSuffix;
+                    string TextureFormatString = GlobalConfig.AutoTextureFormat;
                     CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, TargetFolderPath);
                 }
                 else if (ddsFilePath.EndsWith(".jpg") || ddsFilePath.EndsWith(".png"))
@@ -116,7 +116,7 @@ namespace DBMT
                         string[] filePathArray = Directory.GetFiles(outputDirectory);
                         foreach (string ddsFilePath in filePathArray)
                         {
-                            if (GlobalConfig.MainCfg.Value.AutoTextureOnlyConvertDiffuseMap)
+                            if (GlobalConfig.AutoTextureOnlyConvertDiffuseMap)
                             {
                                 if (!ddsFilePath.EndsWith("DiffuseMap.dds"))
                                 {
@@ -128,7 +128,7 @@ namespace DBMT
                                 continue;
                             }
 
-                            string TextureFormatString = GlobalConfig.AutoTextureFormatSuffix;
+                            string TextureFormatString = GlobalConfig.AutoTextureFormat;
                             CommandHelper.ConvertTexture(ddsFilePath, TextureFormatString, outputDirectory);
                         }
                     }

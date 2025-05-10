@@ -311,7 +311,7 @@ namespace DBMT_Core
                     //写出IBBufFile
                     IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBTxtFile.Format);
 
-                    if (GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex)
+                    if (GlobalConfig.DontSplitModelByMatchFirstIndex)
                     {
                         IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, 0);
 
@@ -492,7 +492,7 @@ namespace DBMT_Core
                     //写出IBBufFile
                     IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBTxtFile.Format);
 
-                    if (GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex)
+                    if (GlobalConfig.DontSplitModelByMatchFirstIndex)
                     {
                         IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, 0);
 
@@ -859,7 +859,7 @@ namespace DBMT_Core
                     //写出IBBufFile
                     IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBTxtFile.Format);
 
-                    if (GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex)
+                    if (GlobalConfig.DontSplitModelByMatchFirstIndex)
                     {
                         IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, 0);
 

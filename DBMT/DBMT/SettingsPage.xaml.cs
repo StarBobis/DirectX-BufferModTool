@@ -50,32 +50,32 @@ namespace DBMT
         {
             Debug.WriteLine("离开设置页面，保存配置");
 
-            GlobalConfig.MainCfg.Value.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
-            GlobalConfig.MainCfg.Value.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
-            GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
-            GlobalConfig.MainCfg.Value.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedIndex;
-            GlobalConfig.MainCfg.Value.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
-            GlobalConfig.MainCfg.Value.AutoDetectAndMarkTexture = ToggleSwitch_AutoDetectAndMarkTexture.IsOn;
-            GlobalConfig.MainCfg.Value.ModSwitchKey = TextBox_ModSwitchKey.Text;
+            GlobalConfig.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
+            GlobalConfig.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
+            GlobalConfig.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
+            GlobalConfig.AutoTextureFormat = ComboBox_AutoTextureFormat.Text;
+            GlobalConfig.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
+            GlobalConfig.AutoDetectAndMarkTexture = ToggleSwitch_AutoDetectAndMarkTexture.IsOn;
+            GlobalConfig.ModSwitchKey = TextBox_ModSwitchKey.Text;
 
-            GlobalConfig.MainCfg.SaveConfig();
+            GlobalConfig.SaveConfig();
         }
 
         public void ReadSettingsFromConfig()
         {
             ReadOver = false;
             //防止程序启动时没正确读取，这里冗余读取一次，后面看情况可以去掉
-            GlobalConfig.MainCfg.LoadConfig();
+            GlobalConfig.ReadConfig();
 
-            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = GlobalConfig.MainCfg.Value.AutoCleanFrameAnalysisFolder;
-            NumberBox_FrameAnalysisFolderReserveNumber.Value = GlobalConfig.MainCfg.Value.FrameAnalysisFolderReserveNumber;
-            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex;
-            ComboBox_AutoTextureFormat.SelectedIndex = GlobalConfig.MainCfg.Value.AutoTextureFormat;
-            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.MainCfg.Value.AutoTextureOnlyConvertDiffuseMap;
-            ToggleSwitch_AutoDetectAndMarkTexture.IsOn = GlobalConfig.MainCfg.Value.AutoDetectAndMarkTexture;
-            TextBox_ModSwitchKey.Text = GlobalConfig.MainCfg.Value.ModSwitchKey;
+            ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = GlobalConfig.AutoCleanFrameAnalysisFolder;
+            NumberBox_FrameAnalysisFolderReserveNumber.Value = GlobalConfig.FrameAnalysisFolderReserveNumber;
+            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.DontSplitModelByMatchFirstIndex;
+            ComboBox_AutoTextureFormat.SelectedItem = GlobalConfig.AutoTextureFormat;
+            ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.AutoTextureOnlyConvertDiffuseMap;
+            ToggleSwitch_AutoDetectAndMarkTexture.IsOn = GlobalConfig.AutoDetectAndMarkTexture;
+            TextBox_ModSwitchKey.Text = GlobalConfig.ModSwitchKey;
 
-            TextBox_DBMTWorkFolder.Text = GlobalConfig.MainCfg.Value.DBMTWorkFolder;
+            TextBox_DBMTWorkFolder.Text = GlobalConfig.DBMTWorkFolder;
 
             ReadOver = true;
         }
@@ -119,8 +119,8 @@ namespace DBMT
             if (Directory.Exists(FolderPath))
             {
                 TextBox_DBMTWorkFolder.Text = FolderPath;
-                GlobalConfig.MainCfg.Value.DBMTWorkFolder = FolderPath;
-                GlobalConfig.MainCfg.SaveConfig();
+                GlobalConfig.DBMTWorkFolder = FolderPath;
+                GlobalConfig.SaveConfig();
             }
         }
 
@@ -128,8 +128,8 @@ namespace DBMT
         {
             if (Directory.Exists(TextBox_DBMTWorkFolder.Text))
             {
-                GlobalConfig.MainCfg.Value.DBMTWorkFolder = TextBox_DBMTWorkFolder.Text;
-                GlobalConfig.MainCfg.SaveConfig();
+                GlobalConfig.DBMTWorkFolder = TextBox_DBMTWorkFolder.Text;
+                GlobalConfig.SaveConfig();
             }
         }
     }

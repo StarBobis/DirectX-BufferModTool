@@ -57,7 +57,7 @@ namespace DBMT_Core
                 PartNameList.Add(OutputCount.ToString());
                 ImportModelList.Add(DrawIB + "-" + OutputCount.ToString());
 
-                if (GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex)
+                if (GlobalConfig.DontSplitModelByMatchFirstIndex)
                 {
                     break;
                 }
@@ -144,7 +144,7 @@ namespace DBMT_Core
                 PartNameList.Add(OutputCount.ToString());
                 ImportModelList.Add("Component " + (OutputCount - 1).ToString());
 
-                if (GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex)
+                if (GlobalConfig.DontSplitModelByMatchFirstIndex)
                 {
                     break;
                 }
@@ -242,7 +242,7 @@ namespace DBMT_Core
                 PartNameList.Add(OutputCount.ToString());
                 ImportModelList.Add(DrawIB + "-" + OutputCount.ToString());
 
-                if (GlobalConfig.MainCfg.Value.DontSplitModelByMatchFirstIndex)
+                if (GlobalConfig.DontSplitModelByMatchFirstIndex)
                 {
                     break;
                 }
