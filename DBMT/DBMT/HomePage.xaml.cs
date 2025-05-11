@@ -32,6 +32,7 @@ using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml.Hosting;
 using System.Numerics;
 using DBMT_Core.Utils;
+using System.Net.Http;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -51,6 +52,13 @@ namespace DBMT
         {
             this.InitializeComponent();
 
+            this.Loaded += OnMyCustomPageLoaded;
+        }
+
+
+        private void OnMyCustomPageLoaded(object sender, RoutedEventArgs e)
+        {
+
             // 初始化Composition组件
             // 获取Image控件的Visual对象
             imageVisual = ElementCompositionPreview.GetElementVisual(MainWindow.CurrentWindow.mainWindowImageBrush);
@@ -63,6 +71,7 @@ namespace DBMT
             GameIconGridView.ItemsSource = GameIconItemList;
 
             InitializeGameIconList();
+
 
             //根据当前配置中存储的游戏名称，依次匹配GameIconItemList
             int index = 0;
@@ -78,10 +87,10 @@ namespace DBMT
 
         }
 
-  
-        
+
         public void InitializeGameIconList()
         {
+            Debug.WriteLine("InitializeGameIconList::Begin");
             GameIconItemList.Clear();
 
             List<GameIconItem> gameIconItems = DBMTResourceUtils.GetGameIconItems();
@@ -91,6 +100,7 @@ namespace DBMT
                 GameIconItemList.Add(gameIconItem);
             }
 
+            Debug.WriteLine("InitializeGameIconList::End");
         }
 
         private void CreateFadeAnimation()
@@ -136,8 +146,23 @@ namespace DBMT
             }
         }
 
-        private void GameIconGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ConfirmSetDefault3DmigotoFolderPath()
         {
+            string GameMigotoPath = Path.Combine(GlobalConfig.DBMTWorkFolder, "3Dmigoto\\" + GlobalConfig.CurrentGameName + "\\");
+            if (Directory.Exists(GameMigotoPath))
+            {
+                bool DefaultLocation = await MessageHelper.ShowConfirm("检测到您当前设置了DBMT-Package的路径，但是并未设置当前游戏的3Dmigoto路径，是否将当前游戏的3Dmigoto路径设置为DBMT-Package下面自带的3Dmigoto的路径？");
+                if (DefaultLocation)
+                {
+                    TextBox_3DmigotoPath.Text = GameMigotoPath;
+                    ReadPathSettingFromD3dxIni(Path.Combine(GameMigotoPath, "d3dx.ini"));
+                }
+            }
+        }
+
+        private async void GameIconGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Debug.WriteLine("GameIconGridView_SelectionChanged::");
             GameIconItem gameIconItem = GetCurrentSelectedGameIconItem();
             if (gameIconItem == null)
             {
@@ -158,11 +183,19 @@ namespace DBMT
             {
                 JObject jObject = DBMTJsonUtils.ReadJObjectFromFile(GlobalConfig.Path_CurrentGameMainConfigJsonFile);
                 string MigotoFolder = (string)jObject["MigotoFolder"];
-                TextBox_3DmigotoPath.Text = MigotoFolder;
-                GlobalConfig.CurrentGameMigotoFolder = MigotoFolder;
 
-                //读取d3dx.ini中的配置
-                ReadPathSettingFromD3dxIni(Path.Combine(MigotoFolder, "d3dx.ini"));
+                if (Directory.Exists(MigotoFolder))
+                {
+                    TextBox_3DmigotoPath.Text = MigotoFolder;
+                    GlobalConfig.CurrentGameMigotoFolder = MigotoFolder;
+                    ReadPathSettingFromD3dxIni(Path.Combine(MigotoFolder, "d3dx.ini"));
+                }
+                else
+                {
+                    ConfirmSetDefault3DmigotoFolderPath();
+                }
+
+
             }
             else
             {
@@ -173,8 +206,9 @@ namespace DBMT
                 StarterPathTextBox.Text = "";
                 TextBox_LaunchArgs.Text = "";
 
-                GlobalConfig.CurrentGameMigotoFolder = "";
+                ConfirmSetDefault3DmigotoFolderPath();
             }
+
 
             //必须保存配置，因为在其它页面中可能会重新读取配置，导致当前状态的配置丢失。
             GlobalConfig.SaveConfig();
@@ -316,17 +350,18 @@ namespace DBMT
 
         private void Verify3DmigotoFolderPath()
         {
+            Debug.WriteLine("Verify3DmigotoFolderPath::");
             string folderPath = TextBox_3DmigotoPath.Text;
             if (!Directory.Exists(folderPath))
             {
-                _ = MessageHelper.Show("您当前选择的3Dmigoto目录并不存在，请重新选择");
+                _ = MessageHelper.Show(this.XamlRoot,"您当前选择的3Dmigoto目录并不存在，请重新选择");
                 return;
             }
 
             string d3dxini_path = Path.Combine(folderPath, "d3dx.ini");
             if (!File.Exists(d3dxini_path))
             {
-                _ = MessageHelper.Show("您当前选中的目录中并未含有d3dx.ini配置文件，请确认您是否选中了正确的3Dmigoto目录。");
+                _ = MessageHelper.Show(this.XamlRoot, "您当前选中的目录中并未含有d3dx.ini配置文件，请确认您是否选中了正确的3Dmigoto目录。");
                 return;
             }
             else

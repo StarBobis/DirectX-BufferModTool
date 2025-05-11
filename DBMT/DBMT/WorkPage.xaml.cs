@@ -35,10 +35,17 @@ namespace DBMT
         {
             this.InitializeComponent();
 
+            this.Loaded += OnMyCustomPageLoaded;
+
+        }
+
+        private void OnMyCustomPageLoaded(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("WorkPageLoadStart");
             try
             {
                 GlobalConfig.ReadConfig();
-           
+
 
                 //如果此时没有Main.json就保存配置
                 if (Path.Exists(GlobalConfig.Path_MainConfig))
@@ -61,9 +68,10 @@ namespace DBMT
             }
             catch (Exception ex)
             {
-                _ = MessageHelper.Show("Error: " + ex.ToString());
+                _ = MessageHelper.Show(this.XamlRoot, "Error: " + ex.ToString());
             }
         }
+
 
         private void MyDataGrid_CellEditEnding(object sender, CommunityToolkit.WinUI.UI.Controls.DataGridCellEditEndingEventArgs e)
         {
@@ -85,7 +93,7 @@ namespace DBMT
 
         private void InitializeGameNameComboBox()
         {
-
+            Debug.WriteLine("InitializeGameNameComboBox::Start");
             List<GameIconItem> gameIconItems = DBMTResourceUtils.GetGameIconItems();
 
             WorkGameSelectionComboBox.Items.Clear();
@@ -102,6 +110,8 @@ namespace DBMT
             {
                 WorkGameSelectionComboBox.SelectedItem = GlobalConfig.CurrentGameName;
             }
+            Debug.WriteLine("InitializeGameNameComboBox::End");
+
         }
 
         private void InitializeRunButton()
@@ -125,6 +135,7 @@ namespace DBMT
 
         private async void WorkGameSelectionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Debug.WriteLine("WorkGameSelectionComboBox_SelectionChanged::Start");
             // 获取触发事件的 ComboBox 实例
             var comboBox = sender as ComboBox;
 
@@ -153,7 +164,7 @@ namespace DBMT
                 else
                 {
                     GlobalConfig.CurrentGameMigotoFolder = "";
-                    await MessageHelper.Show("您当前选中的游戏尚未设置3Dmigoto文件夹，请到主页进行设置。");
+                    await MessageHelper.Show(this.XamlRoot,"您当前选中的游戏尚未设置3Dmigoto文件夹，请到主页进行设置。");
 
                     if (MainWindow.CurrentWindow.navigationView.MenuItems.Count > 0)
                     {
@@ -199,6 +210,9 @@ namespace DBMT
 
                 InitializeRunButton();
             }
+
+            Debug.WriteLine("WorkGameSelectionComboBox_SelectionChanged::End");
+
         }
 
 
