@@ -53,7 +53,7 @@ namespace DBMT
             GlobalConfig.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
             GlobalConfig.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
             GlobalConfig.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
-            GlobalConfig.AutoTextureFormat = ComboBox_AutoTextureFormat.Text;
+            GlobalConfig.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedItem.ToString();
             GlobalConfig.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
             GlobalConfig.AutoDetectAndMarkTexture = ToggleSwitch_AutoDetectAndMarkTexture.IsOn;
             GlobalConfig.ModSwitchKey = TextBox_ModSwitchKey.Text;
@@ -131,6 +131,13 @@ namespace DBMT
                 GlobalConfig.DBMTWorkFolder = TextBox_DBMTWorkFolder.Text;
                 GlobalConfig.SaveConfig();
             }
+        }
+
+        private void Button_CheckDBMTPackageUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            string GithubPage = "https://github.com/StarBobis/DBMT-Package/";
+
+
         }
     }
 }

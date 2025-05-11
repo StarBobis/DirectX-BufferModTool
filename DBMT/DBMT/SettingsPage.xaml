@@ -27,7 +27,7 @@
             <Border Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto" >
                 <StackPanel Orientation="Horizontal" Margin="20,10,20,10" HorizontalAlignment="Center">
                     <TextBlock 
-                        x:Name="TextBlock_DBMTWorkFolder" Text="DBMT工作文件夹: "
+                        x:Name="TextBlock_DBMTWorkFolder" Text="DBMT工作文件夹(DBMT-Package): "
                         VerticalAlignment="Center">
                     </TextBlock>
                     <TextBox 
@@ -43,6 +43,14 @@
                         Content="选择文件夹"
                         Margin="20,0,0,0">
                     </Button>
+                    <!--<Button
+                        x:Name="Button_CheckDBMTPackageUpdate"
+                        Content="检查DBMT-Package更新"
+                        Margin="20,0,0,0"
+                        Click="Button_CheckDBMTPackageUpdate_Click"
+                        >
+                        
+                    </Button>-->
                 </StackPanel>
             </Border>
             
@@ -152,9 +160,9 @@
                         Grid.Row="0" Grid.Column="0" Text="全局贴图转换格式设置" VerticalAlignment="Center" Margin="10,0,10,0"
                         ToolTipService.ToolTip="新手建议使用jpg格式和png格式，tga格式无法在贴图设置页面中标记贴图"/>
                     <ComboBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Stretch" PlaceholderText="" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ComboBox_AutoTextureFormat" SelectionChanged="RefreshSettings" >
-                        <x:String>.jpg</x:String>
-                        <x:String>.tga</x:String>
-                        <x:String>.png</x:String>
+                        <x:String>jpg</x:String>
+                        <x:String>tga</x:String>
+                        <x:String>png</x:String>
                     </ComboBox>
 
                     <TextBlock 
