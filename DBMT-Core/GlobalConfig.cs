@@ -15,9 +15,7 @@ namespace DBMT_Core
     public static class GlobalConfig
     {
         //程序窗口名称
-        public const string DBMT_Title = "DBMT V1.1.8.3";
-
-
+        public const string DBMT_Title = "DBMT V1.1.8.4";
         public static string CurrentGameName { get; set; } = "ZZZ";
         public static string CurrentWorkSpace { get; set; } = "";
         public static string CurrentGameMigotoFolder { get; set; } = "";

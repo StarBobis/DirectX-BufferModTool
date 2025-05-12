@@ -187,6 +187,11 @@ BorderBrush="White" BorderThickness="1" CornerRadius="5" >
 
                         <TextBlock x:Name="TextBlock_DynamicTextureHash" Text="贴图Hash值:" VerticalAlignment="Center" Margin="20,0,10,0"/>
                         <TextBox x:Name="TextBox_DynamicTextureHash" Width="120"/>
+
+                        <TextBlock x:Name="TextBlock_DynamicTextureSuffix" Text="贴图文件名后缀" VerticalAlignment="Center" Margin="20,0,10,0">
+                        </TextBlock>
+                        <TextBox x:Name="TextBox_DynamicTextureSuffix" Text=".png" Width="120"/>
+
                     </StackPanel>
 
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,10,10,10">

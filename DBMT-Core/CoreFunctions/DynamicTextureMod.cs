@@ -10,7 +10,7 @@ namespace DBMT_Core
     public partial class CoreFunctions
     {
 
-        public static void GenerateDynamicTextureMod(string DynamicTextureFolderPath, string TexturePrefix, string TextureHash)
+        public static void GenerateDynamicTextureMod(string DynamicTextureFolderPath, string TexturePrefix, string TextureHash,string TextureSuffix)
         {
 
             static string AddLeadingZeros(int a, int b)
@@ -92,7 +92,7 @@ namespace DBMT_Core
             {
                 string CurrentSuffix = AddLeadingZeros(i, TextureFileNumber);
                 IniLineList.Add("[Resource_" +TexturePrefix + "_" + CurrentSuffix + "]");
-                IniLineList.Add("filename = " + TexturePrefix + CurrentSuffix + ".png");
+                IniLineList.Add("filename = " + TexturePrefix + CurrentSuffix + TextureSuffix);
                 IniLineList.Add("");
 
             }

@@ -471,8 +471,9 @@ namespace DBMT
             string DynamicTextureFolderPath = TextBox_DynamicTextureFolderPath.Text + "\\";
             string TexturePrefix = TextBox_DynamicTextureName.Text;
             string TextureHash = TextBox_DynamicTextureHash.Text;
+            string TextureSuffix = TextBox_DynamicTextureSuffix.Text;
 
-            CoreFunctions.GenerateDynamicTextureMod(DynamicTextureFolderPath, TexturePrefix, TextureHash);
+            CoreFunctions.GenerateDynamicTextureMod(DynamicTextureFolderPath, TexturePrefix, TextureHash,TextureSuffix);
 
             _ = CommandHelper.ShellOpenFolder(DynamicTextureFolderPath);
         }
