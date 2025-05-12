@@ -169,6 +169,16 @@ namespace DBMT
 
         private void GameIconGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //切换游戏时，需要保存填写好的进程路径、启动路径、启动参数
+            if (Directory.Exists(TextBox_3DmigotoPath.Text))
+            {
+                SaveLaunchArgs();
+                SaveLaunchPath();
+                SaveTargetPath();
+            }
+            
+
+
             Debug.WriteLine("GameIconGridView_SelectionChanged::");
             GameIconItem gameIconItem = GetCurrentSelectedGameIconItem();
             if (gameIconItem == null)
@@ -178,6 +188,7 @@ namespace DBMT
             
             //设置当前游戏并且保存
             GlobalConfig.CurrentGameName = gameIconItem.GameName;
+            GlobalConfig.SaveConfig();
 
             // 背景图切换到当前游戏的背景图
             string BackgroundPath = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, gameIconItem.GameName + "\\Background.png");
@@ -216,14 +227,8 @@ namespace DBMT
                 ConfirmSetDefault3DmigotoFolderPath();
             }
 
+            
 
-            //必须保存配置，因为在其它页面中可能会重新读取配置，导致当前状态的配置丢失。
-            GlobalConfig.SaveConfig();
-
-            //切换游戏时，需要保存填写好的进程路径、启动路径、启动参数
-            SaveLaunchArgs();
-            SaveLaunchPath();
-            SaveTargetPath();
         }
 
 
