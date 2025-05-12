@@ -56,7 +56,7 @@ namespace DBMT
         }
 
 
-        private void OnMyCustomPageLoaded(object sender, RoutedEventArgs e)
+        private async void OnMyCustomPageLoaded(object sender, RoutedEventArgs e)
         {
 
             // 初始化Composition组件
@@ -72,19 +72,26 @@ namespace DBMT
 
             InitializeGameIconList();
 
-
-            //根据当前配置中存储的游戏名称，依次匹配GameIconItemList
-            int index = 0;
-            foreach (GameIconItem gameIconItem in GameIconItemList)
+            if (GameIconItemList.Count == 0)
             {
-                if (gameIconItem.GameName == GlobalConfig.CurrentGameName)
-                {
-                    GameIconGridView.SelectedIndex = index;
-                    break;
-                }
-                index += 1;
+                await MessageHelper.Show(this.XamlRoot,"您还没有配置正确的DBMT-Package路径，请先前往设置页面进行配置。");
+                Frame.Navigate(typeof(SettingsPage));
+                MainWindow.CurrentWindow.navigationView.SelectedItem = MainWindow.CurrentWindow.navigationView.SettingsItem;
             }
-
+            else
+            {
+                //根据当前配置中存储的游戏名称，依次匹配GameIconItemList
+                int index = 0;
+                foreach (GameIconItem gameIconItem in GameIconItemList)
+                {
+                    if (gameIconItem.GameName == GlobalConfig.CurrentGameName)
+                    {
+                        GameIconGridView.SelectedIndex = index;
+                        break;
+                    }
+                    index += 1;
+                }
+            }
         }
 
 
@@ -160,7 +167,7 @@ namespace DBMT
             }
         }
 
-        private async void GameIconGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void GameIconGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Debug.WriteLine("GameIconGridView_SelectionChanged::");
             GameIconItem gameIconItem = GetCurrentSelectedGameIconItem();

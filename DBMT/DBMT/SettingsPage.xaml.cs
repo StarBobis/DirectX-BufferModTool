@@ -135,8 +135,7 @@ namespace DBMT
 
         private void Button_CheckDBMTPackageUpdate_Click(object sender, RoutedEventArgs e)
         {
-            string GithubPage = "https://github.com/StarBobis/DBMT-Package/";
-
+            //string GithubPage = "https://github.com/StarBobis/DBMT-Package/";
 
         }
     }
