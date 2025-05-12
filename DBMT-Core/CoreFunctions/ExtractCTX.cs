@@ -77,6 +77,8 @@ namespace DBMT_Core
                     string CTXCode = LogFileName.Split("log-")[1].Split(".txt")[0];
                     LOG.Info("CTXCode: " + CTXCode);
                     string CTXFolderName = "ctx-" + CTXCode;
+                    string CTXLogFileName = "log-" + CTXCode + ".txt";
+                    string CTXLogFilePath = Path.Combine(GlobalConfig.Path_LatestFrameAnalysisFolder, CTXLogFileName);
                     string CTXFolderPath = Path.Combine(GlobalConfig.Path_LatestFrameAnalysisFolder, CTXFolderName + "\\");
                     LOG.Info("CTXFolderPath: " + CTXFolderPath);
 
@@ -98,6 +100,74 @@ namespace DBMT_Core
                         LOG.NewLine("当前CTX文件夹中未找到任何DrawIB相关文件，跳过提取");
                         continue;
                     }
+
+
+                    //在这里先把贴图提取了。
+
+                    List<string> TrianglelistTexturesFileNameList = [];
+                    foreach (string TextureIndex in TrianglelistIndexList)
+                    {
+                        List<string> PsTextureAllFileNameList = FrameAnalysisDataUtils.FilterTextureFileNameList(CTXFolderPath, TextureIndex + "-ps-t");
+                        foreach (string PsTextureFileName in PsTextureAllFileNameList)
+                        {
+                            TrianglelistTexturesFileNameList.Add(PsTextureFileName);
+                        }
+                    }
+
+                    //在当前工作空间文件夹中创建每个DrawIB的输出文件夹
+                    string DrawIBOutputFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
+                    Directory.CreateDirectory(DrawIBOutputFolder);
+
+                    //创建DedupedTextures
+                    string DedupedTexturesFolderPath = Path.Combine(DrawIBOutputFolder, "DedupedTextures\\");
+                    Directory.CreateDirectory(DedupedTexturesFolderPath);
+
+                    //创建RenderTextures
+                    string RenderTexturesFolderPath = Path.Combine(DrawIBOutputFolder, "RenderTextures\\");
+                    Directory.CreateDirectory(RenderTexturesFolderPath);
+
+                    //移动Deduped贴图文件
+                    foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
+                    {
+                        //Deduped必须是从log.txt中获取的映射路径
+                        
+                        string OriginalTextureFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(PsTextureFileName,CTXFolderPath,CTXLogFilePath);
+                        //LOG.Info("OriginalTextureFilePath: " + OriginalTextureFilePath);
+
+                        //移动DedupedTextures
+                        string DedupedFileName = FrameAnalysisLogUtilsV2.Get_DedupedFileName(PsTextureFileName, CTXFolderPath, CTXLogFilePath);
+                        string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
+                        string TargetFilePath = DedupedTexturesFolderPath + TextureSpecialHash + "_" + DedupedFileName;
+
+                        //LOG.Info("TargetFilePath: " + TargetFilePath);
+
+                        if (DedupedFileName != "" && !File.Exists(TargetFilePath))
+                        {
+                            if (File.Exists(OriginalTextureFilePath))
+                            {
+                                File.Copy(OriginalTextureFilePath, TargetFilePath, true);
+                            }
+                        }
+                        //LOG.NewLine();
+                    }
+
+                    //移动Render贴图文件
+                    foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
+                    {
+                        string OriginalTextureFilePath = Path.Combine(CTXFolderPath, PsTextureFileName);
+                        string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(PsTextureFileName);
+                        string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
+
+                        string TargetRenderFilePath = RenderTexturesFolderPath + TextureSpecialHash + "_" + DedupedRenderFileName;
+                        if (DedupedRenderFileName != "" && !File.Exists(TargetRenderFilePath))
+                        {
+                            File.Copy(OriginalTextureFilePath, TargetRenderFilePath, true);
+                        }
+
+                    }
+
+
+
                     //使用第一个TrianglelistIndex来进行数据类型识别
                     string TmpTrianglelistIndex = TrianglelistIndexList[0];
 

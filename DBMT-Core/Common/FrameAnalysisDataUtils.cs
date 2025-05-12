@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DBMT_Core
 {
-
+    [Obsolete("架构设计不够灵活，尽量不要使用，后续代码逐渐迁移到新的工具类中")]
     public static class FrameAnalysisDataUtils
     {
         public static Dictionary<string, List<string>> FrameAnalysisFolder_FileNameList_Dict = [];

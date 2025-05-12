@@ -13,6 +13,7 @@ using System.Diagnostics;
 
 namespace DBMT_Core
 {
+    [Obsolete("架构设计不够灵活，尽量不要使用，后续代码逐渐迁移到新的工具类中")]
     public static class FrameAnalysisLogUtils
     {
         /// <summary>

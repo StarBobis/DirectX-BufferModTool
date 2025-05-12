@@ -524,16 +524,17 @@ namespace DBMT
 
 
             //提取DedupedTextures和RenderTextures方便Mod制作时使用。
-            CoreFunctions.ExtractDedupedTextures();
-            CoreFunctions.ExtractRenderTextures();
+            
 
             bool RunResult = false;
-
+            //HSR重写渲染管线和Shader，很特殊
             if (GlobalConfig.CurrentGameName == "HSR")
             {
                 LOG.Initialize();
                 try
                 {
+                    CoreFunctions.ExtractDedupedTextures();
+                    CoreFunctions.ExtractRenderTextures();
                     RunResult = CoreFunctions.ExtractHSR32(DrawIBItemList);
                 }
                 catch (Exception ex)
@@ -543,12 +544,14 @@ namespace DBMT
                 }
                 LOG.SaveFile();
             }
+            //Unreal引擎，且使用形态键技术，复杂度比Unity高
             else if (GlobalConfig.CurrentGameName == "WWMI")
             {
                 LOG.Initialize();
                 try
                 {
-                 
+                    CoreFunctions.ExtractDedupedTextures();
+                    CoreFunctions.ExtractRenderTextures();
                     RunResult = CoreFunctions.ExtractWWMI(DrawIBItemList);
 
                 }
@@ -559,11 +562,16 @@ namespace DBMT
                 }
                 LOG.SaveFile();
             }
+            //CTX类型比较特殊
             else if (GlobalConfig.CurrentGameName == "YYSLS" || GlobalConfig.CurrentGameName == "IdentityV")
             {
+                LOG.Initialize();
                 try
                 {
-                    LOG.Initialize();
+                    //这里由于CTX的文件结构不同，导致普通的提取贴图不适用。
+                    //CoreFunctions.ExtractDedupedTextures();
+                    //CoreFunctions.ExtractRenderTextures();
+
                     RunResult = CoreFunctions.ExtractCTX(DrawIBItemList);
                 }
                 catch (Exception ex)
@@ -578,6 +586,8 @@ namespace DBMT
                 LOG.Initialize();
                 try
                 {
+                    CoreFunctions.ExtractDedupedTextures();
+                    CoreFunctions.ExtractRenderTextures();
                     RunResult = CoreFunctions.ExtractUnityVS(DrawIBItemList);
                 }
                 catch (Exception ex)
