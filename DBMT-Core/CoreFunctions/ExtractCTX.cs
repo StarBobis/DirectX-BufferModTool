@@ -143,6 +143,16 @@ namespace DBMT_Core
                             int BufFileSize = (int)DBMTFileUtils.GetFileSize(BufFilePath);
                             int TmpNumber = BufFileSize / CategoryStride;
 
+                            //IdentityV: 使用精准匹配机制来过滤数据类型，如果有余数，说明此分类不匹配。
+                            int YuShu = BufFileSize % CategoryStride;
+                            if (YuShu != 0)
+                            {
+
+                                LOG.Error("余数不为0: " + YuShu.ToString() + "  ，文件步长除以类别步长，不能含有余数，否则为不支持的匹配方式，比如PatchNull，或者数据类型匹配错误，类型错误时自然会产生余数。");
+                                AllMatch = false;
+                                break;
+                            }
+
                             if (VertexNumber == 0)
                             {
                                 //第一次不为0时赋值，方便后续匹配
@@ -173,6 +183,17 @@ namespace DBMT_Core
                         if (AllMatch)
                         {
                             PossibleGameTypeList.Add(d3D11GameType);
+
+
+                            //if (d3D11GameType.OrderedCategoryNameList.Count == 1)
+                            //{
+                            //    //IdentityV: 如果只有一个Category，则这里必须进行顶点数的校验。
+                                
+                            //}
+                            //else
+                            //{
+                            //    PossibleGameTypeList.Add(d3D11GameType);
+                            //}
                         }
 
                     }
@@ -189,7 +210,7 @@ namespace DBMT_Core
                         LOG.Info(d3d11GameType.GameTypeName);
                     }
                     LOG.NewLine();
-                        //
+                    
                     SortedDictionary<int, string> MatchFirstIndex_IBFileName_Dict = new SortedDictionary<int, string>();
                     foreach (string TrianglelistIndex in TrianglelistIndexList)
                     {
