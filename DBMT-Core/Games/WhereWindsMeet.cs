@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBMT_Core
+namespace DBMT_Core.Games
 {
-    public partial class CoreFunctions
+    public static class WhereWindsMeet
     {
 
-
-        public static bool ExtractCTX(List<DrawIBItem> DrawIBItemList)
+        public static bool ExtractModel(List<DrawIBItem> DrawIBItemList)
         {
             D3D11GameTypeLv2 d3D11GameTypeLv2 = new D3D11GameTypeLv2(GlobalConfig.CurrentGameName);
 
@@ -33,7 +32,6 @@ namespace DBMT_Core
                 LOG.NewLine();
 
                 //燕云十六声提取模型，使用CTX架构
-
                 //由于存在多个log.txt以及多个ctx的FrameAnalysis文件夹，所以这里需要从先从每个log.txt中查找是否存在当前DrawIB
 
                 string[] TotalFrameAnalysisFiles = Directory.GetFiles(GlobalConfig.Path_LatestFrameAnalysisFolder);
@@ -176,7 +174,6 @@ namespace DBMT_Core
                     {
                         LOG.Info("尝试匹配数据类型: " + d3D11GameType.GameTypeName);
 
-                        Dictionary<string, string> CategoryName_BufFilePath_Dict = new Dictionary<string, string>();
                         bool AllSlotBufFileExists = true;
                         //先校验当前数据类型文件的各个槽位的Buffer文件是否存在
                         foreach (var item in d3D11GameType.CategorySlotDict)
@@ -190,9 +187,6 @@ namespace DBMT_Core
                                 AllSlotBufFileExists = false;
                                 break;
                             }
-
-                            string CategoryBufFilePath = Path.Combine(CTXFolderPath, CategoryBufFileName);
-                            CategoryName_BufFilePath_Dict[CategoryName] = CategoryBufFilePath;
                         }
 
                         if (!AllSlotBufFileExists)
@@ -208,10 +202,13 @@ namespace DBMT_Core
                         {
 
                             int CategoryStride = d3D11GameType.CategoryStrideDict[CategoryName];
+                            string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
                             LOG.Info("当前匹配槽位: " + CategoryName + " Stride: " + CategoryStride.ToString());
 
-                            string BufFilePath = CategoryName_BufFilePath_Dict[CategoryName];
-                            int BufFileSize = (int)DBMTFileUtils.GetFileSize(BufFilePath);
+                            VertexBufferCombFile VBCombFile = new VertexBufferCombFile(CTXFolderPath, TmpTrianglelistIndex, CategorySlot);
+
+
+                            int BufFileSize = VBCombFile.CategoryBufferBytes.Length;
                             int TmpNumber = BufFileSize / CategoryStride;
 
                             //IdentityV: 使用精准匹配机制来过滤数据类型，如果有余数，说明此分类不匹配。
@@ -233,7 +230,7 @@ namespace DBMT_Core
 
                             if (TmpNumber == 0)
                             {
-                                LOG.Error("当前匹配的槽位文件大小为0: " + BufFilePath);
+                                LOG.Error("当前匹配的槽位文件大小为0: " + VBCombFile.BufFileName);
                                 AllMatch = false;
                                 break;
                             }
@@ -282,7 +279,13 @@ namespace DBMT_Core
                         string IBFilePath = Path.Combine(CTXFolderPath, IBTxtFileName);
                         IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(IBFilePath, false);
                         int MatchFirstIndex = int.Parse(IBTxtFile.FirstIndex);
-                        MatchFirstIndex_IBFileName_Dict[MatchFirstIndex] = IBTxtFileName;
+
+                        //这里要
+                        LOG.Info("设置MatchFirstIndex: " + MatchFirstIndex.ToString() + " IBTxtFileName: " + IBTxtFileName);
+                        if (!MatchFirstIndex_IBFileName_Dict.ContainsKey(MatchFirstIndex))
+                        {
+                            MatchFirstIndex_IBFileName_Dict[MatchFirstIndex] = IBTxtFileName;
+                        }
 
                         LOG.Info(IBFilePath);
                     }
@@ -299,34 +302,8 @@ namespace DBMT_Core
                             Directory.CreateDirectory(GameTypeOutputPath);
                         }
 
-                        LOG.Info("开始从各个Buffer文件中读取数据:");
-                        //接下来从各个Buffer中读取并且拼接为FinalVB0
-
 
                         Dictionary<string, string> CategoryName_BufFileName_Dict = new Dictionary<string, string>();
-                        foreach (var item in d3d11GameType.CategorySlotDict)
-                        {
-                            string CategoryName = item.Key;
-                            string CategorySlot = item.Value;
-
-                            string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(CTXFolderPath, TmpTrianglelistIndex + "-" + CategorySlot + "=", ".buf");
-                            CategoryName_BufFileName_Dict[CategoryName] = CategoryBufFileName;
-                        }
-
-                        List<Dictionary<int, byte[]>> BufDictList = new List<Dictionary<int, byte[]>>();
-                        foreach (string CategoryName in d3d11GameType.OrderedCategoryNameList)
-                        {
-                            string CtegoryBufFileName = CategoryName_BufFileName_Dict[CategoryName];
-                            int CategoryStride = d3d11GameType.CategoryStrideDict[CategoryName];
-
-                            string CtegoryBufFilePath = Path.Combine(CTXFolderPath, CtegoryBufFileName);
-                            Dictionary<int, byte[]> BufDict = DBMTBinaryUtils.ReadBinaryFileByStride(CtegoryBufFilePath, CategoryStride);
-                            BufDictList.Add(BufDict);
-                        }
-
-                        Dictionary<int, byte[]> MergedVB0Dict = DBMTBinaryUtils.MergeByteDicts(BufDictList);
-                        byte[] FinalVB0 = DBMTBinaryUtils.MergeDictionaryValues(MergedVB0Dict);
-
                         //接下来遍历MatchFirstIndex_IBFileName的Map，对于每个MarchFirstIndex
                         //都读取IBTxt文件里的数值，然后进行分割并输出。
                         int OutputCount = 1;
@@ -334,6 +311,7 @@ namespace DBMT_Core
                         {
                             int MatchFirstIndex = item.Key;
                             string IBTxtFileName = item.Value;
+                            string OutputVBIndex = IBTxtFileName.Substring(0, 6);
                             string IBTxtFilePath = Path.Combine(CTXFolderPath, IBTxtFileName);
                             //拼接出一个IBBufFileName
                             string IBBufFileName = Path.GetFileNameWithoutExtension(IBTxtFileName) + ".buf";
@@ -345,6 +323,7 @@ namespace DBMT_Core
                             LOG.Info(IBTxtFilePath);
                             LOG.Info("FirstIndex: " + IBTxtFile.FirstIndex);
                             LOG.Info("IndexCount: " + IBTxtFile.IndexCount);
+                            LOG.Info("IndexNumberCount: " + IBTxtFile.IndexNumberCount.ToString());
 
                             string NamePrefix = DrawIB + "-" + OutputCount.ToString();
 
@@ -359,52 +338,55 @@ namespace DBMT_Core
                             //写出IBBufFile
                             IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBTxtFile.Format);
 
-                            if (GlobalConfig.DontSplitModelByMatchFirstIndex)
+                            //这里使用IndexNumberCount的话，只能用于正向提取
+                            //如果要兼容逆向提取，需要换成IndexCount
+                            //但是还有个问题，那就是即使换成IndexCount，如果IB文件的替换不是一个整体的Buffer，而是各个独立分开的Buffer
+                            //则这里的SelfDivide是不应该存在的步骤，所以这里是无法逆向提取的。
+                            //综合来看，逆向提取其实是一种适用性不强，并且很容易受到ini中各种因素干扰的提取方式
+                            //但是如果能获取到DrawIndexed的具体数值呢？可以通过解析log.txt的方式进行获取
+                            //但是解析很玛法，而且就算能获取到，那如果有复杂的CommandList混淆，投入与产出不成正比了就
+                            //使用逆向Mod的ini的方式更加优雅。
+
+                            if (IBBufFile.MinNumber != 0)
                             {
-                                IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, 0);
-
-                                VertexBufferBufFile VBBufFile = new VertexBufferBufFile(FinalVB0);
-                                VBBufFile.SaveToFile(OutputVBBufFilePath);
-
-                                break;
+                                IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
                             }
                             else
                             {
-                                //这里使用IndexNumberCount的话，只能用于正向提取
-                                //如果要兼容逆向提取，需要换成IndexCount
-                                //但是还有个问题，那就是即使换成IndexCount，如果IB文件的替换不是一个整体的Buffer，而是各个独立分开的Buffer
-                                //则这里的SelfDivide是不应该存在的步骤，所以这里是无法逆向提取的。
-                                //综合来看，逆向提取其实是一种适用性不强，并且很容易受到ini中各种因素干扰的提取方式
-                                //但是如果能获取到DrawIndexed的具体数值呢？可以通过解析log.txt的方式进行获取
-                                //但是解析很玛法，而且就算能获取到，那如果有复杂的CommandList混淆，投入与产出不成正比了就
-                                //使用逆向Mod的ini的方式更加优雅。
-
-                                if (IBBufFile.MinNumber != 0)
-                                {
-                                    IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
-                                }
-                                else
-                                {
-                                    IBBufFile.SelfDivide(int.Parse(IBTxtFile.FirstIndex), (int)IBTxtFile.IndexNumberCount);
-                                    IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
-                                }
-
-                                //写出VBBufFile
-                                VertexBufferBufFile VBBufFile = new VertexBufferBufFile(FinalVB0);
-                                if (IBBufFile.MinNumber > IBBufFile.MaxNumber)
-                                {
-                                    LOG.Error("当前IB文件最小值大于IB文件中的最大值，跳过vb文件输出，因为无法SelfDivide");
-                                    continue;
-                                }
-
-                                if (IBBufFile.MinNumber != 0)
-                                {
-                                    VBBufFile.SelfDivide(IBBufFile.MinNumber, IBBufFile.MaxNumber, d3d11GameType.GetSelfStride());
-                                }
-                                VBBufFile.SaveToFile(OutputVBBufFilePath);
-
-                                OutputCount += 1;
+                                IBBufFile.SelfDivide(int.Parse(IBTxtFile.FirstIndex), (int)IBTxtFile.IndexNumberCount);
+                                IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
                             }
+
+
+                            LOG.Info("开始从各个Buffer文件中读取数据:");
+                            //接下来从各个Buffer中读取并且拼接为FinalVB0
+
+                            List<Dictionary<int, byte[]>> BufDictList = new List<Dictionary<int, byte[]>>();
+                            foreach (string CategoryName in d3d11GameType.OrderedCategoryNameList)
+                            {
+                                int CategoryStride = d3d11GameType.CategoryStrideDict[CategoryName];
+                                string CategorySlot = d3d11GameType.CategorySlotDict[CategoryName];
+
+                                VertexBufferCombFile VBCombFile = new VertexBufferCombFile(CTXFolderPath, OutputVBIndex, CategorySlot);
+                                
+                                CategoryName_BufFileName_Dict[CategoryName] = VBCombFile.BufFileName;
+                                BufDictList.Add(VBCombFile.BufDict);
+                            }
+
+                            VertexBufferBufFile VBBufFile = new VertexBufferBufFile(BufDictList);
+                            if (IBBufFile.MinNumber > IBBufFile.MaxNumber)
+                            {
+                                LOG.Error("当前IB文件最小值大于IB文件中的最大值，跳过vb文件输出，因为无法SelfDivide");
+                                continue;
+                            }
+
+                            if (IBBufFile.MinNumber != 0)
+                            {
+                                VBBufFile.SelfDivide(IBBufFile.MinNumber, IBBufFile.MaxNumber, d3d11GameType.GetSelfStride());
+                            }
+                            VBBufFile.SaveToFile(OutputVBBufFilePath);
+
+                            OutputCount += 1;
                         }
 
                         //TODO 每个数据类型文件夹下面都需要生成一个tmp.json，但是新版应该改名为Import.json
@@ -416,6 +398,7 @@ namespace DBMT_Core
                         importJson.DrawIB = DrawIB;
                         importJson.VertexLimitVB = VB0FileName.Substring(11, 8);
                         importJson.d3D11GameType = d3d11GameType;
+
                         importJson.Category_BufFileName_Dict = CategoryName_BufFileName_Dict;
                         importJson.MatchFirstIndex_IBTxtFileName_Dict = MatchFirstIndex_IBFileName_Dict;
 
@@ -445,7 +428,6 @@ namespace DBMT_Core
 
 
                 }
-
 
             }
 

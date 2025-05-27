@@ -108,6 +108,12 @@ namespace DBMT_Core.Utils
             // 创建一个新的日志文件名（例如使用ISO 8601格式的时间戳）
             string currentLogFileName = Path.Combine(GlobalConfig.Path_LogsFolder, $"{DateTime.Now:yyyyMMddTHHmmss}.log");
 
+
+            //LogLineList.Add("=============================================");
+            //LogLineList.Add("此日志由DBMT自动生成，顺序是倒过来的方便打开后就能看到最后一个报错内容，因为正常情况不会有人看运行日志");
+            //LogLineList.Add("=============================================");
+            //LogLineList.Reverse();
+
             // 将所有日志条目写入文件
             File.WriteAllLines(currentLogFileName, LogLineList);
 

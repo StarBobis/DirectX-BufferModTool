@@ -20,6 +20,14 @@ namespace DBMT_Core
             this.FinalVB0Bytes = VB0Bytes;
         }
 
+
+        public VertexBufferBufFile(List<Dictionary<int, byte[]>> BufDictList) {
+            Dictionary<int, byte[]> MergedVB0Dict = DBMTBinaryUtils.MergeByteDicts(BufDictList);
+            byte[] FinalVB0 = DBMTBinaryUtils.MergeDictionaryValues(MergedVB0Dict);
+            this.FinalVB0Bytes = FinalVB0;
+        }
+
+
         public void SaveToFile(string OutputVBBufFilePath)
         {
             File.WriteAllBytes(OutputVBBufFilePath, FinalVB0Bytes);
@@ -35,7 +43,7 @@ namespace DBMT_Core
             LOG.Info("Total Length: " + FinalVB0Bytes.Length.ToString());
             LOG.Info("StartIndex: " + startIndex.ToString());
             LOG.Info("EndIndex: " + endIndex.ToString());
-
+            LOG.Info("Stride: " + Stride.ToString());
 
             // 计算需要复制的元素数量
             int lengthToCopy = endIndex - startIndex + Stride;

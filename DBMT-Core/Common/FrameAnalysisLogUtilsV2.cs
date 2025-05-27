@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -119,6 +120,50 @@ namespace DBMT_Core.Common
             }
 
         }
+
+
+        public static List<string> Get_DrawCallIndexList_ByHash(string DrawIB, bool OnlyMatchFirst,string FrameAnalysisLogFilePath)
+        {
+            Debug.WriteLine("Get_DrawCallIndexList_ByHash::" + DrawIB);
+            List<string> LogLineList = Get_LogLineList(FrameAnalysisLogFilePath);
+
+            HashSet<string> IndexSet = [];
+            string CurrentIndex = "";
+            foreach (string LogLine in LogLineList)
+            {
+                if (LogLine.StartsWith("00"))
+                {
+                    CurrentIndex = LogLine.Substring(0, 6);
+                }
+
+                if (LogLine.Contains("hash=" + DrawIB))
+                {
+                    Debug.WriteLine("Find Hash: " + LogLine);
+                    IndexSet.Add(CurrentIndex);
+
+                    if (OnlyMatchFirst)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            List<string> IndexList = [];
+            foreach (string Index in IndexSet)
+            {
+                IndexList.Add(Index);
+            }
+            Debug.WriteLine("Get_DrawCallIndexList_ByHash::" + DrawIB + "  End");
+
+            return IndexList;
+        }
+
+
+
+
+
+
+
 
 
     }

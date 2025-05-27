@@ -30,6 +30,28 @@ namespace DBMT_Core
             return rangeList;
         }
 
+        public static Dictionary<int, byte[]> SplitBytesByStride(byte[] fileBytes,int stride)
+        {
+            var result = new Dictionary<int, byte[]>();
+            int totalChunks = (int)Math.Ceiling(fileBytes.Length / (double)stride);
+
+            for (int i = 0; i < totalChunks; i++)
+            {
+                int startIndex = i * stride;
+                // 计算当前块的实际长度，注意最后一个块可能比chunkSize小
+                int currentChunkSize = Math.Min(stride, fileBytes.Length - startIndex);
+                byte[] chunk = new byte[currentChunkSize];
+
+                // 使用Buffer.BlockCopy高效复制数组片段
+                Buffer.BlockCopy(fileBytes, startIndex, chunk, 0, currentChunkSize);
+
+                // 将分割好的块添加到结果字典中
+                result.Add(i, chunk);
+            }
+
+            return result;
+        }
+
         public static Dictionary<int, byte[]> ReadBinaryFileByStride(string filePath, int stride)
         {
             // 读取文件的全部二进制内容

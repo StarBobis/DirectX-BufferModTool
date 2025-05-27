@@ -19,6 +19,8 @@ namespace DBMT_Core
 
         public string VertexLimitVB { get; set; } = "";
 
+        public List<string> ImportModelList { get; set; } = [];
+        public List<string> PartNameList { get; set; } = [];
         public Dictionary<string, string> CategoryHashDict { get; set; }
 
 
@@ -231,7 +233,6 @@ namespace DBMT_Core
             //三个列表，MatchFirstIndexList，PartNameList,ImportModelList
             List<string> MatchFirstIndexList = [];
             List<string> PartNameList = [];
-            List<string> ImportModelList = [];
             int OutputCount = 1;
             foreach (var item in this.MatchFirstIndex_IBTxtFileName_Dict)
             {
@@ -240,7 +241,7 @@ namespace DBMT_Core
 
                 MatchFirstIndexList.Add(MatchFirstIndx.ToString());
                 PartNameList.Add(OutputCount.ToString());
-                ImportModelList.Add(DrawIB + "-" + OutputCount.ToString());
+                this.ImportModelList.Add(DrawIB + "-" + OutputCount.ToString());
 
                 if (GlobalConfig.DontSplitModelByMatchFirstIndex)
                 {
@@ -253,7 +254,7 @@ namespace DBMT_Core
             }
             jObject["MatchFirstIndex"] = JToken.FromObject(MatchFirstIndexList);
             jObject["PartNameList"] = JToken.FromObject(PartNameList);
-            jObject["ImportModelList"] = JToken.FromObject(ImportModelList);
+            jObject["ImportModelList"] = JToken.FromObject(this.ImportModelList);
 
 
             //VSList
@@ -290,6 +291,41 @@ namespace DBMT_Core
             jObject["PartNameTextureResourceReplaceList"] = JToken.FromObject(new Dictionary<string,string>());
 
             //
+            List<JObject> elementObjectList = [];
+            foreach (string ElementName in d3D11GameType.OrderedFullElementList)
+            {
+                D3D11Element d3D11Element = d3D11GameType.ElementNameD3D11ElementDict[ElementName];
+
+                JObject elementObject = DBMTJsonUtils.CreateJObject();
+                elementObject["SemanticName"] = d3D11Element.SemanticName;
+                elementObject["SemanticIndex"] = d3D11Element.SemanticIndex.ToString();
+                elementObject["Format"] = d3D11Element.Format;
+                elementObject["ByteWidth"] = d3D11Element.ByteWidth;
+                elementObject["ExtractSlot"] = d3D11Element.ExtractSlot;
+                elementObject["Category"] = d3D11Element.Category;
+
+                elementObjectList.Add(elementObject);
+            }
+            jObject["D3D11ElementList"] = JToken.FromObject(elementObjectList);
+
+            DBMTJsonUtils.SaveJObjectToFile(jObject, ImportJsonFilePath);
+        }
+
+        /// <summary>
+        /// 用于仅模型提取时提供一键导入的最小化写出
+        /// </summary>
+        /// <param name="ImportJsonFilePath"></param>
+        public void SaveToFileMin(string ImportJsonFilePath)
+        {
+
+            JObject jObject = DBMTJsonUtils.CreateJObject();
+
+            jObject["ImportModelList"] = JToken.FromObject(this.ImportModelList);
+            jObject["PartNameList"] = JToken.FromObject(this.PartNameList);
+
+            //WorkGameType
+            jObject["WorkGameType"] = this.d3D11GameType.GameTypeName;
+
             List<JObject> elementObjectList = [];
             foreach (string ElementName in d3D11GameType.OrderedFullElementList)
             {

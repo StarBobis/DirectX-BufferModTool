@@ -17,6 +17,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using System.Diagnostics;
 using DBMT_Core.Utils;
 using DBMT_Core.GridViewItems;
+using DBMT_Core.Games;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -515,89 +516,13 @@ namespace DBMT
 
             SaveDrawIBList();
 
-
             List<DrawIBItem> DrawIBItemList = [];
             foreach (DrawIBItem drawIBItem in DrawIBItems)
             {
                 DrawIBItemList.Add(drawIBItem);
             }
 
-
-            //提取DedupedTextures和RenderTextures方便Mod制作时使用。
-            
-
-            bool RunResult = false;
-            //HSR重写渲染管线和Shader，很特殊
-            if (GlobalConfig.CurrentGameName == "HSR")
-            {
-                LOG.Initialize();
-                try
-                {
-                    CoreFunctions.ExtractDedupedTextures();
-                    CoreFunctions.ExtractRenderTextures();
-                    RunResult = CoreFunctions.ExtractHSR32(DrawIBItemList);
-                }
-                catch (Exception ex)
-                {
-                    LOG.Error(ex.ToString());
-                    RunResult = false;
-                }
-                LOG.SaveFile();
-            }
-            //Unreal引擎，且使用形态键技术，复杂度比Unity高
-            else if (GlobalConfig.CurrentGameName == "WWMI")
-            {
-                LOG.Initialize();
-                try
-                {
-                    CoreFunctions.ExtractDedupedTextures();
-                    CoreFunctions.ExtractRenderTextures();
-                    RunResult = CoreFunctions.ExtractWWMI(DrawIBItemList);
-
-                }
-                catch (Exception ex)
-                {
-                    LOG.Error(ex.ToString());
-                    RunResult = false;
-                }
-                LOG.SaveFile();
-            }
-            //CTX类型比较特殊
-            else if (GlobalConfig.CurrentGameName == "YYSLS" || GlobalConfig.CurrentGameName == "IdentityV")
-            {
-                LOG.Initialize();
-                try
-                {
-                    //这里由于CTX的文件结构不同，导致普通的提取贴图不适用。
-                    //CoreFunctions.ExtractDedupedTextures();
-                    //CoreFunctions.ExtractRenderTextures();
-
-                    RunResult = CoreFunctions.ExtractCTX(DrawIBItemList);
-                }
-                catch (Exception ex)
-                {
-                    LOG.Error(ex.ToString());
-                    RunResult = false;
-                }
-                LOG.SaveFile();
-            }
-            else
-            {
-                LOG.Initialize();
-                try
-                {
-                    CoreFunctions.ExtractDedupedTextures();
-                    CoreFunctions.ExtractRenderTextures();
-                    RunResult = CoreFunctions.ExtractUnityVS(DrawIBItemList);
-                }
-                catch (Exception ex)
-                {
-                    LOG.Error(ex.ToString());
-                    RunResult = false;
-                }
-                LOG.SaveFile();
-            }
-
+            bool RunResult = CoreFunctions.ExtractModel(DrawIBItemList);
             if (RunResult)
             {
                 OpenCurrentWorkSpaceFolder(sender, e);
@@ -609,8 +534,6 @@ namespace DBMT
             {
                 OpenLatestLogFile(sender, e);
             }
-
-
         }
 
 
