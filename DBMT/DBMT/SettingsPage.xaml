@@ -85,29 +85,6 @@
                 </Grid>
             </Border>
             
-            <!-- 提取模型配置项 -->
-            <Border Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto"
-                    ToolTipService.ToolTip="一般只有CPU-PreSkinning游戏会用到，其它游戏不建议勾选">
-
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock x:Name="TextBlock_DontSplitModelByMatchFirstIndex" Grid.Column="0" Grid.Row="0" Text="禁止根据IB的MatchFirstIndex来分割模型文件为不同部位(CPU-PreSkinning)" VerticalAlignment="Center" Margin="10,0,10,0" />
-                    <ToggleSwitch Grid.Column="1"  Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,5,5,5" x:Name="ToggleSwitch_DontSplitModelByMatchFirstIndex"  OnContent="" OffContent="" Toggled="RefreshSettings"/>
-
-                    
-                </Grid>
-            </Border>
-
-
              <!--其它配置项-->
             <Border 
                 Margin="0,3" BorderBrush="Gray"  BorderThickness="1" CornerRadius="5" Height="Auto"

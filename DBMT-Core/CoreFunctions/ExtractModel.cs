@@ -120,6 +120,22 @@ namespace DBMT_Core
                 }
                 LOG.SaveFile();
             }
+            else if (GlobalConfig.CurrentGameName == "GF2")
+            {
+                LOG.Initialize();
+                try
+                {
+                    CoreFunctions.ExtractDedupedTextures();
+                    CoreFunctions.ExtractRenderTextures();
+                    RunResult = GirlsFrontline2.ExtractModel(DrawIBItemList);
+                }
+                catch (Exception ex)
+                {
+                    LOG.Error(ex.ToString());
+                    RunResult = false;
+                }
+                LOG.SaveFile();
+            }
             else
             {
                 LOG.Initialize();

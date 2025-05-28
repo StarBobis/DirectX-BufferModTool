@@ -52,7 +52,7 @@ namespace DBMT
 
             GlobalConfig.AutoCleanFrameAnalysisFolder = ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn;
             GlobalConfig.FrameAnalysisFolderReserveNumber = (int)NumberBox_FrameAnalysisFolderReserveNumber.Value;
-            GlobalConfig.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
+            //GlobalConfig.DontSplitModelByMatchFirstIndex = ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn;
             GlobalConfig.AutoTextureFormat = ComboBox_AutoTextureFormat.SelectedItem.ToString();
             GlobalConfig.AutoTextureOnlyConvertDiffuseMap = ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn;
             GlobalConfig.AutoDetectAndMarkTexture = ToggleSwitch_AutoDetectAndMarkTexture.IsOn;
@@ -69,7 +69,7 @@ namespace DBMT
 
             ToggleSwitch_AutoCleanFrameAnalysisFolder.IsOn = GlobalConfig.AutoCleanFrameAnalysisFolder;
             NumberBox_FrameAnalysisFolderReserveNumber.Value = GlobalConfig.FrameAnalysisFolderReserveNumber;
-            ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.DontSplitModelByMatchFirstIndex;
+            //ToggleSwitch_DontSplitModelByMatchFirstIndex.IsOn = GlobalConfig.DontSplitModelByMatchFirstIndex;
             ComboBox_AutoTextureFormat.SelectedItem = GlobalConfig.AutoTextureFormat;
             ToggleSwitch_AutoTextureOnlyConvertDiffuseMap.IsOn = GlobalConfig.AutoTextureOnlyConvertDiffuseMap;
             ToggleSwitch_AutoDetectAndMarkTexture.IsOn = GlobalConfig.AutoDetectAndMarkTexture;

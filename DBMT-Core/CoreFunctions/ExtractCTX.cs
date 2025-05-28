@@ -359,52 +359,41 @@ namespace DBMT_Core
                             //写出IBBufFile
                             IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBTxtFile.Format);
 
-                            if (GlobalConfig.DontSplitModelByMatchFirstIndex)
+                            
+                            //这里使用IndexNumberCount的话，只能用于正向提取
+                            //如果要兼容逆向提取，需要换成IndexCount
+                            //但是还有个问题，那就是即使换成IndexCount，如果IB文件的替换不是一个整体的Buffer，而是各个独立分开的Buffer
+                            //则这里的SelfDivide是不应该存在的步骤，所以这里是无法逆向提取的。
+                            //综合来看，逆向提取其实是一种适用性不强，并且很容易受到ini中各种因素干扰的提取方式
+                            //但是如果能获取到DrawIndexed的具体数值呢？可以通过解析log.txt的方式进行获取
+                            //但是解析很玛法，而且就算能获取到，那如果有复杂的CommandList混淆，投入与产出不成正比了就
+                            //使用逆向Mod的ini的方式更加优雅。
+
+                            if (IBBufFile.MinNumber != 0)
                             {
-                                IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, 0);
-
-                                VertexBufferBufFile VBBufFile = new VertexBufferBufFile(FinalVB0);
-                                VBBufFile.SaveToFile(OutputVBBufFilePath);
-
-                                break;
+                                IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
                             }
                             else
                             {
-                                //这里使用IndexNumberCount的话，只能用于正向提取
-                                //如果要兼容逆向提取，需要换成IndexCount
-                                //但是还有个问题，那就是即使换成IndexCount，如果IB文件的替换不是一个整体的Buffer，而是各个独立分开的Buffer
-                                //则这里的SelfDivide是不应该存在的步骤，所以这里是无法逆向提取的。
-                                //综合来看，逆向提取其实是一种适用性不强，并且很容易受到ini中各种因素干扰的提取方式
-                                //但是如果能获取到DrawIndexed的具体数值呢？可以通过解析log.txt的方式进行获取
-                                //但是解析很玛法，而且就算能获取到，那如果有复杂的CommandList混淆，投入与产出不成正比了就
-                                //使用逆向Mod的ini的方式更加优雅。
-
-                                if (IBBufFile.MinNumber != 0)
-                                {
-                                    IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
-                                }
-                                else
-                                {
-                                    IBBufFile.SelfDivide(int.Parse(IBTxtFile.FirstIndex), (int)IBTxtFile.IndexNumberCount);
-                                    IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
-                                }
-
-                                //写出VBBufFile
-                                VertexBufferBufFile VBBufFile = new VertexBufferBufFile(FinalVB0);
-                                if (IBBufFile.MinNumber > IBBufFile.MaxNumber)
-                                {
-                                    LOG.Error("当前IB文件最小值大于IB文件中的最大值，跳过vb文件输出，因为无法SelfDivide");
-                                    continue;
-                                }
-
-                                if (IBBufFile.MinNumber != 0)
-                                {
-                                    VBBufFile.SelfDivide(IBBufFile.MinNumber, IBBufFile.MaxNumber, d3d11GameType.GetSelfStride());
-                                }
-                                VBBufFile.SaveToFile(OutputVBBufFilePath);
-
-                                OutputCount += 1;
+                                IBBufFile.SelfDivide(int.Parse(IBTxtFile.FirstIndex), (int)IBTxtFile.IndexNumberCount);
+                                IBBufFile.SaveToFile_UInt32(OutputIBBufFilePath, -1 * IBBufFile.MinNumber);
                             }
+
+                            //写出VBBufFile
+                            VertexBufferBufFile VBBufFile = new VertexBufferBufFile(FinalVB0);
+                            if (IBBufFile.MinNumber > IBBufFile.MaxNumber)
+                            {
+                                LOG.Error("当前IB文件最小值大于IB文件中的最大值，跳过vb文件输出，因为无法SelfDivide");
+                                continue;
+                            }
+
+                            if (IBBufFile.MinNumber != 0)
+                            {
+                                VBBufFile.SelfDivide(IBBufFile.MinNumber, IBBufFile.MaxNumber, d3d11GameType.GetSelfStride());
+                            }
+                            VBBufFile.SaveToFile(OutputVBBufFilePath);
+
+                            OutputCount += 1;
                         }
 
                         //TODO 每个数据类型文件夹下面都需要生成一个tmp.json，但是新版应该改名为Import.json

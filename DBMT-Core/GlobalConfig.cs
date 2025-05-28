@@ -15,7 +15,7 @@ namespace DBMT_Core
     public static class GlobalConfig
     {
         //程序窗口名称
-        public const string DBMT_Title = "DBMT内测版 V1.1.9.0";
+        public const string DBMT_Title = "DBMT V1.1.9.1";
         public static string CurrentGameName { get; set; } = "ZZZ";
         public static string CurrentWorkSpace { get; set; } = "";
         public static string CurrentGameMigotoFolder { get; set; } = "";
@@ -32,8 +32,6 @@ namespace DBMT_Core
         public static int FrameAnalysisFolderReserveNumber { get; set; } = 1;
         // 生成Mod设置
         public static string ModSwitchKey { get; set; } = "\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\",\"x\",\"c\",\"v\",\"b\",\"n\",\"m\",\"j\",\"k\",\"l\",\"o\",\"p\",\"[\",\"]\"";
-        //Extract Options
-        public static bool DontSplitModelByMatchFirstIndex { get; set; } = false;
         //Texture Options
         public static bool AutoTextureOnlyConvertDiffuseMap { get; set; } = true;
         public static string AutoTextureFormat { get; set; } = "jpg";
@@ -138,11 +136,7 @@ namespace DBMT_Core
                     ModSwitchKey = (string)SettingsJsonObject["ModSwitchKey"];
                 }
 
-                //DontSplitModelByMatchFirstIndex
-                if (SettingsJsonObject.ContainsKey("DontSplitModelByMatchFirstIndex"))
-                {
-                    DontSplitModelByMatchFirstIndex = (bool)SettingsJsonObject["DontSplitModelByMatchFirstIndex"];
-                }
+
 
                 //AutoTextureOnlyConvertDiffuseMap
                 if (SettingsJsonObject.ContainsKey("AutoTextureOnlyConvertDiffuseMap"))
@@ -185,7 +179,6 @@ namespace DBMT_Core
             SettingsJsonObject["AutoCleanFrameAnalysisFolder"] = AutoCleanFrameAnalysisFolder;
             SettingsJsonObject["FrameAnalysisFolderReserveNumber"] = FrameAnalysisFolderReserveNumber;
             SettingsJsonObject["ModSwitchKey"] = ModSwitchKey;
-            SettingsJsonObject["DontSplitModelByMatchFirstIndex"] = DontSplitModelByMatchFirstIndex;
             SettingsJsonObject["AutoTextureOnlyConvertDiffuseMap"] = AutoTextureOnlyConvertDiffuseMap;
             SettingsJsonObject["AutoTextureFormat"] = AutoTextureFormat;
             SettingsJsonObject["AutoDetectAndMarkTexture"] = AutoDetectAndMarkTexture;
