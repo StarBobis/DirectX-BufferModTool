@@ -11,6 +11,211 @@ namespace DBMT_Core.Games
 {
     public static class GirlsFrontline2
     {
+        public static string FilterTrianglelistIndex_UnityVS(List<string> TrianglelistIndexList, D3D11GameType d3D11GameType)
+        {
+            string FinalTrianglelistIndex = "";
+            foreach (string TrianglelistIndex in TrianglelistIndexList)
+            {
+                bool AllSlotExists = true;
+                foreach (var item in d3D11GameType.CategoryTopologyDict)
+                {
+                    string Category = item.Key;
+                    string Topology = item.Value;
+
+                    if (Topology != "trianglelist")
+                    {
+                        continue;
+                    }
+
+                    //获取当前Category的Slot
+                    string CategorySlot = d3D11GameType.CategorySlotDict[Category];
+
+                    //寻找对应Buf文件
+                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
+                    if (CategoryBufFileName == "")
+                    {
+                        AllSlotExists = false;
+                        break;
+                    }
+                }
+
+                if (AllSlotExists)
+                {
+                    FinalTrianglelistIndex = TrianglelistIndex;
+                    break;
+                }
+            }
+
+            return FinalTrianglelistIndex;
+        }
+
+        public static List<D3D11GameType> GetPossibleGameTypeList_UnityVS(D3D11GameTypeLv2 d3D11GameTypeLv2,string PointlistIndex, List<string> TrianglelistIndexList)
+        {
+            List<D3D11GameType> PossibleGameTypeList = [];
+
+            bool findAtLeastOneGPUType = false;
+            foreach (D3D11GameType d3D11GameType in d3D11GameTypeLv2.Ordered_GPU_CPU_D3D11GameTypeList)
+            {
+                if (findAtLeastOneGPUType && !d3D11GameType.GPUPreSkinning)
+                {
+                    LOG.Info("自动优化:已经找到了满足条件的GPU类型，所以这个CPU类型就不用判断了");
+                    continue;
+                }
+
+                LOG.Info("当前数据类型:" + d3D11GameType.GameTypeName);
+
+                //传递过来一堆TrianglelistIndex，但是我们要找到满足条件的那个,即Buffer文件都存在的那个
+                string TrianglelistIndex = FilterTrianglelistIndex_UnityVS(TrianglelistIndexList, d3D11GameType);
+                LOG.Info("TrianglelistIndex: " + TrianglelistIndex);
+
+
+                if (TrianglelistIndex == "")
+                {
+                    LOG.Info("当前GameType无法找到符合槽位存在条件的TrianglelistIndex，跳过此项");
+                    continue;
+                }
+
+                //获取每个Category的Buffer文件
+                Dictionary<string, string> CategoryBufFileMap = new Dictionary<string, string>();
+                Dictionary<string, int> CategoryBufFileSizeMap = new Dictionary<string, int>();
+                bool AllFileExists = true;
+                foreach (var item in d3D11GameType.CategoryTopologyDict)
+                {
+                    string CategoryName = item.Key;
+                    string ExtractIndex = TrianglelistIndex;
+                    if (item.Value == "pointlist" && PointlistIndex != "")
+                    {
+                        ExtractIndex = PointlistIndex;
+                    }
+                    string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
+                    LOG.Info("当前分类:" + CategoryName + " 提取Index: " + ExtractIndex + " 提取槽位:" + CategorySlot);
+                    //获取文件名存入对应Dict
+                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ExtractIndex + "-" + CategorySlot, ".buf");
+                    CategoryBufFileMap[item.Key] = CategoryBufFileName;
+
+                    //获取文件大小存入对应Dict
+                    string CategoryBufFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(CategoryBufFileName);
+                    //LOG.Info("Category: " + item.Key + " File:" + CategoryBufFilePath);
+                    if (!File.Exists(CategoryBufFilePath))
+                    {
+                        LOG.Error("对应Buffer文件未找到,此数据类型无效。");
+                        AllFileExists = false;
+                        break;
+                    }
+
+                    long FileSize = DBMTFileUtils.GetFileSize(CategoryBufFilePath);
+                    CategoryBufFileSizeMap[item.Key] = (int)FileSize;
+                }
+
+                if (!AllFileExists)
+                {
+                    LOG.Info("当前数据类型的部分槽位文件无法找到，跳过此数据类型识别。");
+                    continue;
+                }
+
+                //校验顶点数是否在各Buffer中保持一致
+                //TODO 通过校验顶点数的方式并不能100%确定，因为如果只有一个Category的话就会无法匹配步长
+                int VertexNumber = 0;
+                bool AllMatch = true;
+
+                foreach (string CategoryName in d3D11GameType.OrderedCategoryNameList)
+                {
+                    int CategoryStride = d3D11GameType.CategoryStrideDict[CategoryName];
+                    int FileSize = CategoryBufFileSizeMap[CategoryName];
+                    int TmpNumber = FileSize / CategoryStride;
+
+                    if (TmpNumber == 0)
+                    {
+                        LOG.Info("槽位的文件大小不能为0，槽位匹配失败，跳过此数据类型");
+                        AllMatch = false;
+                        break;
+                    }
+
+                    //GF2不需要进行这种校验，直接根据槽位进行对比即可。
+                    //if (!d3D11GameType.GPUPreSkinning)
+                    //{
+                    //    string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
+                    //    string CategoryTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".txt");
+                    //    if (CategoryTxtFileName == "")
+                    //    {
+                    //        LOG.Info("槽位的txt文件不存在，跳过此数据类型。");
+                    //        AllMatch = false;
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //        string CategoryTxtFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(CategoryTxtFileName);
+                    //        string VertexCountTxtShow = DBMTFileUtils.FindMigotoIniAttributeInFile(CategoryTxtFilePath, "vertex count");
+                    //        int TxtShowVertexCount = int.Parse(VertexCountTxtShow);
+                    //        if (TxtShowVertexCount != TmpNumber)
+                    //        {
+                    //            LOG.Info("槽位的txt文件顶点数与Buffer数据类型统计顶点数不符，跳过此数据类型。");
+                    //            AllMatch = false;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
+
+
+                    if (VertexNumber == 0)
+                    {
+                        VertexNumber = TmpNumber;
+                    }
+                    else if (VertexNumber != TmpNumber)
+                    {
+                        LOG.Info("VertexNumber: " + VertexNumber.ToString() + " 当前槽位数量: " + TmpNumber.ToString());
+                        LOG.Info("槽位匹配失败");
+                        LOG.NewLine();
+
+                        AllMatch = false;
+                        break;
+                    }
+                    else
+                    {
+                        LOG.Info(CategoryName + " Match!");
+                        LOG.NewLine();
+                    }
+                }
+
+                //LOG.Info("VertexNumber: " + VertexNumber.ToString());
+
+
+                if (AllMatch)
+                {
+                    LOG.NewLine("MatchGameType: " + d3D11GameType.GameTypeName);
+                    PossibleGameTypeList.Add(d3D11GameType);
+                }
+
+                //如果找到了一个GPUPreSkinning就标记一下，这样后面就不会匹配CPU类型了。
+                if (!findAtLeastOneGPUType)
+                {
+                    foreach (D3D11GameType d3d11GameType in PossibleGameTypeList)
+                    {
+                        if (d3d11GameType.GPUPreSkinning)
+                        {
+                            findAtLeastOneGPUType = true;
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+
+            if (PossibleGameTypeList.Count == 0)
+            {
+                LOG.Error("无法找到当前提取IndexBuffer Hash值对应Buffer数据的数据类型\n1.请结合日志信息，到数据类型管理页面添加此数据类型\n2.或者联系NicoMico添加支持并更新DBMT版本。");
+            }
+            else
+            {
+                LOG.Info("All Matched GameType:");
+                foreach (D3D11GameType d3d11GameType in PossibleGameTypeList)
+                {
+                    LOG.Info(d3d11GameType.GameTypeName);
+                }
+            }
+            return PossibleGameTypeList;
+        }
         private static bool Extract_fee307b98a965c16(string DrawIB, D3D11GameTypeLv2 d3D11GameTypeLv2, string PointlistIndex, List<string> TrianglelistIndexList)
         {
 
@@ -18,7 +223,7 @@ namespace DBMT_Core.Games
             //此时需要先读取所有存在的数据类型。
             //此时需要我们先去生成几个数据类型用于测试。
             //还有就是数据类型的文件夹是存在哪里的
-            List<D3D11GameType> PossibleD3D11GameTypeList = d3D11GameTypeLv2.GetPossibleGameTypeList_UnityVS(PointlistIndex, TrianglelistIndexList);
+            List<D3D11GameType> PossibleD3D11GameTypeList = GetPossibleGameTypeList_UnityVS(d3D11GameTypeLv2, PointlistIndex, TrianglelistIndexList);
 
             if (PossibleD3D11GameTypeList.Count == 0)
             {
