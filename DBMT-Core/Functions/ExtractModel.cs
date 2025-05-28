@@ -41,7 +41,7 @@ namespace DBMT_Core
                 {
                     CoreFunctions.ExtractDedupedTextures();
                     CoreFunctions.ExtractRenderTextures();
-                    RunResult = CoreFunctions.ExtractWWMI(DrawIBItemList);
+                    RunResult = WutheringWaves.ExtractWWMI(DrawIBItemList);
 
                 }
                 catch (Exception ex)

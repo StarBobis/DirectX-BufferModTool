@@ -157,6 +157,15 @@ The following sets the maximum # of items to show before wrapping.-->
                             OffContent="当前dll模式: Dev版" 
                             Toggled="ToggleSwitch_DllMode_Toggled"
                             ToolTipService.ToolTip="Dev版用于Mod制作，Play版关闭了Hunting功能，优化了帧率，可以加载DBMT-Encryption插件加密后的Mod"/>
+
+                        <ToggleSwitch 
+                            VerticalAlignment="Center" 
+                            Margin="10" 
+                            x:Name="ToggleSwitch_Symlink" 
+                            OnContent="Symlink特性:开启" 
+                            OffContent="Symlink特性:关闭" 
+                            Toggled="ToggleSwitch_Symlink_Toggled"
+                            ToolTipService.ToolTip="开启Symlink后，可显著减少F8 Dump下来的文件的大小，开启或关闭后游戏中F10刷新即可生效"/>
                     </StackPanel>
                     
                     <!--一键启动按钮-->

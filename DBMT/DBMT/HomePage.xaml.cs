@@ -47,6 +47,7 @@ namespace DBMT
         private ObservableCollection<GameIconItem> GameIconItemList = new ObservableCollection<GameIconItem>();
         private Compositor compositor;
         private Visual imageVisual;
+        private bool IsLoading = false;
 
         public HomePage()
         {
@@ -68,10 +69,13 @@ namespace DBMT
             //这里也要读取一次配置，让用户第一次打开就会生成Main.json
             GlobalConfig.SaveConfig();
 
+            //把各个配置设为默认值，防止切换游戏时残留，后续值将由被触发的读取方法去再次设定
+            InitializeConfigPanel();
+
+            //初始化游戏列表并切换游戏，间接触发读取配置
+
             GameIconGridView.ItemsSource = GameIconItemList;
-
             InitializeGameIconList();
-
             if (GameIconItemList.Count == 0)
             {
                 await MessageHelper.Show(this.XamlRoot,"您还没有配置正确的DBMT-Package路径，请先前往设置页面进行配置。");
@@ -86,12 +90,14 @@ namespace DBMT
                 {
                     if (gameIconItem.GameName == GlobalConfig.CurrentGameName)
                     {
+                        //注意，这里通过触发游戏改变，来间接触发配置读取和更新
                         GameIconGridView.SelectedIndex = index;
                         break;
                     }
                     index += 1;
                 }
             }
+
         }
 
 
@@ -217,18 +223,29 @@ namespace DBMT
             }
             else
             {
-                //如果没有，那必须清空当前的所有配置
-                TextBox_3DmigotoPath.Text = "";
-
-                ProcessPathTextBox.Text = "";
-                StarterPathTextBox.Text = "";
-                TextBox_LaunchArgs.Text = "";
-
+                InitializeConfigPanel();
+             
                 ConfirmSetDefault3DmigotoFolderPath();
             }
 
             
 
+        }
+
+        private void InitializeConfigPanel()
+        {
+            IsLoading = true;
+
+            ToggleSwitch_DllMode.IsOn = false;
+            ToggleSwitch_ShowWarning.IsOn = false;
+            ToggleSwitch_Symlink.IsOn = false;
+
+            TextBox_3DmigotoPath.Text = "";
+            ProcessPathTextBox.Text = "";
+            StarterPathTextBox.Text = "";
+            TextBox_LaunchArgs.Text = "";
+
+            IsLoading = false;
         }
 
 
@@ -264,6 +281,10 @@ namespace DBMT
 
         private void ReadPathSettingFromD3dxIni(string d3dxini_path)
         {
+
+            //锁定，防止配置修改
+            IsLoading = true;
+
             ProcessPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "target").Trim();
             StarterPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "launch").Trim();
             TextBox_LaunchArgs.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "launch_args").Trim();
@@ -282,6 +303,23 @@ namespace DBMT
             {
                 ToggleSwitch_ShowWarning.IsOn = false;
             }
+
+            //读取Symlink特性是否开启
+            if (File.Exists(GlobalConfig.Path_D3DXINI))
+            {
+                string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(GlobalConfig.Path_D3DXINI, "analyse_options");
+                if (AnalyseOptions.Contains("symlink"))
+                {
+                    ToggleSwitch_Symlink.IsOn = true;
+                }
+                else
+                {
+                    ToggleSwitch_Symlink.IsOn = false;
+                }
+            }
+
+            //锁定，防止配置修改
+            IsLoading = false;
         }
 
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
@@ -310,6 +348,11 @@ namespace DBMT
 
         private void ToggleSwitch_DllMode_Toggled(object sender, RoutedEventArgs e)
         {
+            if (IsLoading)
+            {
+                return;
+            }
+
             if (ToggleSwitch_DllMode.IsOn)
             {
                 //切换到Play版本的d3d11.dll
@@ -346,6 +389,11 @@ namespace DBMT
 
         private void ToggleSwitch_ShowWarning_Toggled(object sender, RoutedEventArgs e)
         {
+            if (IsLoading)
+            {
+                return;
+            }
+
             if (ToggleSwitch_ShowWarning.IsOn)
             {
                 D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI,"[Logging]", "dev", "0");
@@ -390,19 +438,7 @@ namespace DBMT
                 GlobalConfig.SaveConfig();
 
 
-                //设置symlink特性
-                //if (GlobalConfig.MainCfg.Value.GameName != "HSR")
-                //{
-                //    string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(GlobalConfig.Path_D3DXINI, "analyse_options");
-                //    if (AnalyseOptions != "")
-                //    {
-                //        if (!AnalyseOptions.Contains("symlink"))
-                //        {
-                //            D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions + " symlink");
-                //            _ = MessageHelper.Show("自动检测到您选中的3Dmigoto文件夹中d3dx.ini未开启symlink特性，已自动为您开启。d3dx.ini路径: " + GlobalConfig.Path_D3DXINI);
-                //        }
-                //    }
-                //}
+         
               
 
             }
@@ -489,6 +525,42 @@ namespace DBMT
             }
         }
 
+        private void ToggleSwitch_Symlink_Toggled(object sender, RoutedEventArgs e)
+        {
+            if (IsLoading)
+            {
+                return;
+            }
 
+            if (!File.Exists(GlobalConfig.Path_D3DXINI))
+            {
+                _ = MessageHelper.Show("请先选择正确的3Dmigoto路径，确保d3dx.ini存在于当前选择的3Dmigoto路径下。");
+                return;
+            }
+
+            //设置symlink特性
+            string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(GlobalConfig.Path_D3DXINI, "analyse_options");
+            if (AnalyseOptions == "")
+            {
+                _ = MessageHelper.Show("当前3Dmigoto的d3dx.ini中暂未设置analyse_options，无法开启symlink特性");
+                return;
+            }
+
+            if (ToggleSwitch_Symlink.IsOn)
+            {
+                if (!AnalyseOptions.Contains("symlink"))
+                {
+                    D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions + " symlink");
+                }
+                _ = MessageHelper.Show("Symlink特性已开启，游戏中F10刷新即可生效");
+            }
+            else
+            {
+                AnalyseOptions = AnalyseOptions.Replace("symlink", " ");
+                D3dxIniConfig.SaveAttributeToD3DXIni(GlobalConfig.Path_D3DXINI, "[hunting]", "analyse_options", AnalyseOptions);
+                _ = MessageHelper.Show("Symlink特性已关闭，游戏中F10刷新即可生效");
+            }
+
+        }
     }
 }
