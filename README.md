@@ -4,6 +4,5 @@
 
 生成Mod需使用Herta-Blender插件: [https://github.com/StarBobis/HertaBlender](https://github.com/StarBobis/HertaBlender) 
 
-![image](https://github.com/user-attachments/assets/62143813-99cd-4854-b2ca-d8ddba1f1fe9)
-
+![image](https://github.com/user-attachments/assets/831a1e27-f7ad-467d-a1de-46e3107e1de2)
 
