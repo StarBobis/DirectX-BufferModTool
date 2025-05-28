@@ -7,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBMT_Core
+namespace DBMT_Core.Games
 {
-    public partial class CoreFunctions
+    public static class IdentityV
     {
-
 
         public static bool ExtractCTX(List<DrawIBItem> DrawIBItemList)
         {
@@ -359,7 +358,7 @@ namespace DBMT_Core
                             //写出IBBufFile
                             IndexBufferBufFile IBBufFile = new IndexBufferBufFile(IBBufFilePath, IBTxtFile.Format);
 
-                            
+
                             //这里使用IndexNumberCount的话，只能用于正向提取
                             //如果要兼容逆向提取，需要换成IndexCount
                             //但是还有个问题，那就是即使换成IndexCount，如果IB文件的替换不是一个整体的Buffer，而是各个独立分开的Buffer
@@ -442,6 +441,5 @@ namespace DBMT_Core
             LOG.Info("提取正常执行完成");
             return true;
         }
-
     }
 }

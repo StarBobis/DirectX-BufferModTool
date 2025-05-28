@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBMT_Core
+namespace DBMT_Core.Games
 {
-    public partial class CoreFunctions
+    public static class HonkaiStarRail
     {
 
         private static bool IsPositionBlendSlotMatch(string PointlistIndex,int PositionStride, int BlendStride,int VertexCount,string PositionSlot,string BlendSlot)

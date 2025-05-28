@@ -8,9 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DBMT_Core
+namespace DBMT_Core.Games
 {
-    public partial class CoreFunctions
+    public static class WutheringWaves
     {
 
         public static bool ExtractWWMI(List<DrawIBItem> DrawIBItemList)
@@ -24,7 +24,8 @@ namespace DBMT_Core
                 {
                     continue;
                 }
-                else if (DrawIB == "8d45cfee") {
+                else if (DrawIB == "8d45cfee")
+                {
                     LOG.Error("恭喜你触发了萌新常见错误：8d45cfee这个DrawIB是假的，无法用于模型提取，请去游戏中查找该模型的另一个真实的IB值。");
                     continue;
                 }
@@ -69,7 +70,7 @@ namespace DBMT_Core
                 LOG.Info("TrianglelistIndex: " + MaxSlotTrianglelistIndex);
                 LOG.Info("MaxSlotNumber: " + MaxSlotNumber.ToString());
                 //输出查看一下
-                foreach(var item in Total_CategorySlot_Hash_Dict)
+                foreach (var item in Total_CategorySlot_Hash_Dict)
                 {
                     LOG.Info("CategorySlot: " + item.Key + "  Hash: " + item.Value);
                 }
@@ -77,11 +78,11 @@ namespace DBMT_Core
 
 
                 Dictionary<string, string> CategorySlot_FileName_Dict = new Dictionary<string, string>();
-                foreach(var item in Total_CategorySlot_Hash_Dict)
+                foreach (var item in Total_CategorySlot_Hash_Dict)
                 {
                     string CategorySlot = item.Key;
 
-                    string CategoryFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, MaxSlotTrianglelistIndex + "-" + CategorySlot,".buf");
+                    string CategoryFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, MaxSlotTrianglelistIndex + "-" + CategorySlot, ".buf");
                     if (CategoryFileName == "")
                     {
                         continue;
@@ -91,7 +92,7 @@ namespace DBMT_Core
                 }
                 LOG.NewLine();
 
-             
+
 
                 D3D11GameTypeLv2 d3D11GameTypeLv2 = new D3D11GameTypeLv2(GlobalConfig.CurrentGameName);
 
@@ -143,7 +144,7 @@ namespace DBMT_Core
 
 
                     //想办法获取IB文件的Format，用于判断是R16_UINT还是R32_UINT,WWMI比较特殊两种都用到了。
-                    string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, MaxSlotTrianglelistIndex + "-ib",".txt");
+                    string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, MaxSlotTrianglelistIndex + "-ib", ".txt");
                     if (IBTxtFileName == "")
                     {
                         LOG.Error("无法找到Index: " + MaxSlotTrianglelistIndex + " 的IB的txt文件，跳过此数据类型");
@@ -180,10 +181,10 @@ namespace DBMT_Core
                     }
 
                     //获取cb4_hash
-                    string cb4FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder,MaxSlotTrianglelistIndex + "-vs-cb4=",".buf");
+                    string cb4FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, MaxSlotTrianglelistIndex + "-vs-cb4=", ".buf");
                     if (cb4FileName != "")
                     {
-                        string vscb4_hash = cb4FileName.Substring(14,8);
+                        string vscb4_hash = cb4FileName.Substring(14, 8);
                         metaDataJson.cb4_hash = vscb4_hash;
                         LOG.Info("Metadata.json cb4_hash: " + metaDataJson.cb4_hash);
                     }
@@ -200,7 +201,7 @@ namespace DBMT_Core
 
                     //ShapeKey数据
                     ShapeKey shapekeydata = new ShapeKey();
-                    
+
                     string ShapeKeyExtractIndex = "";
                     if (Total_CategorySlot_Hash_Dict.ContainsKey("vb6"))
                     {
@@ -235,9 +236,9 @@ namespace DBMT_Core
 
                     if (ShapeKeyExtractIndex != "")
                     {
-                        string CSCB0_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-cb0",".buf");
-                        string CST0_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-t0",".buf");
-                        string CST1_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-t1",".buf");
+                        string CSCB0_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-cb0", ".buf");
+                        string CST0_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-t0", ".buf");
+                        string CST1_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-cs-t1", ".buf");
 
                         string CSCB0_FilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(CSCB0_FileName);   //ShapeKeyOffset
                         string CST0_FilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(CST0_FileName);     //ShapeKeyVertexId
@@ -249,7 +250,7 @@ namespace DBMT_Core
                         //offsets_hash 就是vb6的hash
                         metaDataJson.shapekeys.offsets_hash = Total_CategorySlot_Hash_Dict["vb6"];
                         //scale_hash 就是ShapeKeyExtractIndex的cs-u1的Hash值
-                        string CSU1_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder,ShapeKeyExtractIndex + "-u1=",".buf");
+                        string CSU1_FileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ShapeKeyExtractIndex + "-u1=", ".buf");
                         if (CSU1_FileName != "")
                         {
                             string csu1_hash = CSU1_FileName.Substring(10, 8);
@@ -269,7 +270,7 @@ namespace DBMT_Core
                         metaDataJson.shapekeys.dispatch_y = shapekeydata.ShapeKeyOffsetNumberLast / 32 + 1;
                         LOG.Info("Metadata.json shapekeys dispatch_y: " + metaDataJson.shapekeys.dispatch_y);
                         //checksum ShapeKeyOffsets的前四位的和
-                        metaDataJson.shapekeys.checksum = shapekeydata.CheckSum ;
+                        metaDataJson.shapekeys.checksum = shapekeydata.CheckSum;
 
                     }
                     else
@@ -284,7 +285,7 @@ namespace DBMT_Core
                     int ComponentVertexOffset = 0;
                     int ComponentIndexOffset = 0;
                     int VGOffset = 0;
-                    
+
 
                     List<string> ImportModelList = [];
                     List<string> PartNameList = [];
@@ -294,9 +295,9 @@ namespace DBMT_Core
                     {
                         int MatchFirstIndex = item.Key;
                         string TmpIBTxtFileName = item.Value;
-                        string TmpIndex = TmpIBTxtFileName.Substring(0,6);
+                        string TmpIndex = TmpIBTxtFileName.Substring(0, 6);
                         string TmpIBTxtFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(TmpIBTxtFileName);
-                        string IndexCountStr = DBMTFileUtils.FindMigotoIniAttributeInFile(TmpIBTxtFilePath,"index count");
+                        string IndexCountStr = DBMTFileUtils.FindMigotoIniAttributeInFile(TmpIBTxtFilePath, "index count");
                         LOG.Info("Index: " + TmpIndex + " MatchFirstIndex: " + item.Key.ToString() + " IndexCount: " + IndexCountStr);
 
                         string OutputPrefix = "Component " + (ComponentCount - 1).ToString();
@@ -337,7 +338,7 @@ namespace DBMT_Core
 
                         //获取其BLENDINDICES内容
                         byte[] BLENDINDICES_DATA = VBBufFile.Get_ElementName_VBData_Map(d3D11GameType)["BLENDINDICES"];
-                        LOG.Info("VB VertexCount: " + (VBBufFile.FinalVB0Bytes.Length / TotalStride).ToString() );
+                        LOG.Info("VB VertexCount: " + (VBBufFile.FinalVB0Bytes.Length / TotalStride).ToString());
                         LOG.NewLine();
 
                         //3.根据每个IB，从整个ShapeKeyOffset里，查找出对应的形态键，以及每个形态键对应的起始和结束区域，也就是直接得到一个
@@ -345,10 +346,10 @@ namespace DBMT_Core
                         LOG.Info("Find work ShapeKey for MatchFirstIndex: " + MatchFirstIndex.ToString());
 
                         List<int> ShapeKeyIdList = shapekeydata.GetShapeKeyIdList(DivideIBBufFile);
-                        List<D3D11Element> CurrentD3D11Elements = shapekeydata.GetD3D11ElementListWithShapeKey(d3D11GameType,ShapeKeyIdList);
+                        List<D3D11Element> CurrentD3D11Elements = shapekeydata.GetD3D11ElementListWithShapeKey(d3D11GameType, ShapeKeyIdList);
                         if (ShapeKeyIdList.Count != 0)
                         {
-                            byte[] AppendFinalVB0Data = shapekeydata.AppendShapeKeyToFinalVB0Buf(VBBufFile.FinalVB0Bytes, ShapeKeyIdList,TotalStride,DivideIBBufFile.MinNumber);
+                            byte[] AppendFinalVB0Data = shapekeydata.AppendShapeKeyToFinalVB0Buf(VBBufFile.FinalVB0Bytes, ShapeKeyIdList, TotalStride, DivideIBBufFile.MinNumber);
                             VertexBufferBufFile AppendVBBufFile = new VertexBufferBufFile(AppendFinalVB0Data);
                             VBBufFile = AppendVBBufFile;
                         }
@@ -413,7 +414,7 @@ namespace DBMT_Core
                         //读取vs-cb4中的内容
 
                         LOG.Info("开始读取VSCB4内容:");
-                        string VSCB4BufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TmpIndex + "-vs-cb4=",".buf");
+                        string VSCB4BufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TmpIndex + "-vs-cb4=", ".buf");
 
                         LOG.Info("VSCB4BufFileName: " + VSCB4BufFileName);
                         string VSCB4BufFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(VSCB4BufFileName);
@@ -428,7 +429,7 @@ namespace DBMT_Core
                                 //LOG.Info("当前BlendIndex: " + BlendIndex.ToString());
 
                                 //他吗的，这里如果用byte[]作为Key，则永远无法获取重复的
-                                string BoneMatrixValueString = BitConverter.ToString(BoneMatrixValue); 
+                                string BoneMatrixValueString = BitConverter.ToString(BoneMatrixValue);
 
                                 int GlobalBoneVGNumber = -1;
 
@@ -478,14 +479,14 @@ namespace DBMT_Core
                     importJson.MatchFirstIndex_IBTxtFileName_Dict = MatchFirstIndex_IBTxtFileName_Dict;
                     importJson.Category_BufFileName_Dict = Category_BufFileNameDict;
 
-                    string ImportJsonSavePath = Path.Combine(GameTypeOutputPath,"tmp.json");
+                    string ImportJsonSavePath = Path.Combine(GameTypeOutputPath, "tmp.json");
                     importJson.SaveToFileWWMI(ImportJsonSavePath);
                 }
             }
 
             LOG.Info("提取正常执行完成");
             return true;
-        } 
+        }
 
     }
 }

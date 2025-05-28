@@ -24,7 +24,7 @@ namespace DBMT_Core
                 {
                     CoreFunctions.ExtractDedupedTextures();
                     CoreFunctions.ExtractRenderTextures();
-                    RunResult = CoreFunctions.ExtractHSR32(DrawIBItemList);
+                    RunResult = HonkaiStarRail.ExtractHSR32(DrawIBItemList);
                 }
                 catch (Exception ex)
                 {
@@ -79,7 +79,7 @@ namespace DBMT_Core
                     //CoreFunctions.ExtractDedupedTextures();
                     //CoreFunctions.ExtractRenderTextures();
 
-                    RunResult = CoreFunctions.ExtractCTX(DrawIBItemList);
+                    RunResult = IdentityV.ExtractCTX(DrawIBItemList);
                 }
                 catch (Exception ex)
                 {
@@ -143,7 +143,7 @@ namespace DBMT_Core
                 {
                     CoreFunctions.ExtractDedupedTextures();
                     CoreFunctions.ExtractRenderTextures();
-                    RunResult = CoreFunctions.ExtractUnityVS(DrawIBItemList);
+                    RunResult = UnityGames.ExtractUnityVS(DrawIBItemList);
                 }
                 catch (Exception ex)
                 {
