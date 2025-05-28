@@ -179,7 +179,8 @@ namespace DBMT
             }
             else
             {
-                _ = MessageHelper.Show("警告: 识别到未知版本的d3d11.dll，可能存在安全隐患和兼容性问题！！！\n\n您当前3Dmigoto目录下使用的d3d11.dll不是DBMT-Package目录下自带的d3d11.dll，可能含有潜在的病毒或恶意代码！请替换为DBMT-Package下3Dmigoto-GameMod-Fork中提供的对应版本dll或使用DBMT-Pakcage下自带的加载器!\n\n此外，使用非DBMT提供的3Dmigoto的d3d11.dll可能会导致使用过程中出现兼容性问题，请自行斟酌是否继续使用。\n");
+                //用户自己决定dll的使用吧，由于国内外开发社区的割裂，我们很难完全同步国外的d3d11.dll中的特性。
+                //_ = MessageHelper.Show("警告: 识别到未知版本的d3d11.dll，可能存在安全隐患和兼容性问题。\n\n您当前3Dmigoto目录下使用的d3d11.dll不是DBMT-Package目录下自带的d3d11.dll，可能含有潜在的病毒或恶意代码。\n\n此外，使用非DBMT提供的3Dmigoto的d3d11.dll可能会导致使用过程中出现兼容性问题，请自行斟酌是否继续使用。\n");
                 ToggleSwitch_DllMode.IsOn = false;
             }
 
