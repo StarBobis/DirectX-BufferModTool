@@ -5,11 +5,34 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace DBMT_Core
 {
     public class DBMTFileUtils
     {
+
+        /// <summary>
+        /// 计算指定文件的SHA-256哈希值
+        /// </summary>
+        /// <param name="filePath">文件路径</param>
+        /// <returns>SHA-256哈希值（小写十六进制字符串）</returns>
+        public static string ComputeFileSHA256(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return "";
+
+            if (!File.Exists(filePath))
+                return "";
+
+            using (var sha256 = SHA256.Create())
+            using (var stream = File.OpenRead(filePath))
+            {
+                byte[] hashBytes = sha256.ComputeHash(stream);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+            }
+        }
+
         /// <summary>
         /// 检查当前应用程序是否以管理员权限运行。
         /// </summary>

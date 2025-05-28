@@ -99,7 +99,93 @@ namespace DBMT
             }
 
         }
+        private void InitializeConfigPanel()
+        {
+            IsLoading = true;
 
+            ToggleSwitch_DllMode.IsOn = false;
+            ToggleSwitch_ShowWarning.IsOn = false;
+            ToggleSwitch_Symlink.IsOn = false;
+
+            TextBox_3DmigotoPath.Text = "";
+            ProcessPathTextBox.Text = "";
+            StarterPathTextBox.Text = "";
+            TextBox_LaunchArgs.Text = "";
+
+            IsLoading = false;
+        }
+
+
+        /// <summary>
+        /// 此方法是被动触发的，比如切换游戏时触发，不需要主动触发
+        /// </summary>
+        /// <param name="d3dxini_path"></param>
+        private void ReadPathSettingFromD3dxIni(string d3dxini_path)
+        {
+
+            //锁定，防止配置修改
+            IsLoading = true;
+
+            ProcessPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "target").Trim();
+            StarterPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "launch").Trim();
+            TextBox_LaunchArgs.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "launch_args").Trim();
+
+            //开发版本中Dev为0或不设置此字段，则说明显示红字。
+            //TODO   XXMI的dll用的是ShowWarnings，我们这里懒得兼容了
+            string DevStr = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "dev").Trim();
+            if (DevStr.Trim() == "1")
+            {
+                ToggleSwitch_ShowWarning.IsOn = false;
+            }
+            else if (DevStr.Trim() == "0")
+            {
+                ToggleSwitch_ShowWarning.IsOn = true;
+            }
+            else
+            {
+                ToggleSwitch_ShowWarning.IsOn = false;
+            }
+
+            //读取Symlink特性是否开启
+            if (File.Exists(GlobalConfig.Path_D3DXINI))
+            {
+                string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(GlobalConfig.Path_D3DXINI, "analyse_options");
+                if (AnalyseOptions.Contains("symlink"))
+                {
+                    ToggleSwitch_Symlink.IsOn = true;
+                }
+                else
+                {
+                    ToggleSwitch_Symlink.IsOn = false;
+                }
+            }
+
+
+            //读取SHA256判断是Dev还是Play版本
+            string Path_3DmigotoDll_Dev = GlobalConfig.Path_3DmigotoGameModForkFolder + "ReleaseX64Dev\\d3d11.dll";
+            string Path_3DmigotoDll_Play = GlobalConfig.Path_3DmigotoGameModForkFolder + "ReleaseX64Play\\d3d11.dll";
+            string Path_CurrentGame3DmigotoDll = Path.Combine(GlobalConfig.Path_LoaderFolder, "d3d11.dll");
+
+            string SHA256_OriginalDev = DBMTFileUtils.ComputeFileSHA256(Path_3DmigotoDll_Dev);
+            string SHA256_OriginalPlay = DBMTFileUtils.ComputeFileSHA256(Path_3DmigotoDll_Play);
+            string SHA256_Current = DBMTFileUtils.ComputeFileSHA256(Path_CurrentGame3DmigotoDll);
+
+            if (SHA256_Current == SHA256_OriginalDev)
+            {
+                ToggleSwitch_DllMode.IsOn = false;
+            }else if (SHA256_Current == SHA256_OriginalPlay)
+            {
+                ToggleSwitch_DllMode.IsOn = true;
+            }
+            else
+            {
+                _ = MessageHelper.Show("警告: 识别到未知版本的d3d11.dll，可能存在安全隐患和兼容性问题！！！\n\n您当前3Dmigoto目录下使用的d3d11.dll不是DBMT-Package目录下自带的d3d11.dll，可能含有潜在的病毒或恶意代码！请替换为DBMT-Package下3Dmigoto-GameMod-Fork中提供的对应版本dll或使用DBMT-Pakcage下自带的加载器!\n\n此外，使用非DBMT提供的3Dmigoto的d3d11.dll可能会导致使用过程中出现兼容性问题，请自行斟酌是否继续使用。\n");
+                ToggleSwitch_DllMode.IsOn = false;
+            }
+
+            //锁定，防止配置修改
+            IsLoading = false;
+        }
 
         public void InitializeGameIconList()
         {
@@ -232,21 +318,7 @@ namespace DBMT
 
         }
 
-        private void InitializeConfigPanel()
-        {
-            IsLoading = true;
-
-            ToggleSwitch_DllMode.IsOn = false;
-            ToggleSwitch_ShowWarning.IsOn = false;
-            ToggleSwitch_Symlink.IsOn = false;
-
-            TextBox_3DmigotoPath.Text = "";
-            ProcessPathTextBox.Text = "";
-            StarterPathTextBox.Text = "";
-            TextBox_LaunchArgs.Text = "";
-
-            IsLoading = false;
-        }
+       
 
 
         private async void ChooseProcessPathButtonClick(object sender, RoutedEventArgs e)
@@ -279,48 +351,7 @@ namespace DBMT
         }
 
 
-        private void ReadPathSettingFromD3dxIni(string d3dxini_path)
-        {
-
-            //锁定，防止配置修改
-            IsLoading = true;
-
-            ProcessPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "target").Trim();
-            StarterPathTextBox.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "launch").Trim();
-            TextBox_LaunchArgs.Text = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "launch_args").Trim();
-
-            //开发版本中Dev为0或不设置此字段，则说明显示红字。
-            string DevStr = D3dxIniConfig.ReadAttributeFromD3DXIni(d3dxini_path, "dev").Trim();
-            if (DevStr.Trim() == "1")
-            {
-                ToggleSwitch_ShowWarning.IsOn = false;
-            }
-            else if (DevStr.Trim() == "0")
-            {
-                ToggleSwitch_ShowWarning.IsOn = true;
-            }
-            else
-            {
-                ToggleSwitch_ShowWarning.IsOn = false;
-            }
-
-            //读取Symlink特性是否开启
-            if (File.Exists(GlobalConfig.Path_D3DXINI))
-            {
-                string AnalyseOptions = D3dxIniConfig.ReadAttributeFromD3DXIni(GlobalConfig.Path_D3DXINI, "analyse_options");
-                if (AnalyseOptions.Contains("symlink"))
-                {
-                    ToggleSwitch_Symlink.IsOn = true;
-                }
-                else
-                {
-                    ToggleSwitch_Symlink.IsOn = false;
-                }
-            }
-
-            //锁定，防止配置修改
-            IsLoading = false;
-        }
+   
 
         private async void Open3DmigotoLoaderExe(object sender, RoutedEventArgs e)
         {

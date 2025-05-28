@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DBMT_Core
 {
-    public class D3dxIniConfig
+    public static class D3dxIniConfig
     {
 
         public static string ReadAttributeFromD3DXIni(string d3dxini_path, string AttributeName)
