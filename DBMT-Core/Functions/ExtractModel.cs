@@ -136,6 +136,22 @@ namespace DBMT_Core
                 }
                 LOG.SaveFile();
             }
+            else if (GlobalConfig.CurrentGameName == "AILIMIT")
+            {
+                LOG.Initialize();
+                try
+                {
+                    CoreFunctions.ExtractDedupedTextures();
+                    CoreFunctions.ExtractRenderTextures();
+                    RunResult = AILimit.ExtractUnityVS(DrawIBItemList);
+                }
+                catch (Exception ex)
+                {
+                    LOG.Error(ex.ToString());
+                    RunResult = false;
+                }
+                LOG.SaveFile();
+            }
             else
             {
                 LOG.Initialize();
