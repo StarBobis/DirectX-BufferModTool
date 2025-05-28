@@ -49,7 +49,7 @@ namespace DBMT_Core.Games
             return FinalTrianglelistIndex;
         }
 
-        public static List<D3D11GameType> GetPossibleGameTypeList_UnityVS(D3D11GameTypeLv2 d3D11GameTypeLv2,string PointlistIndex, List<string> TrianglelistIndexList)
+        public static List<D3D11GameType> GetPossibleGameTypeList_UnityVS(D3D11GameTypeLv2 d3D11GameTypeLv2, List<string> TrianglelistIndexList)
         {
             List<D3D11GameType> PossibleGameTypeList = [];
 
@@ -83,10 +83,6 @@ namespace DBMT_Core.Games
                 {
                     string CategoryName = item.Key;
                     string ExtractIndex = TrianglelistIndex;
-                    if (item.Value == "pointlist" && PointlistIndex != "")
-                    {
-                        ExtractIndex = PointlistIndex;
-                    }
                     string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
                     LOG.Info("当前分类:" + CategoryName + " 提取Index: " + ExtractIndex + " 提取槽位:" + CategorySlot);
                     //获取文件名存入对应Dict
@@ -131,32 +127,6 @@ namespace DBMT_Core.Games
                         break;
                     }
 
-                    //GF2不需要进行这种校验，直接根据槽位进行对比即可。
-                    //if (!d3D11GameType.GPUPreSkinning)
-                    //{
-                    //    string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
-                    //    string CategoryTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".txt");
-                    //    if (CategoryTxtFileName == "")
-                    //    {
-                    //        LOG.Info("槽位的txt文件不存在，跳过此数据类型。");
-                    //        AllMatch = false;
-                    //        break;
-                    //    }
-                    //    else
-                    //    {
-                    //        string CategoryTxtFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(CategoryTxtFileName);
-                    //        string VertexCountTxtShow = DBMTFileUtils.FindMigotoIniAttributeInFile(CategoryTxtFilePath, "vertex count");
-                    //        int TxtShowVertexCount = int.Parse(VertexCountTxtShow);
-                    //        if (TxtShowVertexCount != TmpNumber)
-                    //        {
-                    //            LOG.Info("槽位的txt文件顶点数与Buffer数据类型统计顶点数不符，跳过此数据类型。");
-                    //            AllMatch = false;
-                    //            break;
-                    //        }
-                    //    }
-                    //}
-
-
                     if (VertexNumber == 0)
                     {
                         VertexNumber = TmpNumber;
@@ -176,9 +146,6 @@ namespace DBMT_Core.Games
                         LOG.NewLine();
                     }
                 }
-
-                //LOG.Info("VertexNumber: " + VertexNumber.ToString());
-
 
                 if (AllMatch)
                 {
@@ -216,14 +183,16 @@ namespace DBMT_Core.Games
             }
             return PossibleGameTypeList;
         }
-        private static bool Extract_fee307b98a965c16(string DrawIB, D3D11GameTypeLv2 d3D11GameTypeLv2, string PointlistIndex, List<string> TrianglelistIndexList)
+
+
+        private static bool Extract_fee307b98a965c16(string DrawIB, D3D11GameTypeLv2 d3D11GameTypeLv2, List<string> TrianglelistIndexList)
         {
 
             //接下来开始识别可能的数据类型。
             //此时需要先读取所有存在的数据类型。
             //此时需要我们先去生成几个数据类型用于测试。
             //还有就是数据类型的文件夹是存在哪里的
-            List<D3D11GameType> PossibleD3D11GameTypeList = GetPossibleGameTypeList_UnityVS(d3D11GameTypeLv2, PointlistIndex, TrianglelistIndexList);
+            List<D3D11GameType> PossibleD3D11GameTypeList = GetPossibleGameTypeList_UnityVS(d3D11GameTypeLv2, TrianglelistIndexList);
 
             if (PossibleD3D11GameTypeList.Count == 0)
             {
@@ -259,15 +228,12 @@ namespace DBMT_Core.Games
                 Dictionary<string, string> CategoryBufFileMap = new Dictionary<string, string>();
                 foreach (var item in d3D11GameType.CategoryTopologyDict)
                 {
-                    string ExtractIndex = TrianglelistIndex;
-                    if (item.Value == "pointlist" && PointlistIndex != "")
-                    {
-                        ExtractIndex = PointlistIndex;
-                    }
+                    
+                
                     string CategorySlot = d3D11GameType.CategorySlotDict[item.Key];
 
                     //获取文件名存入对应Dict
-                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, ExtractIndex + "-" + CategorySlot, ".buf");
+                    string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".buf");
                     CategoryBufFileMap[item.Key] = CategoryBufFileName;
                 }
 
@@ -380,14 +346,6 @@ namespace DBMT_Core.Games
                 }
                 LOG.NewLine();
 
-                string PointlistIndex = FrameAnalysisLogUtils.Get_PointlistIndex_ByHash(DrawIB);
-                LOG.Info("当前识别到的PointlistIndex: " + PointlistIndex);
-                if (PointlistIndex == "")
-                {
-                    LOG.Info("当前识别到的PointlistIndex为空，此DrawIB对应的模型可能为CPU-PreSkinning类型。");
-                }
-                LOG.NewLine();
-
 
                 List<string> TrianglelistIndexList = FrameAnalysisLogUtils.Get_DrawCallIndexList_ByHash(DrawIB, false);
                 foreach (string TrianglelistIndex in TrianglelistIndexList)
@@ -396,7 +354,7 @@ namespace DBMT_Core.Games
                 }
                 LOG.NewLine();
 
-                bool result = Extract_fee307b98a965c16(DrawIB, d3D11GameTypeLv2, PointlistIndex, TrianglelistIndexList);
+                bool result = Extract_fee307b98a965c16(DrawIB, d3D11GameTypeLv2, TrianglelistIndexList);
                 if (!result)
                 {
                     return false;
