@@ -1,4 +1,5 @@
-﻿using DBMT_Core.Utils;
+﻿using DBMT_Core.Common;
+using DBMT_Core.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,36 +11,36 @@ using System.Threading.Tasks;
 
 namespace DBMT_Core
 {
-    [Obsolete("架构设计不够灵活，尽量不要使用，后续代码逐渐迁移到新的工具类中")]
+    
     public static class FrameAnalysisDataUtils
     {
-        public static Dictionary<string, List<string>> FrameAnalysisFolder_FileNameList_Dict = [];
+        public static Dictionary<string, List<string>> FrameAnalysisFolderPath_FileNameList_Dict = [];
 
 
-        public static List<string> GetFrameAnalysisFileNameList()
+        public static List<string> GetFrameAnalysisFileNameList(string FrameAnalysisFolderPath)
         {
 
-            if (!FrameAnalysisFolder_FileNameList_Dict.ContainsKey(GlobalConfig.LatestFrameAnalysisFolderName))
+            if (!FrameAnalysisFolderPath_FileNameList_Dict.ContainsKey(FrameAnalysisFolderPath))
             {
 
                 List<string> TmpFileNameList = new List<string>();
-                string[] FrameAnalysisFileNameArray = Directory.GetFiles(GlobalConfig.WorkFolder);
+                string[] FrameAnalysisFileNameArray = Directory.GetFiles(FrameAnalysisFolderPath);
                 foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
                 {
                     TmpFileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
                 }
 
-                FrameAnalysisFolder_FileNameList_Dict[GlobalConfig.LatestFrameAnalysisFolderName] = TmpFileNameList;
+                FrameAnalysisFolderPath_FileNameList_Dict[FrameAnalysisFolderPath] = TmpFileNameList;
             }
 
-            List<string> FileNameList = FrameAnalysisFolder_FileNameList_Dict[GlobalConfig.LatestFrameAnalysisFolderName];
+            List<string> FileNameList = FrameAnalysisFolderPath_FileNameList_Dict[FrameAnalysisFolderPath];
             return FileNameList;
         }
 
 
-        public static List<string> FilterFrameAnalysisFile(string Content, string Suffix)
+        public static List<string> FilterFrameAnalysisFile(string FrameAnalysisFolderPath,string Content, string Suffix)
         {
-            List<string> FileNameList = GetFrameAnalysisFileNameList();
+            List<string> FileNameList = GetFrameAnalysisFileNameList(FrameAnalysisFolderPath);
 
             List<string> FilterFileNameList = new List<string>();
 
@@ -55,11 +56,11 @@ namespace DBMT_Core
         }
 
 
-        public static List<string> FilterFile(string SearchFolderPath,string Content, string Suffix)
+        public static List<string> FilterFile(string FrameAnalysisFolderPath, string Content, string Suffix)
         {
 
             List<string> SearchFileNameList = new List<string>();
-            string[] FrameAnalysisFileNameArray = Directory.GetFiles(SearchFolderPath);
+            string[] FrameAnalysisFileNameArray = Directory.GetFiles(FrameAnalysisFolderPath);
             foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
             {
                 SearchFileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
@@ -77,18 +78,18 @@ namespace DBMT_Core
             return FilterFileNameList;
         }
 
-        public static string FilterFirstFile(string SearchFolderPath, string Content, string Suffix)
+        public static string FilterFirstFile(string FilterFolderPath, string Content, string Suffix)
         {
-            List<string> FileNameList = GetFrameAnalysisFileNameList();
+            List<string> FileNameList = GetFrameAnalysisFileNameList(FilterFolderPath);
             List<string> SearchFileNameList = new List<string>();
 
-            if (SearchFolderPath == GlobalConfig.WorkFolder)
+            if (FilterFolderPath == GlobalConfig.WorkFolder)
             {
                 SearchFileNameList = FileNameList;
             }
             else
             {
-                string[] FrameAnalysisFileNameArray = Directory.GetFiles(SearchFolderPath);
+                string[] FrameAnalysisFileNameArray = Directory.GetFiles(FilterFolderPath);
                 foreach (string FrameAnalysisFileName in FrameAnalysisFileNameArray)
                 {
                     SearchFileNameList.Add(Path.GetFileName(FrameAnalysisFileName));
@@ -121,7 +122,7 @@ namespace DBMT_Core
             List<string> FileNameList = new List<string>();
             if(FilterFolder == GlobalConfig.WorkFolder)
             {
-                FileNameList = GetFrameAnalysisFileNameList();
+                FileNameList = GetFrameAnalysisFileNameList(GlobalConfig.WorkFolder);
             }
             else
             {
@@ -171,14 +172,14 @@ namespace DBMT_Core
         /// </summary>
         /// <param name="DrawIB"></param>
         /// <returns></returns> 
-        public static Dictionary<string, UInt64> Read_ComponentName_MatchFirstIndex_Dict(string DrawIB)
+        public static Dictionary<string, UInt64> Read_ComponentName_MatchFirstIndex_Dict(string FrameAnalysisFolderPath, string DrawIB)
         {
             Debug.WriteLine("Read_ComponentName_MatchFirstIndex_Dict::Begin");
 
             Dictionary<string, UInt64> ComponentName_MatchFirstIndex_Dict = new Dictionary<string, UInt64>();
 
             //根据DrawIB，查找所有的MatchFirstIndex
-            List<string> IBTxtFileNameList = FilterFrameAnalysisFile("-ib=" + DrawIB, ".txt");
+            List<string> IBTxtFileNameList = FilterFrameAnalysisFile(FrameAnalysisFolderPath,"-ib=" + DrawIB, ".txt");
             if (IBTxtFileNameList.Count != 0)
             {
                 Debug.WriteLine("FrameAnalysis文件中检测到该DrawIB，所以从文件中读取新鲜的");
@@ -186,7 +187,7 @@ namespace DBMT_Core
                 List<UInt64> MatchFirstIndexList = new List<UInt64>();
                 foreach (string IBTxtFileName in IBTxtFileNameList)
                 {
-                    IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(GlobalConfig.WorkFolder + IBTxtFileName, false);
+                    IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(FrameAnalysisFolderPath + IBTxtFileName, false);
 
                     if (IBTxtFile.Topology != "trianglelist")
                     {
@@ -222,17 +223,18 @@ namespace DBMT_Core
         /// <param name="DrawIB"></param>
         /// <param name="ComponentName"></param>
         /// <returns></returns>
-        public static List<string> Read_DrawCallIndexList(string DrawIB,string ComponentName)
+        public static List<string> Read_DrawCallIndexList(string FrameAnalysisFolderPath,string DrawIB,string ComponentName)
         {
-            Dictionary<string, UInt64> ComponentName_MatchFirstIndex_Dict = Read_ComponentName_MatchFirstIndex_Dict(DrawIB);
+            LOG.Info("Read_DrawCallIndexList::Start");
+            Dictionary<string, UInt64> ComponentName_MatchFirstIndex_Dict = Read_ComponentName_MatchFirstIndex_Dict(FrameAnalysisFolderPath,DrawIB);
             UInt64 MatchFirstIndex = ComponentName_MatchFirstIndex_Dict[ComponentName];
 
-            List<string> IBTxtFileNameList = FilterFrameAnalysisFile("-ib=" + DrawIB, ".txt");
+            List<string> IBTxtFileNameList = FilterFrameAnalysisFile(FrameAnalysisFolderPath, "-ib=" + DrawIB, ".txt");
             List<string> DrawCallIndexList = new List<string>();
 
             foreach (string IBTxtFileName in IBTxtFileNameList)
             {
-                IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(GlobalConfig.WorkFolder + IBTxtFileName, false);
+                IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(FrameAnalysisFolderPath + IBTxtFileName, false);
 
                 if (IBTxtFile.Topology != "trianglelist")
                 {
@@ -246,57 +248,65 @@ namespace DBMT_Core
                 }
             }
 
+            LOG.Info("Read_DrawCallIndexList::End");
             return DrawCallIndexList;
         }
 
-        public static string GetDedupedTextureFileName(string TextureFileName) {
+        public static string GetDedupedTextureFileName(string FrameAnalysisFolderPath,string TextureFileName) {
             string Hash = DBMTStringUtils.GetFileHashFromFileName(TextureFileName);
             string Suffix = Path.GetExtension(TextureFileName);
-            string DedupedFileName = FilterFirstFile(GlobalConfig.Path_LatestFrameAnalysisDedupedFolder,Hash,Suffix);
+            string DedupedFileName = FilterFirstFile(FrameAnalysisFolderPath, Hash,Suffix);
             return DedupedFileName;
         }
 
 
-        public static List<string> Get_TrianglelistIndexListByDrawIB(string DrawIB)
+        public static List<string> Get_TrianglelistIndexListByDrawIB(string FrameAnalysisFolderPath,string DrawIB)
         {
+            LOG.Info("Get_TrianglelistIndexListByDrawIB::Start");
             List<string> IndexList = new List<string>();
 
-            List<string> DrawIB_IBFileNameList = FilterFrameAnalysisFile("-ib=" + DrawIB,".txt");
+            List<string> DrawIB_IBFileNameList = FilterFrameAnalysisFile(FrameAnalysisFolderPath, "-ib=" + DrawIB,".txt");
+            LOG.Info("DrawIB_IBFileNameList Size: " + DrawIB_IBFileNameList.Count.ToString());
+
             foreach(string IBFileName in DrawIB_IBFileNameList)
             {
                 string Index = IBFileName.Substring(0, 6);
-                List<string> VB0FileNameList = FilterFrameAnalysisFile(Index + "-vb0", ".txt");
+                List<string> VB0FileNameList = FilterFrameAnalysisFile(FrameAnalysisFolderPath, Index + "-vb0", ".txt");
                 if (VB0FileNameList.Count == 0)
                 {
                     continue;
                 }
 
-                string VB0FilePath = GlobalConfig.WorkFolder + VB0FileNameList[0];
+                string VB0FilePath = FrameAnalysisFolderPath + VB0FileNameList[0];
+                LOG.Info("VB0FilePath: " + VB0FilePath);
+
                 string Topology = DBMTFileUtils.FindMigotoIniAttributeInFile(VB0FilePath, "topology");
                 if (Topology == "trianglelist")
                 {
+                    LOG.Info("Detect Trianglelist Topology Index: " + Index);
                     IndexList.Add(Index);
                 }
 
             }
-
+            LOG.Info("Get_TrianglelistIndexListByDrawIB::End");
             return IndexList;
         }
 
         
-        public static SortedDictionary<int,string> Get_MatchFirstIndex_IBTxtFileName_Dict(string DrawIB)
+        public static SortedDictionary<int,string> Get_MatchFirstIndex_IBTxtFileName_Dict(string FrameAnalysisFolderPath, string DrawIB)
         {
             SortedDictionary<int, string> MatchFirstIndex_IBFileName_Dict = new SortedDictionary<int, string>();
 
-            List<string> TrianglelistIndexList = Get_TrianglelistIndexListByDrawIB(DrawIB);
+            List<string> TrianglelistIndexList = Get_TrianglelistIndexListByDrawIB(FrameAnalysisFolderPath, DrawIB);
             foreach (string TrianglelistIndex in TrianglelistIndexList)
             {
-                string IBTxtFileName = FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-ib",".txt");
+                string IBTxtFileName = FilterFirstFile(FrameAnalysisFolderPath, TrianglelistIndex + "-ib",".txt");
                 if (IBTxtFileName == "")
                 {
                     continue;
                 }
-                string IBTxtFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(IBTxtFileName);
+                string FrameAnalysisFolderName = Path.GetFileName(FrameAnalysisFolderPath);
+                string IBTxtFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(FrameAnalysisFolderName, FrameAnalysisFolderPath,IBTxtFileName);
                 IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(IBTxtFilePath,false);
                 int MatchFirstIndex = int.Parse(IBTxtFile.FirstIndex);
                 MatchFirstIndex_IBFileName_Dict[MatchFirstIndex] = IBTxtFileName;

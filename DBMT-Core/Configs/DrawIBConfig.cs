@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using DBMT_Core.Utils;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -137,6 +138,7 @@ namespace DBMT_Core
 
         public static Dictionary<string, List<string>> Get_ComponentName_DrawCallIndexList_Dict_FromJson(string DrawIB)
         {
+            LOG.Info("Get_ComponentName_DrawCallIndexList_Dict_FromJson::Start");
             Dictionary<string, List<string>> ComponentName_DrawCallIndexList_Dict = new Dictionary<string, List<string>>();
             string ReadJsonFileFolder = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder, DrawIB + "\\");
 
@@ -156,6 +158,7 @@ namespace DBMT_Core
                 }
             }
 
+            LOG.Info("Get_ComponentName_DrawCallIndexList_Dict_FromJson::End");
             return ComponentName_DrawCallIndexList_Dict;
         }
 

@@ -505,7 +505,7 @@ namespace DBMT_Core
         }
 
 
-        public static List<string> Get_TrianglelistTexturesFileNameList(string DrawIB,bool ReverseExtract = false)
+        public static List<string> Get_TrianglelistTexturesFileNameList(string FrameAnalysisFolderPath,string DrawIB,bool ReverseExtract = false)
         {
             LOG.Info("Get_TrianglelistTexturesFileNameList::Start");
             List<string> TrianglelistTexturesFileNameList = [];
@@ -513,16 +513,18 @@ namespace DBMT_Core
             List<string> TrianglelistIndexList = [];
             if (!ReverseExtract)
             {
-                TrianglelistIndexList = FrameAnalysisDataUtils.Get_TrianglelistIndexListByDrawIB(DrawIB);
+                TrianglelistIndexList = FrameAnalysisDataUtils.Get_TrianglelistIndexListByDrawIB(FrameAnalysisFolderPath, DrawIB);
             }
             else
             {
                 TrianglelistIndexList = FrameAnalysisLogUtils.Get_DrawCallIndexList_ByHash(DrawIB, false);
             }
 
+            LOG.Info("TrianglelistIndexList Size: " + TrianglelistIndexList.Count.ToString());
+
             foreach (string Index in TrianglelistIndexList)
             {
-                List<string> PsTextureAllFileNameList = FrameAnalysisDataUtils.FilterTextureFileNameList(GlobalConfig.WorkFolder, Index + "-ps-t");
+                List<string> PsTextureAllFileNameList = FrameAnalysisDataUtils.FilterTextureFileNameList(FrameAnalysisFolderPath, Index + "-ps-t");
                 foreach (string PsTextureFileName in PsTextureAllFileNameList)
                 {
                     TrianglelistTexturesFileNameList.Add(PsTextureFileName);

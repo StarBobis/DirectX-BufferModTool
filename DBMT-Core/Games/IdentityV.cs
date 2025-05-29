@@ -31,9 +31,7 @@ namespace DBMT_Core.Games
                 }
                 LOG.NewLine();
 
-                //燕云十六声提取模型，使用CTX架构
-
-                //由于存在多个log.txt以及多个ctx的FrameAnalysis文件夹，所以这里需要从先从每个log.txt中查找是否存在当前DrawIB
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
 
                 string[] TotalFrameAnalysisFiles = Directory.GetFiles(GlobalConfig.Path_LatestFrameAnalysisFolder);
 
@@ -154,7 +152,7 @@ namespace DBMT_Core.Games
                     foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
                     {
                         string OriginalTextureFilePath = Path.Combine(CTXFolderPath, PsTextureFileName);
-                        string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(PsTextureFileName);
+                        string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(FAInfo.FolderPath, PsTextureFileName);
                         string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
 
                         string TargetRenderFilePath = RenderTexturesFolderPath + TextureSpecialHash + "_" + DedupedRenderFileName;

@@ -38,7 +38,7 @@ namespace DBMT_Core.Games
                 //WWMI提取逻辑
 
                 //1.获取所有的TrianglelistIndex，而且WWMI很特殊，不能从Log获取，必须从FrameAnalyse文件里分析文件名来获取。
-                List<string> TrianglelistIndexList = FrameAnalysisDataUtils.Get_TrianglelistIndexListByDrawIB(DrawIB);
+                List<string> TrianglelistIndexList = FrameAnalysisDataUtils.Get_TrianglelistIndexListByDrawIB(GlobalConfig.WorkFolder,DrawIB);
                 if (TrianglelistIndexList.Count == 0)
                 {
                     LOG.Error("无法找到当前DrawIB: " + DrawIB + " 对应的数据文件，请检查是否Dump错误或者DrawIB输入错误。");
@@ -279,7 +279,7 @@ namespace DBMT_Core.Games
                     }
 
 
-                    SortedDictionary<int, string> MatchFirstIndex_IBTxtFileName_Dict = FrameAnalysisDataUtils.Get_MatchFirstIndex_IBTxtFileName_Dict(DrawIB);
+                    SortedDictionary<int, string> MatchFirstIndex_IBTxtFileName_Dict = FrameAnalysisDataUtils.Get_MatchFirstIndex_IBTxtFileName_Dict(GlobalConfig.WorkFolder,DrawIB);
 
                     int ComponentCount = 1;
                     int ComponentVertexOffset = 0;

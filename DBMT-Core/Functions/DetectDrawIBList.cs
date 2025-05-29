@@ -14,7 +14,7 @@ namespace DBMT_Core
         public static void DetectPointlistDrawIBList()
         {
             List<string> PointlistDrawIBList = [];
-            List<string> IBFileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile("-ib=",".buf");
+            List<string> IBFileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(GlobalConfig.WorkFolder,"-ib=",".buf");
             foreach (string IBFileName in IBFileNameList)
             {
                 string DrawIB = IBFileName.Substring(10, 8);
@@ -25,7 +25,7 @@ namespace DBMT_Core
                     continue;
                 }
 
-                List<string> PointlistVB0FileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(PointlistIndex + "-vb0",".txt");
+                List<string> PointlistVB0FileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(GlobalConfig.WorkFolder,PointlistIndex + "-vb0",".txt");
                 if (PointlistVB0FileNameList.Count == 0)
                 {
                     continue;
@@ -60,14 +60,15 @@ namespace DBMT_Core
 
         public static void DetectTrianglelistDrawIBList()
         {
+            //TODO CTX无法使用此功能
             List<string> TrianglelistDrawIBList = [];
-            List<string> IBFileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile("-ib=", ".buf");
+            List<string> IBFileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(GlobalConfig.WorkFolder, "-ib=", ".buf");
             foreach (string IBFileName in IBFileNameList)
             {
                 string DrawIB = IBFileName.Substring(10, 8);
                 string Index = IBFileName.Substring(0, 6);
 
-                List<string> VB0FileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(Index + "-vb0", ".txt");
+                List<string> VB0FileNameList = FrameAnalysisDataUtils.FilterFrameAnalysisFile(GlobalConfig.WorkFolder, Index + "-vb0", ".txt");
                 if (VB0FileNameList.Count == 0)
                 {
                     continue;

@@ -17,7 +17,9 @@ namespace DBMT_Core.Common
         public string FolderName { get; set; } = "";
         public string FolderPath { get; set; } = "";
 
-        public FrameAnalysisInfo() { }
+        public FrameAnalysisInfo() {
+            throw new Exception("不允许初始化空的FrameAnalysisInfo，请填写参数DrawIB来进行使用。");
+        }
 
         public FrameAnalysisInfo(string DrawIB)
         {

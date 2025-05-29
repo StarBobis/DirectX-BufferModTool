@@ -31,10 +31,10 @@ namespace DBMT_Core.Games
                 LOG.NewLine();
 
 
-                FrameAnalysisInfo ctxInfo = new FrameAnalysisInfo(DrawIB);
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
 
                 //接下来也不需要PointlistIndex，因为是在Trianglelist上直接计算骨骼变换矩阵的。
-                List<string> TrianglelistIBFileList = FrameAnalysisDataUtils.FilterFile(ctxInfo.FolderPath, "-ib=" + DrawIB, ".txt");
+                List<string> TrianglelistIBFileList = FrameAnalysisDataUtils.FilterFile(FAInfo.FolderPath, "-ib=" + DrawIB, ".txt");
 
                 List<string> TrianglelistIndexList = [];
                 LOG.Info("TrianglelistIndexList:");
@@ -57,7 +57,7 @@ namespace DBMT_Core.Games
                 List<string> TrianglelistTexturesFileNameList = [];
                 foreach (string TextureIndex in TrianglelistIndexList)
                 {
-                    List<string> PsTextureAllFileNameList = FrameAnalysisDataUtils.FilterTextureFileNameList(ctxInfo.FolderPath, TextureIndex + "-ps-t");
+                    List<string> PsTextureAllFileNameList = FrameAnalysisDataUtils.FilterTextureFileNameList(FAInfo.FolderPath, TextureIndex + "-ps-t");
                     foreach (string PsTextureFileName in PsTextureAllFileNameList)
                     {
                         TrianglelistTexturesFileNameList.Add(PsTextureFileName);
@@ -81,11 +81,11 @@ namespace DBMT_Core.Games
                 {
                     //Deduped必须是从log.txt中获取的映射路径
 
-                    string OriginalTextureFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(PsTextureFileName, ctxInfo.FolderPath, ctxInfo.LogFilePath);
+                    string OriginalTextureFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(PsTextureFileName, FAInfo.FolderPath, FAInfo.LogFilePath);
                     //LOG.Info("OriginalTextureFilePath: " + OriginalTextureFilePath);
 
                     //移动DedupedTextures
-                    string DedupedFileName = FrameAnalysisLogUtilsV2.Get_DedupedFileName(PsTextureFileName, ctxInfo.FolderPath, ctxInfo.LogFilePath);
+                    string DedupedFileName = FrameAnalysisLogUtilsV2.Get_DedupedFileName(PsTextureFileName, FAInfo.FolderPath, FAInfo.LogFilePath);
                     string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
                     string TargetFilePath = DedupedTexturesFolderPath + TextureSpecialHash + "_" + DedupedFileName;
 
@@ -104,8 +104,8 @@ namespace DBMT_Core.Games
                 //移动Render贴图文件
                 foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
                 {
-                    string OriginalTextureFilePath = Path.Combine(ctxInfo.FolderPath, PsTextureFileName);
-                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(PsTextureFileName);
+                    string OriginalTextureFilePath = Path.Combine(FAInfo.FolderPath, PsTextureFileName);
+                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(FAInfo.FolderPath,PsTextureFileName);
                     string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
 
                     string TargetRenderFilePath = RenderTexturesFolderPath + TextureSpecialHash + "_" + DedupedRenderFileName;
@@ -133,7 +133,7 @@ namespace DBMT_Core.Games
                         string CategoryName = item.Key;
                         string CategorySlot = item.Value;
 
-                        string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(ctxInfo.FolderPath, TmpTrianglelistIndex + "-" + CategorySlot + "=", ".buf");
+                        string CategoryBufFileName = FrameAnalysisDataUtils.FilterFirstFile(FAInfo.FolderPath, TmpTrianglelistIndex + "-" + CategorySlot + "=", ".buf");
                         if (CategoryBufFileName == "")
                         {
                             AllSlotBufFileExists = false;
@@ -157,7 +157,7 @@ namespace DBMT_Core.Games
                         string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
                         LOG.Info("当前匹配槽位: " + CategoryName + " Stride: " + CategoryStride.ToString());
 
-                        VertexBufferCombFile VBCombFile = new VertexBufferCombFile(ctxInfo.FolderPath, TmpTrianglelistIndex, CategorySlot);
+                        VertexBufferCombFile VBCombFile = new VertexBufferCombFile(FAInfo.FolderPath, TmpTrianglelistIndex, CategorySlot);
 
 
                         int BufFileSize = VBCombFile.CategoryBufferBytes.Length;
@@ -223,12 +223,12 @@ namespace DBMT_Core.Games
                 SortedDictionary<int, string> MatchFirstIndex_IBFileName_Dict = new SortedDictionary<int, string>();
                 foreach (string TrianglelistIndex in TrianglelistIndexList)
                 {
-                    string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(ctxInfo.FolderPath, TrianglelistIndex + "-ib", ".txt");
+                    string IBTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(FAInfo.FolderPath, TrianglelistIndex + "-ib", ".txt");
                     if (IBTxtFileName == "")
                     {
                         continue;
                     }
-                    string IBFilePath = Path.Combine(ctxInfo.FolderPath, IBTxtFileName);
+                    string IBFilePath = Path.Combine(FAInfo.FolderPath, IBTxtFileName);
                     IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(IBFilePath, false);
                     int MatchFirstIndex = int.Parse(IBTxtFile.FirstIndex);
 
@@ -264,12 +264,12 @@ namespace DBMT_Core.Games
                         int MatchFirstIndex = item.Key;
                         string IBTxtFileName = item.Value;
                         string OutputVBIndex = IBTxtFileName.Substring(0, 6);
-                        string IBTxtFilePath = Path.Combine(ctxInfo.FolderPath, IBTxtFileName);
+                        string IBTxtFilePath = Path.Combine(FAInfo.FolderPath, IBTxtFileName);
                         //拼接出一个IBBufFileName
                         string IBBufFileName = Path.GetFileNameWithoutExtension(IBTxtFileName) + ".buf";
                         LOG.Info(IBBufFileName);
 
-                        string IBBufFilePath = Path.Combine(ctxInfo.FolderPath, IBBufFileName);
+                        string IBBufFilePath = Path.Combine(FAInfo.FolderPath, IBBufFileName);
 
                         IndexBufferTxtFile IBTxtFile = new IndexBufferTxtFile(IBTxtFilePath, true);
                         LOG.Info(IBTxtFilePath);
@@ -319,7 +319,7 @@ namespace DBMT_Core.Games
                             int CategoryStride = d3d11GameType.CategoryStrideDict[CategoryName];
                             string CategorySlot = d3d11GameType.CategorySlotDict[CategoryName];
 
-                            VertexBufferCombFile VBCombFile = new VertexBufferCombFile(ctxInfo.FolderPath, OutputVBIndex, CategorySlot);
+                            VertexBufferCombFile VBCombFile = new VertexBufferCombFile(FAInfo.FolderPath, OutputVBIndex, CategorySlot);
                                 
                             CategoryName_BufFileName_Dict[CategoryName] = VBCombFile.BufFileName;
                             BufDictList.Add(VBCombFile.BufDict);
@@ -345,7 +345,7 @@ namespace DBMT_Core.Games
                     //为了兼容旧版Catter，暂时先不改名
 
                     ImportJson importJson = new ImportJson();
-                    string VB0FileName = FrameAnalysisDataUtils.FilterFirstFile(ctxInfo.FolderPath, TmpTrianglelistIndex + "-vb0", ".txt");
+                    string VB0FileName = FrameAnalysisDataUtils.FilterFirstFile(FAInfo.FolderPath, TmpTrianglelistIndex + "-vb0", ".txt");
 
                     importJson.DrawIB = DrawIB;
                     importJson.VertexLimitVB = VB0FileName.Substring(11, 8);

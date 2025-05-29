@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DBMT_Core.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace DBMT_Core
 
         public static void MoveDrawIBRelatedFiles(List<string> DrawIBList,string IBRelatedFolderName)
         {
+            //TODO 这个CTX也用不了
 
             string OutputDrawIBRelatedFolder = GlobalConfig.Path_CurrentWorkSpaceFolder + IBRelatedFolderName + "\\FrameAnalysis-2028-08-28-666666\\";
             Directory.CreateDirectory(OutputDrawIBRelatedFolder);
@@ -33,7 +35,9 @@ namespace DBMT_Core
                     continue;
                 }
 
-                List<string> PointlistRelatedFiles = FrameAnalysisDataUtils.FilterFrameAnalysisFile(PointlistIndex, "");
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
+
+                List<string> PointlistRelatedFiles = FrameAnalysisDataUtils.FilterFrameAnalysisFile(FAInfo.FolderPath, PointlistIndex, "");
                 foreach (string PointlistFileName in PointlistRelatedFiles)
                 {
                     CopyDedupedFiles.Add(PointlistFileName);
@@ -57,7 +61,7 @@ namespace DBMT_Core
 
             foreach (string DrawIBIndex in DrawIBRelatedIndexList)
             {
-                List<string> DrawIBRelatedFiles = FrameAnalysisDataUtils.FilterFrameAnalysisFile(DrawIBIndex, "");
+                List<string> DrawIBRelatedFiles = FrameAnalysisDataUtils.FilterFrameAnalysisFile(GlobalConfig.WorkFolder,DrawIBIndex, "");
                 foreach (string DrawIBIndexFileName in DrawIBRelatedFiles)
                 {
                     CopyDedupedFiles.Add(DrawIBIndexFileName);

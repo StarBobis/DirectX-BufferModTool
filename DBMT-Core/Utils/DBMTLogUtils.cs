@@ -48,6 +48,7 @@ namespace DBMT_Core.Utils
         {
             if (Initialized)
             {
+                Debug.WriteLine(message);
                 LogLineList.Add($"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff} [INFO] {message}");
             }
             else

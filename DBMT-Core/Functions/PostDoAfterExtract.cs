@@ -1,4 +1,5 @@
-﻿using DBMT_Core.Utils;
+﻿using DBMT_Core.Common;
+using DBMT_Core.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace DBMT_Core
         /// <param name="ReverseExtract"></param>
         public static void Generate_TrianglelistDedupedFileName_Json(bool ReverseExtract = false)
         {
+            LOG.Info("Generate_TrianglelistDedupedFileName_Json::Start");
             List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
 
             foreach (string DrawIB in DrawIBList)
@@ -27,15 +29,21 @@ namespace DBMT_Core
                 {
                     continue;
                 }
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
 
-                List<string> TrianglelistTextureFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(DrawIB, ReverseExtract);
+                LOG.Info("FAInfo.FolderPath: " + FAInfo.FolderPath);
+                List<string> TrianglelistTextureFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(FAInfo.FolderPath, DrawIB, ReverseExtract);
+                LOG.Info("TrianglelistTextureFileNameList Size: " + TrianglelistTextureFileNameList.Count.ToString());
 
                 JObject Trianglelist_DedupedFileName_JObject = DBMTJsonUtils.CreateJObject();
                 foreach (string TrianglelistTextureFileName in TrianglelistTextureFileNameList)
                 {
                     string Hash = DBMTStringUtils.GetFileHashFromFileName(TrianglelistTextureFileName);
-                    string DedupedTextureFileName = Hash + "_" + FrameAnalysisLogUtils.Get_DedupedFileName(TrianglelistTextureFileName);
-                    string FADedupedFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(TrianglelistTextureFileName);
+                    string DedupedTextureFileName = Hash + "_" + FrameAnalysisLogUtilsV2.Get_DedupedFileName(TrianglelistTextureFileName,FAInfo.FolderPath,FAInfo.LogFilePath);
+                    string FADedupedFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(FAInfo.FolderPath, TrianglelistTextureFileName);
+                    LOG.Info("Hash: " + Hash);
+                    LOG.Info("DedupedTextureFileName: " + DedupedTextureFileName);
+
                     if (FADedupedFileName.Trim() != "")
                     {
                         FADedupedFileName = Hash + "_" + FADedupedFileName;
@@ -52,7 +60,9 @@ namespace DBMT_Core
                 string TrianglelistDedupedFileNameJsonPath = Path.Combine(GlobalConfig.Path_CurrentWorkSpaceFolder + DrawIB + "\\", TrianglelistDedupedFileNameJsonName);
                 DBMTJsonUtils.SaveJObjectToFile(Trianglelist_DedupedFileName_JObject, TrianglelistDedupedFileNameJsonPath);
             }
-                
+
+            LOG.Info("Generate_TrianglelistDedupedFileName_Json::End");
+
         }
 
         /// <summary>
@@ -62,7 +72,7 @@ namespace DBMT_Core
         /// <returns></returns>
         public static Dictionary<string, Dictionary<string, List<string>>> Generate_ComponentName_DrawCallIndexList_Json(bool ReverseExtract = false)
         {
-
+            LOG.Info("Get_ComponentName_DrawCallIndexList_Dict_FromJson::Start");
             Dictionary<string, Dictionary<string, List<string>>> DrawIB_ComponentName_DrawCallIndexList_Dict_Dict = new Dictionary<string, Dictionary<string, List<string>>>();
 
             List<string> DrawIBList = DrawIBConfig.GetDrawIBListFromConfig();
@@ -74,7 +84,9 @@ namespace DBMT_Core
                     continue;
                 }
 
-                Dictionary<string, UInt64> ComponentName_MatchFirstIndex_Dict = FrameAnalysisDataUtils.Read_ComponentName_MatchFirstIndex_Dict(DrawIB);
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
+
+                Dictionary<string, UInt64> ComponentName_MatchFirstIndex_Dict = FrameAnalysisDataUtils.Read_ComponentName_MatchFirstIndex_Dict(FAInfo.FolderPath,DrawIB);
 
                 JObject ComponentName_DrawIndexList_JObject = DBMTJsonUtils.CreateJObject();
 
@@ -90,7 +102,7 @@ namespace DBMT_Core
                     }
                     else
                     {
-                        DrawCallIndexList = FrameAnalysisDataUtils.Read_DrawCallIndexList(DrawIB, item.Key);
+                        DrawCallIndexList = FrameAnalysisDataUtils.Read_DrawCallIndexList(FAInfo.FolderPath, DrawIB, item.Key);
                     }
 
                     ComponentName_DrawIndexList_JObject[item.Key] = new JArray(DrawCallIndexList);
@@ -103,7 +115,7 @@ namespace DBMT_Core
 
                 DrawIB_ComponentName_DrawCallIndexList_Dict_Dict[DrawIB] = ComponentName_DrawCallIndexList;
             }
-
+            LOG.Info("Get_ComponentName_DrawCallIndexList_Dict_FromJson::End");
             return DrawIB_ComponentName_DrawCallIndexList_Dict_Dict;
         }
 

@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DBMT_Core.Common;
 
 namespace DBMT_Core
 {
@@ -35,12 +36,15 @@ namespace DBMT_Core
                 string RenderTexturesFolderPath = DrawIBOutputFolder + "RenderTextures\\";
                 Directory.CreateDirectory(RenderTexturesFolderPath);
 
-                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(DrawIB, ReverseExtract);
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
+
+
+                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(FAInfo.FolderPath, DrawIB, ReverseExtract);
 
                 foreach(string PsTextureFileName in TrianglelistTexturesFileNameList)
                 {
                     string OriginalTextureFilePath = GlobalConfig.WorkFolder + PsTextureFileName;
-                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(PsTextureFileName);
+                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(FAInfo.FolderPath,PsTextureFileName);
                     string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
 
                     string TargetRenderFilePath = RenderTexturesFolderPath + TextureSpecialHash + "_" + DedupedRenderFileName;
@@ -89,7 +93,9 @@ namespace DBMT_Core
                 string DedupedTexturesFolderPath = Path.Combine(DrawIBOutputFolder, "DedupedTextures\\");
                 Directory.CreateDirectory(DedupedTexturesFolderPath);
 
-                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(DrawIB, ReverseExtract);
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
+
+                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(FAInfo.FolderPath,DrawIB, ReverseExtract);
 
                 foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
                 {
@@ -135,12 +141,14 @@ namespace DBMT_Core
                 string RenderTexturesFolderPath = Path.Combine(DrawIBOutputFolder, "RenderTextures\\");
                 Directory.CreateDirectory(RenderTexturesFolderPath);
 
-                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(DrawIB, ReverseExtract);
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
+
+                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(FAInfo.FolderPath, DrawIB, ReverseExtract);
 
                 foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
                 {
                     string OriginalTextureFilePath = GlobalConfig.WorkFolder + PsTextureFileName;
-                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(PsTextureFileName);
+                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(FAInfo.FolderPath, PsTextureFileName);
                     string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
 
                     string TargetRenderFilePath = RenderTexturesFolderPath + TextureSpecialHash + "_" + DedupedRenderFileName;
@@ -169,14 +177,14 @@ namespace DBMT_Core
                 string TrianglelistTexturesFolderPath = DrawIBOutputFolder + "TrianglelistTextures\\";
                 Directory.CreateDirectory(TrianglelistTexturesFolderPath);
 
+                FrameAnalysisInfo FAInfo = new FrameAnalysisInfo(DrawIB);
 
-
-                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(DrawIB, ReverseExtract);
+                List<string> TrianglelistTexturesFileNameList = TextureConfig.Get_TrianglelistTexturesFileNameList(FAInfo.FolderPath, DrawIB, ReverseExtract);
 
                 foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
                 {
                     string OriginalTextureFilePath = GlobalConfig.WorkFolder + PsTextureFileName;
-                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(PsTextureFileName);
+                    string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(FAInfo.FolderPath, PsTextureFileName);
                
 
                     //移动TrianglelistTextures
