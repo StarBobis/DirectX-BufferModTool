@@ -33,6 +33,9 @@ namespace DBMT
         public App()
         {
             this.InitializeComponent();
+
+            // 订阅UnhandledException事件
+            this.UnhandledException += App_UnhandledException;
         }
 
         /// <summary>
@@ -47,5 +50,16 @@ namespace DBMT
         
         //必须设为public static 这样非打包的WinUI3程序的Page里才能获取主窗口句柄来实现调用显示其它窗口
         public static Window m_window { get; set; }
+
+
+
+        private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            // 在这里处理异常
+            // 例如，可以在这里显示一个消息框告知用户发生了错误
+            // 注意: 根据需要决定是否将e.Handled设置为true以防止应用程序退出
+            throw new Exception("未知错误: " + e.ToString());
+            e.Handled = true;
+        }
     }
 }
