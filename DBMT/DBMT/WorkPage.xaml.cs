@@ -470,7 +470,7 @@ namespace DBMT
         }
 
 
-        public async Task<bool> PreDoBeforeExtract()
+        public async Task<bool> PreCheckBeforeExtract()
         {
             bool findvalidDrawIB = false;
             foreach (DrawIBItem item in DrawIBItems)
@@ -508,7 +508,7 @@ namespace DBMT
 
         public async void ExtractModel(object sender, RoutedEventArgs e)
         {
-            bool Prepare = await PreDoBeforeExtract();
+            bool Prepare = await PreCheckBeforeExtract();
             if (!Prepare)
             {
                 return;

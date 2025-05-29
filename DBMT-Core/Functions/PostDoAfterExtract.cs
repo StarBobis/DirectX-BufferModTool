@@ -116,6 +116,7 @@ namespace DBMT_Core
 
             //(1) 
             Dictionary<string, Dictionary<string, List<string>>> DrawIB_ComponentName_DrawCallIndexList_Dict_Dict = Generate_ComponentName_DrawCallIndexList_Json();
+            
             //(2) 
             Generate_TrianglelistDedupedFileName_Json();
 

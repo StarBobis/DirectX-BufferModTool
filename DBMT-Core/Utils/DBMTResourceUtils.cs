@@ -32,7 +32,7 @@ namespace DBMT_Core.Utils
 
         public static List<GameIconItem> GetGameIconItems()
         {
-            LOG.Info("GetGameIconItems::Start");
+            //LOG.Info("GetGameIconItems::Start");
 
             List<GameIconItem> gameIconItems = [];
 
@@ -45,25 +45,25 @@ namespace DBMT_Core.Utils
 
             foreach (string GameFolderPath in GamesFolderList)
             {
-                LOG.Info("GameFolder: " + GameFolderPath);
+                //LOG.Info("GameFolder: " + GameFolderPath);
                 if (Directory.Exists(GameFolderPath))
                 {
                     string GameName = Path.GetFileName(GameFolderPath);
-                    LOG.Info(GameName);
+                    //LOG.Info(GameName);
 
                     string GameIconImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder,GameName + "\\Icon.png");
                     if (!File.Exists(GameIconImage))
                     {
                         GameIconImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, "DefaultIcon.png");
                     }
-                    LOG.Info(GameIconImage);
+                    //LOG.Info(GameIconImage);
 
                     string GameBackGroundImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, GameName + "\\Background.png");
                     if (!File.Exists(GameBackGroundImage))
                     {
                         GameBackGroundImage = Path.Combine(GlobalConfig.Path_AssetsGamesFolder, "DefaultBackground.png");
                     }
-                    LOG.Info(GameBackGroundImage);
+                    //LOG.Info(GameBackGroundImage);
 
                     gameIconItems.Add(new GameIconItem
                     {
@@ -73,7 +73,7 @@ namespace DBMT_Core.Utils
                     });
                 }
             }
-            LOG.Info("GetGameIconItems::End");
+            //LOG.Info("GetGameIconItems::End");
 
             return gameIconItems;
         }

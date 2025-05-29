@@ -135,29 +135,29 @@ namespace DBMT_Core.Games
 
                     //如果不是GPU PreSkinning的话，就要去校验顶点数
                     //TODO 这里也可以校验余数是否为0
-                    if (!d3D11GameType.GPUPreSkinning)
-                    {
-                        string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
-                        string CategoryTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".txt");
-                        if (CategoryTxtFileName == "")
-                        {
-                            LOG.Info("槽位的txt文件不存在，跳过此数据类型。");
-                            AllMatch = false;
-                            break;
-                        }
-                        else
-                        {
-                            string CategoryTxtFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(CategoryTxtFileName);
-                            string VertexCountTxtShow = DBMTFileUtils.FindMigotoIniAttributeInFile(CategoryTxtFilePath, "vertex count");
-                            int TxtShowVertexCount = int.Parse(VertexCountTxtShow);
-                            if (TxtShowVertexCount != TmpNumber)
-                            {
-                                LOG.Info("槽位的txt文件顶点数与Buffer数据类型统计顶点数不符，跳过此数据类型。");
-                                AllMatch = false;
-                                break;
-                            }
-                        }
-                    }
+                    //if (!d3D11GameType.GPUPreSkinning)
+                    //{
+                    //    string CategorySlot = d3D11GameType.CategorySlotDict[CategoryName];
+                    //    string CategoryTxtFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-" + CategorySlot, ".txt");
+                    //    if (CategoryTxtFileName == "")
+                    //    {
+                    //        LOG.Info("槽位的txt文件不存在，跳过此数据类型。");
+                    //        AllMatch = false;
+                    //        break;
+                    //    }
+                    //    else
+                    //    {
+                    //        string CategoryTxtFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(CategoryTxtFileName);
+                    //        string VertexCountTxtShow = DBMTFileUtils.FindMigotoIniAttributeInFile(CategoryTxtFilePath, "vertex count");
+                    //        int TxtShowVertexCount = int.Parse(VertexCountTxtShow);
+                    //        if (TxtShowVertexCount != TmpNumber)
+                    //        {
+                    //            LOG.Info("槽位的txt文件顶点数与Buffer数据类型统计顶点数不符，跳过此数据类型。");
+                    //            AllMatch = false;
+                    //            break;
+                    //        }
+                    //    }
+                    //}
 
 
                     if (VertexNumber == 0)

@@ -299,7 +299,15 @@ namespace DBMT_Core
         {
             get
             {
-                return Path.Combine(Path_LoaderFolder,LatestFrameAnalysisFolderName + "\\");
+
+                if (LatestFrameAnalysisFolderName != "")
+                {
+                    return Path.Combine(Path_LoaderFolder, LatestFrameAnalysisFolderName + "\\");
+                }
+                else
+                {
+                    throw new Exception("当前3Dmigoto目录下没有任何FrameAnalysis文件夹");
+                }
             }
         }
 

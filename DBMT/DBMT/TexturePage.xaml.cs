@@ -39,20 +39,17 @@ namespace DBMT
 
         public TexturePage()
         {
-            //Debug.WriteLine("切换到贴图页面");
-            //Debug.WriteLine("当前读取的贴图格式:" + GlobalConfig.GameCfg.Value.AutoTextureFormat);
-
             this.InitializeComponent();
-
-
-            ReadDrawIBList();
 
             // 设置ListView的数据源为imageCollection
             ImageListView.ItemsSource = imageCollection;
 
+            //至少要知道当前DrawIB列表，读取后自动触发Component对应的CallIndex的贴图读取
+            ReadDrawIBList();
 
             if (GlobalConfig.AutoTextureFormat == "tga")
             {
+                //这里只提示用户要跳转，不能擅自跳转
                 _ = MessageHelper.Show("贴图设置暂不支持tga格式，请在设置中把全局贴图转换格式调整为.jpg或.png格式，并重新提取模型", "Texture settings currently do not support the TGA format. Please adjust the GlobalTextureConvertSetting in the settings to .jpg or .png, and do Extract Model again.");
             }
 
@@ -69,8 +66,6 @@ namespace DBMT
             }
             ComboBoxDrawIB.SelectedIndex = 0;
         }
-
-        
 
         private void ComboBoxDrawIB_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
