@@ -100,11 +100,11 @@ namespace DBMT_Core
                 foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
                 {
                     //LOG.Info("Copy: " + PsTextureFileName);
-                    string OriginalTextureFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(PsTextureFileName);
+                    string OriginalTextureFilePath = FrameAnalysisLogUtilsV2.Get_DedupedFilePath(PsTextureFileName,FAInfo.FolderPath,FAInfo.LogFilePath);
                     //LOG.Info("OriginalTextureFilePath: " + OriginalTextureFilePath);
 
                     //移动DedupedTextures
-                    string DedupedFileName = FrameAnalysisLogUtils.Get_DedupedFileName(PsTextureFileName);
+                    string DedupedFileName = FrameAnalysisLogUtilsV2.Get_DedupedFileName(PsTextureFileName, FAInfo.FolderPath, FAInfo.LogFilePath);
                     string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
                     string TargetFilePath = DedupedTexturesFolderPath + TextureSpecialHash + "_" + DedupedFileName;
 
@@ -147,7 +147,7 @@ namespace DBMT_Core
 
                 foreach (string PsTextureFileName in TrianglelistTexturesFileNameList)
                 {
-                    string OriginalTextureFilePath = GlobalConfig.WorkFolder + PsTextureFileName;
+                    string OriginalTextureFilePath = Path.Combine(FAInfo.FolderPath, PsTextureFileName);
                     string DedupedRenderFileName = FrameAnalysisDataUtils.GetDedupedTextureFileName(FAInfo.FolderPath, PsTextureFileName);
                     string TextureSpecialHash = DBMTStringUtils.GetFileHashFromFileName(PsTextureFileName);
 

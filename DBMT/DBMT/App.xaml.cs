@@ -35,6 +35,8 @@ namespace DBMT
             this.InitializeComponent();
 
             // 订阅UnhandledException事件
+            // Nico: 虽然但是，实际测试中这玩意仍然无法捕获到dll里的错误导致闪退
+            // 暂未测试能否捕捉XAML行为错误，WinUI3有点让人捉摸不透
             this.UnhandledException += App_UnhandledException;
         }
 

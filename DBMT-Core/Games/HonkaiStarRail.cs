@@ -115,8 +115,11 @@ namespace DBMT_Core.Games
                 //获取第一个TrianglelistIndex
                 string TrianglelistIndex = d3D11GameTypeLv2.FilterTrianglelistIndex_UnityVS(TrianglelistIndexList, d3D11GameType);
 
+
                 //获取Buffer文件
                 string VB1BufferFileName = FrameAnalysisDataUtils.FilterFirstFile(GlobalConfig.WorkFolder, TrianglelistIndex + "-vb1=", ".buf");
+
+
                 string VB1BufferFilePath = FrameAnalysisLogUtils.Get_DedupedFilePath(VB1BufferFileName);
                 int VB1Size = (int)DBMTFileUtils.GetFileSize(VB1BufferFilePath);
 

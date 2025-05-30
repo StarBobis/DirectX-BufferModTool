@@ -47,11 +47,14 @@ namespace DBMT_Core
 
         public static long GetFileSize(string filePath)
         {
-            if (!File.Exists(filePath))
+            //TODO 开启Symlink特性后，这里获取的文件大小，确定是真正的文件大小吗？需要进行测试。
+
+            if (File.Exists(filePath))
             {
-                throw new FileNotFoundException("文件未找到。", filePath);
+                return new FileInfo(filePath).Length;
             }
-            return new FileInfo(filePath).Length;
+
+            return 0;
         }
 
 

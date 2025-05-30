@@ -56,9 +56,8 @@ namespace DBMT_Core
                 LOG.Initialize();
                 try
                 {
-                    //这里由于CTX的文件结构不同，导致普通的提取贴图不适用。
-                    //CoreFunctions.ExtractDedupedTextures();
-                    //CoreFunctions.ExtractRenderTextures();
+                    CoreFunctions.ExtractDedupedTextures();
+                    CoreFunctions.ExtractRenderTextures();
 
                     RunResult = WhereWindsMeet.ExtractModel(DrawIBItemList);
                 }
@@ -75,10 +74,8 @@ namespace DBMT_Core
                 LOG.Initialize();
                 try
                 {
-                    //这里由于CTX的文件结构不同，导致普通的提取贴图不适用。
-                    //CoreFunctions.ExtractDedupedTextures();
-                    //CoreFunctions.ExtractRenderTextures();
-
+                    CoreFunctions.ExtractDedupedTextures();
+                    CoreFunctions.ExtractRenderTextures();
                     RunResult = IdentityV.ExtractCTX(DrawIBItemList);
                 }
                 catch (Exception ex)
